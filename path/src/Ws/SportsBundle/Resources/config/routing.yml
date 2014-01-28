@@ -1,0 +1,11 @@
+ws_sports_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: WsSportsBundle:Default:index }
+
+admin_sports_category:
+    resource: "@WsSportsBundle/Resources/config/routing/category.yml"
+    prefix: /admin/category
+
+admin_sports_sport:
+    resource: "@WsSportsBundle/Resources/config/routing/sport.yml"
+    prefix: /admin/sport

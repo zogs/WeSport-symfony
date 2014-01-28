@@ -1,0 +1,27 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+{% block subject %}
+	{% autoescape false %}
+		{{ 'registration.email.subject'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+	{% endautoescape %}
+{% endblock %}
+
+
+{% block body_text %}
+	{% autoescape false %}
+		{{ 'registration.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+	{% endautoescape %}
+{% endblock %}
+
+
+{% block body_html %}
+	<h2>Bonjour {{ user.username }}</h2>
+	<p>
+		Pour <strong>valider</strong> votre compte utilisateur, merci de vous rendre sur <a href="{{ confirmationUrl }}">cette adresse</a>
+	</p>
+	<p>
+		Cordialement,<br/>
+		L'équipe
+	</p>
+{% endblock %}

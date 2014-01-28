@@ -1,0 +1,7 @@
+parameters:
+#    my_comment.example.class: My\CommentBundle\Example
+
+services:
+#    my_comment.example:
+#        class: %my_comment.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

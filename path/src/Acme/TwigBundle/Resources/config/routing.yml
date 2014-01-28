@@ -1,0 +1,3 @@
+acme_twig_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: AcmeTwigBundle:Default:index }

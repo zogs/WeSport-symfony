@@ -1,0 +1,7 @@
+parameters:
+#    ws_sports.example.class: Ws\SportsBundle\Example
+
+services:
+#    ws_sports.example:
+#        class: %ws_sports.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

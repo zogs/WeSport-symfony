@@ -1,0 +1,7 @@
+parameters:
+#    acme_twig.example.class: Acme\TwigBundle\Example
+
+services:
+#    acme_twig.example:
+#        class: %acme_twig.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

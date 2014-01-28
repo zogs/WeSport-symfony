@@ -1,0 +1,30 @@
+sport:
+    pattern:  /
+    defaults: { _controller: "WsSportsBundle:Sport:index" }
+
+sport_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "WsSportsBundle:Sport:show" }
+
+sport_new:
+    pattern:  /new
+    defaults: { _controller: "WsSportsBundle:Sport:new" }
+
+sport_create:
+    pattern:  /create
+    defaults: { _controller: "WsSportsBundle:Sport:create" }
+    requirements: { _method: post }
+
+sport_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "WsSportsBundle:Sport:edit" }
+
+sport_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "WsSportsBundle:Sport:update" }
+    requirements: { _method: post|put }
+
+sport_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "WsSportsBundle:Sport:delete" }
+    requirements: { _method: post|delete }

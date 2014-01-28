@@ -1,0 +1,169 @@
+My\UserBundle\Entity\User:
+    Source:
+        columns:
+            id: ~
+            username: ~
+            firstname: ~
+            lastname: ~
+            birthday: ~
+            gender: ~
+            description: ~
+            register_since: ~
+            updatedCount: ~
+            lang_prefered: ~
+            usernameCanonical: ~
+            email: ~
+            emailCanonical: ~
+            enabled: ~
+            salt: ~
+            password: ~
+            plainPassword: ~
+            lastLogin: ~
+            confirmationToken: ~
+            passwordRequestedAt: ~
+            groups: ~
+            locked: ~
+            expired: ~
+            expiresAt: ~
+            roles: ~
+            credentialsExpired: ~
+            credentialsExpireAt: ~        
+        groupBy: ~
+        filterable: ~
+    Columns:
+        id:
+            filterable: true
+            visible: true
+            id: id
+            title: id
+        firstname:
+            filterable: true
+            visible: true
+            id: firstname
+            title: firstname
+        lastname:
+            filterable: true
+            visible: true
+            id: lastname
+            title: lastname
+        birthday:
+            filterable: true
+            visible: true
+            id: birthday
+            title: birthday
+        gender:
+            filterable: true
+            visible: true
+            id: gender
+            title: gender
+        description:
+            filterable: true
+            visible: true
+            id: description
+            title: description
+        register_since:
+            filterable: true
+            visible: false
+            id: register_since
+            title: register_since
+        updatedCount:
+            filterable: true
+            visible: false
+            id: updatedCount
+            title: updatedCount
+        lang_prefered:
+            filterable: true
+            visible: true
+            id: lang_prefered
+            title: lang_prefered
+        username:
+            filterable: true
+            visible: true
+            id: username
+            title: username
+        usernameCanonical:
+            filterable: true
+            visible: false
+            id: usernameCanonical
+            title: usernameCanonical
+        email:
+            filterable: true
+            visible: true
+            id: email
+            title: email
+        emailCanonical:
+            filterable: false
+            visible: false
+            id: emailCanonical
+            title: emailCanonical
+        enabled:
+            filterable: true
+            visible: true
+            id: enabled
+            title: enabled
+        salt:
+            filterable: false
+            visible: false
+            id: salt
+            title: salt
+        password:
+            filterable: false
+            visible: false
+            id: password
+            title: password
+        plainPassword:
+            filterable: false
+            visible: false
+            id: plainPassword
+            title: plainPassword
+        lastLogin:
+            filterable: false
+            visible: false
+            id: lastLogin
+            title: lastLogin
+        confirmationToken:
+            filterable: false
+            visible: false
+            id: confirmationToken
+            title: confirmationToken
+        passwordRequestedAt:
+            filterable: false
+            visible: false
+            id: passwordRequestedAt
+            title: passwordRequestedAt
+        groups:
+            filterable: true
+            visible: false
+            id: groups
+            title: groups
+        locked:
+            filterable: false
+            visible: false
+            id: locked
+            title: locked
+        expired:
+            filterable: false
+            visible: false
+            id: expired
+            title: expired
+        expiresAt:
+            filterable: false
+            visible: false
+            id: expiresAt
+            title: expiresAt
+        roles:
+            filterable: true
+            visible: true
+            id: roles
+            title: roles
+        credentialsExpired:
+            filterable: false
+            visible: false
+            id: credentialsExpired
+            title: credentialsExpired
+        credentialsExpireAt:
+            filterable: false
+            visible: false
+            id: credentialsExpireAt
+            title: credentialsExpireAt
+        

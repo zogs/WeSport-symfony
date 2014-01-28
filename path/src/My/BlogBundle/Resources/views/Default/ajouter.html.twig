@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<a href="{{ path('blog_homepage') }}" >Retour</a>
+
+
+<h1>Ajouter un article</h1>
+
+<form action="{{ path('blog_ajouter')}}" method="post">
+	
+	{{ form_widget(form) }}
+
+	<input type="submit">
+
+</form>
+{% endblock %}

@@ -1,0 +1,7 @@
+parameters:
+#    my_world.example.class: My\WorldBundle\Example
+
+services:
+#    my_world.example:
+#        class: %my_world.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

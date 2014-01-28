@@ -1,0 +1,30 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<h1>Le blog</h1>
+
+{% for article in articles %}
+
+<div class="clearfix">
+	<article>
+		<header>
+			<h2><a href="{{ path('blog_voir',{ id : article.id}) }}" title="{{ article.titre }}">{{ article.titre }}</a></h2>
+
+			{% if is_granted('ROLE_AUTHOR') %}
+			<small><a href="{{ path('blog_editer',{ id: article.id}) }}"> Editer</a></small>
+			<small><a href="{{ path('blog_supprimer',{ id: article.id}) }}"> Supprimer</a></small>
+			{% endif %}
+			<time>{{ article.date|date('d M Y') }}</time>
+		</header>
+		<div class="content">
+			<img src="{{ article.url}}" alt="{{ article.titre}}"/>
+			<p>
+				{{ article.description }}
+			</p>
+		</div>
+	</article>
+</div>
+	
+{% endfor %}
+
+{% endblock %}

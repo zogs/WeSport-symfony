@@ -1,0 +1,10 @@
+{# Resources/views/Admin/article_index.html.twig #}
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Liste des utilisateurs</h1>
+
+    {{ grid_search(grid) }}
+    {{ grid(grid, 'MyUserBundle:Admin:extend_grid_template.html.twig') }}
+
+{% endblock %}

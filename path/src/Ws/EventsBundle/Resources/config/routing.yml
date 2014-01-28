@@ -1,0 +1,3 @@
+ws_events_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: WsEventsBundle:Default:index }

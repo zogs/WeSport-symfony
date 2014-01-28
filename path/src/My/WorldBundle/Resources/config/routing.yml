@@ -1,0 +1,7 @@
+my_world_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: MyWorldBundle:Default:index }
+
+my_world_test:
+    pattern: /test
+    defaults: { _controller: MyWorldBundle:Default:test }

@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Page list</h1>
+
+    <table class="records_list table table-stripped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Locale</th>
+                <th>Title</th>
+                <th>Menu</th>
+                <th>Isonline</th>
+                <th>Position</th>
+                <th>Icon</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('page_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><i class="flag flag-{{ app.request.locale }}"></i>{{ app.request.locale }}</td>
+                <td>
+                    <a href="{{ path('page_edit', { 'id': entity.id }) }}">{{ entity.title }}</a>
+                </td>
+                <td>{{ entity.menu }}</td>
+                <td>
+                    {% if entity.isOnline %}
+                        <span class="label label-success">Online</span>
+                    {% else %}}
+                        <span class="label">Offline</span>
+                    {% endif %}
+                </td>
+                <td>{{ entity.pos }}</td>
+                <td>{{ entity.icon }}</td>
+                <td>{{ entity.date }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('page_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('page_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('page_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

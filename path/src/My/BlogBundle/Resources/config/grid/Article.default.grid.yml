@@ -1,0 +1,42 @@
+My\BlogBundle\Entity\Article:
+    Source:
+        columns:
+            id: ~
+            titre: ~
+            description: ~
+            image: ~
+            date: ~        
+        groupBy: ~
+        filterable: ~
+    Columns:
+        id:
+            filterable: true
+            visible: false
+            id: id
+            title: id
+        titre:
+            filterable: true
+            visible: true
+            id: titre
+            title: Titre de l'article
+        description:
+            filterable: true
+            visible: true
+            id: description
+            title: Contenu de l'article
+        url:
+            filterable: true
+            visible: true
+            id: url
+            title: Url de l'image
+        image:
+            filterable: false
+            visible: true
+            id: image
+            title: Image
+        date:
+            filterable: true
+            visible: true
+            id: date
+            title: Date
+        

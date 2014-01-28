@@ -1,0 +1,27 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+<a href="{{ path('blog_homepage') }}" >Retour</a>
+
+<h1>{{ article.titre}}</h1>
+
+
+<article>
+	<header>
+		<h2><a href="{{ path('blog_voir',{ id : article.id}) }}" title="{{ article.titre }}">{{ article.titre }}</a></h2>
+		<time>{{ article.date|date('d M Y') }}</time>
+	</header>
+	<div class="content">
+		<img src="{{ article.url}}" alt="{{ article.titre}}"/>
+		<p>
+			{{ article.description }}
+		</p>
+	</div>
+</article>
+
+{% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': 'blog'~article.id } %}
+	
+
+
+{% endblock %}

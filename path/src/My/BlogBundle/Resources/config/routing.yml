@@ -1,0 +1,29 @@
+blog_homepage:
+    pattern:  /
+    defaults: { _controller: MyBlogBundle:Default:index }
+
+blog_ajouter:
+    pattern:  /ajouter
+    defaults: { _controller: MyBlogBundle:Default:ajouter }
+
+blog_voir:
+    pattern:  /{id}/voir
+    defaults: { _controller: MyBlogBundle:Default:voir }
+    requirements:
+        id: \d+
+
+blog_editer:
+    pattern:  /{id}/editer
+    defaults: { _controller: MyBlogBundle:Default:editer }
+    requirements:
+        id: \d+
+
+blog_supprimer:
+    pattern:  /{id}/supprimer
+    defaults: { _controller: MyBlogBundle:Default:supprimer }
+    requirements:
+        id: \d+
+
+blog_admin_index:
+    pattern: /admin/blog/article/index
+    defaults: { _controller: MyBlogBundle:Admin:index }

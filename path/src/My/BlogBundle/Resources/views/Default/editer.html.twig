@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<a href="{{ path('blog_homepage') }}" >Retour</a>
+
+
+<h1>Editer un animal</h1>
+
+<form action="{{ path('blog_editer', { id : article.id}) }}" method="post">
+	
+	{{ form_widget(form) }}
+
+	<input type="submit">
+
+</form>
+{% endblock %}
