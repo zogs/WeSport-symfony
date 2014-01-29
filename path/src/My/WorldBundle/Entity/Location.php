@@ -50,11 +50,6 @@ class Location
      */
     protected $city;
 
-    
-    public function __construct() {
-
-        $this->events = new ArrayCollection();
-    }
 
     /**
      * Set id

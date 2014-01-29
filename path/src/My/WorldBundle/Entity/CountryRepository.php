@@ -43,7 +43,7 @@ class CountryRepository extends EntityRepository
 
 		$qb = $this->createQueryBuilder('c');
 
-		$qb->select('partial c.{id,code,name}')
+		$qb->select('partial c.{id,code,name,lang}')
 			->where(
 				$qb->expr()->eq('c.id',':id')
 				);

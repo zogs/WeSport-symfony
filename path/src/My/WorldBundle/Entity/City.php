@@ -99,12 +99,12 @@ class City
 	private $CHARACTERS;
 
 	/**
-	 * @ORM\Column(name="LATITUDE", type="decimal")
+	 * @ORM\Column(name="LATITUDE", type="float")
 	 */
 	private $LATITUDE;
 
 	/**
-	 * @ORM\Column(name="LONGITUDE", type="decimal")
+	 * @ORM\Column(name="LONGITUDE", type="float")
 	 */
 	private $LONGITUDE;
 
@@ -600,5 +600,25 @@ class City
     public function getDMSLONG()
     {
         return $this->DMSLONG;
+    }
+
+    /**
+     * Get LATITUDE
+     *
+     * @return decimal 
+     */
+    public function getLat()
+    {
+        return $this->LATITUDE;
+    }
+
+    /**
+     * Get LONGITUDE
+     *
+     * @return decimal 
+     */
+    public function getLon()
+    {
+        return $this->LONGITUDE;
     }
 }

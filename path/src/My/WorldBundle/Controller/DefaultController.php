@@ -28,12 +28,13 @@ class DefaultController extends Controller
 
         //$obj = $em->getRepository('MyWorldBundle:Location')->findOneById(7);
 
-        $obj->locations = $em->getRepository('MyWorldBundle:Location')->findWorldLocationOf($obj);
+        //$obj->locations = $em->getRepository('MyWorldBundle:Location')->findWorldLocationOf($obj);
 
-    	//$cities = $repo->findCitiesSuggestions(10,'Beau','FR','A1','21');
-
-
-
+    	//$obj = $em->getRepository('MyWorldBundle:City')->findCitiesSuggestions(10,'Beau','FR','A1','21');
+        $beaune = $em->getRepository('MyWorldBundle:City')->findCityByName('Beaune','FR','A1');
+        
+        $obj = $em->getRepository('MyWorldBundle:City')->findCitiesArround(10,$beaune->getLat(),$beaune->getLon(),'FR');
+       
     	return $this->render('MyWorldBundle:Default:test.html.twig', array('obj' => $obj));
     }
 

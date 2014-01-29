@@ -12,27 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class StateRepository extends EntityRepository
 {
-	public function findStateByCodesQB($CC1, $code, $level)
-	{
-
-		$qb = $this->createQueryBuilder('s');
-
-		$qb->select('s')
-			->where(
-				$qb->expr()->eq('s.CC1',':CC1'),
-				$qb->expr()->eq('s.ADM_CODE',':code'),
-				$qb->expr()->eq('s.DSG',':level')
-				);
-
-		$qb->setParameters(array(
-			'CC1'=>$CC1,
-			'code'=>$code,
-			'level'=>$level)
-		);
-
-		return $qb->getQuery()->getResult();
-	}
-
 
 	public function findStateByCodes($CC1, $code, $level)
 	{
