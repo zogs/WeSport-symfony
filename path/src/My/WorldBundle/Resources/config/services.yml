@@ -5,3 +5,7 @@ services:
 #    my_world.example:
 #        class: %my_world.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    my_world.form.type.autocompletecity:
+        class: My\WorldBundle\Form\Type\AutoCompleteCityType       
+        tags:
+            - { name: form.type, alias: autoCompleteCity }

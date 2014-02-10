@@ -5,3 +5,15 @@ my_world_homepage:
 my_world_test:
     pattern: /test
     defaults: { _controller: MyWorldBundle:Default:test }
+
+my_world_nextlevel:
+    pattern: /nextStateLevel
+    defaults: { _controller: MyWorldBundle:Default:nextStatesLevel }
+    requirements:
+        _method: GET
+
+my_world_autocompletecity:
+    pattern: /autocompletecity/{country}/{prefix}
+    defaults: { _controller: MyWorldBundle:City:autoComplete, country:'FR', prefix:'' }
+    requirements:
+        _method: GET

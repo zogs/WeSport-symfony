@@ -12,9 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class StateRepository extends EntityRepository
 {
-
-	public function findStateByCodes($CC1, $code, $level)
+	
+	public function findStateByCodes($CC1,$ADM1,$ADM2 = null,$ADM3 = null,$ADM4 = null)
 	{
+		if(!empty($ADM4))
+			return $this->findStateByCode($CC1,$ADM4,'ADM4');
+		if(!empty($ADM3))
+			return $this->findStateByCode($CC1,$ADM3,'ADM3');
+		if(!empty($ADM2))
+			return $this->findStateByCode($CC1,$ADM2,'ADM2');
+		if(!empty($ADM1))
+			return $this->findStateByCode($CC1,$ADM1,'ADM1');
+	}
+
+	public function findStateByCode($CC1, $code, $level)
+	{
+		//return empty State if no code specified
+		if(empty($code)) return new State();
 
 		$q = $this->getEntityManager()->createQuery("
 			SELECT s 
@@ -35,4 +49,27 @@ class StateRepository extends EntityRepository
 
 		return $q->getSingleResult();
 	}
+
+	public function findStatesByParent($level, $CC1, $parent = '')
+	{
+		$q = $this->getEntityManager()->createQuery("
+			SELECT s 
+			FROM MyWorldBundle:State s 
+			JOIN MyWorldBundle:Country c 
+			WITH c.code = s.CC1 
+			WHERE s.CC1 = :CC1 
+			AND s.ADM_PARENT = :parent
+			AND s.DSG = :level
+			AND s.lang = c.lang
+			");
+
+		$q->setParameters(array(
+			'CC1'=>$CC1,
+			'parent'=>$parent,
+			'level'=>$level
+			));
+
+		return $q->getResult();
+	}
+
 }

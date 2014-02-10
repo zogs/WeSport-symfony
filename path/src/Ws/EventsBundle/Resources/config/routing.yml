@@ -1,3 +1,7 @@
 ws_events_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: WsEventsBundle:Default:index }
+
+ws_events_new:
+    pattern: /new
+    defaults: { _controller: WsEventsBundle:Default:new }

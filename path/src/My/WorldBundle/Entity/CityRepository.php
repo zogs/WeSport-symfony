@@ -70,6 +70,48 @@ class CityRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+
+	public function findCitiesByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
+	{
+		$sql = "
+			SELECT s
+			FROM MyWorldBundle:City s 
+			JOIN MyWorldBundle:Country c 
+			WITH c.code = s.CC1
+			WHERE s.CC1 = :CC1
+			AND (
+				";
+		if(isset($regionCode))
+			$sql .= " s.ADM1 = :ADM1 ";
+		if(isset($departementCode))
+			$sql .= " AND s.ADM2 = :ADM2 ";
+		if(isset($districtCode))
+			$sql .= " AND s.ADM3 = :ADM3 ";
+		if(isset($divisionCode))
+			$sql .= " AND s.ADM4 = :ADM4 ";
+		$sql .="
+			)
+			AND (
+				s.LC = c.lang
+				OR
+				s.LC = ''
+				)
+			ORDER BY s.FULLNAMEND ";
+		
+		$query = $this->getEntityManager()->createQuery($sql);
+		$query->setParameter('CC1',$countryCode);
+		if(isset($regionCode))
+			$query->setParameter('ADM1',$regionCode);
+		if(isset($departementCode))
+			$query->setParameter('ADM2',$departementCode);
+		if(isset($districtCode))
+			$query->setParameter('ADM3',$districtCode);
+		if(isset($divisionCode))
+			$query->setParameter('ADM4',$divisionCode);
+
+		return $query->getResult();
+	}
+
 	public function findCitiesArround($radius, $lat, $lon, $countryCode = null, $unit = 'km')
 	{		
 		//constante for units
@@ -101,6 +143,19 @@ class CityRepository extends EntityRepository
 		$sql .= ' AND C.LONGITUDE BETWEEN '.$lon1.' AND '.$lon2.' AND C.LATITUDE BETWEEN '.$lat1.' AND '.$lat2.' ';
 		$sql .= 'having distance < '.$radius;
 
+		
+		$rsm = $this->resultSetMappingCity();
+		
+		$query = $this->_em->createNativeQuery($sql,$rsm);
+		$query->setParameter('CC1',$countryCode);
+
+		return $query->getResult();
+		//return $this->getQuery($sql)->getResult();
+
+	}
+
+	private function resultSetMappingCity()
+	{
 		$rsm = new ResultSetMapping();
 		$rsm->addEntityResult('My\WorldBundle\Entity\City', 'C');
 		$rsm->addFieldResult('C', 'id', 'id');
@@ -118,12 +173,6 @@ class CityRepository extends EntityRepository
 		$rsm->addFieldResult('C', 'LATITUDE', 'LATITUDE');
 		$rsm->addFieldResult('C', 'LONGITUDE', 'LONGITUDE');
 
-		
-		$query = $this->_em->createNativeQuery($sql,$rsm);
-		$query->setParameter('CC1',$countryCode);
-
-		return $query->getResult();
-		//return $this->getQuery($sql)->getResult();
-
+		return $rsm;
 	}
 }

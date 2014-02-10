@@ -1,7 +1,11 @@
 parameters:
-#    ws_events.example.class: Ws\EventsBundle\Example
+    ws_events.event.form : Ws\EventsBundle\Form\Type\EventType
 
 services:
 #    ws_events.example:
 #        class: %ws_events.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    ws_events.form.type.event:
+        class: %ws_events.event.form%        
+        tags:
+            - { name: form.type, alias: event }

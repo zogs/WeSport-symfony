@@ -5,6 +5,7 @@ namespace Ws\EventsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContext;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -28,6 +29,10 @@ class Event
 
     /**
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *              min = "5",
+     *              max = "150")
      */
     private $title;
 
@@ -39,11 +44,13 @@ class Event
 
     /**
      * @ORM\Column(name="date", type="date")
+     * @Assert\Date()
      */
     private $date;
 
     /**
      * @ORM\Column(name="time", type="time")
+     * @Assert\Time()
      */
     private $time;
 
@@ -63,17 +70,21 @@ class Event
     private $sport;
 
     /**
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $address;
 
     /**
      * @ORM\Column(name="nbmin", type="smallint")
+     * @Assert\GreaterThanOrEqual(
+     *                  value = "2"
+     * )
      */
     private $nbmin = 2;
 
@@ -88,7 +99,7 @@ class Event
     private $phone;
 
     /**
-     * @ORM\Column(name="date_depot", type="datetime")
+     * @ORM\Column(name="date_depot", type="datetime", nullable=true)
      */
     private $date_depot;
 
@@ -112,6 +123,15 @@ class Event
         $this->date_depot = new \DateTime();
     }
 
+    
+    /**
+    * @Assert\True(message = "La date doit être dans le futur")
+    */
+    public function isFutur()
+    {        
+        if($this->date > new \DateTime()) return true;
+        return false;
+    }
 
     /**
      * Get id

@@ -29,12 +29,20 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - ':Form:fields.html.twig'
+            - ':Form:buttons.html.twig'            
 
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles: [ "FOSCommentBundle" ]
+    bundles: 
+        - "FOSCommentBundle"
+        - "AcmeTwigBundle"
+        - "WsSportsBundle"
+        - "WsEventsBundle"
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

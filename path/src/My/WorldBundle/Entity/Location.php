@@ -211,4 +211,14 @@ class Location
     {
         return $this->city;
     }
+
+
+    /**
+    * __toString
+    *
+    */
+    public function __toString()
+    {
+        return $this->getCountry().':'.$this->getRegion().':'.$this->getDepartement().':'.$this->getDistrict().':'.$this->getDivision().':'.$this->getCity();
+    }
 }

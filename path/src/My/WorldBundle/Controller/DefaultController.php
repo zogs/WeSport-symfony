@@ -3,6 +3,7 @@
 namespace My\WorldBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -31,41 +32,22 @@ class DefaultController extends Controller
         //$obj->locations = $em->getRepository('MyWorldBundle:Location')->findWorldLocationOf($obj);
 
     	//$obj = $em->getRepository('MyWorldBundle:City')->findCitiesSuggestions(10,'Beau','FR','A1','21');
-        $beaune = $em->getRepository('MyWorldBundle:City')->findCityByName('Beaune','FR','A1');
+        //$beaune = $em->getRepository('MyWorldBundle:City')->findCityByName('Beaune','FR','A1');
+        //$obj = $em->getRepository('MyWorldBundle:City')->findCitiesArround(10,$beaune->getLat(),$beaune->getLon(),'FR');
         
-        $obj = $em->getRepository('MyWorldBundle:City')->findCitiesArround(10,$beaune->getLat(),$beaune->getLon(),'FR');
-       
+
+
     	return $this->render('MyWorldBundle:Default:test.html.twig', array('obj' => $obj));
     }
 
-    private function geoLocateObject($object)
+    public function nextStatesLevelAction(Request $request)
     {
-     
-        if($object->getCC1()!='')
-        {            
-            $object->location['country'] = $this->getDoctrine()
-                                ->getManager()
-                                ->getRepository('MyWorldBundle:Country')
-                                ->findCountryName($object->getCC1());
-        }
+      
+        $em = $this->getDoctrine()->getManager();
+        $states = $em->getRepository('MyWorldBundle:Location')->findStatesByParent('FR','ADM1','FR');
 
-        if($object->getADM1()!='')
-        {            
-            $object->location['region'] = $this->getDoctrine()
-                                ->getManager()
-                                ->getRepository('MyWorldBundle:Region')
-                                ->findRegionName($object->getADM1(),$object->getCC1());
-        }
-
-        return $object;
+        return $this->render('MyWorldBundle:Default:test.html.twig', array('obj' => $states));
     }
 
-    private function geoLocateObjects($objects)
-    {
-        foreach ($objects as $key => $object)
-        {
-            $objects[$key] = $this->geoLocateObject($object);
-        }
-        return $objects;
-    }
+
 }
