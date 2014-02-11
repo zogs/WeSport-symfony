@@ -41,13 +41,21 @@ class DefaultController extends Controller
                     $this->get('session')->getFlashBag()->add('error','Cette ville nexiste pas');
                 }
             }
-            $event = $form->getData();
-            //print('<pre>');
-            //print_r($event);
-            //print('</pre>');
-            //exit();
 
-            $event->setLocation($location);
+           // $sport = $this->getDoctrine()->getRepository('WsSportsBundle:Sport')->findOneById($data['sport']['id']);
+
+
+            $event = $form->getData();
+            //$event->setSport($sport);
+            //$event->setLocation($location);
+            //$event->setOrganizer($this->getUser());
+            
+
+            print('<pre>');
+            print_r($event);
+            print('</pre>');
+            exit();
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);

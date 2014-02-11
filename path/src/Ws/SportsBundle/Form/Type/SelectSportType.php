@@ -15,7 +15,7 @@ class SelectSportType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name','entity',array(                                    
+            ->add('id','entity',array(                                    
                                     'class'=>'WsSportsBundle:Sport',
                                     'label'=>'Sport',
                                     'property'=>'name',

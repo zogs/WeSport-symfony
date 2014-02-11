@@ -5,7 +5,7 @@
 {{ form_start(form) }}
     {{ form_errors(form) }}
 
-    {{ form_row(form.sport.name) }}
+    {{ form_row(form.sport) }}
     {{ form_row(form.title) }}
     {{ form_widget(form.location.city_id, {'attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
     {{ form_row(form.location.city_name) }}

@@ -13,7 +13,14 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-    		->add('sport',new SelectSportType(),array('mapped'=>false))
+    		->add('sport','entity',array(                                    
+                                    'class'=>'WsSportsBundle:Sport',
+                                    'label'=>'Sport',
+                                    'property'=>'name',
+                                    'empty_value'=>'Choississez un sport',
+                                    'expanded'=>false,
+                                    'attr'=>array('class'=>'iconSportSelect'))
+            )
     		->add('title',null,array('label'=>'Titre'))
             ->add('location', new AutoCompleteCityType(), array('mapped'=>false))
     		->add('address',null)
