@@ -5,19 +5,29 @@ namespace My\UserBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use My\UserBundle\Entity\User;
 
-class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
+class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+	private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
 	public function load(ObjectManager $manager)
-	{
+	{		
+
 		$admin = new User();
 		$admin->setUsername('admin');
 		$admin->setEmail('guichardsim@gmail.com');
-		$admin->setEnabled(1);
-		$admin->setPassword('fatboy');
+		$admin->setEnabled(true);
+		$admin->setPlainPassword('fatboy');
+		$admin->setRoles(array('ROLE_SUPER_ADMIN','ROLE_ADMIN'));
 
 		$manager->persist($admin);
 
@@ -28,8 +38,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 		$user1 = new User();
 		$user1->setUsername('user1');
 		$user1->setEmail('guichardsim+user1@gmail.com');
-		$user1->setEnabled(1);
-		$user1->setPassword('fatboy');
+		$user1->setEnabled(true);
+		$user1->setPlainPassword('fatboy');
+		$user1->setRoles(array('ROLE_USER'));
 
 		$manager->persist($user1);
 
@@ -39,8 +50,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 		$user2 = new User();
 		$user2->setUsername('user2');
 		$user2->setEmail('guichardsim+user2@gmail.com');
-		$user2->setEnabled(1);
-		$user2->setPassword('fatboy');
+		$user2->setEnabled(true);
+		$user2->setPlainPassword('fatboy');
+		$user2->setRoles(array('ROLE_USER'));
 
 		$manager->persist($user2);
 

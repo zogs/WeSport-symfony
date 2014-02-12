@@ -19,41 +19,25 @@ class DefaultController extends Controller
 
     public function newAction(Request $request)
     {
-    	$event = new Event();
 
-    	$form = $this->createForm('event',$event);
+        $event = new Event();
 
-    	$form->handleRequest($request);
+        $form = $this->createForm('event',$event);
 
+        $form->handleRequest($request);
 
     	if($form->isValid()){
 
             $data = $request->request->get('event');
 
-            if(!empty($data['location']['city_id']))
-                $location = $this->getDoctrine()->getRepository('MyWorldBundle:Location')->findLocationByCityId($data['location']['city_id']);
-            elseif(!empty($data['location']['city_name'])){
-                try{
-                    $city = $this->getDoctrine()->getRepository('MyWorldBundle:City')->findCityByName($data['location']['city_name']);                    
-                    $location = $this->getDoctrine()->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());
-                }
-                catch(NoResultException $e){
-                    $this->get('session')->getFlashBag()->add('error','Cette ville nexiste pas');
-                }
-            }
-
-           // $sport = $this->getDoctrine()->getRepository('WsSportsBundle:Sport')->findOneById($data['sport']['id']);
-
+            $location = $this->get('world.location_manager')->getLocationFromCityArray($data['location']);        
 
             $event = $form->getData();
-            //$event->setSport($sport);
-            //$event->setLocation($location);
-            //$event->setOrganizer($this->getUser());
+            $event->setLocation($location);
+            $event->setOrganizer($this->getUser());
             
 
-            print('<pre>');
-            print_r($event);
-            print('</pre>');
+            var_dump($event);
             exit();
 
 
