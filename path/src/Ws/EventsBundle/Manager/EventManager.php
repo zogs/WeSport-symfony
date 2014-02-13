@@ -105,5 +105,11 @@ class EventManager extends AbstractManager
 
 		return true;
 	}
+
+	public function confirmEvent($event)
+	{
+		$event->setConfirmed(1);
+		$this->save($event,true);
+	}
 }
 ?>
