@@ -9,3 +9,10 @@ services:
         class: %ws_events.event.form%        
         tags:
             - { name: form.type, alias: event }
+    ws_events.form.type.serie:
+        class: Ws\EventsBundle\Form\Type\SerieType      
+        tags:
+            - { name: form.type, alias: serie }
+    ws_events.manager:
+        class: Ws\EventsBundle\Manager\EventManager
+        arguments: [@doctrine.orm.entity_manager]

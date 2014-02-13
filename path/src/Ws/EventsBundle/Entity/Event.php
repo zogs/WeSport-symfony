@@ -43,7 +43,7 @@ class Event
     private $slug;
 
     /**
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(name="date", type="date", nullable=true)
      * @Assert\Date()
      */
     private $date;
@@ -60,7 +60,7 @@ class Event
     private $location;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", fetch="EAGER")     
+     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", fetch="EAGER", cascade={"persist"})     
      */
     private $serie;
 
@@ -129,9 +129,11 @@ class Event
     */
     public function isFutur()
     {        
+        if(empty($this->date)) return true;
         if($this->date > new \DateTime()) return true;
         return false;
     }
+    
 
     /**
      * Get id

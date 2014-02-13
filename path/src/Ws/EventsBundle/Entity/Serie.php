@@ -24,15 +24,15 @@ class Serie
     /**
      * @ORM\Column(name="occurences", type="smallint")
      */
-    private $occurences = 0;
+    private $occurences = 1;
 
     /**
-     * @ORM\Column(name="date_start", type="date")
+     * @ORM\Column(name="date_start", type="date", nullable=true)
      */
     private $startDate;
 
     /**
-     * @ORM\Column(name="date_end", type="date")
+     * @ORM\Column(name="date_end", type="date", nullable=true)
      */
     private $endDate;
 
@@ -79,6 +79,12 @@ class Serie
 
         $this->startDate = new \DateTime('0000-00-00 00:00:00');
         $this->endDate = new \DateTime('0000-00-00 00:00:00');
+    }
+
+    public function isWeekdayInSerie($weekday)
+    {
+        if(call_user_method('get'.ucfirst($weekday),$this)) return true;
+        return false;
     }
 
     public function addEvent(\Ws\EventsBundle\Entity\Event $event)

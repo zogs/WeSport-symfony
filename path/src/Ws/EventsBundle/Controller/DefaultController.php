@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 
 use Ws\EventsBundle\Entity\Event;
+use Ws\EventsBundle\Entity\Serie;
 use Ws\EventsBundle\Form\Type\EventType;
 
 
@@ -28,25 +29,23 @@ class DefaultController extends Controller
 
     	if($form->isValid()){
 
-            $data = $request->request->get('event');
-
-            $location = $this->get('world.location_manager')->getLocationFromCityArray($data['location']);        
+            $fields = $request->request->get('event');
+            $location = $this->get('world.location_manager')->getLocationFromCityArray($fields['location']);        
 
             $event = $form->getData();
             $event->setLocation($location);
             $event->setOrganizer($this->getUser());
             
 
-            var_dump($event);
-            exit();
+            if($this->get('ws_events.manager')->saveSerie($event)){
+
+                $this->get('session')->getFlashBag()->add('success','formulaire valide');
+            }
+            else {
+                $this->get('session')->getFlashBag()->add('error','peut pas sauvegarder !');
+            }
 
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($event);
-            $em->flush();
-
-
-            $this->get('session')->getFlashBag()->add('success','formulaire valide');
     	}
         
 

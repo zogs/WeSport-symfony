@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventParticipantsRepository extends EntityRepository
 {
+	public function persist($entity)
+	{
+		$this->_em->persist($entity);
+	}
+
+	public function persistAndFlush($entity)
+	{
+		$this->_em->persist($entity);
+		$this->_em->flush();
+	}
+
 }

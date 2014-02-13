@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Ws\SportsBundle\Form\Type\SelectSportType;
+use Ws\EventsBundle\Form\Type\SerieType;
 use My\WorldBundle\Form\Type\AutoCompleteCityType;
 
 class EventType extends AbstractType
@@ -24,9 +25,14 @@ class EventType extends AbstractType
     		->add('title',null,array('label'=>'Titre'))
             ->add('location', new AutoCompleteCityType(), array('mapped'=>false))
     		->add('address',null)
-    		->add('date', null, array(
+
+    		->add('date', 'date', array(
                 'widget'=>'single_text',
-                'input'=>'datetime'))
+                'input'=>'datetime',
+                'required'=>false))
+
+            ->add('serie', new SerieType(), array(
+                'label'=>'Jour de la semaine'))
     		
     		->add('time','time',array(
     			'widget'=>'choice',
