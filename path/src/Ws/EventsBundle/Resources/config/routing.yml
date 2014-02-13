@@ -2,6 +2,18 @@ ws_events_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: WsEventsBundle:Default:index }
 
+ws_events_view:
+    pattern: /view/{event}
+    defaults: { _controller: WsEventsBundle:Default:view }
+    requirements:
+        event: \d+
+
 ws_events_new:
     pattern: /new
     defaults: { _controller: WsEventsBundle:Default:new }
+
+ws_events_delete:
+    pattern: /delete/{event}/{token}
+    defaults: { _controller: WsEventsBundle:Default:delete }
+    requirements:
+        event: \d+

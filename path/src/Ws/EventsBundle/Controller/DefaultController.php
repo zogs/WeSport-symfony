@@ -37,12 +37,12 @@ class DefaultController extends Controller
             $event->setOrganizer($this->getUser());
             
 
-            if($this->get('ws_events.manager')->saveSerie($event)){
+            if($this->get('ws_events.manager')->saveAll($event)){
 
-                $this->get('session')->getFlashBag()->add('success','formulaire valide');
+                $this->get('flashbag')->add('success','formulaire valide');
             }
             else {
-                $this->get('session')->getFlashBag()->add('error','peut pas sauvegarder !');
+                $this->get('flashbag')->add('error','peut pas sauvegarder !');
             }
 
 
@@ -52,5 +52,87 @@ class DefaultController extends Controller
     	return $this->render('WsEventsBundle:Default:new.html.twig', array(
     		'form' => $form->createView(),
     		));
+    }
+
+    public function deleteAction(Event $event,$token)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+            throw new AccessDeniedHttpException('Invalid CSRF token.');
+        }
+
+        if($this->getUser()!=$event->getOrganizer()) {
+            throw $this->createNotFoundException('Vous ne pouvez pas supprimer cet événement');        
+        }   
+
+        $this->get('ws_events.manager')->deleteEvent($event);
+        $this->get('flashbag')->add('success',"L'événement a été supprimé !");
+
+        $this->redirect($this->generateUrl("ws_events_new"));     
+    }
+
+    public function deleteSerieAction(Event $event,$token)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+            throw new AccessDeniedHttpException('Invalid CSRF token.');
+        }
+
+        if($this->getUser()!=$event->getOrganizer()) {
+            throw $this->createNotFoundException('Vous ne pouvez pas supprimer cette série');        
+        }   
+
+        $this->get('ws_events.manager')->deleteSerie($event);
+        $this->get('flashbag')->add('success',"Tous les événements ont été supprimés !");
+
+        $this->redirect($this->generateUrl("ws_events_new"));     
+    }
+
+
+
+    public function viewAction(Event $event)
+    {
+        return $this->render('WsEventsBundle:Default:view.html.twig',array(
+            'event'=>$event,
+            'token'=>$this->get('form.csrf_provider')->generateCsrfToken('delete_event')
+            )
+        );
+    }
+
+    public function addParticipationAction(Event $event)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+            throw new AccessDeniedHttpException('Invalid CSRF token.');
+        }
+
+        $this->get('ws_events.manager')->saveParticipation($event,$this->getUser(),true);
+        $this->get('flashbag')->add('success',"Merci de votre participation !");
+
+        $this->redirect($this->generateUrl(
+            'ws_events_view',array(
+                'sport'=>$event->getSport(),
+                'slug'=>$event->getSlug(),
+                'event'=>$event->getId()
+                )
+            )
+        );
+    }
+
+
+    public function removeParticipationAction(Event $event)
+    {
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+            throw new AccessDeniedHttpException('Invalid CSRF token.');
+        }
+
+        $this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
+        $this->get('flashbag')->add('info',"Une prochaine fois peut être !");
+
+        $this->redirect($this->generateUrl(
+            'ws_events_view',array(
+                'sport'=>$event->getSport(),
+                'slug'=>$event->getSlug(),
+                'event'=>$event->getId()
+                )
+            )
+        );
     }
 }
