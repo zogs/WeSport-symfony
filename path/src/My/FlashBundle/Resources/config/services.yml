@@ -1,0 +1,10 @@
+parameters:
+#    my_flash.example.class: My\FlashBundle\Example
+
+services:
+#    my_flash.example:
+#        class: %my_flash.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    flashbag:
+        class: My\FlashBundle\Controller\FlashController
+        arguments: [@session]

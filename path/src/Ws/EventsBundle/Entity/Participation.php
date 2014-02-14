@@ -11,9 +11,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * EventParticipants
  *
  * @ORM\Table(name="events_participants")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\EventParticipantRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\ParticipationRepository")
  */
-class EventParticipant 
+class Participation 
 {
 	/**
 	* @ORM\Id
@@ -43,7 +43,7 @@ class EventParticipant
      * Set date_inscription
      *
      * @param \DateTime $dateInscription
-     * @return EventParticipants
+     * @return Participation
      */
     public function setDateInscription($dateInscription)
     {
@@ -66,7 +66,7 @@ class EventParticipant
      * Set event
      *
      * @param \Ws\EventsBundle\Entity\Event $event
-     * @return EventParticipants
+     * @return Participation
      */
     public function setEvent(\Ws\EventsBundle\Entity\Event $event)
     {
@@ -89,7 +89,7 @@ class EventParticipant
      * Set user
      *
      * @param \My\UserBundle\Entity\User $user
-     * @return EventParticipants
+     * @return Participation
      */
     public function setUser(\My\UserBundle\Entity\User $user)
     {

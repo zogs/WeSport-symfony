@@ -15,4 +15,4 @@ services:
             - { name: form.type, alias: serie }
     ws_events.manager:
         class: Ws\EventsBundle\Manager\EventManager
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager,@security.context]

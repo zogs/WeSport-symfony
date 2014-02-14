@@ -40,6 +40,8 @@ class AppKernel extends Kernel
             new Ws\SportsBundle\WsSportsBundle(),
             new Ws\EventsBundle\WsEventsBundle(),
             new My\WorldBundle\MyWorldBundle(),
+            new My\FlashBundle\MyFlashBundle(),
+            new My\ManagerBundle\MyManagerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

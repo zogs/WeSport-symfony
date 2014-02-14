@@ -1,0 +1,6 @@
+my_flash_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: MyFlashBundle:Default:index }
+my_flash_test:
+    pattern: /test
+    defaults: { _controller: MyFlashBundle:Default:test }

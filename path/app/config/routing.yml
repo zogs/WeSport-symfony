@@ -1,3 +1,11 @@
+my_manager:
+    resource: "@MyManagerBundle/Resources/config/routing.yml"
+    prefix:   /
+
+my_flash:
+    resource: "@MyFlashBundle/Resources/config/routing.yml"
+    prefix:   /flashbag
+
 my_world:
     resource: "@MyWorldBundle/Resources/config/routing.yml"
     prefix:   /world
