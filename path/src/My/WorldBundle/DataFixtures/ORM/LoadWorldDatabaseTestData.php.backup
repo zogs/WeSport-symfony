@@ -1,0 +1,43 @@
+<?php
+
+namespace My\WorldBundle\DataFixtures\ORM;
+
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+
+use My\WorldBundle\Entity\Location;
+
+class LoadWorldDatabaseTestData extends AbstractFixture implements OrderedFixtureInterface
+{
+	private $connection;
+
+	public function load(ObjectManager $manager)
+	{
+		ini_set('memory_limit', '-1'); //important 
+
+		$this->connection = $manager->getConnection();
+
+		$filename = 'symfony-world-database.sql';
+		$file= realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.$filename;
+
+		if(!file_exists($file)) {
+			echo sprintf('File %s does not exists', $file);
+			return;
+		}
+
+		$data = file_get_contents($file);
+		 
+		$this->connection->executeUpdate("SET FOREIGN_KEY_CHECKS=0;"); 
+		$this->connection->executeUpdate($data);
+		$this->connection->executeUpdate("SET FOREIGN_KEY_CHECKS=1;"); 
+
+	}
+
+	public function getOrder(){
+
+		return 0; // the order in which fixtures will be loaded
+	}
+}
+
+?>

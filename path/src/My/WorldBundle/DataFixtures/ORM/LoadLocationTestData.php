@@ -11,51 +11,38 @@ use My\WorldBundle\Entity\Location;
 class LoadLocationTestData extends AbstractFixture implements OrderedFixtureInterface
 {
 
+	private $connection;
+
 	public function load(ObjectManager $manager)
 	{
-		$locate = new Location();
-		$locate->setCountry(82);
-		$locate->setRegion(3425);
-		$locate->setDepartement(4963);
-		$locate->setDistrict(null);
-		$locate->setDivision(null);
-		$locate->setCity(2569058);
-		$this->addReference('location_moloy', $locate);
 
-		$manager->persist($locate);
+		$this->connection = $manager->getConnection();
+
+		$dijon = $manager->getRepository('MyWorldBundle:Location')->findLocationByCityId(2568787);		
+		$beaune = $manager->getRepository('MyWorldBundle:Location')->findLocationByCityId(2568568);
+		$moloy = $manager->getRepository('MyWorldBundle:Location')->findLocationByCityId(2569058);	
+
+		$manager->persist($dijon);
+		$manager->persist($beaune);
+		$manager->persist($moloy);
 		
+		$this->addReference('location_dijon', $dijon);		
+		$this->addReference('location_beaune', $beaune);		
+		$this->addReference('location_moloy', $moloy);
 
-		$locate = new Location();
-		$locate->setCountry(82);
-		$locate->setRegion(3425);
-		$locate->setDepartement(4963);
-		$locate->setDistrict(null);
-		$locate->setDivision(null);
-		$locate->setCity(2568568);
-		$this->addReference('location_beaune', $locate);
-
-		$manager->persist($locate);
-		
-
-		$locate = new Location();
-		$locate->setCountry(82);
-		$locate->setRegion(3425);
-		$locate->setDepartement(4963);
-		$locate->setDistrict(null);
-		$locate->setDivision(null);
-		$locate->setCity(2568787);
-		$this->addReference('location_dijon', $locate);
-
-		$manager->persist($locate);
-		
+		$this->connection->executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
 
 		$manager->flush();
+
+		$this->connection->executeUpdate("SET FOREIGN_KEY_CHECKS=1;"); 
+		
+		
 
 	}
 
 	public function getOrder(){
 
-		return 3; // the order in which fixtures will be loaded
+		return 0; // the order in which fixtures will be loaded
 	}
 }
 

@@ -27,7 +27,7 @@ class DefaultController extends Controller
 
         //$obj = $obj->getLocation();
 
-        //$obj = $em->getRepository('MyWorldBundle:Location')->findOneById(7);
+        $obj = $em->getRepository('MyWorldBundle:Location')->findOneById(37);
 
         //$obj->locations = $em->getRepository('MyWorldBundle:Location')->findWorldLocationOf($obj);
 

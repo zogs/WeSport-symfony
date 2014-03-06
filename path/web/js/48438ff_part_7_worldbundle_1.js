@@ -1,9 +1,8 @@
 $(document).ready(function() {
 
-	/*===========================================================
-		// Autocomplete cityName input
-	============================================================*/
-	
+/*===========================================================
+	// Autocomplete cityName input
+============================================================*/	
  	$('input#event_location_city_name').click(function(e){ 		
 			if($(this).hasClass('notempty')) { 
 				$(this).val('');

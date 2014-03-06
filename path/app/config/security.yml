@@ -18,9 +18,9 @@ security:
 
     access_control:
         # Routes are prefixed by ther user locale.
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/event/new, role: ROLE_USER }
-        - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/flashbag/, role: ROLE_ADMIN }
+        - { path: ^/\w\w/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/\w\w/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/\w\w/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/\w\w/event/new, role: ROLE_USER }
+        - { path: ^/\w\w/admin/, role: ROLE_ADMIN }
+        - { path: ^/\w\w/flashbag/, role: ROLE_ADMIN }

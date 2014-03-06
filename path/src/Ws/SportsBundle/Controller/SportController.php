@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Ws\SportsBundle\Entity\Sport;
-use Ws\SportsBundle\Form\SportType;
+use Ws\SportsBundle\Form\Type\SportType;
 
 /**
  * Sport controller.

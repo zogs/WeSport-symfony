@@ -1,0 +1,102 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+	{% block flash %}
+	    {{ flashbag_all() }}
+	{% endblock %}
+
+	
+	<div class="calendar" id="calendar">
+		<div class="calendar-header">
+			<div class="week-nav previousWeek">
+				<a class="calendar-nav-prev calendar-nav-link" id="colomn-prev-arrow" title="Semaine précédante" href="" draggable="false">AVANT</a>
+			</div>
+			<div class="week-nav nextWeek">
+				<a class="calendar-nav-next calendar-nav-link" id="colomn-next-arrow" title="Semaine suivante" href="" draggable='false' >APRES</a>
+			</div>
+
+			<div class="calendar-arianne">
+				<span class="ws-icon ws-icon-location" style="color:white"></span>
+				Toute la France
+			</div>
+			<div class="calendar-period">
+				<strong>Jours</strong>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period1" name="nbdays" value="1" >
+					<label for="period1">1</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period2" name="nbdays" value="2" >
+					<label for="period2">2</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period3" name="nbdays" value="3" >
+					<label for="period3">3</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period4" name="nbdays" value="4" >
+					<label for="period4">4</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period5" name="nbdays" value="5" >
+					<label for="period5">5</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period6" name="nbdays" value="6" >
+					<label for="period6">6</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period7" name="nbdays" value="7" >
+					<label for="period7">1 semaine</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period8" name="nbdays" value="14" 	
+					<label for="period8">2 semaines</label>
+				</div>
+				<div class="periodChoice">
+					<input type="radio" class="periodRadio" id="period9" name="nbdays" value="28">
+					<label for="period9">1 mois</label>
+				</div>
+			</div>
+			<div class="calendar-loader"><img class="loadingbar" src="" title="Chargement..." /></div>
+			<div class="fresque"></div>			
+		</div>
+
+		<table class="calendar-nav" >
+			<tr>
+				<td class="colomn-nav colomn-prev" id="colomn-prev">					
+					<a class="calendar-nav-prev calendar-nav-link fleft" id="colomn-prev-arrow" title="Semaine précédante" href="" draggable="false"></a>
+				</td>
+
+				<td>
+					<div class="calendar-content"
+						id="calendar-content" 
+						data-url-calendar=""
+						data-url-calendar-prev=""
+						data-url-calendar-next=""
+						data-url-calendar-now=""
+						data-url-calendar-date=""
+						data-url-calendar-bottom=""
+						>
+						
+					</div>
+					{% block calendar_week %}
+
+					{% endblock %}
+				</td>
+			
+				<td class="colomn-nav colomn-next" id="colomn-next">		
+					<a class="calendar-nav-next calendar-nav-link fright" id="colomn-next-arrow" title="Semaine suivante" href="" draggable='false' ></a>
+				</td>
+			</tr>
+
+		</table>
+		<div class="calendar-footer" id="calendar-footer">
+			<div class="calendar-loader"><img class="loadingbar" src="{{ asset('bundles/wsstyle/img/ajax-loader-bar.gif')}}" title="Chargement..." /></div>
+		</div>
+	</div>
+
+
+{% endblock %}
+

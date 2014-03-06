@@ -17,3 +17,33 @@ ws_events_delete:
     defaults: { _controller: WsEventsBundle:Default:delete }
     requirements:
         event: \d+
+
+ws_events_calendar:
+    pattern: /calendar
+    defaults: { _controller: WsEventsBundle:Default:calendar}
+    requirements:         
+        _method: GET
+
+
+
+
+
+
+#===========
+#  Admin
+#===========
+admin_ws_events_index:
+    pattern: /admin/index
+    defaults: { _controller: WsEventsBundle:Admin:index }
+
+admin_ws_events_unpublish:
+    pattern: /admin/unpublish/{event}
+    defaults: { _controller: WsEventsBundle:Admin:desactivate }
+
+admin_ws_events_publish:
+    pattern: /admin/publish/{event}
+    defaults: { _controller: WsEventsBundle:Admin:activate }
+
+admin_ws_events_delete:
+    pattern: /admin/delete/{event}
+    defaults: { _controller: WsEventsBundle:Admin:delete }

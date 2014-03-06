@@ -1,0 +1,13 @@
+parameters:
+#    ws_style.example.class: Ws\StyleBundle\Example
+
+services:
+#    ws_style.example:
+#        class: %ws_style.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    user.twig.link2profil:
+        class: Ws\StyleBundle\Twig\UserLinkExtension
+        arguments: [@router]
+        tags:
+            - { name: twig.extension }

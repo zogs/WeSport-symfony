@@ -95,7 +95,11 @@ form.loginForm input[type=submit]:hover { background-color:#EBEBEB;}
     padding:20px 10% 50px 10%;
     background-color: #E6E6E6;
 }
-.block-user h1,h2,h3,h4,h5 {
+.block-user h1,
+.block-user h2,
+.block-user h3,
+.block-user h4,
+.block-user h5 {
     text-align:center;
     text-transform: uppercase;
     font-family: serif;

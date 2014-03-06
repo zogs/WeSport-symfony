@@ -12,14 +12,212 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventRepository extends EntityRepository
 {
-	public function persist($entity)
+
+	private $params;
+	private $request;
+
+	public function findCalendarEvents($request)
 	{
-		$this->_em->persist($entity);
+		$this->request = $request;
+
+		$this->params = $this->getParams();
+		
+		$day = $this->getStartDate();
+
+		for ($i=1; $i < $this->getNbDaysPeriod(); $i++) { 
+			
+			$events[$day] = $this->findEventsByDate($day);
+			$day = date("Y-m-d", strtotime($day. " +1 day"));
+		}
+
+		return $events;
 	}
 
-	public function persistAndFlush($entity)
+	public function findEventsByDate($date)
 	{
-		$this->_em->persist($entity);
-		$this->_em->flush();
+
+		$qb = $this->createQueryBuilder('e');
+
+		$qb->select('e');
+
+		$qb = $this->filterByDate($qb,$date);
+		$qb = $this->filterBySports($qb);
+		$qb = $this->filterByOnline($qb);
+		$qb = $this->filterByCityQuery($qb);
+	
+
+		return $qb->getQuery()->getResult();
 	}
+
+
+	public function filterByCityQuery($qb)
+	{
+		if(empty($this->params['city_id']) && empty($this->params['city_name'])) return $qb;
+
+		if(!empty($this->params['city_id']))
+			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
+		elseif(!empty($this->params['city_name']))
+			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityName($this->params['city_name'],'FR');
+
+		if(empty($this->params['area']))
+			return $this->filterByLocation($qb,$location);
+		else
+			return $this->filterByArea($qb,$location);
+	}
+
+	public function filterByArea($qb,$location)
+	{
+		$onedegree = 111.045;
+		$earthradius = 6366.565;
+		if(!empty($this->params['extend_metric']) && $this->params['extend_metric'] == 'km'){ // in km
+			$onedegree = 111.045;
+			$earthradius = 6366.565;
+		}
+		if(!empty($this->params['extend_metric']) && $this->params['extend_metric'] == 'miles'){ // in km
+			$onedegree = 69;
+			$earthradius = 3956;
+		}
+
+		$cityLat = $location->getCity()->getLat();
+		$cityLon = $location->getCity()->getLon();
+		$distance= $this->params['area'];
+		$lon1 = $cityLon-$distance/abs(cos(deg2rad($cityLat))*$onedegree);
+		$lon2 = $cityLon+$distance/abs(cos(deg2rad($cityLat))*$onedegree);
+		$lat1 = $cityLat-($distance/$onedegree);
+		$lat2 = $cityLat+($distance/$onedegree);
+
+		$extend_zone = "$earthradius * 2 * ASIN(SQRT(POWER(SIN(($cityLat - C.LATITUDE) *  pi()/180 / 2), 2) +COS($cityLat * pi()/180) * COS(C.LATITUDE * pi()/180) * POWER(SIN(($cityLon - C.LONGITUDE) * pi()/180 / 2), 2) )) as HIDDEN distance";
+								
+		$qb->select('e',$extend_zone);
+		$qb->innerJoin('e.location','L');
+		$qb->innerJoin('L.city','C');
+
+		$qb->andWhere('C.LONGITUDE BETWEEN '.$lon1.' AND '.$lon2.' AND C.LATITUDE BETWEEN '.$lat1.' AND '.$lat2);
+
+
+		return $qb;
+
+	}
+
+	public function filterByCityArround($qb,$location)
+	{
+		//get cities arroud the location
+		$cities = $this->_em->getRepository('MyWorldBundle:City')->findCitiesArround(
+			$this->params['area'],
+			$location->getCity()->getLat(),
+			$location->getCity()->getLon(),
+			$this->params['country']
+			);
+
+		//get location of cities
+		foreach($cities as $k => $city){
+			
+			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());
+			$locations[] = $location;
+			
+		}
+		
+		return $this->filterByLocationArray($qb,$locations);
+	}
+
+	public function filterByLocation($qb,$location)
+	{
+		$qb->setParameter('location',$location);
+		return $qb->andWhere($qb->expr()->eq('e.location',':location'));
+	}
+
+	public function filterByLocationArray($qb,$locations)
+	{
+		$qb->setParameter(':locations',$locations);
+		return $qb->andWhere('e.location IN (:locations)');
+	}
+
+	public function filterBySports($qb)
+	{
+
+		if(!empty($this->params['sport'])) $this->params['sports'] = array($this->params['sport']);
+		if(empty($this->params['sports'])) return $qb;
+
+		$qb->setParameter(':sports',$this->params['sports']); // ex :sports = array(67,68,98);
+		return $qb->andWhere('e.sport IN (:sports)');
+			
+	}
+	public function filterByDate($qb,$date)
+	{
+		$qb->setParameter('date',$date);
+		return $qb->andWhere(
+			$qb->expr()->eq('e.date',':date')
+			);		
+	}
+
+	public function filterByOnline($qb)
+	{
+		return $qb->andWhere('e.online = 1');
+	}
+
+	public function filterByOffline($qb)
+	{
+		return $qb->andWhere('e.online = 1');
+	}
+
+	public function filterByBothline($qb)
+	{
+		return $qb->andWhere('e.online = 1 OR e.online = 0');
+	}
+
+	public function getParams()
+	{
+		$query = $this->request->query->all();
+		$cookie = $this->request->cookies->all();
+		$params = $cookie;
+		if(!empty($query)) $params = $query;
+
+		//test
+		//$params['sport'] = 72;
+		//$params['sport'] = array(67,68,72);
+		$params['city_name'] = 'Dijon';
+		$params['area'] = 100;
+		$params['country'] = 'FR';
+
+		return $params;
+
+	}
+
+	public function getStartDate()
+	{
+		if(isset($this->params['date'])) return $this->params['date'];
+		else return \date('Y-m-d');
+	}
+
+	public function getNbDaysPeriod()
+	{
+		return 7;
+	}
+
+	public function findRecentUniqueEventPosted()
+	{
+		$series = $this->_em->getRepository('WsEventsBundle:Serie')->findRecentSeriePosted();
+
+		$events = array();
+		foreach ($series as $serie) {
+			$events[] = $this->findFirstEventOfSerie($serie);
+		}
+
+		return $events;
+	}	
+
+	public function findFirstEventOfSerie($serie)
+	{
+		$qb = $this->_em->createQueryBuilder('e');
+
+		$qb->select('e')
+			->from('Event','e')
+			->where('e.serie',$serie)
+			->setMaxResults(1);
+
+		return $qb->getQuery()->getResult();
+
+	}
+
+
 }

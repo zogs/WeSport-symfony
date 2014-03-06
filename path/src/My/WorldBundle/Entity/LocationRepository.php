@@ -121,8 +121,26 @@ class LocationRepository extends EntityRepository
 		return $states;
 	}
 
+	/**
+	 * find location from city name 
+	 * @param string $name
+	 * @param string $countryCode
+	 */
+	public function findLocationByCityName($name,$countryCode = null)
+	{
+		$city = $this->_em->getRepository('MyWorldBundle:City')->findCityByName($name,$countryCode);
+
+		return $this->findLocationByCityId($city->getId());
+	}
+
+	/**
+	 * find location from city ID
+	 * if not exist create it
+	 * @param integer id
+	 */
 	public function findLocationByCityId($id)
 	{
+
 		if($location = $this->findOneByCity($id)){
 			return $location;
 		}
@@ -132,6 +150,10 @@ class LocationRepository extends EntityRepository
 		}
 	}
 
+	/**
+	 * create location from a city
+	 * @param integer id
+	 */
 	public function createLocationFromCityId($id)
 	{
 		$city = $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
@@ -142,27 +164,45 @@ class LocationRepository extends EntityRepository
 		$division = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM4(),'ADM4');
 
 		return $this->createLocation(
-			$country->getId(),
-			$region->getId(),
-			$departement->getId(),
-			$district->getId(),
-			$division->getId(),
-			$city->getId()
+			$country,
+			$region,
+			$departement,
+			$district,
+			$division,
+			$city
 			);
 	}
 
-	public function createLocation($country_id,$region_id,$departement_id = null,$district_id = null,$division_id = null,$city_id = null)
+	/**
+	 * create location from all data
+	 * @param object country $country
+	 * @param object state $region
+	 * @param object state $departement
+	 * @param object state $district
+	 * @param object state $division
+	 * @param object city $city
+	 */
+	public function createLocation($country,$region,$departement = null,$district = null,$division = null,$city = null)
 	{
 		$location = new Location();
-		$location->setCountry($country_id);
-		$location->setRegion($region_id);
-		$location->setDepartement($departement_id);
-		$location->setDistrict($district_id);
-		$location->setDivision($division_id);
-		$location->setCity($city_id);
 
+		if($country->exist())	
+			$location->setCountry($country);
+		if($region->exist()) 
+			$location->setRegion($region);
+		if($departement->exist()) 
+			$location->setDepartement($departement);
+		if($district->exist()) 
+			$location->setDistrict($district);
+		if($division->exist()) 
+			$location->setDivision($division);
+		if($city->exist()) 
+			$location->setCity($city);
+
+		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=0;"); 
 		$this->_em->persist($location);
 		$this->_em->flush();
+		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=1;"); 
 
 		return $location;
 	}

@@ -22,6 +22,15 @@ class Serie
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", fetch="EAGER")
+     */
+    private $organizer;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="serie", fetch="EAGER")
+     */
+    private $events;
+    /**
      * @ORM\Column(name="occurences", type="smallint")
      */
     private $occurences = 1;
@@ -71,6 +80,11 @@ class Serie
      */
     private $sunday = 0;
 
+    /**
+     * @ORM\Column(name="date_depot", type="datetime", nullable=true)
+     */
+    private $date_depot;
+
     
 
     public function __construct()
@@ -79,6 +93,7 @@ class Serie
 
         $this->startDate = new \DateTime('0000-00-00 00:00:00');
         $this->endDate = new \DateTime('0000-00-00 00:00:00');
+        $this->date_depot = new \DateTime();
     }
 
     public function isWeekdayInSerie($weekday)
@@ -371,5 +386,51 @@ class Serie
     public function getEvents()
     {
         return $this->events;
+    }
+
+    /**
+     * Set date_depot
+     *
+     * @param \DateTime $dateDepot
+     * @return Event
+     */
+    public function setDateDepot($dateDepot)
+    {
+        $this->date_depot = $dateDepot;
+
+        return $this;
+    }
+
+    /**
+     * Get date_depot
+     *
+     * @return \DateTime 
+     */
+    public function getDateDepot()
+    {
+        return $this->date_depot;
+    }
+
+    /**
+     * Set organizer
+     *
+     * @param \My\UserBundle\Entity\User $organizer
+     * @return Serie
+     */
+    public function setOrganizer(\My\UserBundle\Entity\User $organizer = null)
+    {
+        $this->organizer = $organizer;
+
+        return $this;
+    }
+
+    /**
+     * Get organizer
+     *
+     * @return \My\UserBundle\Entity\User 
+     */
+    public function getOrganizer()
+    {
+        return $this->organizer;
     }
 }

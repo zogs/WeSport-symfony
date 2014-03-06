@@ -8,10 +8,11 @@ security:
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt))/
-            security: false
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false        
         main:
-            pattern: .*
+            pattern: ^/
+            anonymous: true
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
@@ -25,5 +26,4 @@ security:
             logout:       
                 path: fos_user_security_logout
                 target: blog_homepage
-            anonymous:    true
             switch_user:  true

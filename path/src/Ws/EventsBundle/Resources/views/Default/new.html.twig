@@ -1,26 +1,73 @@
-{% extends 'WsSportsBundle::layout.html.twig' %}
+{% extends 'layout_centered.html.twig' %}
 
-{% block body %}
+{% block page_content %}
 
-{{ form_start(form) }}
-    {{ form_errors(form) }}
+    <div class="createEvent">
+        <div class="fresque"></div>
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                    Proposer une activité !
+                </h1>
+            </div>
 
-    {{ form_row(form.sport) }}
-    {{ form_row(form.title) }}
-    {{ form_widget(form.location.city_id, {'attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
-    {{ form_row(form.location.city_name) }}
-    {{ form_row(form.address) }}
-    {{ form_row(form.date) }}
-    {{ form_row(form.serie.startdate) }}
-    {{ form_row(form.serie.enddate) }}
-    {{ form_row(form.serie) }}
-    {{ form_row(form.time) }}
-    {{ form_row(form.nbmin) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.phone) }}
+        <div class="col_large">
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
 
-    {{ form_row(form.save) }}
+                {{ form_row(form.sport) }}
+                {{ form_row(form.title) }}
+                {{ form_widget(form.location.city_id, {'attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
+                {{ form_row(form.location.city_name) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.date) }}
+                {{ form_row(form.serie.startdate) }}
+                {{ form_row(form.serie.enddate) }}
+                {{ form_row(form.serie) }}
+                {{ form_row(form.time) }}
+                {{ form_row(form.nbmin) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.phone) }}
 
-{{ form_end(form) }}
+                
+
+                   
+        </div>
+
+        <div class="col_small">
+            <div class="block form-submit">
+                {{ form_row(form.save) }}
+            </div>
+             {{ form_end(form) }}   
+
+             <div class="block block-yellow ">
+                <h3>Comment ça marche?</h3>
+                <div class="block-content">
+                    <ul class="event-create-howto">
+                        <li>
+                            Vous pouvez créer une activité à une <strong>date précise</strong> ou à une <strong>date régulière</strong>.<small> (ex: tous les lundis et mercredi du mois de Juin)</small>
+                        </li>
+                        <li>
+                            L'activité est <strong>confirmé</strong> quand le nombre minimum attendu <strong>est atteint</strong>. <small>Les participants recoivent un email confirmant que l'activité a bien lieu.</small>
+                        </li>
+                        <li>
+                            L'adresse et le téléphone ne sont <strong>visible que par</strong> les membres We-Sport inscrits.
+                        </li>
+                        <li>
+                            Tous les champs sont <strong>obligatoires</strong>, sauf le téléphone.
+                        </li>
+                        <li>
+                            L'annonce est <strong>modifiable</strong> jusqu'à ce que l'activité soit <strong>confirmé</strong>. <small>Les changements sont envoyés par email aux participants déjà inscrits.</small>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+        
+        <div class="clearfix"></div>
+        <div class="fresque"></div>
+    
+    </div>
+    
 {% endblock %}
 

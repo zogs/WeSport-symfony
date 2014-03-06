@@ -2250,9 +2250,9 @@ if(f.maximumInputLength&&d.val().length>f.maximumInputLength)return J(f.formatIn
 
 $(document).ready(function() {
 	
-	if($("#event_sport_sport").length != 0){
+	if($("select.iconSportSelect").length != 0){
 
-	    	$("#event_sport_sport").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    	
+	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    	
 	    	
 	}
 
@@ -2268,10 +2268,9 @@ function addSportIcon(sport){
 }
 $(document).ready(function() {
 
-	/*===========================================================
-		// Autocomplete cityName input
-	============================================================*/
-	
+/*===========================================================
+	// Autocomplete cityName input
+============================================================*/	
  	$('input#event_location_city_name').click(function(e){ 		
 			if($(this).hasClass('notempty')) { 
 				$(this).val('');

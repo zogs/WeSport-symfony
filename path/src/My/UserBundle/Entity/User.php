@@ -21,6 +21,11 @@ class User extends BaseUser
      */
     protected $id;
 
+     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $type;
+
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
@@ -47,6 +52,11 @@ class User extends BaseUser
     private $description;
 
     /**
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")
+     */
+    private $location;
+
+    /**
      * @ORM\Column(type="date")
      */
     private $register_since;
@@ -60,7 +70,7 @@ class User extends BaseUser
      * @ORM\Column(type="text", length=6, nullable=true)
      */
     private $lang_prefered;
-
+    
 
 
 
@@ -69,8 +79,39 @@ class User extends BaseUser
     {
         parent::__construct();
         // your own logic
+
+        $this->type = 'person';
     }
 
+    public function isPerson()
+    {
+        if($this->type=='person' || empty($this->type)) return true;
+        return false;
+    }
+
+    public function isAsso()
+    {
+        if($this->type=='asso') return true;
+        return false;
+    }
+
+    public function isPro()
+    {
+        if($this->type=='pro') return true;
+        return false;
+    }
+
+    public function getAge()
+    {
+        if(!empty($this->type)){
+            if($this->type=='asso') return 'Association';
+            if($this->type=='pro') return 'Professionnel';
+        }
+        if(!empty($this->birthday))
+            return date('Y-m-d') - date($this->birthday). ' ans';
+
+        return 'age inconnu';
+    }
 
     /**
      * @ORM\PrePersist
@@ -89,6 +130,27 @@ class User extends BaseUser
     }
 
     
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
 
     /**
      * Get id
@@ -259,5 +321,53 @@ class User extends BaseUser
     public function getLangPrefered()
     {
         return $this->lang_prefered;
+    }
+
+    
+
+    /**
+     * Set updatedCount
+     *
+     * @param integer $updatedCount
+     * @return User
+     */
+    public function setUpdatedCount($updatedCount)
+    {
+        $this->updatedCount = $updatedCount;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedCount
+     *
+     * @return integer 
+     */
+    public function getUpdatedCount()
+    {
+        return $this->updatedCount;
+    }
+
+    /**
+     * Set location
+     *
+     * @param \My\WorldBundle\Entity\Location $location
+     * @return User
+     */
+    public function setLocation(\My\WorldBundle\Entity\Location $location = null)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get location
+     *
+     * @return \My\WorldBundle\Entity\Location 
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 }

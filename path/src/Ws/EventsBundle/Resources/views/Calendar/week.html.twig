@@ -1,0 +1,26 @@
+<tr class="events-week">
+	{% set i = 1 %}
+	{% for date,events in week %}
+		<td class="events-day colomn-{{i}} {% if date|date("U") > "-1 days"|date("U") %}colomn-past{% endif %}" id="colomn-{{date}}" data-date="{{date}}">
+			<div class="colomn-date" id="colomn-date-{{i}}">
+				{% if date|date('Y-m-d') == 'now'|date('Y-m-d') %}
+				<strong>Aujourd'hui</strong>
+				{% else %}
+				<strong>{{ date|date('l') }}</strong>
+				{% endif %}
+				<br>
+				<i>{{ date|date('j M') }}</i>
+			</div>
+
+			{% for k,event in events %}
+				{% include 'WsEventsBundle:Calendar:event.html.twig' with {'event':event} %}
+			{% endfor %}
+
+			<div class="addEvent" id="addPoint{{ date }}">
+				<a class="tooltipbottom" data-toggle="tooltip" title="Ajouter un sport" href="{{ path("ws_events_new") }}" draggable='false' ondragstart="return false;"><span class="ws-icon ws-icon-plus-alt"></span></a>
+			</div>
+		</td>
+
+		{% set i = i + 1 %}
+	{% endfor %}
+</tr>

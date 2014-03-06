@@ -16,37 +16,37 @@ class LoadSportsData extends AbstractFixture implements OrderedFixtureInterface
 
 		$sport1 = new Sport();
 		$sport1->setName('Boxe');
-		$sport1->setIcon('boxe-icon');
+		$sport1->setIcon('fighting');
 		$sport1->setAction('do');
 		$sport1->setCategory($this->getReference('cat1'));
 
 		$sport2 = new Sport();
 		$sport2->setName('Kung-Fu');
-		$sport2->setIcon('kung-icon');
+		$sport2->setIcon('fighting');
 		$sport2->setAction('do');
 		$sport2->setCategory($this->getReference('cat1'));
 
 		$sport3 = new Sport();
 		$sport3->setName('Football');
-		$sport3->setIcon('foot-icon');
+		$sport3->setIcon('foot');
 		$sport3->setAction('play');
 		$sport3->setCategory($this->getReference('cat2'));
 
 		$sport4 = new Sport();
 		$sport4->setName('Rugby');
-		$sport4->setIcon('rugby-icon');
+		$sport4->setIcon('rugby');
 		$sport4->setAction('play');
 		$sport4->setCategory($this->getReference('cat2'));
 
 		$sport5 = new Sport();
 		$sport5->setName('Handball');
-		$sport5->setIcon('handball-icon');
+		$sport5->setIcon('handball');
 		$sport5->setAction('play');
 		$sport5->setCategory($this->getReference('cat2'));
 
 		$sport6 = new Sport();
 		$sport6->setName('Natation');
-		$sport6->setIcon('swim-icon');
+		$sport6->setIcon('swimming');
 		$sport6->setAction('go');
 		$sport6->setCategory($this->getReference('cat3'));
 

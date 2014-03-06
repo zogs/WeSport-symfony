@@ -1,0 +1,136 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+	<div class="viewuser">
+		<section>
+			<div class="content-header">
+				<div class="header-left">
+					<div class="user-login">
+						<img src="" alt="">
+						<h1>
+							{{ user.username }}
+						</h1>
+						{% if user.asso %} 
+							<span class="label ws-label ws-label-grey tooltiptop" data-toggle="tooltip" title="Association"><i>A</i></span>
+						{% endif %}
+						{% if user.pro %}
+							<span class="label ws-label ws-label-grey tooltiptop" data-toogle="tooltip" title="Professionnel"><i>P</i></span>
+						{% endif %}
+
+						<span class="user-descr">
+							{% if user.description %}
+								{{ user.description }}
+							{% else %}
+								{% if user == app.user %} 
+									<a href="{{	path('fos_user_profile')}}">- ajouter votre description ici -</a>
+								{% else %} 
+									- pas encore de description -
+								{% endif %} 
+							{% endif %}
+						</span>
+					</div>
+				</div>
+
+				<div class="header-right user-info">
+					<span><strong>{{ user.age }}, inscrit depuis {{ user.registerSince|date('d/m/Y') }}</strong></span>
+					<span>? participations | ? organisations</span>
+					<span><i>
+						{% for r in user.location.allRegions %}
+						 {{ r.name }}, 
+						{% endfor %}												
+					</i></span>
+				</div>
+			</div>
+
+			<div class="event-action-bar">
+				<div class="count_activity">
+					<span class="label">?</span> sports ce mois ci
+				</div>
+				<div class="which_activitt">
+					Sports pratiqués : ??
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="col_large">
+				
+				<div class="block block-yellow event-reviews">
+					<h3>L'avis des autres</h3>
+					<div class="block-content">
+						<ul>
+							{% if user.reviewed is defined %} 
+							 {% else %} 
+							  <li><small class="noevents">Personne n'a encore laissé d'avis</small></li>
+							  {% endif %} 
+
+						</ul>
+					</div>
+				</div>
+
+				<div class="event-discussion">
+					<h3>Discussion</h3>
+					<div class="event-comments">
+						
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<aside>
+			<div class="col_small">
+				
+				<div class="block block-orange events-list">
+					<h3>Organise prochainement</h3>
+					<div class="block-content">
+						<ul>
+							{% if user.organize is defined %} 
+								{% for serie in user.organize %}
+									<li>
+										<span class="ws-icon ws-icon-small ws-icon-{{ serie.events[0].sport.icon }}"></span>
+										<a href="{{ serie.events[0]|link2event }}"><strong>{{ serie.events[0].title }}</strong></a>
+										<small>{{ serie.events[0].date|date('l d m/Y') }}</small>
+
+										{% if serie.occurences > 1 %}
+										<a class="showListSerie linkclose" href="#">{{  serie.occurences }} autres dates</a>
+										<ul class="listserie">
+											{% for event in serie.events[1:] %}
+												<li><strong>
+													<a href="{{ event|link2event }}">{{ event.date|date('l d m/Y') }}</a>
+												</strong></li>
+											{% endfor %}
+										</ul>
+
+										{% endif %}
+									</li>
+								{% endfor %}
+							{% else %} 
+							<li><small class="noevents">Rien de prévu ..?</small></li> 
+							{% endif %} 
+						</ul>
+					</div>
+				</div>
+
+				<div class="block block-green events-list">
+					<h3>Participe prochainement</h3>
+					<div class="block-content">
+						<ul>
+							{% if user.participate is defined %}
+								{% for p in user.participate %}
+									<li>
+										<span class="ws-icon ws-icon-small ws-icon-{{ p.event.sport.icon }}"></span>
+										<a href="{{ p.event|link2event }}"><strong>{{ p.event.title }}</strong></a>
+										<small>{{ p.event.date|date('l d m/Y') }}</small>
+									</li>
+								{% endfor %}
+							{% else %}
+							<li><small class="noevents">Rien de prévu ..?</small></li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</aside>
+	</div>
+
+{% endblock %}

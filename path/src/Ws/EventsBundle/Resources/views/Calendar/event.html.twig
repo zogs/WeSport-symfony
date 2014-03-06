@@ -1,0 +1,50 @@
+<div class="events
+	{% if event.userParticipate(app.user) %}events-userin{% endif %}
+	{% if event.confirmed %}events-confirmed{% endif %}
+	" 
+	id="event{{ event.id }}"
+>
+	<a href="{{ event|link2event }}" 
+		class="events-link"
+		draggable="false"
+		ondragstart="return false;"
+		title="{{ event.title }} {% if event.confirmed == false %}(En attente de participants...){% endif %}"
+		>
+		<div class="events-content">
+			<div class="events-logo">
+				<span class="ws-sport-icon">
+					<span class="ws-icon-{{ event.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ event.sport.name}}"></span>
+				</span>	
+			</div>
+
+			<div class="events-descr">
+				<span class="events-title {% if event.title|length > 60 %} title-small {% endif %}">{{ event.title }}</span>											
+			</div>
+
+			<div class="events-meta">
+				<div class="events-time">{{ event.time|date('h:i') }}</div>
+				<div class="events-label">
+					{% if event.confirmed %}
+					<span class="ws-icon ws-icon-checkmark-circle ws-icon-confirm tooltipbottom" data-toggle="tooltip" title="L'activité est confirmé!"></span>			{% else %}							
+					<span class="ws-icon ws-icon-checkmark-circle tooltipbottom" data-toggle="tooltip" title="L'activité n'est pas encore confirmé."></span>
+					{% endif %}
+
+					{% if event.userParticipate(app.user) %}
+					<span class="label ws-label ws-label-important ws-label-participe tooltipbottom" data-toggle="tooltip" title="Je participe"><i class="icon icon-white icon-thumbs-up"></i></span>
+					{% endif %}
+
+					{% if event.organizer.asso %} 
+					<span class="label ws-label ws-label-grey tooltipbottom" data-toggle="tooltip" title="Association"><i>A</i></span>
+					{% endif %}
+
+					{% if event.organizer.pro %}
+					<span class="label ws-label ws-label-grey tooltipbottom" data-toogle="tooltip" title="Bizness"><i>P</i></span>
+					{% endif %}
+				</div>
+				<div class="events-city">{{ event.location.city.name }}</div>
+			</div>
+		</div>
+	</a>
+	<div class="clearfix"></div>
+	<div class="loader"></div>
+</div>

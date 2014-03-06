@@ -4,6 +4,7 @@ namespace Ws\EventsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+use Ws\EventsBundle\Entity\Serie;
 /**
  * SerieRepository
  *
@@ -12,14 +13,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class SerieRepository extends EntityRepository
 {
-	public function persist($entity)
+	public function findRecentSeriePosted()
 	{
-		$this->_em->persist($entity);
-	}
+		$qb = $this->createQueryBuilder('s');
+		$qb->select('s')
+			->orderBy('s.date_depot','DESC');
 
-	public function persistAndFlush($entity)
-	{
-		$this->_em->persist($entity);
-		$this->_em->flush();
+		return $qb->getQuery()->getResult();
 	}
 }

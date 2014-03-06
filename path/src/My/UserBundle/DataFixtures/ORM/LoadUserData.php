@@ -28,6 +28,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$admin->setEnabled(true);
 		$admin->setPlainPassword('fatboy');
 		$admin->setRoles(array('ROLE_SUPER_ADMIN','ROLE_ADMIN'));
+		$admin->setLocation($this->getReference('location_dijon'));
 
 		$manager->persist($admin);
 
@@ -41,22 +42,25 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$user1->setEnabled(true);
 		$user1->setPlainPassword('fatboy');
 		$user1->setRoles(array('ROLE_USER'));
+		$user1->setLocation($this->getReference('location_beaune'));
 
 		$manager->persist($user1);
 
 		$this->addReference('user1',$user1);
 
 
-		$user2 = new User();
-		$user2->setUsername('user2');
-		$user2->setEmail('guichardsim+user2@gmail.com');
-		$user2->setEnabled(true);
-		$user2->setPlainPassword('fatboy');
-		$user2->setRoles(array('ROLE_USER'));
+		$asso1 = new User();
+		$asso1->setUsername('asso1');
+		$asso1->setEmail('guichardsim+user2@gmail.com');
+		$asso1->setType('asso');
+		$asso1->setEnabled(true);
+		$asso1->setPlainPassword('fatboy');
+		$asso1->setRoles(array('ROLE_USER','ROLE_ASSO'));
+		$asso1->setLocation($this->getReference('location_moloy'));
 
-		$manager->persist($user2);
+		$manager->persist($asso1);
 
-		$this->addReference('user2',$user2);
+		$this->addReference('asso1',$asso1);
 
 
 		$manager->flush();

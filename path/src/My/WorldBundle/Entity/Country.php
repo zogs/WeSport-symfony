@@ -80,7 +80,12 @@ class Country
 	private $description;
 
 
-
+    public function exist()
+    {
+        if($this->id!=NULL) return 1;
+        return 0;
+    }
+    
     /**
      * Set id
      *

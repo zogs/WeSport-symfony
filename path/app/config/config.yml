@@ -43,6 +43,7 @@ assetic:
         - "AcmeTwigBundle"
         - "WsSportsBundle"
         - "WsEventsBundle"
+        - "WsStyleBundle"
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -80,6 +81,13 @@ doctrine:
                         dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
                         alias: GedmoTranslatable #this one is optional and will default to the name set for the mapping
                         is_bundle: false
+                dql:
+                   numeric_functions:
+                       power: My\WorldBundle\DQL\Power
+                       asin: My\WorldBundle\DQL\Asin
+                       sin: My\WorldBundle\DQL\Sin
+                       pi : My\WorldBundle\DQL\Pi
+                       cos: My\WorldBUndle\DQL\Cos
 
 
 # Doctrine Extension Bundle Configuration

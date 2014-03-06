@@ -1,3 +1,7 @@
+ws_style:
+    resource: "@WsStyleBundle/Resources/config/routing.yml"
+    prefix:   /
+
 my_manager:
     resource: "@MyManagerBundle/Resources/config/routing.yml"
     prefix:   /

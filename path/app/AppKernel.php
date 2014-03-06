@@ -42,6 +42,7 @@ class AppKernel extends Kernel
             new My\WorldBundle\MyWorldBundle(),
             new My\FlashBundle\MyFlashBundle(),
             new My\ManagerBundle\MyManagerBundle(),
+            new Ws\StyleBundle\WsStyleBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

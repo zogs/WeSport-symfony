@@ -118,6 +118,49 @@ class City
 	 */
 	private $DMSLONG;
 
+    /**
+     * @ORM\Column(name="SOUNDEX", type="string", length=20, nullable=true)
+     */
+    private $SOUNDEX;
+
+    /**
+     * @ORM\Column(name="METAPHONE", type="string", length=22, nullable=true)
+     */
+    private $METAPHONE;
+
+    /**
+     * @ORM\Column(name="CP", type="string", length=255, nullable=true)
+     */
+    private $CP;
+
+    /**
+     * @ORM\Column(name="POP", type="integer", nullable=true)
+     */
+    private $POP;
+
+    /**
+     * @ORM\Column(name="POP_ORDER", type="integer", nullable=true)
+     */
+    private $POP_ORDER;
+
+    /**
+     * @ORM\Column(name="SFC", type="integer", nullable=true)
+     */
+    private $SFC;
+
+    /**
+     * @ORM\Column(name="SFC_ORDER", type="integer", nullable=true)
+     */
+    private $SFC_ORDER;
+
+
+
+
+    public function exist()
+    {
+        if($this->id!=NULL) return 1;
+        return 0;
+    }
 
     /**
      * Set id

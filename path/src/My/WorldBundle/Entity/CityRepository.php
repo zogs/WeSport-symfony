@@ -41,6 +41,8 @@ class CityRepository extends EntityRepository
 
 		$qb->andWhere(
 			$qb->expr()->eq('c.FULLNAMEND',$qb->expr()->literal($name)));
+
+		$qb->addOrderBy('c.POP','DESC');
 		$qb->setMaxResults(1);
 
 		return $qb->getQuery()->getSingleResult();
@@ -66,6 +68,7 @@ class CityRepository extends EntityRepository
 
 		$qb->setMaxResults( $limit );
 		$qb->orderBy('c.FULLNAMEND','ASC');
+		$qb->addOrderBy('c.POP','DESC');
 
 		return $qb->getQuery()->getResult();
 	}
@@ -171,7 +174,7 @@ class CityRepository extends EntityRepository
 		$rsm->addFieldResult('C', 'LC', 'LC');
 		$rsm->addFieldResult('C', 'FULLNAMEND', 'FULLNAMEND');
 		$rsm->addFieldResult('C', 'LATITUDE', 'LATITUDE');
-		$rsm->addFieldResult('C', 'LONGITUDE', 'LONGITUDE');
+		$rsm->addFieldResult('C', 'LONGITUDE', 'LONGITUDE');		
 
 		return $rsm;
 	}

@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+	 {% block flash %}
+	    {{ flashbag_all() }}
+	{% endblock %}
+
+	<div class="container page-container">
+		<div class="fresque"></div>
+		<div class="white-sheet">
+			{% block page_content %}
+			{% endblock %}			
+		</div>
+		<div class="clearfix"></div>
+		<div class="fresque"></div>
+	</div>
+
+{% endblock %}
+

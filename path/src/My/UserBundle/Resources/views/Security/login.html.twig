@@ -1,51 +1,68 @@
-{% extends "MyUserBundle::layout.html.twig" %}
+{% extends "::layout_centered.html.twig" %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% block fos_user_content %}
-<h3>Connexion</h3>
 
-{% if error %}
+
+{% block page_content %}
+	{% if error %}
     <div>{{ error|trans }}</div>    
 {% endif %}
 
-<form action="{{ path("fos_user_security_check") }}" method="post">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />	
 
-	<div class="control-group">
-    	<label class="control-label" for="username">{{ 'security.login.username'|trans }}</label>
-    	<div class="controls">
-    		<i class="icon-form icon-user"></i>
-    		<input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="Nom d'utilisateur" />    		
-    	</div>
-		
-	</div>
+<div class="head-sheet">
+	<h1 class="title-sheet">CONNEXION</h1>
 
-	<div class="control-group">
-		<label class="control-label" for="password">{{ 'security.login.password'|trans }}</label>
-		<div class="controls">
-			<i class="icon-form icon-lock"></i>
-			<input type="password" id="password" name="_password" required="required" placeholder="Mot de passe" />			
+	<form class="form form-ws label-hidden w50 fleft form-register" action="{{ path("fos_user_security_check") }}" method="post">
+	    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />	
+
+		<p class="intro"></p>
+
+		<div class="control-group">
+	    	<label class="control-label" for="username">{{ 'security.login.username'|trans }}</label>
+	    	<div class="controls">
+	    		<i class="icon-form icon-user"></i>
+	    		<input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="Nom d'utilisateur" />    		
+	    	</div>
+			
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="password">{{ 'security.login.password'|trans }}</label>
+			<div class="controls">
+				<i class="icon-form icon-lock"></i>
+				<input type="password" id="password" name="_password" required="required" placeholder="Mot de passe" />			
+			</div>
+			
+		</div>
+
+		<div class="control-group" style="margin-top:10px">
+		    <label class="control-label"></label>		
+		    <div class="controls">
+		    	<label for="remember_me" class="radio">
+		    		<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+		    		<span>{{ 'security.login.remember_me'|trans }}</span>
+		    	</label>
+		    </div>
+		</div>
+
+		<div class="control-group control-submit">	  
+			<label class="control-label"></label>	  		    
+		    <button type="submit" id="_submit" name="_submit" class="btn-ws btn-ws-submit" >{{ 'security.login.submit'|trans }}</button>
+		    <p class="help help-center">
+				<a href="{{ path("fos_user_registration_register") }}">Pas encore inscrit ?</a>	    			
+			</p>	
+			<p class="help help-center">
+				<a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié ?</a>	    			
+			</p>
 		</div>
 		
-	</div>
+	    
+	</form>
 
-	<div class="control-group">
-	    <label class="control-label"></label>		
-	    <div class="controls">
-	    	<label for="remember_me" class="radio">
-	    		<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-	    		<span>{{ 'security.login.remember_me'|trans }}</span>
-	    	</label>
-	    </div>
-	</div>
+</div>
 
-	<div class="control-group">	  
-		<label class="control-label"></label>	  
-	    <div class="controls">
-	    	<button type="submit" id="_submit" name="_submit" class="btn btn-info" >{{ 'security.login.submit'|trans }}</button>
-	    </div>
-	</div>
-    
-</form>
-{% endblock fos_user_content %}
+
+
+
+{% endblock page_content %}

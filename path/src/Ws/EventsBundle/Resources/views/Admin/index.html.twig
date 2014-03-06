@@ -1,0 +1,55 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+<table class="table table-stripped">
+	<thead>
+		<th>Publié</th>
+		<th>Titre</th>
+		<th>Sport</th>
+		<th>Occurences</th>
+		<th>Date(s)</th>
+		<th>Ville</th>
+		<th>Description</th>
+		<th>Auteur</th>
+	</thead>
+	<tbody>
+	{% for serie in series %}
+		{% set events = serie.getEvents() %}
+		{% set event = events.first() %}
+		
+		<tr>
+			<td>
+				<abbr class="timeago" title="{{ serie.getDateDepot().format('Y-m-d H:i:s') }}">{{ serie.getDateDepot().format('Y-m-d H:i:s') }}</abbr>
+			</td>
+			<td>
+				<a href="">
+					<strong>{{ event.title }}</strong>
+				</a>
+			</td>
+			<td>
+				{{ event.sport.name }}
+				<br>
+				<span class="ws-icon-{{ event.sport.slug }}"></span>
+			</td>
+			<td>
+				{{ events.count() }}
+			</td>
+			<td>
+				{{ event.date.format('Y-m-d') }}
+			</td>
+			<td>
+				{{ event.location.city.getName() }}
+			</td>
+			<td>
+				{{ event.description }}
+			</td>
+			<td>
+				{{ event.organizer.username }}
+			</td>
+		</tr>
+
+	{% endfor %}
+</table>
+
+{% endblock %}

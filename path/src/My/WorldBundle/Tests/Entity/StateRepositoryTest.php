@@ -21,13 +21,13 @@ class StateRespositoryTest extends WebTestCase {
 
     public function testFindStateByCodes()
     {
-        $bourgogne = $this->repo->findStateByCodes('FR','A1','ADM1');
+        $bourgogne = $this->repo->findStateByCode('FR','A1','ADM1');
         $this->assertEquals('Bourgogne',$bourgogne->getName());
 
-        $cantal = $this->repo->findStateByCodes('FR','15','ADM2');
+        $cantal = $this->repo->findStateByCode('FR','15','ADM2');
         $this->assertEquals('Departement du Cantal',$cantal->getName());    
 
-        $ecosse = $this->repo->findStateByCodes('UK','SCT','ADM1');
+        $ecosse = $this->repo->findStateByCode('UK','SCT','ADM1');
         $this->assertEquals('Scotland',$ecosse->getName());
     }
 }

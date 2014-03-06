@@ -1,8 +1,8 @@
 $(document).ready(function() {
 	
-	if($("#event_sport_sport").length != 0){
+	if($("select.iconSportSelect").length != 0){
 
-	    	$("#event_sport_sport").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    	
+	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    	
 	    	
 	}
 

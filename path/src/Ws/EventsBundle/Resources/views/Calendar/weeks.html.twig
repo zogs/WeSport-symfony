@@ -1,0 +1,13 @@
+{% extends 'WsEventsBundle:Calendar:layout.html.twig' %}
+
+{% block calendar_week %}
+	<div class="events-weeks">
+		<table>
+			{% for week in weeks %}
+			
+				{% include 'WsEventsBundle:Calendar:week.html.twig' with {'week':week} %}
+
+			{% endfor %}			
+		</table>
+	</div>
+{% endblock %}

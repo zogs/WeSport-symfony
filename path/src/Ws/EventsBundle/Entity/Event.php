@@ -70,6 +70,11 @@ class Event
     private $sport;
 
     /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Participation", mappedBy="event")
+     */
+    private $participations;
+
+    /**
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
@@ -121,6 +126,7 @@ class Event
     function __construct(){
 
         $this->date_depot = new \DateTime();
+        $this->participations = new ArrayCollection();
     }
 
     
@@ -134,6 +140,17 @@ class Event
         return false;
     }
     
+    /**
+     * Get Timing
+     */
+    public function getTiming()
+    {
+        if($this->date < date('Y-m-d') ) return 'past';
+        if($this->date > date('Y-m-d') ) return 'tocome';
+        if($this->date == date('Y-m-d') && $this->time >= date('H:i:s')) return 'tocome';
+        if($this->date == date('Y-m-d') && $this->time < date('H:i:s')) return 'past';
+        if($this->date == date('Y-m-d') && $this->time == date('H:i:s')) return 'current';
+    }
 
     /**
      * Get id
@@ -327,6 +344,16 @@ class Event
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Get short adress
+     *
+     * @return string
+     */
+    public function shortAddress()
+    {
+        return substr($this->address,0,8).'...';
     }
 
     /**
@@ -581,4 +608,39 @@ class Event
     {
         return $this->location;
     }
+
+    /**
+     * add participation
+     */
+    public function addParticipation(\Ws\EventsBundle\Entity\Participation $participation)
+    {
+        $this->participations[] = $participation;
+        return $this;
+    }
+
+    /**
+     * remove participation
+     */
+    public function removeParticipation(\Ws\EventsBundle\Entity\Participation $participation)
+    {
+        $this->participations->removeElement($participation);
+    }
+
+    /**
+     * get participations
+     */
+    public function getParticipations()
+    {
+        return $this->participations;
+    }
+
+    public function isUserParticipate($user)
+    {
+        foreach ($this->participations as $participation) {
+            
+            if($participation->getUser() == $user) return true;
+        }
+        return false;
+    }
+
 }

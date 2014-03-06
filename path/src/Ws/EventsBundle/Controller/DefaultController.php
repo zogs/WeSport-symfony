@@ -19,6 +19,24 @@ class DefaultController extends Controller
     }
 
     /**
+     * Get the calendar of events
+     *
+     * @param string action
+     * @param date date
+     *
+     * @return View
+     */
+    public function calendarAction(Request $request)
+    {
+
+        $week = $this->getDoctrine()->getRepository('WsEventsBundle:Event')->findCalendarEvents($request);
+
+        
+        return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
+            'weeks' => array($week),
+            ));
+    }   
+    /**
      * Get and manage the creation form
      *
      * @param request
@@ -51,10 +69,7 @@ class DefaultController extends Controller
             else {
                 $this->get('flashbag')->add('error','peut pas sauvegarder !');
             }
-
-
-    	}
-        
+    	}             
 
     	return $this->render('WsEventsBundle:Default:new.html.twig', array(
     		'form' => $form->createView(),
@@ -140,6 +155,7 @@ class DefaultController extends Controller
      */
     public function viewAction(Event $event)
     {
+        
         return $this->render('WsEventsBundle:Default:view.html.twig',array(
             'event'=>$event,
             'token'=>$this->get('form.csrf_provider')->generateCsrfToken('delete_event')

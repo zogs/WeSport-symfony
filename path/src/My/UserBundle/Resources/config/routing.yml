@@ -18,6 +18,13 @@ fos_user_change_password:
     prefix: /profile
 
 
+user_fiche_profil:
+    pattern: /user/{user}/{username}
+    defaults: { _controller: MyUserBundle:Default:viewProfil }
+    requirements:
+        user: \d+        
+
+
 #admin
 admin_user_index:
     pattern: /admin/user/index

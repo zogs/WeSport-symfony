@@ -1,0 +1,22 @@
+<?php
+
+/**
+	* Change to add to vendor\doctrine\data-fixtures\lib\Doctrine\Common\DataFixtures\Purger\ORMPurger.php
+	* Exclude world table to purge system
+*/
+
+
+//add class variable
+private $preservedTables = array(
+        'world_cities',
+        'world_country',
+        'world_regions',
+        'world_states',
+        'world_location');
+
+//add this statement to purge method
+//in the last foreach loop
+if(in_array($tbl,$this->preservedTables)) continue;
+
+
+?>

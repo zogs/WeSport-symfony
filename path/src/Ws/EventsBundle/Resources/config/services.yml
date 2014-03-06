@@ -16,3 +16,9 @@ services:
     ws_events.manager:
         class: Ws\EventsBundle\Manager\EventManager
         arguments: [@doctrine.orm.entity_manager,@security.context]
+
+    ws_events.twig.eventlink:
+        class: Ws\EventsBundle\Twig\EventLinkExtension
+        arguments: [@router]
+        tags:
+            - { name: twig.extension }

@@ -49,6 +49,11 @@ class Category implements Translatable
         $this->sports = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * Get id
      *

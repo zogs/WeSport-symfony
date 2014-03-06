@@ -21,48 +21,43 @@ class Location
     protected $id;
 
     /**
-     * @ORM\Column(name="country_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Country", fetch="EAGER")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id", nullable=true)
      */
     protected $country;
 
     /**
-     * @ORM\Column(name="region_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\State", fetch="EAGER")
+     * @ORM\JoinColumn(name="region_id", referencedColumnName="id", nullable=true)
      */
     protected $region;
 
     /**
-     * @ORM\Column(name="departement_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\State", fetch="EAGER")
+     * @ORM\JoinColumn(name="departement_id", referencedColumnName="id", nullable=true)
      */
     protected $departement;
 
     /**
-     * @ORM\Column(name="district_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\State", fetch="EAGER")
+     * @ORM\JoinColumn(name="district_id", referencedColumnName="id", nullable=true)
      */
     protected $district;
 
     /**
-     * @ORM\Column(name="division_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\State", fetch="EAGER")
+     * @ORM\JoinColumn(name="division_id", referencedColumnName="id", nullable=true)
      */
     protected $division;
 
     /**
-     * @ORM\Column(name="city_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\City", fetch="EAGER")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
      */
     protected $city;
 
 
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return Location
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
+    
 
     /**
      * Get id
@@ -77,7 +72,7 @@ class Location
     /**
      * Set country
      *
-     * @param integer $country
+     * @param string $country
      * @return Location
      */
     public function setCountry($country)
@@ -90,7 +85,7 @@ class Location
     /**
      * Get country
      *
-     * @return integer 
+     * @return string 
      */
     public function getCountry()
     {
@@ -100,7 +95,7 @@ class Location
     /**
      * Set region
      *
-     * @param integer $region
+     * @param string $region
      * @return Location
      */
     public function setRegion($region)
@@ -113,7 +108,7 @@ class Location
     /**
      * Get region
      *
-     * @return integer 
+     * @return string 
      */
     public function getRegion()
     {
@@ -123,7 +118,7 @@ class Location
     /**
      * Set departement
      *
-     * @param integer $departement
+     * @param string $departement
      * @return Location
      */
     public function setDepartement($departement)
@@ -136,7 +131,7 @@ class Location
     /**
      * Get departement
      *
-     * @return integer 
+     * @return string 
      */
     public function getDepartement()
     {
@@ -146,7 +141,7 @@ class Location
     /**
      * Set district
      *
-     * @param integer $district
+     * @param string $district
      * @return Location
      */
     public function setDistrict($district)
@@ -159,7 +154,7 @@ class Location
     /**
      * Get district
      *
-     * @return integer 
+     * @return string 
      */
     public function getDistrict()
     {
@@ -169,7 +164,7 @@ class Location
     /**
      * Set division
      *
-     * @param integer $division
+     * @param string $division
      * @return Location
      */
     public function setDivision($division)
@@ -182,7 +177,7 @@ class Location
     /**
      * Get division
      *
-     * @return integer 
+     * @return string 
      */
     public function getDivision()
     {
@@ -192,7 +187,7 @@ class Location
     /**
      * Set city
      *
-     * @param integer $city
+     * @param string $city
      * @return Location
      */
     public function setCity($city)
@@ -205,20 +200,42 @@ class Location
     /**
      * Get city
      *
-     * @return integer 
+     * @return string 
      */
     public function getCity()
     {
         return $this->city;
     }
 
+    /**
+     * Get last state
+     *
+     * @return string 
+     */
+    public function getlastState()
+    {
+       if(!empty($this->division)) return $this->division;
+       if(!empty($this->district)) return $this->district;
+       if(!empty($this->departement)) return $this->departement;
+       if(!empty($this->region)) return $this->region;
+    }
 
     /**
-    * __toString
-    *
-    */
-    public function __toString()
+     * Get all states
+     *
+     * @return array 
+     */
+    public function getallRegions()
     {
-        return $this->getCountry().':'.$this->getRegion().':'.$this->getDepartement().':'.$this->getDistrict().':'.$this->getDivision().':'.$this->getCity();
+        $r = array();
+        if(!empty($this->country)) $r[] = $this->country;
+        if(!empty($this->region)) $r[] = $this->region;
+        if(!empty($this->departement)) $r[] =  $this->departement;
+        if(!empty($this->district)) $r[] =  $this->district;
+        if(!empty($this->division)) $r[] =  $this->division;
+        if(!empty($this->city)) $r[] = $this->city;
+        return $r;
     }
+
+
 }

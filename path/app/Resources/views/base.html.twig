@@ -1,7 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<!-- 
+    888       888                 .d8888b.                            888         .d888             
+    888   o   888                d88P  Y88b                           888        d88P"              
+    888  d8b  888                Y88b.                                888        888                
+    888 d888b 888  .d88b.         "Y888b.   88888b.   .d88b.  888d888 888888     888888 888d888 
+    888d88888b888 d8P  Y8b           "Y88b. 888 "88b d88""88b 888P"   888        888    888P"   
+    88888P Y88888 88888888 888888      "888 888  888 888  888 888     888        888    888         
+    8888P   Y8888 Y8b.           Y88b  d88P 888 d88P Y88..88P 888     Y88b.  d8b 888    888     
+    888P     Y888  "Y8888         "Y8888P"  88888P"   "Y88P"  888      "Y888 Y8P 888    888     
+                                            888                                                     
+                                            888                                                     
+                                            888                                                     
+-->
     <head>
         <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description"content="" />
+        <meta name="keywords" content="" />
+        <meta name="google-site-verification" content="SeofOTfUyHE48_yX-s-Q2BUdqWuTiXZiX9fSkdGgZ9w" />
+        <meta name="robots" content="index,follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3">
+        <meta http-equip="cache-control" content="no-cache">
+
+
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         {% block stylesheets %}
@@ -9,16 +31,21 @@
                 '%kernel.root_dir%/../vendor/twitter/bootstrap/less/bootstrap.less'
                 '%kernel.root_dir%/../vendor/twitter/bootstrap/less/responsive.less'
                 'bundles/pinanoselect2/css/select2.css'
-                'bundles/wssports/css/font-icons/style.css'
                 'bundles/acmetwig/css/acme-bootstrap.css'
                 'bundles/acmetwig/css/default.css'
+                'bundles/wssports/css/font-icons/style.css'
+                'bundles/wsstyle/css/default.css'
+                'bundles/wsstyle/css/style.css'
+                "http://fonts.googleapis.com/css?family=Viga"
                 filter='lessphp,cssrewrite'
             %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}  
         {% endblock %}
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <!--<link rel="icon" type="image/x-icon" href="{{ asset('bundles/wsstyle/img/wesport.ico') }}" />-->
+        <link rel="icon" type="image/png" href="{{ asset('bundles/wsstyle/img/LOGO.gif') }}" />
+    
     </head>
 
 
@@ -27,65 +54,68 @@
         {# NAVBAR #}
 
         {% block navbar %}
-            <div class="navbar navbar-inverse navbar-fixed-top">
-                <div class="navbar-inner">
-                    <div class="container">
-                        {# knp_menu_render('main', {'template': 'MyPageBundle:Menu:main_menu.html.twig'}) #}
-                        <ul class="nav">
-                            <li class="brand">We-Sport</li>
-                             {{ render(controller('MyPageBundle:Default:showMenu', {
-                                'max': 3
-                            })) }}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <li><a href="{{path('page_new', {}) }}">Nouvelle page?</a></li>
-                            {% endif %}
-                            <li><a href="{{ path('blog_homepage')}}">Blog</a></li>
-                        </ul>
+            <div class="navbar navbar-fixed-top navbar-ws">
+                <div class="desktop-menu" id="desktop-menu">
+                    {# knp_menu_render('main', {'template': 'MyPageBundle:Menu:main_menu.html.twig'}) #}
+                    <ul class="nav">
+                        <li>
+                            <a href="/" class="weSport" id="wsSportBrand" title="Accueil">
+                                <img src="{{ asset('bundles/wsstyle/img/LOGO.gif') }}" alt="WeSport logo" class="logo">        
+                                <img src="{{ asset('bundles/wsstyle/img/BRAND.png') }}" alt="WeSport.fr" class="wesport">
+                            </a>
+                        </li>
 
-                        <ul class="nav pull-right">
-                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                <li><a href="{{path('fos_user_profile_edit') }}"><span class="nav-login">{{ app.user.username }}</span></a></li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{ path('fos_user_profile_edit') }}">Mon compte</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
-                                    </ul>
-                                </li>
-                            {% else %}
-                            <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-                            <li><a href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
-                            {% endif %}
-                        </ul>
-                        <ul class="nav pull-right lang-menu">
+                        <li><a href="{{ path('ws_events_calendar') }}">Calendrier</a></li>
+
+                        <li id="menu-createevent">
+                            <a class="mainbutton" href="{{ path('ws_events_new') }} ">Poster un sport</a>
+                        </li>
+
+                         {{ render(controller('MyPageBundle:Default:showMenu', {
+                            'max': 3
+                        })) }}
+                        
+                        <li><a href="{{ path('blog_homepage')}}">Blog</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{path('page_new', {}) }}">New</a></li>
+                        {% endif %}
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li><a href="{{path('fos_user_profile_edit') }}"><span class="nav-login">{{ app.user.username }}</span></a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Langue <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}"><i class="flag flag-fr"></i>Français</a></li>
-                                    <li><a href="{{  path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))}}"><i class="flag flag-uk"></i>English</a></li>
+                                    <li><a href="{{ path('fos_user_profile_edit') }}">Mon compte</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
                                 </ul>
-                            </li>                          
-                        </ul>                                            
-                    </div>
+                            </li>
+                        {% else %}
+                        <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                        <li><a href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
+                        {% endif %}
+                    </ul>
+                    <ul class="nav pull-right lang-menu">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Langue <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}"><i class="flag flag-fr"></i>Français</a></li>
+                                <li><a href="{{  path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))}}"><i class="flag flag-uk"></i>English</a></li>
+                            </ul>
+                        </li>                          
+                    </ul>                                                                
                 </div>
             </div>
         {% endblock %}
 
 
-        <div class="container mainContainer">
+        <div class="container-fluid mainContainer">
 
-            {% block flash %}
-                {% for type,messages in app.session.flashbag.all() %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
+            {% block body %}
             {% endblock %}
 
-            {% block body %}{% endblock %}
         </div>
 
 
