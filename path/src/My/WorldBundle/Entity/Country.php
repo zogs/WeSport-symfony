@@ -79,6 +79,12 @@ class Country
 	 */
 	private $description;
 
+    private $level;
+
+    public function getLevel()
+    {
+        return 'country';
+    }
 
     public function exist()
     {
@@ -128,6 +134,29 @@ class Country
      * @return string 
      */
     public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Country
+     */
+    public function setCC1($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCC1()
     {
         return $this->code;
     }

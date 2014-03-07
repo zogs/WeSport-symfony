@@ -206,5 +206,44 @@ class LocationRepository extends EntityRepository
 
 		return $location;
 	}
+
+
+	public function findStateById($level,$id)
+	{
+		if($level=='country')
+			return $this->_em->getRepository('MyWorldBundle:Country')->findOneById($id);
+		if($level=='region')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='department')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='district')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='division')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='city')
+			return $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
+	}
+
+	public function findChildrenStatesByParent($parent)
+	{
+
+		$level = $parent->getLevel();
+		if($level=='country')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM1',$parent->getCode(),'');
+		if($level=='region')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM2',$parent->getCC1(),$parent->getADMCODE());
+		if($level=='department')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM3',$parent->getCC1(),$parent->getADMCODE());
+		if($level=='district')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM4',$parent->getCC1(),$parent->getADMCODE());
+		if($level=='division')
+			$children = $this->_em->getRepository('MyWorldBundle:City')->findCitiesByStateParent($parent);
+
+		if(empty($children))
+			$children = $this->_em->getRepository('MyWorldBundle:City')->findCitiesByStateParent($parent);
+		
+
+		return $children;
+	}
 	
 }

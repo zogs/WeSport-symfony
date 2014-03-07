@@ -2,6 +2,11 @@ parameters:
 #    tuto_user.example.class: Tuto\UserBundle\Example
 
 services:
+    entry_point.user_login:
+        class: My\UserBundle\Service\LoginEntryPoint
+        arguments: [@router]
+
+
     acme_user.registration.form.type:
         class: My\UserBundle\Form\Type\RegistrationFormType
         arguments: [%fos_user.model.user.class%]

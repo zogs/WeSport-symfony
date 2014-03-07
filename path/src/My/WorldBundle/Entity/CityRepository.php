@@ -74,6 +74,20 @@ class CityRepository extends EntityRepository
 	}
 
 
+	public function findCitiesByStateParent($parent)
+	{
+		if($parent->getLevel()=='country')
+			return $this->findCitiesByCode($parent->getCC1());
+		if($parent->getLevel()=='region')
+			return $this->findCitiesByCode($parent->getCC1(),$parent->getADMCODE());
+		if($parent->getLevel()=='department')
+			return $this->findCitiesByCode($parent->getCC1(),$parent->getADMPARENT(),$parent->getADMCODE());
+		if($parent->getLevel()=='district')
+			return $this->findCitiesByCode($parent->getCC1(),null,$parent->getADMPARENT(),$parent->getADMCODE());
+		if($parent->getLevel()=='division')
+			return $this->findCitiesByCode($parent->getCC1(),null,null,$parent->getADMPARENT(),$parent->getADMCODE());
+		
+	}
 	public function findCitiesByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
 		$sql = "
@@ -156,6 +170,7 @@ class CityRepository extends EntityRepository
 		//return $this->getQuery($sql)->getResult();
 
 	}
+
 
 	private function resultSetMappingCity()
 	{

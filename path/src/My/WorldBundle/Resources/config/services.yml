@@ -10,6 +10,12 @@ services:
         tags:
             - { name: form.type, alias: autoCompleteCity }
 
+    world.form.type.locationform:
+        class: My\WorldBundle\Form\Type\LocationSelectForm
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name:form.type, alias: location_form }
+
     world.location_manager:
         class: My\WorldBundle\Manager\LocationManager
         arguments: [@doctrine.orm.entity_manager]

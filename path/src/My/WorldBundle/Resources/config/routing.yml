@@ -7,8 +7,8 @@ my_world_test:
     defaults: { _controller: MyWorldBundle:Default:test }
 
 my_world_nextlevel:
-    pattern: /nextStateLevel
-    defaults: { _controller: MyWorldBundle:Default:nextStatesLevel }
+    pattern: /next_geo_level
+    defaults: { _controller: MyWorldBundle:Default:nextGeoLevel }
     requirements:
         _method: GET
 

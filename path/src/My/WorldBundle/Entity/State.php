@@ -87,7 +87,15 @@ class State
 	 */
 	private $CHARACTERS;
 
+    private $level;
 
+    public function getLevel()
+    {
+        if($this->DSG=='ADM1') return 'region';
+        if($this->DSG=='ADM2') return 'department';
+        if($this->DSG=='ADM3') return 'district';
+        if($this->DSG=='ADM4') return 'division';
+    }
 
     public function exist()
     {

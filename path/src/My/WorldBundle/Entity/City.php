@@ -153,7 +153,12 @@ class City
      */
     private $SFC_ORDER;
 
+    private $level;
 
+    public function getLevel()
+    {
+        return 'city';
+    }
 
 
     public function exist()

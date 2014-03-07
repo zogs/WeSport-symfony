@@ -4,6 +4,7 @@ namespace My\WorldBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
@@ -40,13 +41,26 @@ class DefaultController extends Controller
     	return $this->render('MyWorldBundle:Default:test.html.twig', array('obj' => $obj));
     }
 
-    public function nextStatesLevelAction(Request $request)
+    public function nextGeoLevelAction(Request $request)
     {
       
         $em = $this->getDoctrine()->getManager();
-        $states = $em->getRepository('MyWorldBundle:Location')->findStatesByParent('FR','ADM1','FR');
+        $parent = $em->getRepository('MyWorldBundle:Location')->findStateById(
+                                                                                $request->query->get('level'),
+                                                                                $request->query->get('value'));
+        $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
 
-        return $this->render('MyWorldBundle:Default:test.html.twig', array('obj' => $states));
+        $options = '';
+        foreach ($children as $child) {
+            $options .= '<option value="'.$child->getId().'">'.$child->getName().'</option>';
+        }
+
+        return new JsonResponse(array(
+            'level'=>$child->getLevel(),
+            'options'=>$options
+            ));
+
+        //return $this->render('MyWorldBundle:Form:geo_level_options.html.twig', array('obj' => $children));
     }
 
 

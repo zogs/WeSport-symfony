@@ -39,6 +39,37 @@ $(document).ready(function() {
 		$("#event_location_city_name").removeClass('open');
 		
 	});
+
+	if($('#country_select_field').length != 0){
+		$('#country_select_field').select2({ formatResult: countryFlag, formatSelection: countryFlag});				
+	}
 });
 
 
+/*===========================================================
+	// Location FORM
+============================================================*/	
+$('.geo-select-ajax').change(function(){
+
+	var url = $(this).attr('data-ajax-url');
+	var level = $(this).attr('data-geo-level');
+	var value = $(this).val();
+
+	console.log(level+' '+value);
+
+	$.ajax({
+		type: 'GET',
+		url: url,
+		data: { level: level, value: value },
+		dataType: 'json',
+		success: function(data){
+
+			$('#'+data.level+'_select_field').append(data.options).select2().show();			
+		}
+	})
+});
+
+function countryFlag(state) {
+
+	return "<img class='flag flag-"+state.id.toLowerCase()+"' /> "+state.text;
+}
