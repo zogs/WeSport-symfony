@@ -23,21 +23,6 @@ class CountryRepository extends EntityRepository
 	    return $qb->getQuery()->getResult();
 	}
 
-	public function findListCountry()
-	{
-		$qb = $this->_em->createQueryBuilder()
-							->select('c.id, c.name')
-							->from($this->_entityName,'c');
-
-		$p = $qb->getQuery()->getArrayResult();
-		$r = array();
-		foreach($p as $v){
-			$r[$v['id']] = $v['name'];
-		}
-
-		return $r;
-	}
-
 	public function findCountryByCode($CC1)
 	{
 
@@ -66,6 +51,29 @@ class CountryRepository extends EntityRepository
 		$qb->setParameter('id',$id);
 
 		return $qb->getQuery()->getSingleResult();
+	}
+
+	public function findByCodeOrId($id)
+	{
+		if(is_numeric($id))
+			return $this->findCountryById($id);
+		if(is_string($id))
+			return $this->findCountryByCode($id);
+	}
+
+	public function findCountryList($key='code')
+	{
+		$qb = $this->_em->createQueryBuilder()
+							->select('c.name, c.'.$key)
+							->from($this->_entityName,'c');
+
+		$p = $qb->getQuery()->getArrayResult();
+		$r = array();
+		foreach($p as $v){			
+			$r[$v[$key]] = $v['name'];
+		}
+
+		return $r;
 	}
 
 

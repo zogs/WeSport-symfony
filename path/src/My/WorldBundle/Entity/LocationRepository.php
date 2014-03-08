@@ -211,7 +211,7 @@ class LocationRepository extends EntityRepository
 	public function findStateById($level,$id)
 	{
 		if($level=='country')
-			return $this->_em->getRepository('MyWorldBundle:Country')->findOneById($id);
+			return $this->_em->getRepository('MyWorldBundle:Country')->findByCodeOrId($id);
 		if($level=='region')
 			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
 		if($level=='department')

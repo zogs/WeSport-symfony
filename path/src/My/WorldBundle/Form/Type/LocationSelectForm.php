@@ -33,7 +33,7 @@ class LocationSelectForm extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $countries = $this->em->getRepository('MyWorldBundle:Country')->findListCountry();
+        $countries = $this->em->getRepository('MyWorldBundle:Country')->findCountryList();
 
         $builder
             ->add('country','choice',array(

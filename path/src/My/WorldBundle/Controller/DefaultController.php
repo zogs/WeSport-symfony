@@ -42,12 +42,9 @@ class DefaultController extends Controller
     }
 
     public function nextGeoLevelAction(Request $request)
-    {
-      
+    {      
         $em = $this->getDoctrine()->getManager();
-        $parent = $em->getRepository('MyWorldBundle:Location')->findStateById(
-                                                                                $request->query->get('level'),
-                                                                                $request->query->get('value'));
+        $parent = $em->getRepository('MyWorldBundle:Location')->findStateById($request->query->get('level'),$request->query->get('value'));
         $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
 
         $options = '';
@@ -55,12 +52,8 @@ class DefaultController extends Controller
             $options .= '<option value="'.$child->getId().'">'.$child->getName().'</option>';
         }
 
-        return new JsonResponse(array(
-            'level'=>$child->getLevel(),
-            'options'=>$options
-            ));
-
-        //return $this->render('MyWorldBundle:Form:geo_level_options.html.twig', array('obj' => $children));
+        return new JsonResponse(array('level'=>$child->getLevel(),'options'=>$options));
+        
     }
 
 
