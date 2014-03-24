@@ -17,7 +17,7 @@ class Participation
 {
 	/**
 	* @ORM\Id
-	* @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event")
+	* @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event", inversedBy="participations")
 	*/
 	private $event;
 

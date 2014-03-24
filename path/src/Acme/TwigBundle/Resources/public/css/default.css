@@ -19,3 +19,6 @@ TYPEAHEAD CUSTOM STYLE
 .tt-id{ color:#AAA;  display: none;}
 .tt-suggestion.tt-is-under-cursor{  background-color:#0097cf;}
 .tt-suggestion.tt-is-under-cursor p{  color:white;}
+
+.form .control-group .controls .date-select { float:left; width:30%; margin-right:5%;}
+.form .control-group .controls .date-select:last-child { margin-right:0;}

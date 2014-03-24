@@ -53,6 +53,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")
+     * @ORM\Column(nullable=true)
      */
     private $location;
 

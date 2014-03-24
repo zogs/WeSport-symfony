@@ -17,18 +17,28 @@ class RegistrationFormType extends BaseType
 
 
         $builder
+        ->add('type','choice',array(
+                'choices'=>array(
+                    'person'=>"Particulier",
+                    'asso'=>"Association",
+                    'pro'=>"Professionel"
+                    ),
+                'required'=>true,
+                'multiple'=>false,
+                'expanded'=>true,
+            ))
         ->add('username','text',array(
-            'label'=>"Username",
+            'label'=>"Nom d'utilisateur",
             'attr'=>array(
-                'placeholder'=>'Username',  
+                'placeholder'=>"Nom d'utilisateur",  
                 'data-icon' => 'user'          
                 ),
             ))
 
         ->add('email','email',array(
-            'label'=>'E-mail address',
+            'label'=>'E-mail de contact',
             'attr'=> array(                 
-                    'placeholder'=>'Contact e-mail', 
+                    'placeholder'=>"E-mail de contact", 
                     'data-icon' => 'envelope'                   
                 ),
                 
@@ -38,16 +48,16 @@ class RegistrationFormType extends BaseType
                 'type' => 'password',                
                 'options' => array('translation_domain' => 'FOSUserBundle'),
                 'first_options' => array(
-                    'label' => 'form.password',
+                    'label' => 'Mot de passe',
                     'attr'=> array(
-                        'placeholder' => 'Password',
+                        'placeholder' => 'Mot de passe',
                         'data-icon' => 'lock'
                         ),                    
                     ),
                 'second_options' => array(
                     'label' => 'Confirmer',
                     'attr'=> array(
-                        'placeholder' => 'Confirmer',
+                        'placeholder' => 'Confirmer le mot de passe',
                         'data-icon' => 'lock'
                         ),                    
                     ),
@@ -56,12 +66,7 @@ class RegistrationFormType extends BaseType
             ))
 
         ->add('birthday','birthday',array(
-            'label' => "Birthday",
-            'attr'=>array(
-                'class'=>'row-3-select-box',
-                'data-icon' => 'gift'
-                ),
-            
+            'label' => "Birthday",                    
             ))
 
         ->add('gender','choice',array(
@@ -69,15 +74,16 @@ class RegistrationFormType extends BaseType
             'choices'=> array('m'=>'Male', 'f'=>'Female'),
             'required'=>false,
             'attr'=>array(
-                'data-icon'=> 'star'
+                'data-icon'=> 'star',
+                'placeholder'=>"Sexe"
                 )
             ))
 
-        ->add('location','location_form',array('mapped'=>false))
+        ->add('location','location_form',array( ))
 
 
         ->add('submit','submit',array(
-            'label' => 'Se connecter',
+            'label' => 'S inscrire',
             'attr' => array(
                 'class'=>'btn btn-info'
                 )

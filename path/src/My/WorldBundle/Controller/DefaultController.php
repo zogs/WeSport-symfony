@@ -45,15 +45,40 @@ class DefaultController extends Controller
     {      
         $em = $this->getDoctrine()->getManager();
         $parent = $em->getRepository('MyWorldBundle:Location')->findStateById($request->query->get('level'),$request->query->get('value'));
-        $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
+        $actual_location = $em->getRepository('MyWorldBundle:Location')->findLocationFromOneState($parent);
 
+        $level = '';
         $options = '';
-        foreach ($children as $child) {
-            $options .= '<option value="'.$child->getId().'">'.$child->getName().'</option>';
-        }
+        if($parent->getLevel()!='city'){
 
-        return new JsonResponse(array('level'=>$child->getLevel(),'options'=>$options));
+            $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
+            $options .= '<option value="">'.$this->getSelectBoxHelper($children[0]->getLevel()).'</options>';
+            foreach ($children as $child) {
+                $options .= '<option value="'.$child->getId().'">'.$child->getName().'</option>';
+            }
+            $level = $child->getLevel();
+        }        
+
+        return new JsonResponse(array(
+            'level'=>$level,
+            'location'=>$actual_location->getId(),
+            'options'=>$options,
+            ));
         
+    }
+
+    private function getSelectBoxHelper($level)
+    {
+        $helpers = array(
+            'country'=>"Sélectionnez un pays",
+            'region'=>"Séléectionnez une région",
+            'department'=>"Sélectionnez un département",
+            'district'=>"Select a district",
+            'division'=>"Select a division",
+            'city'=>"Sélectionnez une ville"
+            );
+
+        return $helpers[$level];
     }
 
 

@@ -2027,7 +2027,7 @@ h1.title-sheet {
 }
 /* line 1521, ../scss/style.scss */
 .form-ws .control-group .geo-select {
-  margin-bottom: 18px;
+  margin-bottom: 0px;
 }
 /* line 1526, ../scss/style.scss */
 .form-ws .control-error .controls input,

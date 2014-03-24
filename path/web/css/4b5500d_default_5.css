@@ -30,3 +30,14 @@
 .tt-suggestion.tt-is-under-cursor p {
   color: white;
 }
+.row-3-select-box select {
+  float: left;
+  width: 29%;
+  margin-right: 4%;
+}
+.row-3-select-box select:first-child {
+  width: 24%;
+}
+.row-3-select-box select:last-child {
+  margin-right: 0%;
+}

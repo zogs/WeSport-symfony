@@ -8894,6 +8894,17 @@ textarea.formComment {
 .tt-suggestion.tt-is-under-cursor p {
   color: white;
 }
+.row-3-select-box select {
+  float: left;
+  width: 29%;
+  margin-right: 4%;
+}
+.row-3-select-box select:first-child {
+  width: 24%;
+}
+.row-3-select-box select:last-child {
+  margin-right: 0%;
+}
 
 @font-face {
   font-family: 'ws-font';
@@ -9512,10 +9523,10 @@ form.loginForm input[type=submit] {
 form.loginForm input[type=submit]:hover {
   background-color: #EBEBEB;
 }
-div.geo-select {
+.geo-select {
   margin-bottom: 8px;
 }
-div.geo-select .select2-choice {
+.geo-select .select2-choice {
   padding: 4px 5px;
   width: 100%;
   height: auto;
@@ -9529,32 +9540,42 @@ div.geo-select .select2-choice {
   text-align: left;
   line-height: inherit;
 }
-div.geo-select .select2-choice:focus {
+.geo-select .select2-choice:focus {
   outline: none;
 }
-div.geo-select .select2-choice span {
+.geo-select .select2-choice span {
   margin-right: 16px;
   color: #999;
 }
-div.geo-select .select2-choice div {
+.geo-select .select2-choice div {
   border: 0;
   background: white;
   background-image: none;
 }
-div.geo-select .select2-choice div b {
+.geo-select .select2-choice div b {
   background-position: 0 -2px;
 }
-div.geo-select .select2-drop {
+.geo-select .select2-choice .select2-arrow {
+  margin: 0;
+}
+.geo-select .select2-drop {
   left: 0;
   margin-top: 0;
   padding: 5px 0 2px 5px;
 }
-div.geo-select .select2-results {
+.geo-select .select2-results {
   max-height: 300px;
   text-align: left;
 }
-div.geo-select .select2-result {
+.geo-select .select2-result {
   padding: 5px 0;
+}
+.geo-select.geo-loading:after {
+  content: url('../../bundles/wsstyle/img/ajax-loader.gif');
+  position: absolute;
+  right: 25px;
+  top: 12%;
+  z-index: 100;
 }
 .ajaxLoader {
   padding: 0 10px;

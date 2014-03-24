@@ -12,3 +12,10 @@ services:
         arguments: [%fos_user.model.user.class%]
         tags:
             - { name: form.type, alias: my_user_registration }
+
+    user_bundle.listener.init_registration:
+        class: My\UserBundle\Service\RegistrationListener
+        arguments: [@doctrine.orm.entity_manager]
+        scope: container
+        tags:
+            - { name: kernel.event_subscriber }

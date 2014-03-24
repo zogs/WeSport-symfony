@@ -2,7 +2,49 @@
 {% form_theme form with ':Form:fields.html.twig' %}
 
 
-<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-    {{ form_widget(form) }}
+<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register form form-ws label-hidden w50 form-register fleft" id="form_register" autocomplete="on">
+	
+	<p class="intro">En 2min via le formulaire suivant</p>
+
+    {{ form_start(form) }}
+    
+    	{{ form_errors(form) }}
+
+    	<div class="control-group" id="control-type">
+    		<label for="" class="control-label">Type</label>
+    		<div class="controls">
+    			<span class="control-radio">
+    				{{ form_widget(form.type[0]) }}
+    				{{ form_label(form.type[0]) }}
+    			</span>
+    			<span class="control-radio">
+    				{{ form_widget(form.type[1]) }}
+    				{{ form_label(form.type[1]) }}
+    			</span>
+    			<span class="control-radio">
+    				{{ form_widget(form.type[2]) }}
+    				{{ form_label(form.type[2]) }}
+    			</span>
+    		</div>
+    	</div>
+
+    	{{ form_row(form.username) }}
+    	{{ form_row(form.email) }}
+    	{{ form_row(form.plainPassword) }}
+
+		<div class="control-group" id="control-birthday">
+			<label for="" class="control-label">Birthday</label>
+			<div class="controls">
+				<i class="icon-form icon-envelope"></i>
+		    	{{ form_widget(form.birthday.day, { 'attr':{'class':'date-select day-class'}}) }}
+		    	{{ form_widget(form.birthday.month, { 'attr':{'class':'date-select month-class'}}) }}
+		    	{{ form_widget(form.birthday.year, { 'attr':{'class':'date-select year-class'}}) }}
+				
+		    	{{ form_errors(form.birthday) }}
+			</div>
+		</div>
+    	
+
+	{{ form_end(form) }}
     
 </form>

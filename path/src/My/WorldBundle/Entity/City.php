@@ -160,6 +160,24 @@ class City
         return 'city';
     }
 
+    public function getLastADM()
+    {
+        if(!empty($this->ADM4)) return $this->ADM4;
+        if(!empty($this->ADM3)) return $this->ADM3;
+        if(!empty($this->ADM2)) return $this->ADM2;
+        if(!empty($this->ADM1)) return $this->ADM1;
+        if(!empty($this->CC1)) return $this->CC1;
+    }
+
+    public function getLastADMLevel()
+    {
+        if(!empty($this->ADM4)) return 'ADM4';
+        if(!empty($this->ADM3)) return 'ADM3';
+        if(!empty($this->ADM2)) return 'ADM2';
+        if(!empty($this->ADM1)) return 'ADM1';
+        if(!empty($this->CC1)) return 'CC1';
+    }
+
 
     public function exist()
     {

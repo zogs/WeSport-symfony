@@ -60,7 +60,7 @@ class Event
     private $location;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", fetch="EAGER", cascade={"persist"})     
+     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", inversedBy="events", fetch="EAGER", cascade={"persist"})     
      */
     private $serie;
 

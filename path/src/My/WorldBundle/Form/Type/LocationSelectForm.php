@@ -35,10 +35,16 @@ class LocationSelectForm extends AbstractType
     {
         $countries = $this->em->getRepository('MyWorldBundle:Country')->findCountryList();
 
-        $builder
+        $builder   
+            ->add('location','hidden',array(
+                'required'=>true,
+                'mapped'=>true,
+                'data'=>'0'
+                ))         
             ->add('country','choice',array(
                 'choices'=>$countries,
-                'required'=>true,
+                'required'=>false,
+                'mapped'=>false,
                 'empty_value'=>'Votre pays',
                 'attr'=>array('class'=>'geo-select geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe'),
 
@@ -46,6 +52,7 @@ class LocationSelectForm extends AbstractType
             ->add('region','choice',array(
                 'choices'=>array(),
                 'required'=>false,
+                'mapped'=>false,
                 'empty_value'=>'Votre région',
                 'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'region','data-icon'=>'globe'),
                 
@@ -53,6 +60,7 @@ class LocationSelectForm extends AbstractType
             ->add('department','choice',array(
                 'choices'=>array(),
                 'required'=>false,
+                'mapped'=>false,
                 'empty_value'=>'Votre Département',
                 'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'department','data-icon'=>'globe'),
                 
@@ -60,6 +68,7 @@ class LocationSelectForm extends AbstractType
             ->add('district','choice',array(
                 'choices'=>array(),
                 'required'=>false,
+                'mapped'=>false,
                 'empty_value'=>'Votre district',
                 'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'district','data-icon'=>'globe'),
                 
@@ -67,6 +76,7 @@ class LocationSelectForm extends AbstractType
             ->add('division','choice',array(
                 'choices'=>array(),
                 'required'=>false,
+                'mapped'=>false,
                 'empty_value'=>'Votre division',
                 'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'division','data-icon'=>'globe'),
                 
@@ -74,8 +84,9 @@ class LocationSelectForm extends AbstractType
             ->add('city','choice',array(
                 'choices'=>array(),
                 'required'=>false,
+                'mapped'=>false,
                 'empty_value'=>'Votre ville',
-                'attr'=>array('class'=>'geo-select hide','data-geo-level'=>'city','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe'),
                 
                 ))
                                                          
