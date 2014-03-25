@@ -58,6 +58,18 @@ class Location
 
 
     
+    /**
+     * Set Id
+     *
+     * @param integer $id
+     * @return Location
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * Get id

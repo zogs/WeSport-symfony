@@ -2,7 +2,7 @@
      {% spaceless %}
         {% set url = path('my_world_nextlevel') %}
 
-		 {{form_widget(form.location, {'id':'location_field'}) }}
+		 {{form_widget(form.id, {'id':'location_id_field'}) }}
          {{form_widget(form.country, {'id': 'country_select_field','attr':{'data-geo-level':'country','data-ajax-url':url,'style':'width:100%'}}) }}
          {{form_widget(form.region, {'id': 'region_select_field','attr':{'data-geo-level':'region','data-ajax-url':url,'style':'width:100%'}}) }}
          {{form_widget(form.department, {'id': 'department_select_field','attr':{'data-geo-level':'department','data-ajax-url':url,'style':'width:100%'}}) }}

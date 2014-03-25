@@ -146,8 +146,12 @@ class LocationRepository extends EntityRepository
 		//find all parents
 		$parents = $this->findParentsFromState($state);
 
+		//add current state
+		$parents[$state->getLevel()] = $state;
+		
 		//find the location object
 		$location = $this->findLocationFromStates($parents);
+		
 		return $location;
 	}
 

@@ -66,7 +66,7 @@ $('.geo-select-ajax').change(function(){
 
 			parent.removeClass('geo-loading');
 			$('#'+data.level+'_select_field').empty().append(data.options).select2().show();
-			$('#location_field').val(data.location);			
+			$('#location_id_field').val(data.location);			
 		}
 	})
 });

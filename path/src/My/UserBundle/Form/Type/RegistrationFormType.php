@@ -66,7 +66,9 @@ class RegistrationFormType extends BaseType
             ))
 
         ->add('birthday','birthday',array(
-            'label' => "Birthday",                    
+            'label' => "Birthday", 
+            'empty_value'=>'Votre anniversaire'  ,
+            'data' => new \DateTime('1996/06/18'),                
             ))
 
         ->add('gender','choice',array(

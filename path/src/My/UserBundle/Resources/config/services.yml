@@ -15,7 +15,7 @@ services:
 
     user_bundle.listener.init_registration:
         class: My\UserBundle\Service\RegistrationListener
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag]
         scope: container
         tags:
             - { name: kernel.event_subscriber }

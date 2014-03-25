@@ -42,22 +42,30 @@ class DefaultController extends Controller
     }
 
     public function nextGeoLevelAction(Request $request)
-    {      
+    {     
+        //entity manager 
         $em = $this->getDoctrine()->getManager();
+
+        //find current state
         $parent = $em->getRepository('MyWorldBundle:Location')->findStateById($request->query->get('level'),$request->query->get('value'));
+
+        //find location object of the current state
         $actual_location = $em->getRepository('MyWorldBundle:Location')->findLocationFromOneState($parent);
 
+        //find children of the current state
+        $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
+        
+        //create html options
         $level = '';
         $options = '';
-        if($parent->getLevel()!='city'){
-
-            $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
+        if(!empty($children)){
             $options .= '<option value="">'.$this->getSelectBoxHelper($children[0]->getLevel()).'</options>';
             foreach ($children as $child) {
                 $options .= '<option value="'.$child->getId().'">'.$child->getName().'</option>';
             }
             $level = $child->getLevel();
-        }        
+
+        }               
 
         return new JsonResponse(array(
             'level'=>$level,

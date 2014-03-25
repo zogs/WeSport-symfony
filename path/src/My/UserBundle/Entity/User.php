@@ -52,8 +52,8 @@ class User extends BaseUser
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")
-     * @ORM\Column(nullable=true)
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, name="location_id", referencedColumnName="id")
      */
     private $location;
 

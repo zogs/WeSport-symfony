@@ -37,4 +37,10 @@ class FlashController extends Controller
     {
     	return $this->session->getFlashBag()->all();
     }
+
+    public function clear()
+    {
+        $this->session->getFlashBag()->clear();
+        return $this->session->getFlashBag();
+    }
 }

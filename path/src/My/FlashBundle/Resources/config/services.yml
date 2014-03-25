@@ -8,6 +8,8 @@ services:
     flashbag:
         class: My\FlashBundle\Controller\FlashController
         arguments: [@session]
+        tags:
+            - { name: flashbag.service , alias:flashbag }
 
     flashbag.twig.message_extension:
         class: My\FlashBundle\Twig\FlashbagExtension

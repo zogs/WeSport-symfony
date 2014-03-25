@@ -36,7 +36,7 @@ class LocationSelectForm extends AbstractType
         $countries = $this->em->getRepository('MyWorldBundle:Country')->findCountryList();
 
         $builder   
-            ->add('location','hidden',array(
+            ->add('id','hidden',array(
                 'required'=>true,
                 'mapped'=>true,
                 'data'=>'0'
@@ -100,7 +100,8 @@ class LocationSelectForm extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'My\WorldBundle\Entity\Location',
-            'cascade_validation' => true
+            'cascade_validation' => false,
+            'validation_groups' => false,
         ));
     }
 
