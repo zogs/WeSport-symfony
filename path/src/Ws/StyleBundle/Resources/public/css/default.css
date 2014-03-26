@@ -144,6 +144,8 @@ User registration page
 .form .control-group .controls span.control-radio label { display: inline; margin-right:10px; }
 .form .control-group .controls p.help-inline { width: 100%; padding-left:0; margin-top:0px ;font-size:80%; color:#AAA; }
 .form .control-group .controls p.help-error { color:#820200;}
+.form .control-group .controls p.help-error ul,
+.form .control-group .controls p.help-error ol { margin: 0 0 0 20px;}
 .form .control-error .control-label { color: #820200;}
 .form .control-error .controls input,
 .form .control-error .controls select,

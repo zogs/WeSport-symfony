@@ -158,33 +158,49 @@ class LocationRepository extends EntityRepository
 	public function findLocationFromStates($states)
 	{
 		$qb = $this->_em->createQueryBuilder('l');
-			
-		$qb->select('l')
-			->from($this->_entityName,'l')
-			->where($qb->expr()->eq('l.country',$states['country']->getId()));
 		
-		if(isset($states['region']) && $states['region']->exist()) 
+		$qb->select('l')
+			->from($this->_entityName,'l');			
+
+		if(isset($states['country']) && is_object($states['country']) && $states['country']->exist()) 
+			$qb->andWhere($qb->expr()->eq('l.country',$states['country']->getId()));
+		elseif(!empty($states['country']) && is_numeric($states['country']))
+			$qb->andWhere($qb->expr()->eq('l.country',$states['country']));
+		else
+			$qb->andWhere($qb->expr()->isNull('l.country'));
+		
+		if(isset($states['region']) && is_object($states['region']) && $states['region']->exist()) 
 			$qb->andWhere($qb->expr()->eq('l.region',$states['region']->getId()));
+		elseif(!empty($states['region']) && is_numeric($states['region']))
+			$qb->andWhere($qb->expr()->eq('l.region',$states['region']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.region'));
 
-		if(isset($states['department']) && $states['department']->exist()) 
+		if(isset($states['department']) && is_object($states['department']) && $states['department']->exist()) 
 			$qb->andWhere($qb->expr()->eq('l.departement',$states['department']->getId()));
+		elseif(!empty($states['department']) && is_numeric($states['department']))
+			$qb->andWhere($qb->expr()->eq('l.departement',$states['department']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.departement'));
 
-		if(isset($states['district']) && $states['district']->exist()) 
+		if(isset($states['district']) && is_object($states['district']) && $states['district']->exist()) 
 			$qb->andWhere($qb->expr()->eq('l.district',$states['district']->getId()));
+		elseif(!empty($states['district']) && is_numeric($states['district']))
+			$qb->andWhere($qb->expr()->eq('l.district',$states['district']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.district'));
 
-		if(isset($states['division']) && $states['division']->exist()) 
+		if(isset($states['division']) && is_object($states['division']) && $states['division']->exist()) 
 			$qb->andWhere($qb->expr()->eq('l.division',$states['division']->getId()));
+		elseif(!empty($states['division']) && is_numeric($states['division']))
+			$qb->andWhere($qb->expr()->eq('l.division',$states['division']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.division'));
 
-		if(isset($states['city']) && $states['city']->exist()) 
+		if(isset($states['city']) && is_object($states['city']) && $states['city']->exist()) 
 			$qb->andWhere($qb->expr()->eq('l.city',$states['city']->getId()));
+		elseif(!empty($states['city']) && is_numeric($states['city']))
+			$qb->andWhere($qb->expr()->eq('l.city',$states['city']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.city'));
 

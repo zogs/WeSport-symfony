@@ -2,19 +2,21 @@ parameters:
 #    tuto_user.example.class: Tuto\UserBundle\Example
 
 services:
+    #Entry point
     entry_point.user_login:
         class: My\UserBundle\Service\LoginEntryPoint
         arguments: [@router]
 
-
+    #Form Type
     acme_user.registration.form.type:
         class: My\UserBundle\Form\Type\RegistrationFormType
         arguments: [%fos_user.model.user.class%]
         tags:
             - { name: form.type, alias: my_user_registration }
 
+    #Event Listner
     user_bundle.listener.init_registration:
-        class: My\UserBundle\Service\RegistrationListener
+        class: My\UserBundle\EventListener\RegistrationListener
         arguments: [@doctrine.orm.entity_manager,@router,@flashbag]
         scope: container
         tags:

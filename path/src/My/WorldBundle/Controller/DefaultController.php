@@ -50,7 +50,7 @@ class DefaultController extends Controller
         $parent = $em->getRepository('MyWorldBundle:Location')->findStateById($request->query->get('level'),$request->query->get('value'));
 
         //find location object of the current state
-        $actual_location = $em->getRepository('MyWorldBundle:Location')->findLocationFromOneState($parent);
+        //$actual_location = $em->getRepository('MyWorldBundle:Location')->findLocationFromOneState($parent);
 
         //find children of the current state
         $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
@@ -69,7 +69,7 @@ class DefaultController extends Controller
 
         return new JsonResponse(array(
             'level'=>$level,
-            'location'=>$actual_location->getId(),
+            //'location'=>$actual_location->getId(),
             'options'=>$options,
             ));
         

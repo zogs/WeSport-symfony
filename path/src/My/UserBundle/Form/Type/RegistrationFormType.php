@@ -5,7 +5,7 @@ namespace My\UserBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 
-use My\WorldBundle\Form\Type\LocationSelectForms;
+use My\WorldBundle\Form\Type\LocationSelectType;
 
 class RegistrationFormType extends BaseType
 {
@@ -67,6 +67,7 @@ class RegistrationFormType extends BaseType
 
         ->add('birthday','birthday',array(
             'label' => "Birthday", 
+            'required'=>false,
             'empty_value'=>'Votre anniversaire'  ,
             'data' => new \DateTime('1996/06/18'),                
             ))
@@ -81,7 +82,7 @@ class RegistrationFormType extends BaseType
                 )
             ))
 
-        ->add('location','location_form',array( ))
+        ->add('location','location_selectboxs',array( ))
 
 
         ->add('submit','submit',array(

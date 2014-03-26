@@ -1,6 +1,6 @@
 <?php
 
-namespace My\UserBundle\Service;
+namespace My\UserBundle\EventListener;
 
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

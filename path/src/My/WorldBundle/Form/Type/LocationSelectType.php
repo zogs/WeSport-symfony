@@ -6,11 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Doctrine\ORM\EntityManager;
 
-class LocationSelectForm extends AbstractType
+use My\WorldBundle\Form\DataTransformer\StatesToLocationTransformer;
+
+class LocationSelectType extends AbstractType
 {
     public $em;
 
@@ -88,9 +91,51 @@ class LocationSelectForm extends AbstractType
                 'empty_value'=>'Votre ville',
                 'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe'),
                 
-                ))
-                                                         
+                ))                                                                     
         ;
+
+
+        //add transformer
+        //$transformer = new StatesToLocationTransformer($this->em);
+        //$builder->addModelTransformer($transformer);
+
+        $em = $this->em;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function($event,$em) use($em) {
+
+            $form = $event->getForm();
+            $data = $event->getData();
+
+            //reset to id of country if its a string
+            if(!empty($data['country']) && is_string($data['country'])){
+                $country = $em->getRepository('MyWorldBundle:Country')->findByCodeOrId($data['country']);
+                $data['country'] = $country->getId();                
+            }
+
+            //find Location that fit the states data
+            $location = $em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
+
+            //set data
+            $data['id'] = $location->getId();
+            $data['country'] = null;
+            $data['region'] = null;
+            $data['department'] = null;
+            $data['district'] = null;
+            $data['division'] = null;
+            $data['city'] = null;
+            $event->setData($data);
+
+        
+
+        }, 100);
+
+
+
+        //stop further validation
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function($event) {
+            $event->stopPropagation();
+        }, 900); // Définissez toujours une priorité plus grande que le ValidationListener
+
     }
     
     /**
@@ -99,6 +144,7 @@ class LocationSelectForm extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'invalid_message' => 'humm cest pas encore ça...',
             'data_class' => 'My\WorldBundle\Entity\Location',
             'cascade_validation' => false,
             'validation_groups' => false,
@@ -110,6 +156,6 @@ class LocationSelectForm extends AbstractType
      */
     public function getName()
     {
-        return 'location_form';
+        return 'location_selectboxs';
     }
 }

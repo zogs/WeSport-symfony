@@ -33,7 +33,7 @@ twig:
         resources:
             - ':Form:fields.html.twig'
             - ':Form:buttons.html.twig' 
-            - 'MyWorldBundle:Form:location_form.html.twig'           
+            - 'MyWorldBundle:Form:location_selectboxs.html.twig'           
 
 # Assetic Configuration
 assetic:
