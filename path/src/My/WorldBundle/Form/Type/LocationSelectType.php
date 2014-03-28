@@ -36,7 +36,9 @@ class LocationSelectType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $countries = $this->em->getRepository('MyWorldBundle:Country')->findCountryList();
+        $em = $this->em;
+
+        $countries = $em->getRepository('MyWorldBundle:Country')->findCountryList();
 
         $builder   
             ->add('id','hidden',array(
@@ -99,23 +101,66 @@ class LocationSelectType extends AbstractType
         //$transformer = new StatesToLocationTransformer($this->em);
         //$builder->addModelTransformer($transformer);
 
-        $em = $this->em;
+        $addGeoField = function(FormInterface $form, $em, $location, $level, $value = ''){
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function($event,$em) use($em) {
+            $list = $em->getRepository('MyWorldBundle:Location')->findStatesListByLocationLevel($location,$level);
+
+            if(empty($list)) return;
+
+            $form->add($list['level'],'choice',array(
+                    'choices'=>$list['list'],
+                    'required'=>false,
+                    'mapped'=>false,
+                    'empty_value'=>'Votre '.$list['level'],
+                    'attr'=>array('class'=>'geo-select geo-select-'.$list["level"].' geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe'),
+                    'data'=>$value
+                    ));
+        };
+
+
+        //ON PRE_SUBMIT
+        //SET the location form data
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function($event) use($em,$addGeoField) {
 
             $form = $event->getForm();
             $data = $event->getData();
 
-            //reset to id of country if its a string
+            //if country is string, find id
             if(!empty($data['country']) && is_string($data['country'])){
                 $country = $em->getRepository('MyWorldBundle:Country')->findByCodeOrId($data['country']);
                 $data['country'] = $country->getId();                
             }
 
-            //find Location that fit the states data
+            //find Location that fit the data
             $location = $em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
 
-            //set data
+            //set the location to the form
+            $form->setData($location);
+
+            //add geo field is setted
+            if($location->getCountry() != NULL)
+                $addGeoField($form, $em, $location, 'country', $location->getCountry()->getCode());
+                        
+            if($location->getRegion() != NULL)
+                $addGeoField($form, $em, $location, 'region', $location->getRegion()->getId());
+            
+            if($location->getDepartement() != NULL)
+                $addGeoField($form, $em, $location, 'department', $location->getDepartement()->getId());
+            
+            if($location->getDistrict() != NULL)
+                $addGeoField($form, $em, $location, 'district', $location->getDistrict()->getId());
+            
+            if($location->getDivision() != NULL)
+                $addGeoField($form, $em, $location, 'division', $location->getDivision()->getId());
+            
+            if($location->getCity() != NULL)
+                $addGeoField($form, $em, $location, 'city', $location->getCity()->getId());
+            
+
+
+
+            /*
+            //reset data to avoid validation
             $data['id'] = $location->getId();
             $data['country'] = null;
             $data['region'] = null;
@@ -123,18 +168,11 @@ class LocationSelectType extends AbstractType
             $data['district'] = null;
             $data['division'] = null;
             $data['city'] = null;
-            $event->setData($data);
-
-        
+            $event->setData($data); 
+            */       
 
         }, 100);
 
-
-
-        //stop further validation
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function($event) {
-            $event->stopPropagation();
-        }, 900); // Définissez toujours une priorité plus grande que le ValidationListener
 
     }
     

@@ -5,7 +5,9 @@ namespace My\WorldBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
+use My\WorldBundle\Entity\Country;
+use My\WorldBundle\Entity\State;
+use My\WorldBundle\Entity\City;
 /**
  * Location
  *
@@ -78,7 +80,7 @@ class Location
      */
     public function getId()
     {
-        return $this->id;
+        return (int) $this->id;
     }
 
     /**
@@ -101,7 +103,10 @@ class Location
      */
     public function getCountry()
     {
-        return $this->country;
+        if(isset($this->country))
+            return $this->country;
+        else 
+            return new Country();
     }
 
     /**
@@ -124,7 +129,10 @@ class Location
      */
     public function getRegion()
     {
-        return $this->region;
+        if(isset($this->region))
+            return $this->region;
+        else
+            return new State();
     }
 
     /**
@@ -147,7 +155,10 @@ class Location
      */
     public function getDepartement()
     {
-        return $this->departement;
+        if(isset($this->departement))
+            return $this->departement;
+        else
+            return new State();
     }
 
     /**
@@ -170,7 +181,10 @@ class Location
      */
     public function getDistrict()
     {
-        return $this->district;
+        if(isset($this->district))
+            return $this->district;
+        else
+            return new State();
     }
 
     /**
@@ -193,7 +207,10 @@ class Location
      */
     public function getDivision()
     {
-        return $this->division;
+        if(isset($this->division))
+            return $this->division;
+        else
+            return new State();
     }
 
     /**
@@ -216,7 +233,10 @@ class Location
      */
     public function getCity()
     {
-        return $this->city;
+        if(isset($this->city))
+            return $this->city;
+        else
+            return new City();
     }
 
     /**

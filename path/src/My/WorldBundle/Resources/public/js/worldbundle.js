@@ -40,8 +40,10 @@ $(document).ready(function() {
 		
 	});
 
-	if($('#country_select_field').length != 0){
-		$('#country_select_field').select2({ formatResult: countryFlag, formatSelection: countryFlag});				
+	if($('.geo-select').length != 0){
+
+		$('.geo-select-country').select2({ formatResult: countryFlag, formatSelection: countryFlag});				
+		$('.geo-select:not(.geo-select-country,.hide)').select2();
 	}
 });
 

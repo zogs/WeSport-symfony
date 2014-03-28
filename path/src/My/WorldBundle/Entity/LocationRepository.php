@@ -75,6 +75,43 @@ class LocationRepository extends EntityRepository
 		return $location;
 	}
 
+
+	public function findStatesListByLocationLevel($location, $level)
+	{
+		if($level == 'country') {
+            $list = $this->_em->getRepository('MyWorldBundle:Country')->findCountryList();
+        	$list['level'] = 'country';
+        	$list['list'] = $list;
+        }
+        if($level == 'region')
+            $list = $this->findStatesListByCode($location->getCountry()->getCode());
+        if($level == 'department')
+            $list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getADMCODE());
+        if($level == 'district')
+            $list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getADMCODE(),$location->getDepartement()->getADMCODE());
+        if($level == 'division')
+            $list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getADMCODE(),$location->getDepartement()->getADMCODE(),$location->getDistrict()->getADMCODE());
+        if($level == 'city')
+            $list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getADMCODE(),$location->getDepartement()->getADMCODE(),$location->getDistrict()->getADMCODE(),$location->getDivision()->getADMCODE());		
+
+        return $list;
+
+	}
+
+	public function findStatesListByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
+	{
+		$states = $this->findStatesByCode($countryCode, $regionCode, $departementCode, $districtCode, $divisionCode);
+
+		foreach ($states as $state) {
+			$r[$state->getId()] = $state->getName();
+		}
+
+		return array(
+			'level'=>$states[0]->getLevel(),
+			'list'=> $r
+			);
+	}
+
 	public function findStatesByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
 		$states = array();
@@ -203,6 +240,7 @@ class LocationRepository extends EntityRepository
 			$qb->andWhere($qb->expr()->eq('l.city',$states['city']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.city'));
+		
 
 		$location = $qb->getQuery()->getOneOrNullResult();
 
