@@ -22,7 +22,7 @@
 								{{ user.description }}
 							{% else %}
 								{% if user == app.user %} 
-									<a href="{{	path('fos_user_profile')}}">- ajouter votre description ici -</a>
+									<a href="{{	path('user_profil_edit')}}">- ajouter votre description ici -</a>
 								{% else %} 
 									- pas encore de description -
 								{% endif %} 

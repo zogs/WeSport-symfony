@@ -19,10 +19,10 @@ fos_user_change_password:
 
 
 user_profil_view:
-    pattern: /user/{user}/{username}
+    pattern: /user/{id}/{username}
     defaults: { _controller: MyUserBundle:User:viewProfil }
     requirements:
-        user: \d+
+        id: \d+
 
 user_profil_edit:
     pattern: /my/{action}

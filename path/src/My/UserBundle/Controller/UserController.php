@@ -13,9 +13,9 @@ class UserController extends Controller
         return $this->render('MyUserBundle:Default:index.html.twig', array('name' => $name));
     }
 
-    public function viewProfilAction($user)
+    public function viewProfilAction($id)
     {
-    	$user = $this->getDoctrine()->getRepository('MyUserBundle:User')->findOneById($user);
+    	$user = $this->getDoctrine()->getRepository('MyUserBundle:User')->findOneById($id);
 
     	$user->organize = $this->getDoctrine()->getRepository('WsEventsBundle:Serie')->findByOrganizer($user);
 
@@ -35,9 +35,7 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl("fos_user_security_login")); 
         }
 
-        $form = $this->createForm(new ProfilEditionType($user,$action));
-
-        
+        $form = $this->createForm(new ProfilEditionType($user,$action));   
 
         if($this->getRequest()->isMethod('POST')){
 

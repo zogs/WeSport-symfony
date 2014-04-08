@@ -26,7 +26,7 @@ class UserProfilLinkExtension extends \Twig_Extension
     public function userLink(User $user)
     {
 
-        return $this->router->generate('user_profil_view',array('user'=>$user->getId(),'username'=>$user->getUsernameCanonical()));
+        return $this->router->generate('user_profil_view',array('id'=>$user->getId(),'username'=>$user->getUsernameCanonical()));
     }
 
     public function getName()

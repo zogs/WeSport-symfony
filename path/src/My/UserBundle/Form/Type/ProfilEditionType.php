@@ -164,13 +164,14 @@ class ProfilEditionType extends AbstractType
 
         
         $builder->addEventListener(FormEvents::POST_SUBMIT, function($event) use($user,$action) {
-
+            
             if($action=="avatar"){
                 //set the avatar file name to the login of the user
                 $data = $event->getForm()->getData();
                 $avatar = $data['avatar'];
                 $avatar->setFilename($user->getUsernameCanonical());       
             }
+            
         });
     }
 
@@ -178,7 +179,7 @@ class ProfilEditionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => null,
+            'data_class' => 'My\UserBundle\Entity\User',
         ));
     }
 
