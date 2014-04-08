@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -101,81 +102,68 @@ class LocationSelectType extends AbstractType
         //$transformer = new StatesToLocationTransformer($this->em);
         //$builder->addModelTransformer($transformer);
 
-        $addGeoField = function(FormInterface $form, $em, $location, $level, $value = ''){
 
-            $list = $em->getRepository('MyWorldBundle:Location')->findStatesListByLocationLevel($location,$level);
-
-            if(empty($list)) return;
-
-            $form->add($list['level'],'choice',array(
-                    'choices'=>$list['list'],
-                    'required'=>false,
-                    'mapped'=>false,
-                    'empty_value'=>'Votre '.$list['level'],
-                    'attr'=>array('class'=>'geo-select geo-select-'.$list["level"].' geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe'),
-                    'data'=>$value
-                    ));
-        };
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 
 
-        //ON PRE_SUBMIT
-        //SET the location form data
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function($event) use($em,$addGeoField) {
-
-            $form = $event->getForm();
-            $data = $event->getData();
-
-            //if country is string, find id
-            if(!empty($data['country']) && is_string($data['country'])){
-                $country = $em->getRepository('MyWorldBundle:Country')->findByCodeOrId($data['country']);
-                $data['country'] = $country->getId();                
-            }
-
-            //find Location that fit the data
-            $location = $em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
-
-            //set the location to the form
-            $form->setData($location);
-
-            //add geo field is setted
-            if($location->getCountry() != NULL)
-                $addGeoField($form, $em, $location, 'country', $location->getCountry()->getCode());
-                        
-            if($location->getRegion() != NULL)
-                $addGeoField($form, $em, $location, 'region', $location->getRegion()->getId());
-            
-            if($location->getDepartement() != NULL)
-                $addGeoField($form, $em, $location, 'department', $location->getDepartement()->getId());
-            
-            if($location->getDistrict() != NULL)
-                $addGeoField($form, $em, $location, 'district', $location->getDistrict()->getId());
-            
-            if($location->getDivision() != NULL)
-                $addGeoField($form, $em, $location, 'division', $location->getDivision()->getId());
-            
-            if($location->getCity() != NULL)
-                $addGeoField($form, $em, $location, 'city', $location->getCity()->getId());
-            
-
-
-
-            /*
-            //reset data to avoid validation
-            $data['id'] = $location->getId();
-            $data['country'] = null;
-            $data['region'] = null;
-            $data['department'] = null;
-            $data['district'] = null;
-            $data['division'] = null;
-            $data['city'] = null;
-            $event->setData($data); 
-            */       
-
-        }, 100);
-
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+        
 
     }
     
+    public function onPreSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        //if country is string, find id
+        if(!empty($data['country']) && is_string($data['country'])){
+            $country = $this->em->getRepository('MyWorldBundle:Country')->findByCodeOrId($data['country']);
+            $data['country'] = $country->getId();                
+        }
+
+        //find Location that fit the data
+        $location = $this->em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
+
+        //set the location to the form
+        $form->setData($location);
+
+        //add all geo field
+        $this->addGeoFields($form, $location);
+    }
+
+    public function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $location = $event->getData();        
+        $this->addGeoFields($form, $location);
+    }    
+
+    public function addGeoFields(FormInterface $form, $location)
+    {
+        if($location == NULL) return;
+        if($location->getCountry() != NULL) $this->addGeoField($form, $location, 'country', $location->getCountry()->getCode());                        
+        if($location->getRegion() != NULL) $this->addGeoField($form, $location, 'region', $location->getRegion()->getId());            
+        if($location->getDepartement() != NULL) $this->addGeoField($form, $location, 'department', $location->getDepartement()->getId());            
+        if($location->getDistrict() != NULL) $this->addGeoField($form, $location, 'district', $location->getDistrict()->getId());            
+        if($location->getDivision() != NULL) $this->addGeoField($form, $location, 'division', $location->getDivision()->getId());            
+        if($location->getCity() != NULL) $this->addGeoField($form, $location, 'city', $location->getCity()->getId());
+    }
+
+    public function addGeoField(FormInterface $form, $location, $level, $value = '')
+    {        
+        $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListByLocationLevel($location,$level);
+        if(empty($list)) return;
+
+        $form->add($list['level'],'choice',array(
+                'choices'=>$list['list'],
+                'required'=>false,
+                'mapped'=>false,
+                'empty_value'=>'Votre '.$list['level'],
+                'attr'=>array('class'=>'geo-select geo-select-'.$list["level"].' geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe'),
+                'data'=>$value
+                ));
+    }
     /**
      * @param OptionsResolverInterface $resolver
      */

@@ -18,11 +18,16 @@ fos_user_change_password:
     prefix: /profile
 
 
-user_fiche_profil:
+user_profil_view:
     pattern: /user/{user}/{username}
-    defaults: { _controller: MyUserBundle:Default:viewProfil }
+    defaults: { _controller: MyUserBundle:User:viewProfil }
     requirements:
-        user: \d+        
+        user: \d+
+
+user_profil_edit:
+    pattern: /my/{action}
+    defaults: { _controller: MyUserBundle:User:editProfil, action: 'account' }
+
 
 
 #admin

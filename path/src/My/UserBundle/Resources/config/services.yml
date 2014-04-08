@@ -14,6 +14,12 @@ services:
         tags:
             - { name: form.type, alias: my_user_registration }
 
+    user_avatar.form.type:
+        class: My\UserBundle\Form\Type\AvatarType
+        arguments: [@security.context]
+        tags:
+            - { name: form.type, alias: avatar_type }
+
     #Event Listner
     user_bundle.listener.init_registration:
         class: My\UserBundle\EventListener\RegistrationListener
@@ -21,3 +27,10 @@ services:
         scope: container
         tags:
             - { name: kernel.event_subscriber }
+
+    #Twig extension
+    user.twig.link:
+        class: My\UserBundle\Twig\UserProfilLinkExtension
+        arguments: [@router]
+        tags:
+            - { name: twig.extension }

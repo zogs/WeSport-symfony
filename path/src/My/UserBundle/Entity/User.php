@@ -6,6 +6,9 @@ namespace My\UserBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use My\UserBundle\Entity\Avatar;
 
 /**
  * @ORM\Entity
@@ -24,64 +27,71 @@ class User extends BaseUser
      /**
      * @ORM\Column(type="string", length=10)
      */
-    private $type;
+    private $type = 'person';
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $firstname;
+    private $firstname = '';
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $lastname;
+    private $lastname = '';
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $birthday;
+    private $birthday = null;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Avatar", fetch="EAGER", cascade={"all"})
+     * @ORM\JoinColumn(nullable=true, name="avatar_id", referencedColumnName="id")
+     */
+    private $avatar;
 
     /**
      * @ORM\Column(type="string", length=1, nullable=true)
      */
-    private $gender;
+    private $gender = '';
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private $description = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")
      * @ORM\JoinColumn(nullable=true, name="location_id", referencedColumnName="id")
      */
-    private $location;
+    private $location = null;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $register_since;
+    private $register_since = '';
 
     /**
     * @ORM\Column(type="integer", nullable=true)
     */
-    private $updatedCount;
+    private $updatedCount = '';
 
     /**
      * @ORM\Column(type="text", length=6, nullable=true)
      */
-    private $lang_prefered;
+    private $lang = '';
     
 
 
-
-
-    public function __construct()
+    /**
+     * @ORM\PostLoad
+     */
+    public function init()
     {
-        parent::__construct();
-        // your own logic
 
-        $this->type = 'person';
+        $this->type = 'person';        
+
     }
 
     public function isPerson()
@@ -120,6 +130,14 @@ class User extends BaseUser
     public function setCreatedAtValue()
     {
         $this->register_since = new \DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setDefaultAvatar()
+    {
+        $this->avatar = new Avatar();
     }
 
     /**
@@ -370,5 +388,28 @@ class User extends BaseUser
     public function getLocation()
     {
         return $this->location;
+    }
+
+    /**
+     * Set avatar
+     *
+     * @param object $avatar
+     * @return User
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return object avatar 
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 }
