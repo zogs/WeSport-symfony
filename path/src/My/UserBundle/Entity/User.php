@@ -49,7 +49,7 @@ class User extends BaseUser
      * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Avatar", fetch="EAGER", cascade={"all"})
      * @ORM\JoinColumn(nullable=true, name="avatar_id", referencedColumnName="id")
      */
-    private $avatar;
+    private $avatar = null;
 
     /**
      * @ORM\Column(type="string", length=1, nullable=true)
@@ -132,13 +132,6 @@ class User extends BaseUser
         $this->register_since = new \DateTime();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function setDefaultAvatar()
-    {
-        $this->avatar = new Avatar();
-    }
 
     /**
      * @ORM\preUpdate
@@ -396,7 +389,7 @@ class User extends BaseUser
      * @param object $avatar
      * @return User
      */
-    public function setAvatar($avatar)
+    public function setAvatar(Avatar $avatar)
     {
         $this->avatar = $avatar;
 
@@ -412,4 +405,14 @@ class User extends BaseUser
     {
         return $this->avatar;
     }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setDefaultAvatar()
+    {
+        if(!isset($this->avatar)) $this->avatar = new Avatar();
+    }
+
+
 }
