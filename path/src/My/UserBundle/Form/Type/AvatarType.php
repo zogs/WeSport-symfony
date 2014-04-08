@@ -22,6 +22,7 @@ class AvatarType extends AbstractType
                             'data'=> $now->format('Y-m-d H:i:s')
                             ))
                         ;
+
         }
 
         public function setDefaultOptions(OptionsResolverInterface $resolver)

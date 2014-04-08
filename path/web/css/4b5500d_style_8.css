@@ -1638,7 +1638,7 @@ h1.title-sheet {
   margin-right: 12px;
 }
 .form-ws .control-group .geo-select {
-  margin-bottom: 18px;
+  margin-bottom: 0px;
 }
 .form-ws .control-error .controls input,
 .form-ws .control-error .controls select,

@@ -45,7 +45,6 @@ class User extends BaseUser
     private $birthday = null;
 
     /**
-     * @Assert\File(maxSize="6000000")
      * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Avatar", fetch="EAGER", cascade={"all"})
      * @ORM\JoinColumn(nullable=true, name="avatar_id", referencedColumnName="id")
      */
@@ -141,7 +140,18 @@ class User extends BaseUser
         $this->updatedCount++;
     }
 
-    
+    /**
+     * Set id
+     *
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     /**
      * Get type
      *
@@ -410,7 +420,7 @@ class User extends BaseUser
      * @ORM\PrePersist
      */
     public function setDefaultAvatar()
-    {
+    {        
         if(!isset($this->avatar)) $this->avatar = new Avatar();
     }
 

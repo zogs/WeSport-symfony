@@ -29,7 +29,8 @@ class ProfilEditionType extends AbstractType
         
         $builder
         ->add('action','hidden',array(
-            'data'=>$action
+            'data'=>$action,
+            'mapped' => false,
             ))
         ->add('id','hidden',array(
             'data'=>$user->getId()
@@ -164,11 +165,12 @@ class ProfilEditionType extends AbstractType
 
         
         $builder->addEventListener(FormEvents::POST_SUBMIT, function($event) use($user,$action) {
-            
+
             if($action=="avatar"){
-                //set the avatar file name to the login of the user
-                $data = $event->getForm()->getData();
-                $avatar = $data['avatar'];
+                //get user
+                $user = $event->getForm()->getData();
+                $avatar = $user->getAvatar();
+                //set the avatar filename to the login of the user
                 $avatar->setFilename($user->getUsernameCanonical());       
             }
             

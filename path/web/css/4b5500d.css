@@ -8894,16 +8894,13 @@ textarea.formComment {
 .tt-suggestion.tt-is-under-cursor p {
   color: white;
 }
-.row-3-select-box select {
+.form .control-group .controls .date-select {
   float: left;
-  width: 29%;
-  margin-right: 4%;
+  width: 30%;
+  margin-right: 5%;
 }
-.row-3-select-box select:first-child {
-  width: 24%;
-}
-.row-3-select-box select:last-child {
-  margin-right: 0%;
+.form .control-group .controls .date-select:last-child {
+  margin-right: 0;
 }
 
 @font-face {
@@ -9667,10 +9664,14 @@ form.loginForm input[type=submit]:hover {
 .form .control-group .controls label.checkbox {
   float: left;
 }
-.form .control-group .controls label.radio {
+.form .control-group .controls label.label-radio {
   padding-left: 5px;
   margin-right: 20px;
   display: inline;
+}
+.form .control-group .controls span.control-radio label {
+  display: inline;
+  margin-right: 10px;
 }
 .form .control-group .controls p.help-inline {
   width: 100%;
@@ -9681,6 +9682,10 @@ form.loginForm input[type=submit]:hover {
 }
 .form .control-group .controls p.help-error {
   color: #820200;
+}
+.form .control-group .controls p.help-error ul,
+.form .control-group .controls p.help-error ol {
+  margin: 0 0 0 20px;
 }
 .form .control-error .control-label {
   color: #820200;
@@ -13029,7 +13034,7 @@ h1.title-sheet {
   margin-right: 12px;
 }
 .form-ws .control-group .geo-select {
-  margin-bottom: 18px;
+  margin-bottom: 0px;
 }
 .form-ws .control-error .controls input,
 .form-ws .control-error .controls select,

@@ -85,6 +85,7 @@ class Avatar
      */
     public function preUpload()
     {
+        
         if (null !== $this->file) {
             $this->path = $this->getSavingFilename().'.'.$this->file->guessExtension();
         }

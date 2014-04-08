@@ -35,14 +35,14 @@
                 'bundles/acmetwig/css/default.css'
                 'bundles/wssports/css/font-icons/style.css'
                 'bundles/wsstyle/css/default.css'
-                'bundles/wsstyle/css/style.css'
-                "http://fonts.googleapis.com/css?family=Viga"
-                filter='lessphp,cssrewrite'
+                'bundles/wsstyle/css/style.css'   
+                filter="cssrewrite"             
             %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}  
-        {% endblock %}
+        {% endblock %} 
 
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Viga">
         <!--<link rel="icon" type="image/x-icon" href="{{ asset('bundles/wsstyle/img/wesport.ico') }}" />-->
         <link rel="icon" type="image/png" href="{{ asset('bundles/wsstyle/img/LOGO.gif') }}" />
     
