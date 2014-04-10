@@ -321,12 +321,13 @@ class LocationRepository extends EntityRepository
 	 */
 	public function createLocationFromCityId($id)
 	{
-		$states['city'] = $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
+		$city = $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
+		$states['city'] = $city;
 		$states['country'] = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($city->getCC1());
-		$states['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM1(),'ADM1');
-		$states['departement'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM2(),'ADM2');
-		$states['district'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM3(),'ADM3');
-		$states['division'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM4(),'ADM4');
+		if($city->getADM1() != null) $states['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM1(),'ADM1');
+		if($city->getADM2() != null) $states['departement'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM2(),'ADM2');
+		if($city->getADM3() != null) $states['district'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM3(),'ADM3');
+		if($city->getADM4() != null) $states['division'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCC1(),$city->getADM4(),'ADM4');
 
 		return $this->createLocation($states);
 	}

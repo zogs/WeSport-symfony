@@ -76,6 +76,20 @@ class CountryRepository extends EntityRepository
 		return $r;
 	}
 
+	public function findCodeByCountryName($name)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select('partial c.{id,code,name,lang}')
+			->where(
+				$qb->expr()->eq('c.name',':name')
+				);
+
+		$qb->setParameter('name',$name);
+		$res = $qb->getQuery()->getSingleResult();
+
+		return $res->getCode();		
+	}
+
 
 
 }

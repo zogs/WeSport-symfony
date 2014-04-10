@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class SportRepository extends EntityRepository
 {
+	
 }
 
 ?>

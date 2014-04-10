@@ -19,8 +19,8 @@ ws_events_delete:
         event: \d+
 
 ws_events_calendar:
-    pattern: /calendar
-    defaults: { _controller: WsEventsBundle:Default:calendar}
+    pattern: /calendar/{country}/{city}/{sports}/{date}/{days}/{type}
+    defaults: { _controller: WsEventsBundle:Default:calendar, country:null, city:null, sports:null, date:null, days:null, type:null }
     requirements:         
         _method: GET
 

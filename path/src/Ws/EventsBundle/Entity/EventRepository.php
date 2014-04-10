@@ -13,14 +13,22 @@ use Doctrine\ORM\EntityRepository;
 class EventRepository extends EntityRepository
 {
 
-	private $params;
+	private $params = array();
+	private $default = array(
+		//'city_id'=>1848034,
+		//'city_name'=>'Dijon',
+		//'area'=>100,
+		//'country'=>'FR',
+		//'sport'=> array(67,68,72)
+		'day_length'=>7,
+		);
+
 	private $request;
 
-	public function findCalendarEvents($request)
+	public function findCalendarEvents($request,$params)
 	{
-		$this->request = $request;
-
-		$this->params = $this->getParams();
+		$this->setRequest($request);
+		$this->computeParams($params);
 		
 		$day = $this->getStartDate();
 
@@ -42,7 +50,7 @@ class EventRepository extends EntityRepository
 
 		$qb = $this->filterByDate($qb,$date);
 		$qb = $this->filterBySports($qb);
-		$qb = $this->filterByOnline($qb);
+		$qb = $this->filterByOnline($qb);		
 		$qb = $this->filterByCityQuery($qb);
 	
 
@@ -57,7 +65,7 @@ class EventRepository extends EntityRepository
 		if(!empty($this->params['city_id']))
 			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
 		elseif(!empty($this->params['city_name']))
-			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityName($this->params['city_name'],'FR');
+			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityName($this->params['city_name'],'FR');		
 
 		if(empty($this->params['area']))
 			return $this->filterByLocation($qb,$location);
@@ -121,7 +129,7 @@ class EventRepository extends EntityRepository
 	}
 
 	public function filterByLocation($qb,$location)
-	{
+	{		
 		$qb->setParameter('location',$location);
 		return $qb->andWhere($qb->expr()->eq('e.location',':location'));
 	}
@@ -165,22 +173,22 @@ class EventRepository extends EntityRepository
 		return $qb->andWhere('e.online = 1 OR e.online = 0');
 	}
 
-	public function getParams()
+	public function setRequest($request)
 	{
-		$query = $this->request->query->all();
+		$this->request = $request;
+	}
+
+	public function computeParams($params = array())
+	{
+		//params from cookie data
 		$cookie = $this->request->cookies->all();
-		$params = $cookie;
-		if(!empty($query)) $params = $query;
-
-		//test
-		//$params['sport'] = 72;
-		//$params['sport'] = array(67,68,72);
-		$params['city_name'] = 'Dijon';
-		$params['area'] = 100;
-		$params['country'] = 'FR';
-
-		return $params;
-
+		//params from query GET parameters
+		$query = $this->request->query->all();
+		
+		//merge params
+		$this->params = array_merge($this->default,$cookie,$query,$params);
+		
+		return $this->params;
 	}
 
 	public function getStartDate()
@@ -191,7 +199,7 @@ class EventRepository extends EntityRepository
 
 	public function getNbDaysPeriod()
 	{
-		return 7;
+		return $this->params['day_length'];
 	}
 
 	public function findRecentUniqueEventPosted()
