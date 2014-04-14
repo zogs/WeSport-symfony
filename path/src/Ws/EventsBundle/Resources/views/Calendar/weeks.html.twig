@@ -1,4 +1,4 @@
-{% extends 'WsEventsBundle:Calendar:layout.html.twig' %}
+{% extends is_ajax ? 'WsEventsBundle:Calendar:layout_ajax.html.twig' : 'WsEventsBundle:Calendar:layout.html.twig' %}
 
 {% block calendar_week %}
 	<div class="events-weeks">

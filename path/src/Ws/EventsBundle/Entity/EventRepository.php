@@ -13,27 +13,12 @@ use Doctrine\ORM\EntityRepository;
 class EventRepository extends EntityRepository
 {
 
-	private $params = array();
-	private $default = array(
-		//'city_id'=>1848034,
-		//'city_name'=>'Dijon',
-		//'area'=>100,
-		//'country'=>'FR',
-		//'sport'=> array(67,68,72)
-		'day_length'=>7,
-		);
+	public function findCalendarEvents($params = array())
+	{	
+		$day = $params['date'];
+		$events = array();
+		for ($i=1; $i < $params['nbdays']; $i++) { 
 
-	private $request;
-
-	public function findCalendarEvents($request,$params)
-	{
-		$this->setRequest($request);
-		$this->computeParams($params);
-		
-		$day = $this->getStartDate();
-
-		for ($i=1; $i < $this->getNbDaysPeriod(); $i++) { 
-			
 			$events[$day] = $this->findEventsByDate($day);
 			$day = date("Y-m-d", strtotime($day. " +1 day"));
 		}
@@ -173,34 +158,10 @@ class EventRepository extends EntityRepository
 		return $qb->andWhere('e.online = 1 OR e.online = 0');
 	}
 
-	public function setRequest($request)
-	{
-		$this->request = $request;
-	}
+	
 
-	public function computeParams($params = array())
-	{
-		//params from cookie data
-		$cookie = $this->request->cookies->all();
-		//params from query GET parameters
-		$query = $this->request->query->all();
-		
-		//merge params
-		$this->params = array_merge($this->default,$cookie,$query,$params);
-		
-		return $this->params;
-	}
 
-	public function getStartDate()
-	{
-		if(isset($this->params['date'])) return $this->params['date'];
-		else return \date('Y-m-d');
-	}
 
-	public function getNbDaysPeriod()
-	{
-		return $this->params['day_length'];
-	}
 
 	public function findRecentUniqueEventPosted()
 	{

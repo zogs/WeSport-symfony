@@ -6,7 +6,7 @@
 	    {{ flashbag_all() }}
 	{% endblock %}
 
-	
+	{{ dump(app.request.cookies.all) }}
 	<div class="calendar" id="calendar">
 		<div class="calendar-header">
 			<div class="week-nav previousWeek">

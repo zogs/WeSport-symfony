@@ -26,72 +26,41 @@ class DefaultController extends Controller
      *
      * @return View
      */
-    public function calendarAction($country,$city,$sports,$date,$days,$type)
+    public function calendarAction($country,$city,$sports,$date,$nbdays,$type)
     {
 
+        
         $params = array(
             'country' => $country,
             'city' => $city,
             'sports' => $sports,
             'date' => $date,
-            'days' => $days,
+            'nbdays' => $nbdays,
             'type' => $type,
-            );
+            );        
 
-        $params = $this->rationalizeSearchParams($params);
 
-        $repo = $this->getDoctrine()->getRepository('WsEventsBundle:Event');
-        $week = $repo->findCalendarEvents($this->getRequest(),$params);
+        $week = $this->get('calendar.manager')->findCalendarByParams($this->getRequest(),$params);
 
         
         return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
             'weeks' => array($week),
+            'is_ajax' => false,
             ));
     }   
 
 
-    private function rationalizeSearchParams($params = array())
+    public function weekAjaxAction()
     {
-        $em = $this->getDoctrine();
-        //replace country name by country code
-        if(isset($params['country'])) $params['country'] = $em->getRepository('MyWorldBundle:Country')->findCodeByCountryName($params['country']);
-        //set city_id by city name
-        if(isset($params['city'])) {
-            $r = explode('+',$params['city'],2);
-            $city = $em->getRepository('MyWorldBundle:City')->findCityByName($r[0],$params['country']);
-            if(isset($city)) {
-                $params['city_id'] = $city->getId();
-                unset($params['city']);
-                if(isset($r[1])) $params['area'] = (int) $r[1];            
-            }
-        }
-        //check date format
-        if(isset($params['date'])){
-            $dt = \DateTime::createFromFormat("Y-m-d",$params['date']);
-            if($dt !== false && !array_sum($dt->getLastErrors())) {
-                $params['date'] = $params['date'];
-            }
-            else {
-                unset($params['date']);
-            }
-        }
-        //check days is numeric
-        if(isset($params['days']) && !is_numeric($params['days'])){
-            unset($params['days']);
-        }
-        //replace sports name by sports id
-        if(isset($params['sports'])) {
-            $sports = explode('+',$params['sports']); 
-            foreach ($sports as $key => $slug) {
-                $sport = $em->getRepository('WsSportsBundle:Sport')->findOneBySlug($slug);
-                if(isset($sport)) $sports[$key] = $sport->getId();
-                else unset($sports[$key]);
-            }   
-            $params['sports'] = $sports;                        
-        }
-        
-        return $params;
+        $week = $this->get('calendar.manager')->findCalendarByParams($this->getRequest());
+
+        return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
+            'weeks' => array($week),
+            'is_ajax' => true
+            ));
     }
+
+    
     /**
      * Get and manage the creation form
      *

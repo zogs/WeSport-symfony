@@ -10,6 +10,7 @@ class EventManager extends AbstractManager
 {
 	protected $em;
 
+	
 	/**
      * Save event or the serie of event
      *

@@ -18,14 +18,19 @@ ws_events_delete:
     requirements:
         event: \d+
 
-ws_events_calendar:
-    pattern: /calendar/{country}/{city}/{sports}/{date}/{days}/{type}
-    defaults: { _controller: WsEventsBundle:Default:calendar, country:null, city:null, sports:null, date:null, days:null, type:null }
+
+ws_events_week_ajax:
+    pattern: /calendar/ajax
+    defaults: { _controller: WsEventsBundle:Default:weekAjax}
     requirements:         
         _method: GET
 
 
-
+ws_events_calendar:
+    pattern: /calendar/{country}/{city}/{sports}/{date}/{nbdays}/{type}
+    defaults: { _controller: WsEventsBundle:Default:calendar, country:null, city:null, sports:null, date:null, nbdays:null, type:null }
+    requirements:         
+        _method: GET
 
 
 
