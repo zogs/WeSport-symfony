@@ -173,6 +173,368 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 
 }(window.jQuery);
 
+/* ===========================================================
+ * bootstrap-tooltip.js v2.3.2
+ * http://getbootstrap.com/2.3.2/javascript.html#tooltips
+ * Inspired by the original jQuery.tipsy by Jason Frame
+ * ===========================================================
+ * Copyright 2013 Twitter, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================== */
+
+
+!function ($) {
+
+  "use strict"; // jshint ;_;
+
+
+ /* TOOLTIP PUBLIC CLASS DEFINITION
+  * =============================== */
+
+  var Tooltip = function (element, options) {
+    this.init('tooltip', element, options)
+  }
+
+  Tooltip.prototype = {
+
+    constructor: Tooltip
+
+  , init: function (type, element, options) {
+      var eventIn
+        , eventOut
+        , triggers
+        , trigger
+        , i
+
+      this.type = type
+      this.$element = $(element)
+      this.options = this.getOptions(options)
+      this.enabled = true
+
+      triggers = this.options.trigger.split(' ')
+
+      for (i = triggers.length; i--;) {
+        trigger = triggers[i]
+        if (trigger == 'click') {
+          this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+        } else if (trigger != 'manual') {
+          eventIn = trigger == 'hover' ? 'mouseenter' : 'focus'
+          eventOut = trigger == 'hover' ? 'mouseleave' : 'blur'
+          this.$element.on(eventIn + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+          this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+        }
+      }
+
+      this.options.selector ?
+        (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+        this.fixTitle()
+    }
+
+  , getOptions: function (options) {
+      options = $.extend({}, $.fn[this.type].defaults, this.$element.data(), options)
+
+      if (options.delay && typeof options.delay == 'number') {
+        options.delay = {
+          show: options.delay
+        , hide: options.delay
+        }
+      }
+
+      return options
+    }
+
+  , enter: function (e) {
+      var defaults = $.fn[this.type].defaults
+        , options = {}
+        , self
+
+      this._options && $.each(this._options, function (key, value) {
+        if (defaults[key] != value) options[key] = value
+      }, this)
+
+      self = $(e.currentTarget)[this.type](options).data(this.type)
+
+      if (!self.options.delay || !self.options.delay.show) return self.show()
+
+      clearTimeout(this.timeout)
+      self.hoverState = 'in'
+      this.timeout = setTimeout(function() {
+        if (self.hoverState == 'in') self.show()
+      }, self.options.delay.show)
+    }
+
+  , leave: function (e) {
+      var self = $(e.currentTarget)[this.type](this._options).data(this.type)
+
+      if (this.timeout) clearTimeout(this.timeout)
+      if (!self.options.delay || !self.options.delay.hide) return self.hide()
+
+      self.hoverState = 'out'
+      this.timeout = setTimeout(function() {
+        if (self.hoverState == 'out') self.hide()
+      }, self.options.delay.hide)
+    }
+
+  , show: function () {
+      var $tip
+        , pos
+        , actualWidth
+        , actualHeight
+        , placement
+        , tp
+        , e = $.Event('show')
+
+      if (this.hasContent() && this.enabled) {
+        this.$element.trigger(e)
+        if (e.isDefaultPrevented()) return
+        $tip = this.tip()
+        this.setContent()
+
+        if (this.options.animation) {
+          $tip.addClass('fade')
+        }
+
+        placement = typeof this.options.placement == 'function' ?
+          this.options.placement.call(this, $tip[0], this.$element[0]) :
+          this.options.placement
+
+        $tip
+          .detach()
+          .css({ top: 0, left: 0, display: 'block' })
+
+        this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+
+        pos = this.getPosition()
+
+        actualWidth = $tip[0].offsetWidth
+        actualHeight = $tip[0].offsetHeight
+
+        switch (placement) {
+          case 'bottom':
+            tp = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2}
+            break
+          case 'top':
+            tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2}
+            break
+          case 'left':
+            tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth}
+            break
+          case 'right':
+            tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width}
+            break
+        }
+
+        this.applyPlacement(tp, placement)
+        this.$element.trigger('shown')
+      }
+    }
+
+  , applyPlacement: function(offset, placement){
+      var $tip = this.tip()
+        , width = $tip[0].offsetWidth
+        , height = $tip[0].offsetHeight
+        , actualWidth
+        , actualHeight
+        , delta
+        , replace
+
+      $tip
+        .offset(offset)
+        .addClass(placement)
+        .addClass('in')
+
+      actualWidth = $tip[0].offsetWidth
+      actualHeight = $tip[0].offsetHeight
+
+      if (placement == 'top' && actualHeight != height) {
+        offset.top = offset.top + height - actualHeight
+        replace = true
+      }
+
+      if (placement == 'bottom' || placement == 'top') {
+        delta = 0
+
+        if (offset.left < 0){
+          delta = offset.left * -2
+          offset.left = 0
+          $tip.offset(offset)
+          actualWidth = $tip[0].offsetWidth
+          actualHeight = $tip[0].offsetHeight
+        }
+
+        this.replaceArrow(delta - width + actualWidth, actualWidth, 'left')
+      } else {
+        this.replaceArrow(actualHeight - height, actualHeight, 'top')
+      }
+
+      if (replace) $tip.offset(offset)
+    }
+
+  , replaceArrow: function(delta, dimension, position){
+      this
+        .arrow()
+        .css(position, delta ? (50 * (1 - delta / dimension) + "%") : '')
+    }
+
+  , setContent: function () {
+      var $tip = this.tip()
+        , title = this.getTitle()
+
+      $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+      $tip.removeClass('fade in top bottom left right')
+    }
+
+  , hide: function () {
+      var that = this
+        , $tip = this.tip()
+        , e = $.Event('hide')
+
+      this.$element.trigger(e)
+      if (e.isDefaultPrevented()) return
+
+      $tip.removeClass('in')
+
+      function removeWithAnimation() {
+        var timeout = setTimeout(function () {
+          $tip.off($.support.transition.end).detach()
+        }, 500)
+
+        $tip.one($.support.transition.end, function () {
+          clearTimeout(timeout)
+          $tip.detach()
+        })
+      }
+
+      $.support.transition && this.$tip.hasClass('fade') ?
+        removeWithAnimation() :
+        $tip.detach()
+
+      this.$element.trigger('hidden')
+
+      return this
+    }
+
+  , fixTitle: function () {
+      var $e = this.$element
+      if ($e.attr('title') || typeof($e.attr('data-original-title')) != 'string') {
+        $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
+      }
+    }
+
+  , hasContent: function () {
+      return this.getTitle()
+    }
+
+  , getPosition: function () {
+      var el = this.$element[0]
+      return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : {
+        width: el.offsetWidth
+      , height: el.offsetHeight
+      }, this.$element.offset())
+    }
+
+  , getTitle: function () {
+      var title
+        , $e = this.$element
+        , o = this.options
+
+      title = $e.attr('data-original-title')
+        || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+
+      return title
+    }
+
+  , tip: function () {
+      return this.$tip = this.$tip || $(this.options.template)
+    }
+
+  , arrow: function(){
+      return this.$arrow = this.$arrow || this.tip().find(".tooltip-arrow")
+    }
+
+  , validate: function () {
+      if (!this.$element[0].parentNode) {
+        this.hide()
+        this.$element = null
+        this.options = null
+      }
+    }
+
+  , enable: function () {
+      this.enabled = true
+    }
+
+  , disable: function () {
+      this.enabled = false
+    }
+
+  , toggleEnabled: function () {
+      this.enabled = !this.enabled
+    }
+
+  , toggle: function (e) {
+      var self = e ? $(e.currentTarget)[this.type](this._options).data(this.type) : this
+      self.tip().hasClass('in') ? self.hide() : self.show()
+    }
+
+  , destroy: function () {
+      this.hide().$element.off('.' + this.type).removeData(this.type)
+    }
+
+  }
+
+
+ /* TOOLTIP PLUGIN DEFINITION
+  * ========================= */
+
+  var old = $.fn.tooltip
+
+  $.fn.tooltip = function ( option ) {
+    return this.each(function () {
+      var $this = $(this)
+        , data = $this.data('tooltip')
+        , options = typeof option == 'object' && option
+      if (!data) $this.data('tooltip', (data = new Tooltip(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  $.fn.tooltip.Constructor = Tooltip
+
+  $.fn.tooltip.defaults = {
+    animation: true
+  , placement: 'top'
+  , selector: false
+  , template: '<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+  , trigger: 'hover focus'
+  , title: ''
+  , delay: 0
+  , html: false
+  , container: false
+  }
+
+
+ /* TOOLTIP NO CONFLICT
+  * =================== */
+
+  $.fn.tooltip.noConflict = function () {
+    $.fn.tooltip = old
+    return this
+  }
+
+}(window.jQuery);
+
 /*
  *  Copyright 2011 Twitter, Inc.
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -2248,6 +2610,829 @@ if(f.maximumInputLength&&d.val().length>f.maximumInputLength)return J(f.formatIn
     });
 })(jQuery);
 
+$(document).ready(function(){
+
+	//init var 
+	var _body = $('body');
+	var _cal = $('#calendar-content');
+	var _zone = $('#calendar');
+	var _aPrev = $('#pullPrev');
+	var _aNext = $('#pullNext');	
+	var _loader = $('#calendar .calendar-loader .loadingbar');
+	var _screenWidth = $(window).width();
+	var _drag = false;
+	var _cWeek = true;
+	var _anim;
+	var _nbDays = 0, _displayDays, _dayDisplayed = 0;
+	var _newPage=1, _loadingEvents= false, _moreEvents = true;
+	var _newWeeks, _newWeekFirst, _oldWeek, _newDays, _newHidden, _hidden;
+	var _wDrag = 150;
+	var _xO;
+	var _yO;
+	var _cX,_cY;
+	var _mxO;
+	var _myO;
+	var _x;
+	var _y;
+	var _lock;
+
+
+	//Appel la semaine courante
+	callThisWeek();
+
+	window.cancelRequestAnimFrame = ( function() {
+	    return window.cancelAnimationFrame          ||
+	        window.webkitCancelRequestAnimationFrame    ||
+	        window.mozCancelRequestAnimationFrame       ||
+	        window.oCancelRequestAnimationFrame     ||
+	        window.msCancelRequestAnimationFrame        ||
+	        clearTimeout
+	} )();
+
+	window.requestAnimFrame = (function(){
+	    return  window.requestAnimationFrame       || 
+	        window.webkitRequestAnimationFrame || 
+	        window.mozRequestAnimationFrame    || 
+	        window.oRequestAnimationFrame      || 
+	        window.msRequestAnimationFrame     || 
+	        function(/* function */ callback, /* DOMElement */ element){
+	            return window.setTimeout(callback, 1000 / 60);
+	        };
+	})();
+
+
+	//set drag listeners
+	setInitialListener();
+	function setInitialListener(){
+		_zone.on('mousedown touchstart',startDrag);
+		$(window).on('mouseup touchend',stopDrag);
+		setCalendarOrigin();
+	}
+	function setCalendarOrigin(){
+		pos = _cal.position();
+		_xO = pos.left;
+	}
+	function setMouseOrigin(e){
+		_mxO = getClientX(e) +_xO;
+	}
+	function setMouseCoord(e){
+		_cX = getClientX(e);
+	}
+	function getClientX(e){
+		if(e.clientX) return e.clientX;
+		if(e.originalEvent.changedTouches[0].clientX) return e.originalEvent.changedTouches[0].clientX;
+	}
+	function startDrag(e){			
+		
+		if(e.which == 2 ||e.which == 3) return; //if middle click or right click , cancel drag
+
+		setMouseOrigin(e);
+		setMouseCoord(e);
+
+		_drag = true;
+		
+		$(window).on('mousemove touchmove',setMouseCoord);
+
+		dragCalendar();
+	}
+
+	function stopDrag(e){		
+
+		if(_lock=='left'){ 
+			callPreviousWeek(); 
+			lockLoad();
+		}
+		else if(_lock=='right'){ 
+			callNextWeek();  
+			lockLoad();
+		}
+		else {
+			revert();
+			_drag = false;
+		}
+
+		if (navigator.vibrate) { navigator.vibrate(0); }
+		$(window).off('mousemove touchmove');
+		cancelRequestAnimFrame(_anim);
+
+
+	}
+
+	function dragCalendar(e){
+
+		//distance between mouse coord and initial coord
+		var x = _xO + _cX - _mxO;
+
+		//console.log('_xO='+_xO+' _cX='+_cX+' _mxO='+_mxO+' == '+x);
+		//if it is the first week and drag to previous return false
+		if(isCurrentWeek()==true && x>0 ) {
+			_anim = requestAnimFrame(dragCalendar,_cal);
+			return;
+		}
+		//if the drag distance if inferior to 10 px , return false
+		if(Math.sqrt(Math.pow(x,2))<10) {
+			_anim = requestAnimFrame(dragCalendar,_cal);
+			return;
+		}
+		//if the drag distance is superior to the trigger width
+
+		//prevent android bug where touchmove fire only once
+		//if( navigator.userAgent.match(/Android/i) ) {
+		//    e.preventDefault();
+		//}
+
+
+		if(x>=_wDrag) {
+			_cal.css('left',_wDrag);
+			lockPrev(); //set lock to previous
+			if (navigator.vibrate) { navigator.vibrate(2000); }
+			_anim = requestAnimFrame(dragCalendar,_cal);
+			return;
+		}
+		if(x<=-_wDrag) {
+			_cal.css('left',-_wDrag);
+			lockNext(); //set lock to next week
+			if (navigator.vibrate) { navigator.vibrate(2000); }
+			_anim = requestAnimFrame(dragCalendar,_cal);
+			return;
+		}
+		//set no lock
+		nolock();
+
+		x += 'px';
+
+		_cal.css('left',x);
+		_cal.css('z-index',0);
+
+		_anim = requestAnimFrame(dragCalendar,_cal);
+	}
+
+	function revert(){
+		_cal.animate({left:0}, _wDrag, 'swing');
+	}
+
+	function nolock(){
+		_lock = '';		
+		_cal.find('#pullPrev,#pullNext').removeClass('locked').removeClass('loading');
+	}
+	function lockPrev(){
+		_lock = 'left';
+		_cal.find('#pullPrev').addClass('locked');
+	}
+	function lockNext(){
+		_lock = 'right';
+		_cal.find('#pullNext').addClass('locked');		
+	}
+	function lockLoad(){
+		_lock='';
+		_cal.find('#pullPrev,#pullNext').removeClass('locked').addClass('loading');
+	}
+
+	function slideCalendar(direction){
+
+		var width = _screenWidth;
+		var slideDuration = 700;
+		var delayDisplay = parseInt(slideDuration/_nbDays);
+
+		if(direction == 'right') {
+			contentPosition = width;
+			contentSliding = '-='+width;
+		}
+		if(direction == 'left') {
+			contentPosition = -width;
+			contentSliding = '+='+width;
+		}
+		if(typeof direction == 'undefined'){
+			contentPosition = -width;
+			contentSliding = '+='+width;
+			slideDuration = 0;
+		}
+
+		var weeks = _oldWeek.add(_newWeeks);
+
+		_cal.css('left',0);
+		
+		weeks.addClass('sliding');
+
+		_newWeeks.css({'left':contentPosition+'px'});
+
+		if(direction=='left') _newDays = _newDays.get().reverse(); //reverse order the colomn are displayed
+		_displayDays = setInterval(function(){ displayColomns(direction)},delayDisplay);
+
+		_oldWeek.find('.events-day').empty();
+		console.log('animate');
+		_newWeeks.animate({
+			left:contentSliding,
+			},slideDuration,'easeOutCirc',function(){ 
+					console.log('callback');
+					_oldWeek.remove();
+					_newWeeks.removeClass('sliding');
+					setHeightCalendar();						
+					return;				
+		});
+
+
+	}
+
+	function clickEvent(e){
+		
+		if(_drag==true) {
+			e.preventDefault();
+			return false;
+		}
+		else {
+			var link = e.currentTarget;			
+			$(link).parent().addClass('clicked');				
+		}
+	}
+
+
+	function displayColomns(direction){
+
+		var colomn = $(_newDays[_dayDisplayed])
+		colomn.addClass('displayed');
+
+		colomnBindEvent(colomn);
+
+		_dayDisplayed++;
+		if(_dayDisplayed>=_nbDays) {
+			clearInterval(_displayDays);
+			_dayDisplayed = 0;
+		}
+	}
+
+	function colomnBindEvent(colomn){
+		colomn.on('click','.events-link',clickEvent);
+		colomn.find('.tooltipbottom').tooltip({ placement : 'bottom', delay: { show: 200, hide: 100 }});
+	}
+
+
+
+
+
+	function setHeightCalendar(){
+
+		var minHeight = parseInt(_newWeeks.css('minHeight'));
+		var heightCalendar = _newWeeks.css('height','auto').height();	
+
+		if(heightCalendar > minHeight){
+			_cal.css('height',heightCalendar);
+			_newWeeks.css('height',heightCalendar);
+		} else {
+			_cal.css('height',minHeight);
+			_newWeeks.css('height',minHeight);
+		}
+		
+	}
+
+
+	function isCurrentWeek(){
+		
+		if(_cWeek==true) return true;
+		return false;
+	}
+
+	function setCurrentWeek(){
+		
+		if(_newWeeks.hasClass('current-week')) _cWeek = true;
+		else _cWeek = false;
+		return _cWeek;
+	}
+
+	function callWeek(url,direction){		
+
+		_loader.show();		
+		
+		var form = $('#calendar_search').serialize();
+		form += '&nbdays='+findNumberDayPerWeek();
+
+		$.ajax({
+			type:'GET',
+			url: url,
+			data : form,
+			success: function( newhtml ){						
+
+				var oldhtml = _cal.html();
+				document.getElementById('calendar-content').innerHTML = oldhtml+newhtml;
+
+				_oldWeek = _cal.find(".events-weeks:first").attr('id','old-week');
+				_newWeeks = _cal.find(".events-weeks:last").attr('id','new-week');	
+				_newWeekFirst = _newWeeks.find('.events-week:first');				
+				_newDays = _newWeeks.find('td.events-day');
+				_newHidden = _newDays.find('.hidden');
+
+				_hidden = [];
+				for(var i=0; i<_newHidden.length; i++){
+					var obj = $(_newHidden[i]);									
+					_hidden[obj.attr('id')] = obj.offset().top;
+					
+				}				
+
+				slideCalendar(direction);	  				
+				
+				setCurrentWeek();
+
+				$(window).scroll(); //refresh scroll function to display new event
+
+				_newPage = 1;
+				_moreEvents = true;
+				_drag = false;
+
+				if(isCurrentWeek()){					
+					$('a.calendar-nav-prev').hide();
+				}
+				else{
+					$('a.calendar-nav-prev').show();
+				}
+
+				
+			
+				_loader.hide();
+
+
+			},
+			dataType:'html'
+		});		
+
+		return false;
+	}
+
+
+
+	function addEventBefore(obj,evt){
+
+		$(obj).before(evt);
+
+		setHeightCalendar();
+	}
+
+	function addEventsToColomn(colomn,evts){
+
+		var obj = $(colomn).find('.addEvent');
+		var delay = 50;
+
+		for(var i in evts){
+			setTimeout(function(){
+				addEventBefore(obj,evts[i]);
+			},delay*i);			
+		}		
+		$(colomn).on('click','.events-link',clickEvent);
+	}
+	function loadBottomEvents(){
+
+		console.log('load bottom');
+
+		_loader.show();
+		var url = _cal.attr('data-url-calendar-bottom');
+		var form = $('#calendar_search').serialize();
+		form += '&maxdays='+findNumberDayPerWeek();
+		form += '&page='+_newPage;
+
+
+		$.ajax({
+			type:'GET',
+			url: url,
+			data : form,
+			success: function( data ){				
+				
+				if(data.results!='empty'){
+
+					var results = data.results;
+					
+					$(_newDays).each(function(){						
+
+						var date = $(this).attr('data-date');
+
+						if(results[date]){
+
+							//addEventsToColomn(this,results[date]);
+							$('#addPoint'+date).before(results[date]);
+
+							var new_events = $('#colomn-'+date).find('.hidden');
+							new_events.each(function(){								
+								_hidden[$(this).attr('id')] = $(this).offset().top;
+							});
+
+							$(window).scroll(); //refresh scroll function to display new event
+						
+							colomnBindEvent($(this));
+
+							//reset height of the calendar after all the hidden events have been displayed
+							setTimeout(function(){ setHeightCalendar();},1000);
+
+						}
+					});	
+					
+				}
+				else{	
+					console.log('empty');				
+					_moreEvents = false;
+					_newPage = 1;
+				
+				}
+
+				_loader.hide();
+				_loadingEvents = false;
+
+
+			},
+			dataType:'json'
+		});		
+
+	}
+
+
+	//infiniteEvents();
+    function infiniteEvents() {
+
+        $(window).scroll(function(){
+            
+            //position du scrolling
+            var scrollPos = parseInt($(window).scrollTop()+$(window).height());
+
+
+            //vérifie si chaque evenement caché est revélé par le scroll
+            for(var id in _hidden){
+            	var y = _hidden[id];            	
+            	if( y <= scrollPos){
+					//si oui afficher l'evenement avec un petit delai            		          		            		
+            		$('#'+id).css('visibility','visible').hide().delay(300).fadeIn(200);
+            		//enlever l'evenement concerné du tableau
+            		delete _hidden[id];
+            		  
+            	}
+            }
+
+
+
+            //
+            if($(_newWeekFirst).length!=0){
+            	//position du bas de la premiere ligne
+            	var y = parseInt($(_newWeekFirst).offset().top+$(_newWeekFirst).height()); 
+            
+	            //si le bas est atteint && calendar is not dragged && no events is loading && more events are possibbly to call
+	            //console.log(y+' <= '+scrollPos+' && '+_drag+' && '+_loadingEvents+' && '+_moreEvents);
+	            if( (y <= scrollPos ) && _drag===false && _loadingEvents === false && _moreEvents === true ) 
+	            {               		            	
+	                _loadingEvents = true;
+	                _newPage        = _newPage+1;                                
+	                loadBottomEvents();		                                   
+	            }
+            }
+            
+
+            
+        });
+    };
+
+
+
+	function findNumberDayPerWeek(){
+
+		if(_nbDays!=0) return _nbDays;
+		//Nombre de jour à afficher en fonction de la largeur de l'écran
+		var dayPerWeek = {320:1,480:2,768:3,1024:4,1280:5,1440:6,10000:7};
+
+		for(var maxwidth in dayPerWeek){	
+			if(_screenWidth<=maxwidth) {
+				_nbDays = dayPerWeek[maxwidth];	
+				return _nbDays;
+			}
+		}
+		return _nbDays;
+	}
+
+	function callNextWeek(){
+		var url = _cal.attr('data-url-calendar-next');
+		var direction = 'right';
+		callWeek(url,direction);
+	}
+
+	function callPreviousWeek(){
+		var url = _cal.attr('data-url-calendar-prev');
+		var direction = 'left';
+		callWeek(url,direction);
+	}
+
+	function callThisWeek(direction){
+		var url = _cal.attr('data-url-calendar-now');
+		callWeek(url,direction);
+	}
+
+	function callCurrentWeek(direction){
+		var url = _cal.attr('data-url-calendar-date');
+		var date = $('.events-weeks').attr('data-first-day');
+		url = url+'/'+date;
+		callWeek(url,direction);
+	}
+
+	$('a.calendar-nav-prev').on('click',function(e){
+			callPreviousWeek();
+			e.preventDefault();
+			e.stopPropagation();
+			//ga('send','event','Calendrier','SemainePrecedante');
+			//ga('send', 'pageview', '/calendar/prev');
+			return false;
+	});
+	$('a.calendar-nav-next').on('click',function(e){
+			callNextWeek();
+			e.preventDefault();
+			e.stopPropagation();
+			//ga('send','event','Calendrier','SemaineSuivante');
+			//ga('send', 'pageview', '/calendar/next');
+			return false;		
+	});
+	$('a.calendar-nav-now').on('click',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			callThisWeek('prev');
+			return false;
+	});
+
+});
+/*
+ * jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
+ *
+ * Uses the built in easing capabilities added In jQuery 1.1
+ * to offer multiple easing options
+ *
+ * TERMS OF USE - jQuery Easing
+ * 
+ * Open source under the BSD License. 
+ * 
+ * Copyright © 2008 George McGinley Smith
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of 
+ * conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list 
+ * of conditions and the following disclaimer in the documentation and/or other materials 
+ * provided with the distribution.
+ * 
+ * Neither the name of the author nor the names of contributors may be used to endorse 
+ * or promote products derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+*/
+
+// t: current time, b: begInnIng value, c: change In value, d: duration
+jQuery.easing['jswing'] = jQuery.easing['swing'];
+
+jQuery.extend( jQuery.easing,
+{
+	def: 'easeOutQuad',
+	swing: function (x, t, b, c, d) {
+		//alert(jQuery.easing.default);
+		return jQuery.easing[jQuery.easing.def](x, t, b, c, d);
+	},
+	easeInQuad: function (x, t, b, c, d) {
+		return c*(t/=d)*t + b;
+	},
+	easeOutQuad: function (x, t, b, c, d) {
+		return -c *(t/=d)*(t-2) + b;
+	},
+	easeInOutQuad: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t + b;
+		return -c/2 * ((--t)*(t-2) - 1) + b;
+	},
+	easeInCubic: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t + b;
+	},
+	easeOutCubic: function (x, t, b, c, d) {
+		return c*((t=t/d-1)*t*t + 1) + b;
+	},
+	easeInOutCubic: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t + b;
+		return c/2*((t-=2)*t*t + 2) + b;
+	},
+	easeInQuart: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t*t + b;
+	},
+	easeOutQuart: function (x, t, b, c, d) {
+		return -c * ((t=t/d-1)*t*t*t - 1) + b;
+	},
+	easeInOutQuart: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t*t + b;
+		return -c/2 * ((t-=2)*t*t*t - 2) + b;
+	},
+	easeInQuint: function (x, t, b, c, d) {
+		return c*(t/=d)*t*t*t*t + b;
+	},
+	easeOutQuint: function (x, t, b, c, d) {
+		return c*((t=t/d-1)*t*t*t*t + 1) + b;
+	},
+	easeInOutQuint: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return c/2*t*t*t*t*t + b;
+		return c/2*((t-=2)*t*t*t*t + 2) + b;
+	},
+	easeInSine: function (x, t, b, c, d) {
+		return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+	},
+	easeOutSine: function (x, t, b, c, d) {
+		return c * Math.sin(t/d * (Math.PI/2)) + b;
+	},
+	easeInOutSine: function (x, t, b, c, d) {
+		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+	},
+	easeInExpo: function (x, t, b, c, d) {
+		return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+	},
+	easeOutExpo: function (x, t, b, c, d) {
+		return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+	},
+	easeInOutExpo: function (x, t, b, c, d) {
+		if (t==0) return b;
+		if (t==d) return b+c;
+		if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+		return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+	},
+	easeInCirc: function (x, t, b, c, d) {
+		return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+	},
+	easeOutCirc: function (x, t, b, c, d) {
+		return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+	},
+	easeInOutCirc: function (x, t, b, c, d) {
+		if ((t/=d/2) < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+		return c/2 * (Math.sqrt(1 - (t-=2)*t) + 1) + b;
+	},
+	easeInElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+	},
+	easeOutElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+	},
+	easeInOutElastic: function (x, t, b, c, d) {
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+		return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+	},
+	easeInBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*(t/=d)*t*((s+1)*t - s) + b;
+	},
+	easeOutBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158;
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+	},
+	easeInOutBack: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1.70158; 
+		if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+		return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+	},
+	easeInBounce: function (x, t, b, c, d) {
+		return c - jQuery.easing.easeOutBounce (x, d-t, 0, c, d) + b;
+	},
+	easeOutBounce: function (x, t, b, c, d) {
+		if ((t/=d) < (1/2.75)) {
+			return c*(7.5625*t*t) + b;
+		} else if (t < (2/2.75)) {
+			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+		} else if (t < (2.5/2.75)) {
+			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+		} else {
+			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+		}
+	},
+	easeInOutBounce: function (x, t, b, c, d) {
+		if (t < d/2) return jQuery.easing.easeInBounce (x, t*2, 0, c, d) * .5 + b;
+		return jQuery.easing.easeOutBounce (x, t*2-d, 0, c, d) * .5 + c*.5 + b;
+	}
+});
+
+/*
+ *
+ * TERMS OF USE - EASING EQUATIONS
+ * 
+ * Open source under the BSD License. 
+ * 
+ * Copyright © 2001 Robert Penner
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of 
+ * conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list 
+ * of conditions and the following disclaimer in the documentation and/or other materials 
+ * provided with the distribution.
+ * 
+ * Neither the name of the author nor the names of contributors may be used to endorse 
+ * or promote products derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+ * OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ */
+/*
+ * jquery.requestAnimationFrame
+ * https://github.com/gnarf37/jquery-requestAnimationFrame
+ * Requires jQuery 1.8+
+ *
+ * Copyright (c) 2012 Corey Frang
+ * Licensed under the MIT license.
+ */
+
+(function( $ ) {
+
+// requestAnimationFrame polyfill adapted from Erik Möller
+// fixes from Paul Irish and Tino Zijdel
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+
+
+var animating,
+	lastTime = 0,
+	vendors = ['webkit', 'moz'],
+	requestAnimationFrame = window.requestAnimationFrame,
+	cancelAnimationFrame = window.cancelAnimationFrame;
+
+for(; lastTime < vendors.length && !requestAnimationFrame; lastTime++) {
+	requestAnimationFrame = window[ vendors[lastTime] + "RequestAnimationFrame" ];
+	cancelAnimationFrame = cancelAnimationFrame ||
+		window[ vendors[lastTime] + "CancelAnimationFrame" ] || 
+		window[ vendors[lastTime] + "CancelRequestAnimationFrame" ];
+}
+
+function raf() {
+	if ( animating ) {
+		requestAnimationFrame( raf );
+		jQuery.fx.tick();
+	}
+}
+
+if ( requestAnimationFrame ) {
+	// use rAF
+	window.requestAnimationFrame = requestAnimationFrame;
+	window.cancelAnimationFrame = cancelAnimationFrame;
+	jQuery.fx.timer = function( timer ) {
+		if ( timer() && jQuery.timers.push( timer ) && !animating ) {
+			animating = true;
+			raf();
+		}
+	};
+
+	jQuery.fx.stop = function() {
+		animating = false;
+	};
+} else {
+	// polyfill
+	window.requestAnimationFrame = function( callback, element ) {
+		var currTime = new Date().getTime(),
+			timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) ),
+			id = window.setTimeout( function() {
+				callback( currTime + timeToCall );
+			}, timeToCall );
+		lastTime = currTime + timeToCall;
+		return id;
+	};
+
+	window.cancelAnimationFrame = function(id) {
+		clearTimeout(id);
+	};
+    
+}
+
+}( jQuery ));
+
+/**
+ * Copyright (c) 2007-2012 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+ * Dual licensed under MIT and GPL.
+ * @author Ariel Flesler
+ * @version 1.4.3.1
+ */
+;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
 $(document).ready(function() {
 	
 	if($("select.iconSportSelect").length != 0){

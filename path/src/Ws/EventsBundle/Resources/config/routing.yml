@@ -20,8 +20,8 @@ ws_events_delete:
 
 
 ws_events_week_ajax:
-    pattern: /calendar/ajax
-    defaults: { _controller: WsEventsBundle:Default:weekAjax}
+    pattern: /calendar/ajax/{date}
+    defaults: { _controller: WsEventsBundle:Default:weekAjax, date:'now'}
     requirements:         
         _method: GET
 

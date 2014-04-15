@@ -17,8 +17,8 @@
 
                 {{ form_row(form.sport) }}
                 {{ form_row(form.title) }}
-                {{ form_widget(form.location.city_id, {'attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
-                {{ form_row(form.location.city_name) }}
+                {{ form_widget(form.location.city_id, {'id':'city_id','attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
+                {{ form_row(form.location.city_name, {'id':'city_name'}) }}
                 {{ form_row(form.address) }}
                 {{ form_row(form.date) }}
                 {{ form_row(form.serie.startdate) }}

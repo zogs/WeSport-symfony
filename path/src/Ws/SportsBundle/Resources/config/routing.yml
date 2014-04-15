@@ -9,3 +9,9 @@ admin_sports_category:
 admin_sports_sport:
     resource: "@WsSportsBundle/Resources/config/routing/sport.yml"
     prefix: /admin/sport
+
+ws_sports_autocomplete:
+    pattern: /sport/autocomplete/{prefix}
+    defaults: { _controller: WsSportsBundle:Default:autocomplete }
+    requirements:
+        _method: GET

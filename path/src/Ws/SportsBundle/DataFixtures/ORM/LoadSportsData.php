@@ -18,36 +18,42 @@ class LoadSportsData extends AbstractFixture implements OrderedFixtureInterface
 		$sport1->setName('Boxe');
 		$sport1->setIcon('fighting');
 		$sport1->setAction('do');
+		$sport1->setKeywords('ring gants cocard');
 		$sport1->setCategory($this->getReference('cat1'));
 
 		$sport2 = new Sport();
 		$sport2->setName('Kung-Fu');
 		$sport2->setIcon('fighting');
 		$sport2->setAction('do');
+		$sport2->setKeywords('art martial');
 		$sport2->setCategory($this->getReference('cat1'));
 
 		$sport3 = new Sport();
 		$sport3->setName('Football');
 		$sport3->setIcon('foot');
 		$sport3->setAction('play');
+		$sport3->setKeywords('penalty faute simulatation');
 		$sport3->setCategory($this->getReference('cat2'));
 
 		$sport4 = new Sport();
 		$sport4->setName('Rugby');
 		$sport4->setIcon('rugby');
 		$sport4->setAction('play');
+		$sport4->setKeywords('ovalie bourinade');
 		$sport4->setCategory($this->getReference('cat2'));
 
 		$sport5 = new Sport();
 		$sport5->setName('Handball');
 		$sport5->setIcon('handball');
 		$sport5->setAction('play');
+		$sport5->setKeywords('faute indoor');
 		$sport5->setCategory($this->getReference('cat2'));
 
 		$sport6 = new Sport();
 		$sport6->setName('Natation');
 		$sport6->setIcon('swimming');
 		$sport6->setAction('go');
+		$sport6->setKeywords('piscine longueur maillot bain');
 		$sport6->setCategory($this->getReference('cat3'));
 
 		$manager->persist($sport1);

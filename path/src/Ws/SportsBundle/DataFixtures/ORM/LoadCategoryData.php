@@ -16,18 +16,17 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
 		$category1 = new Category();
 		$category1->setName("Sport de combat");
 		$category1->setIcon("fight-icon");
+		$category1->setKeywords("fight baston castagne");
 
 		$category2 = new Category();
 		$category2->setName("Sport de ballon");
 		$category2->setIcon("foot");
-
-		$category2 = new Category();
-		$category2->setName("Sport de ballon");
-		$category2->setIcon("ballon-icon");
+		$category2->setKeywords("balle ballon");
 
 		$category3 = new Category();
 		$category3->setName("Sport aquatique");
 		$category3->setIcon("wave-icon");
+		$category3->setKeywords('eau piscine mer océan');
 
 
 		$manager->persist($category1);

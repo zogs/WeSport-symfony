@@ -10,4 +10,15 @@ class DefaultController extends Controller
     {
         return $this->render('WsSportsBundle:Default:index.html.twig', array('name' => $name));
     }
+
+    public function autocompleteAction($prefix)
+    {
+    	
+    	$sports = $this->getDoctrine()->getManager()->getRepository('WsSportsBundle:Sport')->autocomplete($prefix);
+
+    	foreach ($sports as $key => $sport) {
+			echo $sport->getName().'<br>';
+    	}
+
+    }
 }

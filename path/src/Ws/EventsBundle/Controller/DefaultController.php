@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Entity\Serie;
 use Ws\EventsBundle\Form\Type\EventType;
+use Ws\EventsBundle\Form\Type\CalendarSearchType;
 
 
 class DefaultController extends Controller
@@ -32,31 +33,56 @@ class DefaultController extends Controller
         
         $params = array(
             'country' => $country,
-            'city' => $city,
+            'city_name' => $city,
             'sports' => $sports,
             'date' => $date,
             'nbdays' => $nbdays,
             'type' => $type,
             );        
-
-
-        $week = $this->get('calendar.manager')->findCalendarByParams($this->getRequest(),$params);
+        //get manager
+        $manager = $this->get('calendar.manager');
+        //set search parameter
+        $manager->setCookieParams($this->getRequest()->cookies->all());
+        $manager->setRequestParams($this->getRequest()->query->all());
+        $manager->setUriParams($params);
+        //find searched week
+        $week = $manager->findCalendarByParams();
+        //save search cookie
+        $manager->saveSearchCookies();
+        //get search params
+        $search = $manager->getSearchParams();
 
         
         return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
             'weeks' => array($week),
             'is_ajax' => false,
+            'search' => $search,            
             ));
     }   
 
 
-    public function weekAjaxAction()
+    public function weekAjaxAction($date)
     {
-        $week = $this->get('calendar.manager')->findCalendarByParams($this->getRequest());
+        //create params
+        $params['date'] = $date;
+        //get manager
+        $manager = $this->get('calendar.manager');
+        //set params
+        $manager->setCookieParams($this->getRequest()->cookies->all());
+        $manager->setRequestParams($this->getRequest()->query->all());
+        $manager->setUriParams($params);
+        //find searched week
+        $week = $manager->findCalendarByParams();
+        //save search cookie
+        $manager->saveSearchCookies();
+        //get search params
+        $search = $manager->getSearchParams();
+
 
         return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
             'weeks' => array($week),
-            'is_ajax' => true
+            'is_ajax' => true,
+            'search' => $search,
             ));
     }
 

@@ -10,87 +10,73 @@ class CalendarManager extends AbstractManager
 {
 	protected $em;
 	private $params = array();
+	private $computed = false;
 	private $default = array(
 		'country' => 'FR',
 		'date' => '2014-04-01',
-		//'city_id'=>1848034,
-		//'city_name'=>'Dijon',
-		//'area'=>100,,
-		//'sport'=> array(67,68,72)
+		'city_id'=>null,
+		'city_name'=>null,
+		'area'=>0,
+		'sport'=> null, //array(67,68,72)
 		'nbdays'=>7,
 		);
 
-	private $fragments;
-	private $request;
-	private $response;
+	private $cookies = array();
+	private $query = array();
+	private $uri = array();
 
 
-	public function findCalendarByParams($request,$params = array())
+	public function findCalendarByParams()
 	{
-		
-		$this->setRequest($request);		
-		$this->setUriFragments($params);		
-		$this->buildParams();
-		
-		return $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($this->params);
-	
-
+		$params = $this->computeParams();
+		return $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($params);
 	}
 
-	public function buildParams()
+	public function setCookieParams($cookies)
 	{
-
-		//params from cookie data
-		$cookie = $this->getPreviousCookieParams();		
-		//params from query GET parameters
-		$query = $this->request->query->all();		
-		//build params from URL fragments
-		$fragments = $this->fragments;
-		//merge params		
-		$params = array_merge($this->default,$cookie,$query,$fragments);				
-		//prepare params in the right format
-		$params = $this->prepareParams($params);		
-		//set cookie params
-		$this->setCookieParams($params);
-		//set params
-
-		$this->params = $params;
-		//return params
-		return $params;
-	}
-
-	private function getURIFragments()
-	{		
-		return $this->fragments;
-	}
-
-	private function setUriFragments($fragments)
-	{
-		foreach ($fragments as $key => $value) {
-			if( NULL === $fragments[$key]) unset($fragments[$key]);
-		}
-		$this->fragments = $fragments;
-	}
-
-	private function setRequest($request)
-	{
-		$this->request = $request;
-	}
-
-	private function getPreviousCookieParams(){
-
-		$cookies = $this->request->cookies->all();
 		foreach ($cookies as $key => $value) {
 			if(strpos($value,'[array]') === 0) $value = unserialize(str_replace('[array]','',$value));
 			$cookies[$key] = $value;
 		}
-		return $cookies;
+		$this->cookies = $cookies;
 	}
 
-	public function setCookieParams($params)
+	public function setRequestParams($params)
+	{
+		$this->query = $params;
+	}
+
+	public function setUriParams($params)
+	{
+		foreach ($params as $key => $value) {
+			if( NULL === $params[$key]) unset($params[$key]);
+		}
+		$this->uri = $params;
+	}
+
+	public function computeParams()
+	{
+		if($this->computed) return $this->params;
+		$params = array_merge(
+						$this->default,
+						$this->cookies,
+						$this->query,
+						$this->uri
+						);
+		$this->params = $this->prepareParams($params);
+		$this->computed = true;
+		return $this->params;
+	}
+
+	public function getSearchParams()
+	{		
+		return $this->computeParams();
+	}
+
+	public function saveSearchCookies()
 	{		
 		$response = new Response();
-		foreach ($params as $key => $value) {			
+		foreach ($this->params as $key => $value) {			
 
 			if(isset($value)){
 				//echo $key.'='.$value.'<br>';
@@ -107,37 +93,24 @@ class CalendarManager extends AbstractManager
 
 		$day = null;
 		$today = \date('Y-m-d');
-		$previousDate = $this->request->cookies->get('date');
+		$previousDate = $this->cookies['date'];
 		if(empty($previousDate) || $this->isFormattedDate($previousDate) == false) $previousDate = $today;
 
 		if(isset($params['date'])) {
 			if($params['date'] == 'now') $day = $today;
 			elseif($params['date'] == 'next')  $day = date('Y-m-d',strtotime($previousDate.' + '.$params['nbdays'].' days'));
 			elseif($params['date'] == 'prev') $day = date('Y-m-d',strtotime($previousDate.' - '.$params['nbdays'].' days'));
-			else {
-				if($this->isFormattedDate($params['date'])){
-					$day = $params['date'];
-				}
-				else
-					$day = $today;			
-			}
-		}
+			elseif($this->isFormattedDate($params['date'])) $day = $params['date'];
+			else $day = $today;	
+		}		
 		else $day = $today;
 
 		$params['date'] = $day;
 		return $params;
 	}
 
-	private function isFormattedDate($date)
-	{
-		$d = \DateTime::createFromFormat("Y-m-d",$date);
-        if($d !== false && !array_sum($d->getLastErrors()))
-            return $date;
-        else 
-            return false;
-	}
 
-	public function prepareParams($params = array())
+	private function prepareParams($params = array())
     {
     	if(empty($params)) return array();
         
@@ -162,18 +135,17 @@ class CalendarManager extends AbstractManager
     {
     	//unset city_id is not numeric
         if(isset($params['city_id']) && !is_numeric($params['city_id']))  unset($params['city_id']);
-        //
-        if(isset($params['area'])) unset($params['area']);
-        //find city_id by city name
-        if(isset($params['city']) && $params['city'] != 'all') {
-            $r = explode('+',$params['city'],2);
-            $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($r[0],$params['country']);
-            if(isset($city)) {
-                $params['city_id'] = (int) $city->getId();
-                unset($params['city']);
-                if(isset($r[1]) && is_numeric($r[1])) $params['area'] = (int) $r[1];            
-            }
-        }
+        //unset area if not numeric
+        if(isset($params['area']) && !is_numeric($params['area'])) unset($params['area']);
+        //unset city_name if 'all'
+        if(isset($params['city_name']) && $params['city_name'] == 'all') unset($params['city_name']);
+        //splid city_name and area if so
+        if(isset($params['city_name']) && strpos($params['city_name'],'+')>0) {
+            $r = explode('+',$params['city_name'],2);            	            
+            $params['city_name'] = $r[0];             
+            if(isset($r[1]) && is_numeric($r[1])) $params['area'] = (int) $r[1];            	                   	
+        }  
+
 
         return $params;
     }
@@ -211,5 +183,15 @@ class CalendarManager extends AbstractManager
        
         return $params;
     }
+
+
+	private function isFormattedDate($date)
+	{
+		$d = \DateTime::createFromFormat("Y-m-d",$date);
+        if($d !== false && !array_sum($d->getLastErrors()))
+            return $date;
+        else 
+            return false;
+	}
 
 }

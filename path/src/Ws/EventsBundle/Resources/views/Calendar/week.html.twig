@@ -1,7 +1,7 @@
 <tr class="events-week">
 	{% set i = 1 %}
 	{% for date,events in week %}
-		<td class="events-day colomn-{{i}} {% if date|date("U") > "-1 days"|date("U") %}colomn-past{% endif %}" id="colomn-{{date}}" data-date="{{date}}">
+		<td class="events-day colomn-{{i}} {% if date|date("Y-m-d") < "now"|date("Y-m-d") %}colomn-past{% endif %}" id="colomn-{{date}}" data-date="{{date}}" style="width:2%" >
 			<div class="colomn-date" id="colomn-date-{{i}}">
 				{% if date|date('Y-m-d') == 'now'|date('Y-m-d') %}
 				<strong>Aujourd'hui</strong>

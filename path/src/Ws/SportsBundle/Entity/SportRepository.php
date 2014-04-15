@@ -12,7 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class SportRepository extends EntityRepository
 {
-	
+	public function autocomplete($prefix)
+	{
+		$qb = $this->createQueryBuilder('s');
+		$qb->where(
+			$qb->expr()->like('s.name',$qb->expr()->literal('%'.$prefix.'%'))
+			);
+
+		return $qb->getQuery()->getResult();
+
+	}	
 }
 
 ?>

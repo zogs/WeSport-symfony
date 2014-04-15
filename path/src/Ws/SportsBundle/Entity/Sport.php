@@ -34,6 +34,11 @@ class Sport implements Translatable
     private $slug;
 
     /**
+     * @ORM\Column(name="keywords", type="string", length=125, nullable=true)
+     */
+    private $keywords;
+
+    /**
      * @ORM\Column(name="icon", type="string", length=25, nullable=true)
      */
     private $icon;
@@ -172,5 +177,28 @@ class Sport implements Translatable
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Set keywords
+     *
+     * @param string $keywords
+     * @return Sport
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+
+        return $this;
+    }
+
+    /**
+     * Get keywords
+     *
+     * @return string 
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
     }
 }

@@ -40,6 +40,11 @@ class Category implements Translatable
     private $icon;
 
     /**
+     * @ORM\Column(name="keywords", type="string", length=125, nullable=true)
+     */
+    private $keywords;
+
+    /**
      * @ORM\OneToMany(targetEntity="Sport", mappedBy="category")
      */
     protected $sports;
@@ -164,5 +169,28 @@ class Category implements Translatable
     public function getSports()
     {
         return $this->sports;
+    }
+
+    /**
+     * Set keywords
+     *
+     * @param string $keywords
+     * @return Category
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+
+        return $this;
+    }
+
+    /**
+     * Get keywords
+     *
+     * @return string 
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
     }
 }
