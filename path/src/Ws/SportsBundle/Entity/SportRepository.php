@@ -15,10 +15,15 @@ class SportRepository extends EntityRepository
 	public function autocomplete($prefix)
 	{
 		$qb = $this->createQueryBuilder('s');
-		$qb->where(
-			$qb->expr()->like('s.name',$qb->expr()->literal('%'.$prefix.'%'))
-			);
 
+		$qb->innerJoin('s.category','c');
+
+		$qb->andWhere($qb->expr()->like('s.name',':prefix'));
+		$qb->orWhere($qb->expr()->like('s.keywords',':prefix'));
+		$qb->orWhere($qb->expr()->like('c.keywords',':prefix'));
+
+		$qb->setParameter('prefix','%'.$prefix.'%');
+		
 		return $qb->getQuery()->getResult();
 
 	}	

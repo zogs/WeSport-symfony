@@ -5,7 +5,7 @@ $(document).ready(function() {
 ============================================================*/	
  	$('input#city_name').click(function(e){ 		
 		$(this).val('');
-		$('input#event_location_city_id').val('');		
+		$('input#city_id').val('');		
 	});
 	
     $('input#city_name').typeahead({
@@ -43,33 +43,36 @@ $(document).ready(function() {
 		$('.geo-select-country').select2({ formatResult: countryFlag, formatSelection: countryFlag});				
 		$('.geo-select:not(.geo-select-country,.hide)').select2();
 	}
-});
 
 
-/*===========================================================
+	/*===========================================================
 	// Location FORM
-============================================================*/	
-$('.geo-select-ajax').change(function(){
+	============================================================*/	
+	$('.geo-select-ajax').change(function(){
 
-	var parent = $(this);
-	var url = parent.attr('data-ajax-url');
-	var level = parent.attr('data-geo-level');
-	var value = parent.val();
-	parent.addClass('geo-loading');
+		var parent = $(this);
+		var url = parent.attr('data-ajax-url');
+		var level = parent.attr('data-geo-level');
+		var value = parent.val();
+		parent.addClass('geo-loading');
 
-	$.ajax({
-		type: 'GET',
-		url: url,
-		data: { level: level, value: value },
-		dataType: 'json',
-		success: function(data){
+		$.ajax({
+			type: 'GET',
+			url: url,
+			data: { level: level, value: value },
+			dataType: 'json',
+			success: function(data){
 
-			parent.removeClass('geo-loading');
-			$('#'+data.level+'_select_field').empty().append(data.options).select2().show();
-						
-		}
-	})
+				parent.removeClass('geo-loading');
+				$('#'+data.level+'_select_field').empty().append(data.options).select2().show();
+							
+			}
+		})
+	});
 });
+
+
+
 
 function countryFlag(state) {
 

@@ -12,6 +12,6 @@ admin_sports_sport:
 
 ws_sports_autocomplete:
     pattern: /sport/autocomplete/{prefix}
-    defaults: { _controller: WsSportsBundle:Default:autocomplete }
+    defaults: { _controller: WsSportsBundle:Default:autocomplete, prefix:null }
     requirements:
         _method: GET

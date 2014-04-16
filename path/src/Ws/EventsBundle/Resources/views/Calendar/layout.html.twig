@@ -19,8 +19,8 @@
 					{% endfor %}					
 				</select>
 
-				<input type="text" id="city_name" name="sport_name" value="" placeholder='Entrer votre sport'>
-				<input type="hidden" id="city_id" name="sport_id" value="">
+				<input type="text" id="sport_name" name="sport_name" value="" placeholder='Entrer votre sport'>
+				<input type="hidden" id="sport_id" name="sport_id" value="" data-autocomplete-url="{{ path('ws_sports_autocomplete') }}">
 
 				<button type="submit">Envoyer</button>
 			</form>
