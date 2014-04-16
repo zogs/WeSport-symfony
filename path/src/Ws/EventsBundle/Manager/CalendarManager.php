@@ -90,16 +90,13 @@ class CalendarManager extends AbstractManager
 
 	public function prepareStartDate($params = array())
 	{
-
-		$day = null;
 		$today = \date('Y-m-d');
-		$previousDate = $this->cookies['date'];
-		if(empty($previousDate) || $this->isFormattedDate($previousDate) == false) $previousDate = $today;
+		$cookie_date = (isset($this->cookies['date']) && $this->isFormattedDate($this->cookies['date']) == true)? $this->cookies['date'] : $today;		
 
 		if(isset($params['date'])) {
 			if($params['date'] == 'now') $day = $today;
-			elseif($params['date'] == 'next')  $day = date('Y-m-d',strtotime($previousDate.' + '.$params['nbdays'].' days'));
-			elseif($params['date'] == 'prev') $day = date('Y-m-d',strtotime($previousDate.' - '.$params['nbdays'].' days'));
+			elseif($params['date'] == 'next')  $day = date('Y-m-d',strtotime($cookie_date.' + '.$params['nbdays'].' days'));
+			elseif($params['date'] == 'prev') $day = date('Y-m-d',strtotime($cookie_date.' - '.$params['nbdays'].' days'));
 			elseif($this->isFormattedDate($params['date'])) $day = $params['date'];
 			else $day = $today;	
 		}		
