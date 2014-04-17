@@ -113,6 +113,7 @@ class CalendarManager extends AbstractManager
         
         $params = $this->prepareCountryParams($params);
         $params = $this->prepareCityParams($params);
+        $params = $this->prepareAreaParams($params);
         $params = $this->prepareSportParams($params);
         $params = $this->prepareNbDaysParams($params);
         $params = $this->prepareStartDate($params);
@@ -132,8 +133,7 @@ class CalendarManager extends AbstractManager
     {
     	//unset city_id is not numeric
         if(isset($params['city_id']) && !is_numeric($params['city_id']))  unset($params['city_id']);
-        //unset area if not numeric
-        if(isset($params['area']) && !is_numeric($params['area'])) unset($params['area']);
+        
         //unset city_name if 'all'
         if(isset($params['city_name']) && $params['city_name'] == 'all') unset($params['city_name']);
         //splid city_name and area if so
@@ -143,6 +143,15 @@ class CalendarManager extends AbstractManager
             if(isset($r[1]) && is_numeric($r[1])) $params['area'] = (int) $r[1];            	                   	
         }  
 
+
+        return $params;
+    }
+
+    private function prepareAreaParams($params)
+    {
+    	if(isset($params['area']) && is_string($params['area'])) $params['area'] = (int) trim(str_replace('km','',$params['area']));
+    	//unset area if not numeric
+        if(!is_numeric($params['area'])) unset($params['area']);
 
         return $params;
     }
@@ -177,6 +186,8 @@ class CalendarManager extends AbstractManager
     	//check days is numeric
         if(isset($params['nbdays']) && is_numeric($params['nbdays']))
         	$params['nbdays'] = (int) $params['nbdays'];
+        else
+        	$params['nbdays'] = $this->default['nbdays'];
        
         return $params;
     }

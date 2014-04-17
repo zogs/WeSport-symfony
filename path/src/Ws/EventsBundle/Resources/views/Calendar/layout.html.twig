@@ -7,29 +7,42 @@
 	{% endblock %}
 
 	{% block search_calendar %}
-		<div>			
-			<form id="calendar_search" action="{{ path('ws_events_calendar') }}" method="GET">
-				<input type="text" id="city_name" name="city_name" value="{{ search.city_name }}" placeholder='Entrer votre ville'>
+				
+		<form id="calendar_search" action="{{ path('ws_events_calendar') }}" method="GET">
+			<div class="wrapper left-wrapper">
+				
+			</div>
+
+			<div class="wrapper city-wrapper">
+				<label for="city_name">
+					<span class="city-icon ws-icon ws-icon-office"></span>
+				</label>
+				<input type="text" id="city_name" name="city_name" value="{{ search.city_name }}" placeholder='ex: Montpellier'>
 				<input type="hidden" id="city_id" name="city_id" value="{{ search.city_id }}" data-autocomplete-url="{{ path('my_world_autocompletecity')}}">
+			</div>
 
-				<select name="area" id="area">
-					{% set areas = {'0':'0km','10':'10km','20':'20km','50':'50km','100':'100km'} %}
-					{% for km,area in areas %}
-						<option value="{{ km }}" {% if km == search.area %} selected="selected"{% endif %}>{{ area }}</option>
-					{% endfor %}					
-				</select>
+			<div class="wrapper area-wrapper">						
+				<label for="area">
+					<span class="area-icon ws-icon ws-icon-arrow-up-right"></span>					
+				</label>
+				<input type="text" id="area" name="area" value="{{ search.area }}km" placeholder="+0km">							
+			</div>
+			
+			<div class="wrapper sport-wrapper">
+				<label for="sport_name">
+					<span class="sport-icon ws-icon ws-icon-running"></span>
+				</label>
+				<input type="text" id="sport_name" name="sport_name" value="" placeholder='ex: Handball'>
+				<input type="hidden" id="sport_id" name="sport_id" value="" data-autocomplete-url="{{ path('ws_sports_autocomplete') }}">				
+			</div>
 
-				<input type="text" id="sport_name" name="sport_name" value="" placeholder='Entrer votre sport'>
-				<input type="hidden" id="sport_id" name="sport_id" value="" data-autocomplete-url="{{ path('ws_sports_autocomplete') }}">
-
-				<button type="submit">Envoyer</button>
-			</form>
-		</div>
+			<div class="wrapper submit-wrapper">
+				<button type="submit" class="mainbutton">Go</button>				
+			</div>
+		</form>
+	
 	{% endblock %}
-
-	{{ dump(app.request.cookies.all) }}
-	<br>
-	{{ dump(search) }}
+	
 	<div class="calendar" id="calendar">
 		<div class="calendar-header">
 			<div class="week-nav previousWeek">
@@ -119,7 +132,8 @@
 			<div class="calendar-loader"><img class="loadingbar" src="{{ asset('bundles/wsstyle/img/ajax-loader-bar.gif')}}" title="Chargement..." /></div>
 		</div>
 	</div>
-
+	
+	{{ dump(search) }}
 
 {% endblock %}
 

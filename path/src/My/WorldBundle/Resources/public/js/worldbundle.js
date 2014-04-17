@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 /*===========================================================
 	// Autocomplete cityName input
-============================================================*/	
+============================================================*/
  	$('input#city_name').click(function(e){ 		
 		$(this).val('');
 		$('input#city_id').val('');		
@@ -23,7 +23,7 @@ $(document).ready(function() {
 					].join(''),
 		engine: Hogan ,
 
-		//header: 'header',
+		header: 'Sélectionner une ville',
 		//footer: 'footer',
 
 	}).on('typeahead:selected',function( evt, datum ){
