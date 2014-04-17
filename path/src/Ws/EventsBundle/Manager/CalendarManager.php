@@ -16,8 +16,8 @@ class CalendarManager extends AbstractManager
 		'date' => '2014-04-01',
 		'city_id'=>null,
 		'city_name'=>null,
-		'area'=>0,
-		'sport'=> null, //array(67,68,72)
+		'area'=>null,
+		'sports'=> array(), //array(67,68,72)
 		'nbdays'=>7,
 		);
 
@@ -67,10 +67,33 @@ class CalendarManager extends AbstractManager
 		$this->computed = true;
 		return $this->params;
 	}
-
 	public function getSearchParams()
+	{
+		return array(
+			'raw' => $this->getRawSearchParams(),
+			'full' => $this->getFullSearchParams()
+			);
+	}
+	public function getRawSearchParams()
 	{		
 		return $this->computeParams();
+	}
+
+	public function getFullSearchParams()
+	{
+		$a = array();
+		$a['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
+		$a['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
+		$a['area'] = (!empty($this->params['area']))? '+'.$this->params['area'].'km' : '';
+		$a['nbdays'] = $this->params['nbdays'];
+		$a['date'] = $this->params['date'];
+		$a['sports'] = array();
+		$repo = $this->em->getRepository('WsSportsBundle:Sport');
+		foreach ($this->params['sports'] as $k => $id) {
+			$a['sports'][] = $repo->findOneById($id);
+		}
+		
+		return $a;
 	}
 
 	public function saveSearchCookies()
@@ -116,9 +139,15 @@ class CalendarManager extends AbstractManager
         $params = $this->prepareAreaParams($params);
         $params = $this->prepareSportParams($params);
         $params = $this->prepareNbDaysParams($params);
+        $params = $this->prepareTypeParams($params);
         $params = $this->prepareStartDate($params);
         
         return $params;
+    }
+
+    private function prepareTypeParams($params)
+    {
+    	return $params;
     }
 
     private function prepareCountryParams($params)
@@ -149,32 +178,39 @@ class CalendarManager extends AbstractManager
 
     private function prepareAreaParams($params)
     {
-    	if(isset($params['area']) && is_string($params['area'])) $params['area'] = (int) trim(str_replace('km','',$params['area']));
-    	//unset area if not numeric
-        if(!is_numeric($params['area'])) unset($params['area']);
+    	//remove "+" and "km"
+	if(isset($params['area']) && is_string($params['area'])) $params['area'] = (int) trim(str_replace('km','',str_replace('+','',$params['area'])));
+	//set to null if not numeric
+	if(!is_numeric($params['area']) || $params['area'] == 0) $params['area'] = null;
+	//set a maximum
+	if(isset($params['area']) && $params['area'] > 200) $params['area'] = 200;
 
-        return $params;
+	return $params;
     }
 
     private function prepareSportParams($params)
-    {    	
+    {    	    	
         if(isset($params['sports'])) {
-        	
-        	if($params['sports'] == 'all' || $params['sports']==NULL ){
-        		unset($params['sports']);
+        	//unset if sport isn't defined
+        	if($params['sports'] == 'all' || $params['sports']==NULL )	{
+        		$params['sports'] = array();
         		return $params;
         	}
-        	//if sports params is a string or have a "+" in it
+        	//split sports in an array
         	if(is_string($params['sports']) && strpos($params['sports'],'+')>0)
-            	$sports = explode('+',$params['sports']); 
+            	$sports = explode('+',trim($params['sports'],'+')); 
             else
             	$sports = array($params['sports']);
 
-            //find by slug
-            foreach ($sports as $key => $slug) {
-                $sport = $this->em->getRepository('WsSportsBundle:Sport')->findOneBySlug($slug);
-                if(isset($sport)) $sports[$key] = $sport->getId();
-                else unset($sports[$key]);
+            //set sports id in an array
+            foreach ($sports as $k => $sport) {
+            		if(is_numeric($sport)) $sports[$k] = $sport;
+            		elseif(is_string($sport)) {
+            			//find by slug
+                		$sport = $this->em->getRepository('WsSportsBundle:Sport')->findOneBySlug($sport);
+                		if(isset($sport)) $sports[$k] = $sport->getId();            			
+            		}                
+                	else unset($sports[$k]);
             }   
             $params['sports'] = $sports;                        
         }

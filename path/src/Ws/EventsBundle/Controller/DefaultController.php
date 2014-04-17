@@ -76,7 +76,7 @@ class DefaultController extends Controller
         //save search cookie
         $manager->saveSearchCookies();
         //get search params
-        $search = $manager->getSearchParams();
+        $search = $manager->getRawSearchParams();
 
 
         return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
