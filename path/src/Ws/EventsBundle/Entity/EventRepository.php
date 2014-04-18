@@ -25,6 +25,8 @@ class EventRepository extends EntityRepository
 			$events[$day] = $this->findEventsByDate($day);
 			$day = date("Y-m-d", strtotime($day. " +1 day"));
 		}
+		//prevent memory leak
+		$this->_em->clear();
 
 		return $events;
 	}
@@ -40,6 +42,7 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterBySports($qb);
 		$qb = $this->filterByOnline($qb);		
 		$qb = $this->filterByCityQuery($qb);
+		$qb = $this->filterByType($qb);
 	
 
 		return $qb->getQuery()->getResult();
@@ -135,9 +138,15 @@ class EventRepository extends EntityRepository
 		if(empty($this->params['sports'])) return $qb;
 
 		$qb->setParameter(':sports',$this->params['sports']); // ex :sports = array(67,68,98);
-		return $qb->andWhere('e.sport IN (:sports)');
-			
+		return $qb->andWhere('e.sport IN (:sports)');		
 	}
+
+	public function filterByType($qb)
+	{
+		$qb->setParameter('type',$this->params['type']);
+		return $qb->andWhere('e.type IN (:type)');
+	}
+
 	public function filterByDate($qb,$date)
 	{
 		$qb->setParameter('date',$date);

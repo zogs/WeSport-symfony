@@ -26,6 +26,11 @@ class Serie
      */
     private $organizer;
 
+     /**
+     * @ORM\Column(name="type", type="string", length=10)
+     */
+    private $type = 'person';
+    
     /**
      * @ORM\OneToMany(targetEntity="Event", mappedBy="serie", fetch="EAGER")
      */
@@ -432,5 +437,28 @@ class Serie
     public function getOrganizer()
     {
         return $this->organizer;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Serie
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

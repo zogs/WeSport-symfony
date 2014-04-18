@@ -27,7 +27,7 @@ ws_events_week_ajax:
 
 
 ws_events_calendar:
-    pattern: /calendar/{country}/{city}/{sports}/{date}/{nbdays}/{type}
+    pattern: /calendar/{country}/{city}/{sports}/{type}/{nbdays}/{date}
     defaults: { _controller: WsEventsBundle:Default:calendar, country:null, city:null, sports:null, date:null, nbdays:null, type:null }
     requirements:         
         _method: GET

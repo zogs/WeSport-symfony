@@ -20,8 +20,11 @@ class CalendarManager extends AbstractManager
 		'area'=>null,
 		'sports'=> array(), //array(67,68,72)
 		'nbdays'=>7,
+		'type' => array(), //array('pro','asso','person')
 		);
 
+	private $params2IgnoreInCookie = array('PHPSESSID','hl');
+	private $typeAllowed = array('person','asso','pro');
 	private $cookies = array();
 	private $query = array();
 	private $uri = array();
@@ -36,6 +39,7 @@ class CalendarManager extends AbstractManager
 	public function setCookieParams($cookies)
 	{
 		foreach ($cookies as $key => $value) {
+			//if array unserialize it
 			if(strpos($value,'[array]') === 0) $value = unserialize(str_replace('[array]','',$value));
 			$cookies[$key] = $value;
 		}
@@ -83,8 +87,10 @@ class CalendarManager extends AbstractManager
 
 	public function getFullSearchParams()
 	{
+		
 		$this->full['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
 		$this->full['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
+		$this->em->clear();
 		$this->full['area'] = (!empty($this->params['area']))? '+'.$this->params['area'].'km' : '';
 		$this->full['nbdays'] = $this->params['nbdays'];
 		$this->full['date'] = $this->params['date'];
@@ -93,12 +99,13 @@ class CalendarManager extends AbstractManager
 		foreach ($this->params['sports'] as $k => $id) {
 			$this->full['sports'][] = $repo->findOneById($id);
 		}
-		
+
 		return $this->full;
 	}
 
 	public function getUrlStringParam()
 	{
+		return '';
 		$s = '';
 		$s .= $this->full['country']->getName();
 		$s .= '/';
@@ -116,12 +123,20 @@ class CalendarManager extends AbstractManager
 			$s = trim($s,'+');		
 		}
 		$s .= '/';
-		$s .= $this->params['date'];
+		if(empty($this->params['sports'])){
+			$s .= 'all';
+		} else {
+			foreach ($this->params['type'] as $k => $type) {
+				$s .= $type.'+';
+			}
+			$s = trim($s,'+');
+		}
 		$s .= '/';
-		$s .= $this->params['nbdays'];
+		$s .= $this->params['nbdays'];		
+		$s .= '/';
+		$s .= $this->params['date'];
 
-		var_dump($s);
-		exit();
+		return $s;
 	}
 
 	public function saveSearchCookies()
@@ -129,6 +144,7 @@ class CalendarManager extends AbstractManager
 		$response = new Response();
 		foreach ($this->params as $key => $value) {			
 
+			if(in_array($key,$this->params2IgnoreInCookie)) continue;			
 			if(isset($value)){
 				//echo $key.'='.$value.'<br>';
 				if(is_array($value)) $value = '[array]'.serialize($value);
@@ -137,6 +153,21 @@ class CalendarManager extends AbstractManager
 			}
 		}
 		$response->send();		
+	}
+
+	private function prepareParams($params = array())
+	{
+		if(empty($params)) return array();
+
+		$params = $this->prepareCountryParams($params);
+		$params = $this->prepareCityParams($params);
+		$params = $this->prepareAreaParams($params);
+		$params = $this->prepareSportParams($params);
+		$params = $this->prepareNbDaysParams($params);
+		$params = $this->prepareTypeParams($params);
+		$params = $this->prepareStartDate($params);
+
+		return $params;
 	}
 
 	public function prepareStartDate($params = array())
@@ -158,51 +189,47 @@ class CalendarManager extends AbstractManager
 	}
 
 
-	private function prepareParams($params = array())
-    {
-    	if(empty($params)) return array();
-        
-        $params = $this->prepareCountryParams($params);
-        $params = $this->prepareCityParams($params);
-        $params = $this->prepareAreaParams($params);
-        $params = $this->prepareSportParams($params);
-        $params = $this->prepareNbDaysParams($params);
-        $params = $this->prepareTypeParams($params);
-        $params = $this->prepareStartDate($params);
-        
-        return $params;
-    }
+	private function prepareTypeParams($params)
+	{
+		if(is_string($params['type'])) $a = explode('+',trim($params['type'],'+'));
+		if(is_array($params['type'])) $a = $params['type'];
+		foreach ($a as $k => $type) {
+			if(!in_array($type,$this->typeAllowed)) unset($a[$k]);
+		}    	
+		$params['type'] = $a;
+		return $params;
+	}
 
-    private function prepareTypeParams($params)
-    {
-    	return $params;
-    }
+	private function prepareCountryParams($params)
+	{
+		//replace country name by country code
+		if(isset($params['country']) && strlen($params['country'])>2 ) $params['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCodeByCountryName($params['country']);
 
-    private function prepareCountryParams($params)
-    {
-    	//replace country name by country code
-    	if(isset($params['country']) && strlen($params['country'])>2 ) $params['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCodeByCountryName($params['country']);
-    	
-    	return $params;
-    }
+		return $params;
+	}
 
-    private function prepareCityParams($params)
-    {
-    	//unset city_id is not numeric
-        if(isset($params['city_id']) && !is_numeric($params['city_id']))  unset($params['city_id']);
-        
-        //unset city_name if 'all'
-        if(isset($params['city_name']) && $params['city_name'] == 'all') unset($params['city_name']);
-        //splid city_name and area if so
-        if(isset($params['city_name']) && strpos($params['city_name'],'+')>0) {
-            $r = explode('+',$params['city_name'],2);            	            
-            $params['city_name'] = $r[0];             
-            if(isset($r[1]) && is_numeric($r[1])) $params['area'] = (int) $r[1];            	                   	
-        }  
+	private function prepareCityParams($params)
+	{		
+		//unset city_id is not numeric
+		if(isset($params['city_id']) && !is_numeric($params['city_id']))  unset($params['city_id']);
 
+		//unset city_name if 'all'
+		if(isset($params['city_name']) && $params['city_name'] == 'all') unset($params['city_name']);
+		//splid city_name and area if so
+		if(isset($params['city_name'])) {
+			if(strpos($params['city_name'],'+')>0){
+				$r = explode('+',$params['city_name'],2);       
+				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($r[0],$params['country']);     	            
+				if(isset($city)) $params['city_id'] = $city->getId();           
+				if(isset($r[1]) && is_numeric($r[1])) $params['area'] = (int) $r[1];            	                   				
+			} else {
+				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($params['city_name'],$params['country']);  
+				if(isset($city)) $params['city_id'] = $city->getId();
+			}
+		}  		
 
-        return $params;
-    }
+		return $params;
+	}
 
     private function prepareAreaParams($params)
     {

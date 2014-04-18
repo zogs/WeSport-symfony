@@ -55,6 +55,11 @@ class Event
     private $time;
 
     /**
+     * @ORM\Column(name="type", type="string", length=10)
+     */
+    private $type = 'person';
+
+    /**
      * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")     
      */
     private $location;
@@ -643,4 +648,27 @@ class Event
         return false;
     }
 
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Event
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }
