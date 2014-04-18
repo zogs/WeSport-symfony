@@ -1,7 +1,9 @@
 {% extends is_ajax ? 'WsEventsBundle:Calendar:layout_ajax.html.twig' : 'WsEventsBundle:Calendar:layout.html.twig' %}
 
 {% block calendar_week %}
-	<div class="events-weeks {% if search.raw.nbdays > 7 %}minified-events{% endif %} {% if "now"|date('Y-m-d') == search.raw.date|date('Y-m-d') %}current-week{% endif %}" data-first-day="{{ search.raw.date }}" >
+	<div class="events-weeks {% if search.raw.nbdays > 7 %}minified-events{% endif %}
+	 {% if "now"|date('Y-m-d') == search.raw.date|date('Y-m-d') %}current-week{% endif %}" 
+	 data-first-day="{{ search.raw.date }}" >
 		<table>
 			{% for week in weeks %}
 			

@@ -38,6 +38,8 @@ $(document).ready(function() {
 		
 	});
 
+
+
 	if($('.geo-select').length != 0){
 
 		$('.geo-select-country').select2({ formatResult: countryFlag, formatSelection: countryFlag});				

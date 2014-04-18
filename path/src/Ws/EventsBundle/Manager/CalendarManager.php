@@ -11,6 +11,7 @@ class CalendarManager extends AbstractManager
 	protected $em;
 	private $params = array();
 	private $computed = false;
+	private $full = array();
 	private $default = array(
 		'country' => 'FR',
 		'date' => '2014-04-01',
@@ -71,7 +72,8 @@ class CalendarManager extends AbstractManager
 	{
 		return array(
 			'raw' => $this->getRawSearchParams(),
-			'full' => $this->getFullSearchParams()
+			'full' => $this->getFullSearchParams(),
+			'url' => $this->getUrlStringParam(),
 			);
 	}
 	public function getRawSearchParams()
@@ -81,19 +83,45 @@ class CalendarManager extends AbstractManager
 
 	public function getFullSearchParams()
 	{
-		$a = array();
-		$a['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
-		$a['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
-		$a['area'] = (!empty($this->params['area']))? '+'.$this->params['area'].'km' : '';
-		$a['nbdays'] = $this->params['nbdays'];
-		$a['date'] = $this->params['date'];
-		$a['sports'] = array();
+		$this->full['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
+		$this->full['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
+		$this->full['area'] = (!empty($this->params['area']))? '+'.$this->params['area'].'km' : '';
+		$this->full['nbdays'] = $this->params['nbdays'];
+		$this->full['date'] = $this->params['date'];
+		$this->full['sports'] = array();
 		$repo = $this->em->getRepository('WsSportsBundle:Sport');
 		foreach ($this->params['sports'] as $k => $id) {
-			$a['sports'][] = $repo->findOneById($id);
+			$this->full['sports'][] = $repo->findOneById($id);
 		}
 		
-		return $a;
+		return $this->full;
+	}
+
+	public function getUrlStringParam()
+	{
+		$s = '';
+		$s .= $this->full['country']->getName();
+		$s .= '/';
+		$s .= $this->full['location']->getCity()->getName();
+		if(!empty($this->params['area'])) {
+			$s .= '+'.$this->params['area'];
+		}
+		$s .= '/';
+		if(empty($this->params['sports'])){
+			$s .= 'all';
+		} else {
+			foreach ($this->full['sports'] as $k => $sport) {
+				$s .= $sport->getSlug().'+';
+			}	
+			$s = trim($s,'+');		
+		}
+		$s .= '/';
+		$s .= $this->params['date'];
+		$s .= '/';
+		$s .= $this->params['nbdays'];
+
+		var_dump($s);
+		exit();
 	}
 
 	public function saveSearchCookies()
