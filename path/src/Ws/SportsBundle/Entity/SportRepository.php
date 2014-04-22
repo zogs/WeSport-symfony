@@ -27,6 +27,25 @@ class SportRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 
 	}	
+
+	public function findRowsById($id)
+	{
+		$qb = $this->createQueryBuilder('s');
+		$qb->where($qb->expr()->eq('s.id',':id'));
+		$qb->setParameter('id',$id);
+
+		return $qb->getQuery()->getSingleResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+	}
+
+	public function findRowsBySlug($slug)
+	{
+		$qb = $this->createQueryBuilder('s');
+		$qb->where($qb->expr()->eq('s.slug',':slug'));
+		$qb->orWhere($qb->expr()->eq('s.name',':slug'));
+		$qb->setParameter('slug',$slug);
+
+		return $qb->getQuery()->getSingleResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+	}
 }
 
 ?>

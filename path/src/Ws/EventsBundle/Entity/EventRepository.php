@@ -17,7 +17,10 @@ class EventRepository extends EntityRepository
 	public function findCalendarEvents($params = array())
 	{
 		$this->params = $params;
-			
+		
+		//disable sql logging
+		$this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
+
 		$day = $params['date'];
 		$events = array();
 		for ($i=1; $i < $params['nbdays']; $i++) { 
@@ -53,10 +56,13 @@ class EventRepository extends EntityRepository
 	{
 		if(empty($this->params['city_id']) && empty($this->params['city_name'])) return $qb;
 
-		if(!empty($this->params['city_name']))
-			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityName($this->params['city_name'],'FR');		
-		elseif(!empty($this->params['city_id']))
+		if(!empty($this->params['city_id']))
 			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
+		elseif(!empty($this->params['city_name']))
+			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityName($this->params['city_name'],$this->params['country']);		
+
+		//free memory
+		$this->_em->detach($location);
 
 		if(empty($this->params['area']))
 			return $this->filterByLocation($qb,$location);

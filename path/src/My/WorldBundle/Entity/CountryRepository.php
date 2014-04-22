@@ -86,8 +86,12 @@ class CountryRepository extends EntityRepository
 
 		$qb->setParameter('name',$name);
 		$res = $qb->getQuery()->getSingleResult();
+		$code = $res->getCode();
 
-		return $res->getCode();		
+		//free memory
+		unset($res);
+
+		return $code;		
 	}
 
 

@@ -578,7 +578,7 @@ div.mm-is-menu * {
 .area-wrapper {
 	padding-top:15px;
 	input#area { @include rem(28);}
-	span.area-icon { @include rem(18);}
+	span.area-icon { @include rem(18); @include opacity(0.4);}
 }
 
 /* inputs font style */
@@ -612,10 +612,6 @@ input#city_name,input#sport_name,input#area {
 	margin-top: -25px;
 }
 
-
-
-
-
 /*
 ======================
 TYPEAHEAD CUSTOM STYLE
@@ -639,6 +635,243 @@ TYPEAHEAD CUSTOM STYLE
 
 /* ==============
 =====*/
+
+
+.calendar {	
+	background-image:url(../img/fresque.jpg);
+	background-repeat: repeat-y;
+	background-size:100% 100%;
+	position:relative;
+	@extend %clearfix;
+}
+
+.calendar-header {
+	overflow: hidden;
+	background-color:$darkblue;
+	width:100%;
+	height:80px;
+	position:relative;	
+	border-top:1px solid rgba(255,255,255,0.4);	
+}
+
+.header-part {
+	height:100%; 
+	display: inline-block;
+	vertical-align: top;
+}
+
+.previousWeek{
+	width: 10%;
+	border-spacing:0px;	
+	text-align: center;
+	background-color:$deepred;
+	position: relative;
+
+	a.calendar-nav-prev{
+		display: none;
+		position: relative;
+		padding:10px 50px;
+		color:$darkred;
+		font-weight:bold;
+		text-transform: uppercase;
+		line-height: 220%;
+		@include rem(18);
+
+		&:before{
+			content:''; display: block; position:absolute; top:50%; margin-top:-10px; left:20px;
+			border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right:10px solid $darkred; 
+		}
+		
+		&:hover:before{ 
+			//border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left:10px solid $darkred; border-right:10px solid transparent;
+		}
+	}
+	&:after{
+		content:''; display: block; position:absolute; top:0; right:0;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $darkblue; 
+	}
+	&:hover:after{
+		margin-right:-80px;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $deepred; border-right:40px solid transparent;
+	}
+}
+
+.calendar-arianne{
+	width: 20%;
+	padding:0 0 0 30px;
+	line-height: 260%;
+	color:#999;
+	@include long-shadow(text,#152e35,50,false,false,right);
+	strong{ @include rem(18); color:#FFF;}
+	i{ @include rem(12)}
+}
+
+.calendar-sports {
+	width: 35%;
+	text-align:center;
+
+	.sportChoice {
+		display: inline-block;
+		vertical-align: middle;
+		position: relative;		
+		margin:15px 5px 0 5px;
+
+		input[type=checkbox] {
+			position: absolute;
+			top:0;
+			left:0;
+			visibility: hidden;
+		}
+		input:checked ~ label {
+				@include rotate(360deg);
+				span.ws-icon{
+					@include opacity(1);
+					@include rem(40);
+
+				}
+		}
+	}
+	label.sportLabel {
+		position: relative;
+		background-color: #FFF;
+		border:5px solid #FFF; 
+		@include border-radius(100px);
+		@include transition(0.2s ease);				
+		@include rotate3d(0, 0, 0, 0deg); /* activation de l'AM */
+
+	}
+
+	label.sportLabel:hover {
+			margin-top:-20px;				
+			//@include rotate(360deg);
+			span.ws-icon{
+				@include rem(60);
+			}
+	}
+
+}
+
+.calendar-event-type {
+	width: 25%;
+	margin-top:10px;
+
+	.typeChoice {
+		display:inline-block;
+		vertical-align: middle;
+		margin:6px 0 0 5px;
+		position:relative;
+
+		input[type=checkbox]{
+			position: absolute;
+			top:0;
+			left:0;
+			visibility: hidden;
+		}
+	}
+
+	label.typeLabel {
+		position: relative;
+		color:#5c7f92;
+		padding:10px 25px;
+		background-color:#2a4e59;
+		@include border-radius(4px);
+		@include rem(14);
+		@include long-shadow(box,#0f313b,6,false,false,right); 
+	}
+	label.typeLabel:hover{
+		color:$lightblue;
+	}
+	.typeChoice input:checked ~ label.typeLabel {
+		top:-2px;
+		background-color: #385f6b;
+		color:$lightblue;
+		@include long-shadow(box,$lightblue,6,false,false,right); 
+	}
+	.typeChoice input:active ~ label.typeLabel {
+		top:2px;
+		color:$lightblue;
+		@include long-shadow(box,$lightblue,3,false,false,right); 
+	}
+		
+}
+
+.nextWeek{
+	width: 9%;
+	float:right;
+	border-spacing:0px;
+	text-align: center;
+	padding-top:15px;
+	background-color:$deepgreen;
+	position: relative;
+	
+	a.calendar-nav-next{
+		position: relative;
+		padding:7px 50px;
+		color:$darkgreen;
+		font-weight:bold;
+		text-transform: uppercase;
+		line-height: 220%;
+		@include rem(18);
+
+		&:before{
+			content:''; display: block; position:absolute; top:50%; margin-top:-10px; right:30px;
+			border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left:10px solid $darkgreen; 
+		}
+		&:hover:before{ 
+			//border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right:10px solid $darkgreen; border-left:10px solid transparent;
+		}
+	}
+	&:after{
+		content:''; display: block; position:absolute; top:0; left:0;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $darkblue; 
+	}
+	&:hover:after{
+		margin-left:-80px;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $deepgreen; border-left:40px solid transparent;
+	}
+}
+
+		
+
+
+
+
+
+
+.calendar-period{
+	display: none;
+	float:right;
+	margin-right:5%;
+	height:100%;
+	strong{
+		color:#6f6f6f;
+	}
+	.periodChoice{
+		display:inline-block;
+		vertical-align: middle;
+		margin:6px 0 0 5px;
+		position:relative;
+		input[type=radio]{
+			position: absolute;
+			top:0;
+			left:0;
+			visibility: hidden;
+		}
+		label { 
+			padding:3px 15px;
+			background-color:#2a4e59;
+			@include border-radius(5px);
+			@include rem(10);
+			color:#b3b2b1;
+		}
+		label:hover,input.periodRadio:checked ~ label{
+			background-color: #385f6b;
+			color:#FFF;
+		}
+	}		
+}				
+
+
 
 
 //intro tourbus
@@ -692,146 +925,6 @@ TYPEAHEAD CUSTOM STYLE
 
 
 .calendar {	
-	background-image:url(../img/fresque.jpg);
-	background-repeat: repeat-y;
-	background-size:100% 100%;
-	position:relative;
-	@extend %clearfix;
-
-	.calendar-header {
-		overflow: hidden;
-		background-color:$darkblue;
-		width:100%;
-		height:80px;
-		position:relative;	
-		border-top:1px solid rgba(255,255,255,0.4);		
-
-		.previousWeek{
-			float:left;
-			position:relative;
-			display: table-cell; border-spacing:0px;
-			vertical-align: middle;
-			height:100%; 
-			text-align: center;
-			background-color:$deepred;
-
-			a.calendar-nav-prev{
-				display: none;
-				position: relative;
-				padding:10px 50px;
-				color:$darkred;
-				font-weight:bold;
-				text-transform: uppercase;
-				line-height: 220%;
-				@include rem(18);
-
-				&:before{
-					content:''; display: block; position:absolute; top:50%; margin-top:-10px; left:20px;
-					border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right:10px solid $darkred; 
-				}
-				
-				&:hover:before{ 
-					//border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left:10px solid $darkred; border-right:10px solid transparent;
-				}
-			}
-			&:after{
-				content:''; display: block; position:absolute; top:0; right:0;
-				border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $darkblue; 
-			}
-			&:hover:after{
-				margin-right:-40px;
-				border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $deepred; border-right:40px solid transparent;
-			}
-		}
-
-		.nextWeek{
-			float:right;
-			position:relative;
-			display: table-cell; border-spacing:0px;
-			vertical-align: middle;	height:100%; 
-			text-align: center;
-			background-color:$deepgreen;
-			
-			a.calendar-nav-next{
-				position: relative;
-				padding:7px 50px;
-				color:$darkgreen;
-				font-weight:bold;
-				text-transform: uppercase;
-				line-height: 220%;
-				@include rem(18);
-
-				&:before{
-					content:''; display: block; position:absolute; top:50%; margin-top:-10px; right:30px;
-					border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left:10px solid $darkgreen; 
-				}
-				&:hover:before{ 
-					//border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right:10px solid $darkgreen; border-left:10px solid transparent;
-				}
-			}
-			&:after{
-				content:''; display: block; position:absolute; top:0; left:0;
-				border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $darkblue; 
-			}
-			&:hover:after{
-				margin-left:-40px;
-				border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $deepgreen; border-left:40px solid transparent;
-			}
-		}
-
-		.calendar-arianne{
-			height:100%;
-			float:left;
-			padding:0 0 0 30px;
-			line-height: 260%;
-			color:#999;
-			@include long-shadow(text,#152e35,50,false,false,right);
-			strong{ @include rem(18); color:#FFF;}
-			i{ @include rem(12)}
-		}
-
-		.calendar-period{
-			float:right;
-			margin-right:5%;
-			height:100%;
-			strong{
-				color:#6f6f6f;
-			}
-			.periodChoice{
-				display:inline-block;
-				vertical-align: middle;
-				margin:6px 0 0 5px;
-				position:relative;
-				input[type=radio]{
-					position: absolute;
-					top:0;
-					left:0;
-					visibility: hidden;
-				}
-				label { 
-					padding:3px 15px;
-					background-color:#2a4e59;
-					@include border-radius(5px);
-					@include rem(10);
-					color:#b3b2b1;
-				}
-				label:hover,input.periodRadio:checked ~ label{
-					background-color: #385f6b;
-					color:#FFF;
-				}
-			}		
-		}
-
-
-		.fresque{
-			position:absolute;
-			bottom:0px;
-			height:10px;
-			width:100%;
-			display: none;
-		}
-	}
-
 
 	.calendar-nav{
 		

@@ -11,7 +11,7 @@ class CalendarManager extends AbstractManager
 	protected $em;
 	private $params = array();
 	private $computed = false;
-	private $full = array();
+	
 	private $default = array(
 		'country' => 'FR',
 		'date' => '2014-04-01',
@@ -21,6 +21,11 @@ class CalendarManager extends AbstractManager
 		'sports'=> array(), //array(67,68,72)
 		'nbdays'=>7,
 		'type' => array(), //array('pro','asso','person')
+		);
+
+	private $full = array(
+		'sports' => array(),
+		'type' => array()
 		);
 
 	private $params2IgnoreInCookie = array('PHPSESSID','hl');
@@ -33,6 +38,7 @@ class CalendarManager extends AbstractManager
 	public function findCalendarByParams()
 	{
 		$params = $this->computeParams();
+
 		return $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($params);
 	}
 
@@ -90,15 +96,18 @@ class CalendarManager extends AbstractManager
 		
 		$this->full['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
 		$this->full['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
-		$this->em->clear();
 		$this->full['area'] = (!empty($this->params['area']))? '+'.$this->params['area'].'km' : '';
 		$this->full['nbdays'] = $this->params['nbdays'];
 		$this->full['date'] = $this->params['date'];
 		$this->full['sports'] = array();
+		$this->full['type'] = $this->params['type'];
 		$repo = $this->em->getRepository('WsSportsBundle:Sport');
 		foreach ($this->params['sports'] as $k => $id) {
-			$this->full['sports'][] = $repo->findOneById($id);
+			$this->full['sports'][] = $repo->findRowsById($id);
 		}
+
+		//free memory
+		$this->em->clear();
 
 		return $this->full;
 	}
@@ -127,9 +136,9 @@ class CalendarManager extends AbstractManager
 			$s .= 'all';
 		} else {
 			foreach ($this->params['type'] as $k => $type) {
-				$s .= $type.'+';
+				$s .= $type.'-';
 			}
-			$s = trim($s,'+');
+			$s = trim($s,'-');
 		}
 		$s .= '/';
 		$s .= $this->params['nbdays'];		
@@ -226,6 +235,9 @@ class CalendarManager extends AbstractManager
 				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($params['city_name'],$params['country']);  
 				if(isset($city)) $params['city_id'] = $city->getId();
 			}
+			//free memory
+			unset($city);
+			$this->em->clear();
 		}  		
 
 		return $params;
@@ -233,43 +245,68 @@ class CalendarManager extends AbstractManager
 
     private function prepareAreaParams($params)
     {
-    	//remove "+" and "km"
-	if(isset($params['area']) && is_string($params['area'])) $params['area'] = (int) trim(str_replace('km','',str_replace('+','',$params['area'])));
-	//set to null if not numeric
-	if(!is_numeric($params['area']) || $params['area'] == 0) $params['area'] = null;
-	//set a maximum
-	if(isset($params['area']) && $params['area'] > 200) $params['area'] = 200;
+		//remove "+" and "km"
+		if(isset($params['area']) && is_string($params['area'])) $params['area'] = (int) trim(str_replace('km','',str_replace('+','',$params['area'])));
+		//set to null if not numeric
+		if(!is_numeric($params['area']) || $params['area'] == 0) $params['area'] = null;
+		//set a maximum
+		if(isset($params['area']) && $params['area'] > 200) $params['area'] = 200;
 
-	return $params;
+		return $params;
     }
 
     private function prepareSportParams($params)
-    {    	    	
-        if(isset($params['sports'])) {
-        	//unset if sport isn't defined
-        	if($params['sports'] == 'all' || $params['sports']==NULL )	{
+    {    	
+    	$sports = array();
+
+    	//return empty if all sports
+    	if(isset($params['sports']) && $params['sports'] == 'all') {        	
         		$params['sports'] = array();
         		return $params;
-        	}
-        	//split sports in an array
-        	if(is_string($params['sports']) && strpos($params['sports'],'+')>0)
-            	$sports = explode('+',trim($params['sports'],'+')); 
-            else
-            	$sports = array($params['sports']);
+    	}
 
-            //set sports id in an array
-            foreach ($sports as $k => $sport) {
-            		if(is_numeric($sport)) $sports[$k] = $sport;
-            		elseif(is_string($sport)) {
-            			//find by slug
-                		$sport = $this->em->getRepository('WsSportsBundle:Sport')->findOneBySlug($sport);
-                		if(isset($sport)) $sports[$k] = $sport->getId();            			
-            		}                
-                	else unset($sports[$k]);
-            }   
-            $params['sports'] = $sports;                        
-        }
-        return $params;
+    	//get sport from sport_id parameter
+    	if(!empty($params['sport_id']) && is_numeric($params['sport_id'])){
+    		$sports[] = $params['sport_id'];
+    	}
+
+    	//merge sports from sports paramter
+    	if(!empty($params['sports'])){
+    		if(is_string($params['sports']))
+    			$sports = array_merge($sports,explode('-',trim($params['sports'],'-')));
+    		if(is_array($params['sports']))
+    			$sports = array_merge($sports,$params['sports']);
+    	}
+
+    	//merge sports from sports_name parameter
+    	if(!empty($params['sport_name']) && is_string($params['sport_name'])) {
+    		$sports = array_merge($sports,explode('-',trim($params['sport_name'],'-')));
+    	}
+
+    	//keep unique values
+    	$sports = array_unique($sports);    		
+
+    	//find sports in database
+    	$a = array();    
+    	$repo = $this->em->getRepository('WsSportsBundle:Sport');
+       	foreach ($sports as $k => $sport) {
+    		
+    		if(is_numeric($sport))
+    			$sport = $repo->findRowsById($sport);
+    		elseif(is_string($sport))
+    			$sport = $repo->findRowsBySlug($sport);
+
+    		if(isset($sport) && !in_array($sport['id'],$a)){
+    			$a[] = $sport['id'];
+    		}    		
+    	}
+		
+    	$params['sports'] = $a;
+    	unset($sports);
+    	unset($sport);
+    	
+    	
+    	return $params;
     }
 
     private function prepareNbDaysParams($params)
