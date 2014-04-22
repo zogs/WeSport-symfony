@@ -28,7 +28,9 @@ user_profil_edit:
     pattern: /my/{action}
     defaults: { _controller: MyUserBundle:User:editProfil, action: 'account' }
 
-
+user_request_activation_mail:
+    pattern: /user/request/activation 
+    defaults: { _controller: MyUserBundle:User:requestActivationMail }
 
 #admin
 admin_user_index:

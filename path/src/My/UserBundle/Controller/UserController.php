@@ -3,6 +3,7 @@
 namespace My\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 use My\UserBundle\Form\Type\ProfilEditionType;
 
@@ -24,7 +25,24 @@ class UserController extends Controller
     	return $this->render('MyUserBundle:Profil:view.html.twig',array('user'=>$user));
     }
 
+    public function requestActivationMailAction(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createFormBuilder($user)->add('email','email')->getForm();
+        
+        $form->handleRequest($request);
+ 
+        if($form->isValid()) {
 
+            var_dump($form->getData());
+            exit();
+        }
+
+        return $this->render('MyUserBundle:Activation:requestActivationMail.html.twig',array(
+            'form'=>$form->createView(),
+            ));
+
+    }
     public function editProfilAction($action)
     {
 

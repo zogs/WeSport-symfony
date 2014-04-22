@@ -1,0 +1,31 @@
+{% extends "::layout_centered.html.twig" %}
+
+{% block page_content %}
+
+
+<div class="head-sheet">
+	<h1 class="title-sheet">Comment activer votre compte ?</h1>
+	<p>
+		Entrez l'email que vous avez renseigné lors de l'inscription et vous recevrez un email avec un lien d'activation. Il vous suffit de cliquer sur ce lien, ou de le copier dans la barre d'adresse de votre navigateur.
+	</p>
+
+
+	{{ form_start(form, {'class':'form form-ws','attr':{'class':'form form-ws'}} ) }}
+	   	
+	   	{% if form_errors(form) %}
+	   			{{ form_errors(form) }}
+	   	{% endif %}
+
+		{{ form_row(form.email) }}
+	    
+	    <button type="submit" class="btn-ws">Envoyer</button>
+	    <p>&nbsp;</p>
+	
+	{{ form_end(form) }}
+
+</div>
+
+
+
+
+{% endblock page_content %}
