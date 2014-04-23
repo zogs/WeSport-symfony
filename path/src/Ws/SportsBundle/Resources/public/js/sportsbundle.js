@@ -17,7 +17,7 @@ $(document).ready(function() {
 		allowDuplicates: true,	
 		//local: array of datums,
 		//prefetch: link to a json file with array of datums,
-		remote: $("#sport_id").attr('data-autocomplete-url')+'/%QUERY',			
+		remote: $("#sport_name").attr('data-autocomplete-url')+'/%QUERY',			
 		template: [ '<p class="tt-name">{{name}}</p>',
 					'<p class="tt-sub">{{category}}</p>',
 					'<p class="tt-id">{{id}} (à cacher)</p>',

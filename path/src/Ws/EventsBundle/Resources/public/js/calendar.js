@@ -1,6 +1,12 @@
 $(document).ready(function(){
 
+
 	if($('#calendar-content').length){
+
+
+		$('#calendar-search .ajax-refresh').on('change',function(){
+			//callThisWeek();
+		});
 
 		//init var 
 		var _body = $('body');

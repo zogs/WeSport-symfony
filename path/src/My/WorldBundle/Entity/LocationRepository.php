@@ -332,6 +332,19 @@ class LocationRepository extends EntityRepository
 		return $this->createLocation($states);
 	}
 
+	public function findLocationByCountryCode($code)
+	{
+		$country = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($code);
+		if($location = $this->findOneByCountry($code)){
+			return $location;
+		}
+		else {
+			return $this->createLocation(array(
+				'country'=>$country
+				));
+		}
+	}
+
 	/**
 	 * create location from states
 	 * @param associative array of states 

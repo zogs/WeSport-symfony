@@ -8,7 +8,7 @@
 
 	{% block search_calendar %}
 				
-		<form id="calendar_search" action="{{ path('ws_events_calendar') }}" method="GET">
+		<form id="calendar-search" action="{{ path('ws_events_calendar') }}" method="GET">
 			<div class="wrapper left-wrapper">
 				
 			</div>
@@ -17,15 +17,15 @@
 				<label for="city_name">
 					<span class="city-icon ws-icon ws-icon-office"></span>
 				</label>
-				<input type="text" id="city_name" name="city_name" value="{{ search.full.location.city.name }}" placeholder='ex: Montpellier'>
-				<input type="hidden" id="city_id" name="city_id" value="{{ search.raw.city_id }}" data-autocomplete-url="{{ path('my_world_autocompletecity')}}">
+				<input type="text" id="city_name" name="city_name" value="{{ search.location.city.name }}" placeholder='ex: Montpellier'>
+				<input type="hidden" id="city_id" name="city_id" value="{{ search.location.city.id }}" data-autocomplete-url="{{ path('my_world_autocompletecity')}}">
 			</div>
 
 			<div class="wrapper area-wrapper">						
 				<label for="area">
 					<span class="area-icon ws-icon ws-icon-arrow-up-right"></span>					
 				</label>
-				<input type="text" id="area" name="area" value="{{ search.full.area }}" placeholder="+0km">							
+				<input type="text" id="area" name="area" value="{{ search.area }}" placeholder="+0km">							
 			</div>
 			
 			<div class="wrapper sport-wrapper">
@@ -33,8 +33,7 @@
 					<span class="sport-icon ws-icon ws-icon-running"></span>
 				</label>
 				<input type="text" id="sport_name" name="sport_name" value="" placeholder='ex: Handball' data-autocomplete-url="{{ path('ws_sports_autocomplete') }}">
-				<input type="hidden" id="sport_id" name="sport_id" value="" >
-				<input type="hidden" id="sports" name="sports" value="">				
+				<input type="hidden" id="sport_id" name="sport_id" value="" >				
 			</div>
 
 			<div class="wrapper submit-wrapper">
@@ -56,10 +55,11 @@
 			</div>
 
 			<div class="header-part calendar-sports">
-				{% for sport in search.full.sports %}
+				<input type="hidden" name="sports" value=""><!-- important -->
+				{% for sport in search.sports %}
 				<div class="sportChoice">
-					<input type="checkbox" name="sports[]" id="sport-{{ sport.slug }}" value="{{ sport.id }}" checked="checked">
-					<label for="sport-{{ sport.slug }}" class="sportLabel">
+					<input type="checkbox" name="sports[]" id="sport-{{ sport.slug }}" class="ajax-refresh" value="{{ sport.id }}" checked="checked">
+					<label for="sport-{{ sport.slug }}" class="sportLabel tooltipbottom" data-toggle="tooltip" title="Supprimer {{ sport.name }}">
 						<span class="ws-icon ws-icon-{{ sport.icon }}"></span>
 					</label>
 				</div>
@@ -68,19 +68,19 @@
 
 			<div class="header-part calendar-event-type">
 				<div class="typeChoice">
-					<input type="checkbox" name="type[]" id="type-person" value="person" {% if 'person' in search.raw.type %} checked="checked"{% endif %}>
+					<input type="checkbox" name="type[]" id="type-person" value="person" {% if 'person' in search.type %} checked="checked"{% endif %}>
 					<label for="type-person" class="typeLabel">
 						Particulier
 					</label>
 				</div>
 				<div class="typeChoice">
-					<input type="checkbox" name="type[]" id="type-asso" value="asso" {% if 'asso' in search.raw.type %} checked="checked"{% endif %}>
+					<input type="checkbox" name="type[]" id="type-asso" value="asso" {% if 'asso' in search.type %} checked="checked"{% endif %}>
 					<label for="type-asso" class="typeLabel">
 						Association
 					</label>
 				</div>
 				<div class="typeChoice">
-					<input type="checkbox" name="type[]" id="type-pro" value="pro" {% if 'pro' in search.raw.type %} checked="checked"{% endif %}>
+					<input type="checkbox" name="type[]" id="type-pro" value="pro" {% if 'pro' in search.type %} checked="checked"{% endif %}>
 					<label for="type-pro" class="typeLabel">
 						Professionel
 					</label>
@@ -166,6 +166,10 @@
 			<div class="calendar-loader"><img class="loadingbar" src="{{ asset('bundles/wsstyle/img/ajax-loader-bar.gif')}}" title="Chargement..." /></div>
 		</div>
 	</div>
+
+	<pre>
+	{{ dump(search) }}	
+	</pre>
 
 	</form>
 

@@ -73,18 +73,17 @@ class CalendarManager extends AbstractManager
 						$this->cookies,
 						$this->query,
 						$this->uri
-						);
-		$this->params = $this->prepareParams($params);
+						);		
+		$this->params = $this->prepareParams($params);		
 		$this->computed = true;
 		return $this->params;
 	}
 	public function getSearchParams()
 	{
-		return array(
-			'raw' => $this->getRawSearchParams(),
-			'full' => $this->getFullSearchParams(),
-			'url' => $this->getUrlStringParam(),
-			);
+		$a = $this->getFullSearchParams();
+		$a['raw'] = $this->getRawSearchParams();
+		$a['url'] = $this->getUrlStringParam();
+		return $a;
 	}
 	public function getRawSearchParams()
 	{		
@@ -95,7 +94,11 @@ class CalendarManager extends AbstractManager
 	{
 		
 		$this->full['country'] = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
-		$this->full['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
+		if(isset($this->params['city_id']))
+			$this->full['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
+		else
+			$this->full['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCountryCode($this->params['country']);
+
 		$this->full['area'] = (!empty($this->params['area']))? '+'.$this->params['area'].'km' : '';
 		$this->full['nbdays'] = $this->params['nbdays'];
 		$this->full['date'] = $this->params['date'];
@@ -219,13 +222,18 @@ class CalendarManager extends AbstractManager
 
 	private function prepareCityParams($params)
 	{		
-		//unset city_id is not numeric
+
+		//check if city is numeric
 		if(isset($params['city_id']) && !is_numeric($params['city_id']))  unset($params['city_id']);
 
-		//unset city_name if 'all'
+		//city is set to ALL
 		if(isset($params['city_name']) && $params['city_name'] == 'all') unset($params['city_name']);
+
+		//if city_id if set but not city_name
+		if(isset($params['city_id']) && is_numeric($params['city_id']) && empty($params['city_name'])) unset($params['city_id']);
+
 		//splid city_name and area if so
-		if(isset($params['city_name'])) {
+		if(!empty($params['city_name'])) {
 			if(strpos($params['city_name'],'+')>0){
 				$r = explode('+',$params['city_name'],2);       
 				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($r[0],$params['country']);     	            
@@ -259,18 +267,24 @@ class CalendarManager extends AbstractManager
     {    	
     	$sports = array();
 
-    	//return empty if all sports
+    	//if all sports
     	if(isset($params['sports']) && $params['sports'] == 'all') {        	
         		$params['sports'] = array();
         		return $params;
     	}
 
-    	//get sport from sport_id parameter
+    	//if none sports
+    	if(empty($params['sports']) && empty($params['sport_name']) && empty($params['sport_id'])){
+    		$params['sports'] = array();
+    		return $params;
+    	}
+
+    	//if sport_id
     	if(!empty($params['sport_id']) && is_numeric($params['sport_id'])){
     		$sports[] = $params['sport_id'];
     	}
 
-    	//merge sports from sports paramter
+    	//merge with sports[]
     	if(!empty($params['sports'])){
     		if(is_string($params['sports']))
     			$sports = array_merge($sports,explode('-',trim($params['sports'],'-')));
@@ -278,12 +292,12 @@ class CalendarManager extends AbstractManager
     			$sports = array_merge($sports,$params['sports']);
     	}
 
-    	//merge sports from sports_name parameter
+    	//merge with sport_name
     	if(!empty($params['sport_name']) && is_string($params['sport_name'])) {
     		$sports = array_merge($sports,explode('-',trim($params['sport_name'],'-')));
     	}
 
-    	//keep unique values
+    	//avoid doublon
     	$sports = array_unique($sports);    		
 
     	//find sports in database

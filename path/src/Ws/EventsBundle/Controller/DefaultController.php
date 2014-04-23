@@ -63,14 +63,12 @@ class DefaultController extends Controller
 
     public function weekAjaxAction($date)
     {
-        //create params
-        $params['date'] = $date;
         //get manager
         $manager = $this->get('calendar.manager');
         //set params
         $manager->setCookieParams($this->getRequest()->cookies->all());
         $manager->setRequestParams($this->getRequest()->query->all());
-        $manager->setUriParams($params);
+        $manager->setUriParams(array('date'=>$date));
         //find searched week
         $week = $manager->findCalendarByParams();
         //save search cookie
