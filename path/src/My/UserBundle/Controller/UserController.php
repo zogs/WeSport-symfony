@@ -34,8 +34,17 @@ class UserController extends Controller
  
         if($form->isValid()) {
 
-            var_dump($form->getData());
-            exit();
+            //get user
+            $data = $form->getData();
+            $email = $data['email'];
+            $user =  $this->container->get('fos_user.user_manager')->findUserByEmail($email);
+            //get mailer
+            $mailer = $this->get('fos_user.mailer.twig_swift'); //this service is by default set to private, change to public in friendsofsymfony\user-bundle\FOS\UserBundle\Resources\config\mailer.xml
+            //send mail
+            $mailer->sendConfirmationEmailMessage($user);
+            //flash message
+            $this->get('flashbag')->add("Un email vous a été envoyé. Veuillez cliquez sur le lien contenu dans cet email",'success');
+            
         }
 
         return $this->render('MyUserBundle:Activation:requestActivationMail.html.twig',array(
@@ -49,7 +58,7 @@ class UserController extends Controller
         $user = $this->getUser();
 
         if($user === null){
-            $this->get('flashbag')->add('info',"Veuillez vous reconnecter");           
+            $this->get('flashbag')->add("Veuillez vous reconnecter",'info');           
             return $this->redirect($this->generateUrl("fos_user_security_login")); 
         }
 
@@ -63,11 +72,11 @@ class UserController extends Controller
                 $userManager = $this->container->get('fos_user.user_manager');
                 $userManager->updateUser($user);
 
-                $this->get('flashbag')->add('success',"Vos informations ont été sauvegardé !");
+                $this->get('flashbag')->add("Vos informations ont été sauvegardé !");
 
             } else {
                
-                $this->get('flashbag')->add('error',"Veuillez revoir vos informations...");
+                $this->get('flashbag')->add("Veuillez revoir vos informations...",'error');
             }
             
         }

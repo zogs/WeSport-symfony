@@ -113,10 +113,10 @@ class DefaultController extends Controller
 
             if($this->get('ws_events.manager')->saveAll($event)){
 
-                $this->get('flashbag')->add('success','formulaire valide');
+                $this->get('flashbag')->add('formulaire valide','success');
             }
             else {
-                $this->get('flashbag')->add('error','peut pas sauvegarder !');
+                $this->get('flashbag')->add('peut pas sauvegarder !','error');
             }
     	}             
 
@@ -138,7 +138,7 @@ class DefaultController extends Controller
         } 
 
         $this->get('ws_events.manager')->confirmEvent($event);
-        $this->get('flashbag')->add('success',"L'événement a été confirmé !");
+        $this->get('flashbag')->add("L'événement a été confirmé !");
 
         $this->redirect($this->generateUrl("ws_events_new")); 
     }
@@ -163,7 +163,7 @@ class DefaultController extends Controller
         }   
 
         $this->get('ws_events.manager')->deleteEvent($event);
-        $this->get('flashbag')->add('success',"L'événement a été supprimé !");
+        $this->get('flashbag')->add("L'événement a été supprimé !");
 
         $this->redirect($this->generateUrl("ws_events_new"));     
     }
@@ -188,7 +188,7 @@ class DefaultController extends Controller
         }   
 
         $this->get('ws_events.manager')->deleteSerie($event);
-        $this->get('flashbag')->add('success',"Tous les événements ont été supprimés !");
+        $this->get('flashbag')->add("Tous les événements ont été supprimés !",'success');
 
         $this->redirect($this->generateUrl("ws_events_new")); 
 
@@ -227,7 +227,7 @@ class DefaultController extends Controller
         }
 
         $this->get('ws_events.manager')->saveParticipation($event,$this->getUser(),true);
-        $this->get('flashbag')->add('success',"Merci de votre participation !");
+        $this->get('flashbag')->add("Merci de votre participation !");
 
         $this->redirect($this->generateUrl(
             'ws_events_view',array(
@@ -253,7 +253,7 @@ class DefaultController extends Controller
         }
 
         $this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
-        $this->get('flashbag')->add('info',"Une prochaine fois peut être !");
+        $this->get('flashbag')->add("Une prochaine fois peut être !",'info');
 
         $this->redirect($this->generateUrl(
             'ws_events_view',array(

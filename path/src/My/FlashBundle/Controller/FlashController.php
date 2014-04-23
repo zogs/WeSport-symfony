@@ -14,7 +14,7 @@ class FlashController extends Controller
     	$this->session = $session;
     }
 
-    public function add($type = 'success', $message = '')
+    public function add($message = '', $type = 'success')
     {
     	$this->session->getFlashBag()->add($type,$message);
     }

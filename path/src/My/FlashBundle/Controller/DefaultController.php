@@ -13,10 +13,10 @@ class DefaultController extends Controller
 
     public function testAction()
     {
-    	$this->get('flashbag')->add('success','Le message de succès est bien affiché !');
-    	$this->get('flashbag')->add('error',"Le message d'erreur apparait aussi !");
-    	$this->get('flashbag')->add('warning',"Attention au message warning ...");
-    	$this->get('flashbag')->add('info',"Ah non tout va bien !");
+    	$this->get('flashbag')->add('Le message de succès est bien affiché !','success');
+    	$this->get('flashbag')->add("Le message d'erreur apparait aussi !",'error');
+    	$this->get('flashbag')->add("Attention au message warning ...",'warning');
+    	$this->get('flashbag')->add("Ah non tout va bien !",'info');
 
     	return $this->render('MyFlashBundle:Default:test.html.twig');
     }

@@ -30,6 +30,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$admin->setRoles(array('ROLE_SUPER_ADMIN','ROLE_ADMIN'));
 		$admin->setLocation($this->getReference('location_dijon'));
 		$admin->setAvatar($this->getReference('avatar_admin'));
+		$admin->setConfirmationToken('6lctetgqael6DnFUjbb8kOV_4_1e88vexlwxSkBZTLw');
 
 		$manager->persist($admin);
 
@@ -45,6 +46,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$user1->setRoles(array('ROLE_USER'));
 		$user1->setLocation($this->getReference('location_beaune'));
 		$user1->setAvatar($this->getReference('avatar_user1'));
+		$user1->setConfirmationToken('6lctetgqael6DnFUjbb8kOV_4_1e88vexlwxSkBZTLw');
 
 		$manager->persist($user1);
 
@@ -60,6 +62,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$asso1->setRoles(array('ROLE_USER','ROLE_ASSO'));
 		$asso1->setLocation($this->getReference('location_moloy'));
 		$asso1->setAvatar($this->getReference('avatar_asso1'));
+		$asso1->setConfirmationToken('6lctetgqael6DnFUjbb8kOV_4_1e88vexlwxSkBZTLw');
 
 		$manager->persist($asso1);
 
