@@ -8,25 +8,66 @@
 			
 			<section>
 				<div class="content-header">
-					<div class="header-left">
-						<div class="event-sportLogo">
-							<span class="ws-icon ws-icon-large ws-icon-halo event-sport-logo ws-icon-{{ event.sport.icon }}"></span>
-						</div>
-						<h1 class="event-title {% if event.title|length < 30 %}title-big{% endif %}">
-							{{ event.title }}
-							<br>
-							<div class="fb-like" data-width="450" data-layout="button_count" data-show-faces="true" data-send="false"> </div>
-						</h1>
-					</div>
-
-					<div class="header-right">
-						<div class="orga-avatar"><img src="" alt="avatar"></div>
-						<div class="orga-info">
-							<span class="orga-name"><a href="{{ event.organizer|link2profil }}" rel="me author nofollow">{{ event.organizer.username }}</a></span>
-							<span class="orga-age">{{ event.organizer.age }}</span>
-							<span class="orga-link"><a href="{{ event.organizer|link2profil }}" rel="me author nofollow">Voir son profil</a></span>
-						</div>
-					</div>
+					<table class="event-header">
+						<tr class="row1">
+							<td class="header-cell">
+								<img  class="event-organizer-avatar"src="{{ asset(event.organizer.avatar.getWebPath) }}" alt="avatar">
+							</td>
+							<td class="header-cell">
+								<span class="event-sport-icon ws-icon ws-icon-large ws-icon-halo event-sport-logo ws-icon-{{ event.sport.icon }}"></span>
+							</td>
+							<td class="header-cell">
+								<img class="event-city-icon" src="{{ asset('bundles/wsstyle/img/city_location_icon.png') }}" alt="">
+							</td>
+							<td class="header-cell cell-title">
+								<h1 class="event-title {% if event.title|length < 30 %}title-big{% endif %}">
+									{{ event.title }}									
+								</h1>
+							</td>
+						</tr>
+						<tr class="row2">
+							<td class="header-cell">
+								<span class="event-metadata1"><a href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></span><br>
+								{% if event.organizer.age is not empty %}
+								<span class="event-metadata2">{{ event.organizer.age }}</span>
+								{% endif %}
+								<span class="event-metadata2"><a href="{{ event.organizer|link2user }}" rel="me author nofollow">Voir son profil</a></span>
+							</td>
+							<td class="header-cell">
+								<span class="event-metadata1">{{ event.sport.name|capitalize }}</span>
+							</td>
+							<td class="header-cell">
+								<span class="event-metadata1">{{ event.location.city.name|capitalize }}</span>								
+							</td>
+							<td class="header-cell">
+								<div class="event-action">
+									{% if event.timing == 'tocome' %}
+										{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+											{% if event.isAdmin(app.user) == false %}
+												{% if event.userParticipate(app.user) %}
+													<a class="btn-ws btn-ws-small" rel="nofollow"> 
+														<i class="icon icon-ok-sign icon-white"></i>
+														Vous participez !
+													</a>
+													<a class="btn btn-link" href="" rel="nofollow"><i class="icon-remove"></i> Annuler</a>
+												{% else %}
+													<a class="btn-ws btn-ws-small btn-ws-submit" href="" rel="nofollow">											
+															<i class="icon-white icon-plus"></i> Participer !
+														</a>
+												{% endif %}
+											{% else %}
+												<a class="btn btn-small" href="" rel="nofollow">Modifier mon annonce</a>	
+											{% endif %}	
+										{% else %}
+											<a class="btn-ws btn-ws-small btn-ws-submit" href="">Connexion</a>
+											<a class="btn-ws btn-ws-small btn-ws-submit" href="">Inscription</a>
+										{% endif %}
+									{% endif %}
+								</div>							
+								<div class="fb-like" data-width="450" data-layout="button_count" data-show-faces="true" data-send="false"> </div>
+							</td>
+						</tr>
+					</table>	
 				</div>
 			</section>
 
@@ -46,109 +87,90 @@
 						<span class="label">Cette activité est terminé</span> <span class="nb-partipant"><abbr title="{{ event.time|date('Y-m-d h:i:s') }}" class="date timeago">{{ event.time|date('Y-m-d h:i:s') }}</abbr></span>
 					{% endif %}
 				</div>
-			
-
-				<div class="event-action">
-					{% if event.timing == 'tocome' %}
-						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-							{% if event.isAdmin(app.user) == false %}
-								{% if event.userParticipate(app.user) %}
-									<a class="btn-ws btn-ws-small" rel="nofollow"> 
-										<i class="icon icon-ok-sign icon-white"></i>
-										Vous participez !
-									</a>
-									<a class="btn btn-link" href="" rel="nofollow"><i class="icon-remove"></i> Annuler</a>
-								{% else %}
-									<a class="btn-ws btn-ws-small btn-ws-submit" href="" rel="nofollow">											
-											<i class="icon-white icon-plus"></i> Participer !
-										</a>
-								{% endif %}
-							{% else %}
-								<a class="btn btn-small" href="" rel="nofollow">Modifier mon annonce</a>	
-							{% endif %}	
-						{% else %}
-							<a class="btn-ws btn-ws-small btn-ws-submit" href="">Connexion</a>
-							<a class="btn-ws btn-ws-small btn-ws-submit" href="">Inscription</a>
-						{% endif %}
-					{% endif %}
-				</div>
+							
 			</div>
 			{# end event actions #}
 
 			{# event data #}
 			<article>
 				<div class="col_large">
-					<h2 class="event-info">
-						<span class="ws-icon-calendar" title="Date"></span>
-						{{ event.date|date('l d m') }}
-					</h2>
+				<table>
 
-					<h2 class="event-info">
-						<span class="ws-icon-alarm" title="Heure"></span>
-						{{ event.time|date('h:i') }}
-					</h2>
+					<tr>
+						<td><span class="metadata-icon date-icon ws-icon ws-icon-calendar" title="Date"></span></td>
+						<td><h2 class="event-info">{{ event.date|date('l d m') }}</h2></td>
+					</tr>
 
-					<h2 class="event-info">
-						<span class="ws-icon-location-2" title="Ville"></span>
-						{{ event.location.city.name }}
-						<small>{{ event.location.lastState().name }}</small>
-					</h2>
+					<tr>
+						<td><span class="metadata-icon hour-icon ws-icon ws-icon-alarm" title="Heure"></span></td>
+						<td><h2 class="event-info">{{ event.time|date('h:i') }}</h2></td>
+					</tr>
 
-					<h2 class="event-info">
-						<span class="ws-icon-map-2" title="Adresse"></span>
-						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-							{{ event.address }}
-						{% else %}
-							{{ event.shortAddress }}
-							<small><a href="">Connectez-vous</a> pour voir la suite de l'adresse</small>
-						{% endif %}
-					</h2>
-
-					{% if event.phone %}
-						<h2 class="event-info">
-							<span class="ws-icon-phone" title="Téléphone"></span>
-							{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-								{{ event.phone }}
-							{% else %}
-								<small><a href="">Connectez-vous</a> pour voir le numéro de téléphone</small>
-							{% endif %}
-						</h2>
-					{% endif %}
-
-					<h2 class="event-info">
-						<span class="ws-icon-{{ event.sport.icon }}" title="Sport"></span>
-						{{ event.sport.name|capitalize }}
-					</h2>
-
-					{% if event.description %}
-						<div class="event-description">
-							<h3>Description de l'activité</h3>
-							<div class="block-content">
-								<span>{{ event.description }}</span>
-							</div>
-						</div>
-					{% endif %}
-
-					{% if event.timing == 'tocome' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-						<div class="block block-action">
-							{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-								<a class="btn btn-small" href="" rel="nofollow">Modifier mon annonce</a>
-							{% else %}
-								{% if event.userParticipate(app.user) %}
-									<a class="btn-ws btn-ws-success" rel="nofollow"> 
-										<i class="icon icon-ok-sign icon-white"></i>
-										Vous participez !
-									</a>
-									<a class="btn btn-link" href="" rel="nofollow"><i class="icon-remove"></i> Annuler</a>								
+					<tr>
+						<td><span class="metadata-icon city-icon ws-icon ws-icon-location" title="Ville"></span></td>
+						<td>
+							<h2 class="event-info">						
+								{{ event.location.city.name }}
+								<small>{{ event.location.lastState().name|lower }}</small>
+								<br>
+								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+									{{ event.address }}
 								{% else %}
-									<a class="btn-ws btn-ws-submit" href="" rel="nofollow">
-										<i class="icon-white icon-plus"></i>
-										Je veux participer!
-									</a>
+									{{ event.shortAddress }}
+									<small><a href="">Connectez-vous</a> pour voir la suite de l'adresse</small>
+								{% endif %}					
+							</h2>
+						</td>
+					</tr>
+					
+					{% if event.phone %}
+					<tr>
+						<td><span class="metadata-icon phone-icon ws-icon ws-icon-phone" title="Téléphone"></span></td>
+						<td>
+							<h2 class="event-info">							
+								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+									{{ event.phone }}
+								{% else %}
+									<small><a href="">Connectez-vous</a> pour voir le numéro de téléphone</small>
 								{% endif %}
-							{% endif %}
-						</div>
+							</h2>
+						</td>
+					</tr>
 					{% endif %}
+
+				</table>
+
+
+				
+				{% if event.description %}
+					<div class="event-description block block-yellow">
+						<h3>Description de l'activité</h3>
+						<div class="block-content">
+							<span>{{ event.description }}</span>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if event.timing == 'tocome' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+					<div class="block block-action">
+						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+							<a class="btn btn-small" href="" rel="nofollow">Modifier mon annonce</a>
+						{% else %}
+							{% if event.userParticipate(app.user) %}
+								<a class="btn-ws btn-ws-success" rel="nofollow"> 
+									<i class="icon icon-ok-sign icon-white"></i>
+									Vous participez !
+								</a>
+								<a class="btn btn-link" href="" rel="nofollow"><i class="icon-remove"></i> Annuler</a>								
+							{% else %}
+								<a class="btn-ws btn-ws-submit" href="" rel="nofollow">
+									<i class="icon-white icon-plus"></i>
+									Je veux participer!
+								</a>
+							{% endif %}
+						{% endif %}
+					</div>
+				{% endif %}
 
 					<div class="event-discussion">
 						<h3>Question & Discussion</h3>

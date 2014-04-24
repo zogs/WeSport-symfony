@@ -55,11 +55,12 @@
 			</div>
 
 			<div class="header-part calendar-sports">
+				<div class="calendar-loader" id="calendar-loader" ><img class="loading-bar" src="{{ asset('bundles/wsstyle/img/ajax-loader-bar.gif') }}" title="Chargement..." /></div>
 				<input type="hidden" name="sports" value=""><!-- important -->
 				{% for sport in search.sports %}
-				<div class="sportChoice">
+				<div class="sportChoice tooltipbottom" data-toggle="tooltip" title="Supprimer {{ sport.name }}">
 					<input type="checkbox" name="sports[]" id="sport-{{ sport.slug }}" class="ajax-refresh" value="{{ sport.id }}" checked="checked">
-					<label for="sport-{{ sport.slug }}" class="sportLabel tooltipbottom" data-toggle="tooltip" title="Supprimer {{ sport.name }}">
+					<label for="sport-{{ sport.slug }}" class="sportLabel">
 						<span class="ws-icon ws-icon-{{ sport.icon }}"></span>
 					</label>
 				</div>
@@ -126,7 +127,7 @@
 					<label for="period9">1 mois</label>
 				</div>
 			</div>
-			<div class="calendar-loader"><img class="loadingbar" src="" title="Chargement..." /></div>
+			
 
 			<div class="header-part week-nav nextWeek">
 				<a class="calendar-nav-next calendar-nav-link" id="colomn-next-arrow" title="Semaine suivante" href="" draggable='false' >APRES</a>

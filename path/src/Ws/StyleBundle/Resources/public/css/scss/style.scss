@@ -546,7 +546,7 @@ div.mm-is-menu * {
 
 
 /* Calendar Search Form */
-#calendar_search { 
+#calendar-search { 
 	width:100%;
 	margin-top:50px;
 	margin-bottom:0;
@@ -706,8 +706,22 @@ TYPEAHEAD CUSTOM STYLE
 	i{ @include rem(12)}
 }
 
+.calendar-loader{
+		position: relative;
+		height:100%;
+		width:100%;		
+		text-align: center;		
+		display: none;
+		.loading-bar{
+			position: relative;			
+			top:50%;
+			margin-top:-30px;			
+		}
+	}
+
 .calendar-sports {
 	width: 35%;
+	position: relative;
 	text-align:center;
 
 	.sportChoice {
@@ -1091,18 +1105,7 @@ TYPEAHEAD CUSTOM STYLE
  		}
  	}
 
- 	.calendar-loader{
-			position: absolute;
-			top:0;
-			width:400px;
-			left:50%;
-			margin-left:-200px;
-			text-align: center;
-			padding-top:6px;
-			.loadingbar{
-				display: none;
-			}
-		}
+ 	
 
 	.calendar-footer {
 		position:relative;
@@ -1720,92 +1723,63 @@ h1.title-sheet {
 
 .eventview{}
 
-.content-header{
-	width:100%;
-	padding:20px 2% 10px 2%;
-	background-color:$lightgrey;
-	@extend %clearfix;	
+.event-header {
+	margin:15px 2% 0 2%;
 
-
-	.header-left{
-		float:left;
-		display: block;
-		width:70%;
-		margin:0;
-		div.event-sportLogo{
-			display: inline-block;
-		
-			width:18%;
-			.ws-icon{
-				border:8px solid rgba(0,0,0,0.09);
-			}
-		}
-
-		h1.event-title{
-			
-			display: inline-block;
-			vertical-align: middle;
-			width:80%;		
-			font-family: 'Boogaloo',Helvetica,Arial;
-			color:$deepblue;
-			font-weight: normal;
-			@include rem(32);
-			margin:0;
-			&.title-big{
-				@include rem(50);
-			}
-		}
-
+	.header-cell {
+		text-align:center;
 	}
-
-	.header-right{
-		float:right;
-		width:30%;
-
-		div.orga-info{
-			float:right;
-			width:60%;
-			text-align: right;
-			margin-right:10px;
-			padding-top: 10px;
-
-			span{
-				display: block;
-				width: 100%;
-				color:#AAA;
-			}
-			small{				
-				border-bottom:1px solid #CCC;				
-			}
-		}
-		span.orga-name{
-			font-weight: normal;
-			font-family: 'Boogaloo';
-			@include rem(24);
-			text-transform: capitalize;
-			word-wrap:break-word;
-			a {color:$deepblue;}
-		}
-		span.orga-link{
-			text-align: right;
-			a{
-				@include rem(12);
-				color:#AAA;
-				border-bottom:1px dotted #AAA;					
-				&:hover{
-					border-bottom:0px dotted #AAA;	
-				}
-			}			
-			
-		}
-
-		div.orga-avatar{			
-			float:right;
-			width:35%;
-			img { width:100%; padding:2px; border:7px solid rgba(0,0,0,0.1); background-color:#FFF;}
+	.row2 {
+		vertical-align: top;
+	}
+	.event-metadata1, .event-metadata1 a { 
+		color:$deepblue;
+		font-weight:bold;
+		@include rem(18);
+	}
+	.event-metadata2, .event-metadata2 a {
+		color:#b4b4b4;
+		@include rem(12);
+	}
+	.event-organizer-avatar {
+		width:100px;
+		height:100px;
+		border:1px solid #b4b4b4;
+		@include border-radius(200px);
+	}
+	.event-sport-icon {
+		@include rem(80);
+		border:1px solid #b4b4b4;
+	}
+	.event-city-icon {
+		width:100px;
+		height:100px;
+		border:1px solid #b4b4b4;
+		@include border-radius(200px);
+	}
+	.cell-title {
+		text-align:left;
+		padding:20px;
+	}
+	h1.event-title{		
+		display: inline;	
+		font-family: 'Boogaloo',Helvetica,Arial;
+		color:$deepblue;
+		font-weight: normal;
+		@include rem(32);
+		&.title-big{
+			@include rem(50);
 		}
 	}
 }
+
+
+
+
+
+
+
+
 
 .event-action-bar {
 	width:100%;
@@ -1929,27 +1903,40 @@ h1.title-sheet {
 
 div.col_large{
 	float:left;
-	width:560px;
+	width:60%;
 	min-height: 300px;
-	padding:10px 5px 0 20px;
+	padding:10px 5px 0 50px;	
 
-	h2.event-info{
-		@include rem(22);
-		color:$darkblue;
-		padding-left:20px;
-		padding-top:10px;
 
-		span{
-			padding:8px;
-			background-color: #FFF;
-			@include rem(30);
-			@include border-radius(100px);
-		}
-		small{
-			@include rem(16);
+
+	.event-description.block {
+		.block-content {
+			padding:20px 5%;
 		}
 	}
 }
+h2.event-info{
+	@include rem(22);
+	color:$darkblue;
+	padding-left:20px;
+	margin-bottom:0; margin-top:0;	
+	small{
+		@include rem(16);
+	}
+
+	
+}
+span.metadata-icon {
+	padding:7px;
+	border:6px solid white;
+	background-color: #FFF;
+	@include rem(35);
+	@include border-radius(100px);
+}
+span.metadata-icon.date-icon { border-color:rgba($lightred,0.7); }
+span.metadata-icon.city-icon { border-color:rgba($lightgreen,0.7); }
+span.metadata-icon.city-icon { border-color:rgba($deepred,0.7); }
+
 
 div.col_small{
 	float:right;
@@ -2006,7 +1993,7 @@ div.col_small{
 .block-yellow{
 	h3{
 		background-color:$softyellow;
-		color:#9e9e34;
+		color:#CCCC39;
 	}
 	.block-content{
 		background-color:#ffffeb;
@@ -2043,7 +2030,7 @@ div.col_small{
 		.bottom_link,.noevents { color:darken($softred,10%);}		
 	}
 }
-.event-discussion, .event-description{
+.event-discussion{
 	margin-top:30px;
 	border-top:2px solid $lightgrey;
 	h3{
@@ -2270,7 +2257,7 @@ div.col_small{
 .viewuser{
 
 	.content-header{
-		
+
 		.header-left{
 			width:50%;
 		}

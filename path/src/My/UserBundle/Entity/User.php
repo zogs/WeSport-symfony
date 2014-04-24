@@ -120,7 +120,7 @@ class User extends BaseUser
         if(!empty($this->birthday))
             return date('Y-m-d') - date($this->birthday). ' ans';
 
-        return 'age inconnu';
+        return '';
     }
 
     /**

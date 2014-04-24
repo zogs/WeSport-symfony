@@ -14,7 +14,7 @@ $(document).ready(function(){
 		var _zone = $('#calendar');
 		var _aPrev = $('#pullPrev');
 		var _aNext = $('#pullNext');	
-		var _loader = $('#calendar .calendar-loader .loadingbar');
+		var _loader = $('#calendar-loader');
 		var _screenWidth = $(window).width();
 		var _drag = false;
 		var _cWeek = true;

@@ -38,7 +38,7 @@ class LoadAvatarData extends AbstractFixture implements OrderedFixtureInterface,
 
 
 		$c = new Avatar();
-		$c->setPath('m2.jpg');
+		$c->setPath('m2.png');
 		$c->setUpdated($date);
 
 		$this->addReference('avatar_asso1',$c);
