@@ -12,3 +12,9 @@ MyPageBundle_view:
 MyPageBundle_page:
     resource: "@MyPageBundle/Resources/config/routing/page.yml"
     prefix: /page/admin
+
+MyPageBundle_contact:
+    pattern: /contact
+    defaults: { _controller: MyPageBundle:Default:contact }
+    requirements:
+        _method: GET|POST

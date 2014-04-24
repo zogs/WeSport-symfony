@@ -12,3 +12,8 @@ services:
         tags:
             - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
 
+    page.form.contact:
+        class: My\PageBundle\Form\ContactType        
+        tags:
+            - { name: form.type, alias: contact_form }
+

@@ -1,0 +1,10 @@
+parameters:
+#    ws_mailer.example.class: Ws\MailerBundle\Example
+
+services:
+#    ws_mailer.example:
+#        class: %ws_mailer.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    ws.mailer:
+        class: Ws\MailerBundle\Mailer\mailer
+        arguments: [@mailer,@templating]

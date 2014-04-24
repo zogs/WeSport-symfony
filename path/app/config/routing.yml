@@ -1,3 +1,7 @@
+ws_mailer:
+    resource: "@WsMailerBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ws_style:
     resource: "@WsStyleBundle/Resources/config/routing.yml"
     prefix:   /

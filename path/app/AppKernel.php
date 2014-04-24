@@ -43,6 +43,7 @@ class AppKernel extends Kernel
             new My\FlashBundle\MyFlashBundle(),
             new My\ManagerBundle\MyManagerBundle(),
             new Ws\StyleBundle\WsStyleBundle(),
+            new Ws\MailerBundle\WsMailerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

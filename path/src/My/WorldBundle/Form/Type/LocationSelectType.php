@@ -111,24 +111,35 @@ class LocationSelectType extends AbstractType
 
     }
     
+    /*
+        
+        Before persist, find and replace with the adequate Location
+
+     */
     public function onPreSubmit(FormEvent $event)
     {
         $form = $event->getForm();
         $data = $event->getData();
 
-        //if country is string, find id
+        //persist null if no country is submitted
+        if(empty($data['country'])){
+            $form->setData(null);
+            return;
+        }
+
+        //find and replace the country field
         if(!empty($data['country']) && is_string($data['country'])){
             $country = $this->em->getRepository('MyWorldBundle:Country')->findByCodeOrId($data['country']);
             $data['country'] = $country->getId();                
         }
 
-        //find Location that fit the data
+        //find Location that fit the form data
         $location = $this->em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
 
-        //set the location to the form
+        //replace with the location
         $form->setData($location);
 
-        //add all geo field
+        //add all geo field to render view
         $this->addGeoFields($form, $location);
     }
 

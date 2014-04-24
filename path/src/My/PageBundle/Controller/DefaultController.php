@@ -3,6 +3,7 @@
 namespace My\PageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -27,5 +28,15 @@ class DefaultController extends Controller
     		'menuPages'=> $pages
     		)
     	);
+    }
+
+    public function contactAction(Request $request) {
+
+        $form = $this->createForm('contact_form');
+
+        return $this->render('MyPageBundle:Page:contact.html.twig',array(
+            'user' => $this->getUser(),
+            'form' => $form->createView(),
+            ));
     }
 }

@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
@@ -49,8 +50,10 @@ class RegistrationListener implements EventSubscriberInterface
     $this->flashbag->clear()->add('info','Un email a été envoyé blabla...');
   }
 
-  public function onRegistrationConfirm( FilterUserResponseEvent $event )
+  public function onRegistrationConfirm( GetResponseUserEvent  $event )
   {
+
+    $this->flash->bag("Félicitations, vous êtes maintenant connecté !");
 
     $url = $this->router->generate('ws_events_calendar');
 

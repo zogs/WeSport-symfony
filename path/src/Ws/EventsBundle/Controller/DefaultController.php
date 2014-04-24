@@ -29,8 +29,6 @@ class DefaultController extends Controller
      */
     public function calendarAction($country,$city,$sports,$date,$nbdays,$type)
     {
-
-        
         $params = array(
             'country' => $country,
             'city_name' => $city,
