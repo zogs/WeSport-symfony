@@ -1,6 +1,6 @@
 <?php
 
-namespace Ws\MailerBundle\Mailer;
+namespace My\ContactBundle\Mailer;
 
 use Symfony\Component\Templating\EngineInterface;
 
@@ -19,7 +19,6 @@ class Mailer
 
     public function sendTestMessage()
     {
-
         $this->sendMessage('sfwesport@we-sport.fr', 'guichardsim@gmail.com', 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
     }
 
@@ -30,9 +29,9 @@ class Mailer
 
         $to = 'guichardsim@gmail.com';
 
-        $subject = ' Formulaire de contact';
+        $subject = $contact->getTitle();
 
-        $body = $this->templating->render('WsMailerBundle:Default:contact.html.twig', array('contact' => $contact));
+        $body = $this->templating->render('MyContactBundle:Email:contact.html.twig', array('contact' => $contact));
 
         $this->sendMessage($from, $to, $subject, $body);
     }
@@ -48,9 +47,6 @@ class Mailer
             ->setBody($body)
             ->setContentType('text/html');
 
-        if($this->mailer->send($mail))
-            return true;
-        else
-            return false;
+        $this->mailer->send($mail);
     }
 }

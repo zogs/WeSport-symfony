@@ -1,3 +1,7 @@
+my_contact:
+    resource: "@MyContactBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ws_mailer:
     resource: "@WsMailerBundle/Resources/config/routing.yml"
     prefix:   /

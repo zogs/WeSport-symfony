@@ -30,13 +30,5 @@ class DefaultController extends Controller
     	);
     }
 
-    public function contactAction(Request $request) {
-
-        $form = $this->createForm('contact_form');
-
-        return $this->render('MyPageBundle:Page:contact.html.twig',array(
-            'user' => $this->getUser(),
-            'form' => $form->createView(),
-            ));
-    }
+    
 }

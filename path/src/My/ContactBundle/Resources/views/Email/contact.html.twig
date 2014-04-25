@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <base href="{site}" />
+</head>
+    <body>
+        <p>            
+            {{ contact.message }}
+        </p>
+        <p>
+            <strong>{{contact.email }}</strong> a laisse le message précédant via le formulaire de contact :
+            <br />
+            Date :{{ contact.date }} {{ contact.time }}
+            <br />
+            Titre : {{ contact.title }}
+            <br />
+            User : 
+            {% if contact.user.username is defined %}
+                <strong>{{ contact.user.username }}</strong>
+            {% elseif %}
+                <i>not registered</i>
+            {% endif %}
+            <br />
+            Mail : {{ contact.email }}
+        </p>
+        
+   
+        <p>&nbsp;</p>
+    </body>
+</html>

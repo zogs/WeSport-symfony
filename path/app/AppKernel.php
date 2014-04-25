@@ -44,6 +44,7 @@ class AppKernel extends Kernel
             new My\ManagerBundle\MyManagerBundle(),
             new Ws\StyleBundle\WsStyleBundle(),
             new Ws\MailerBundle\WsMailerBundle(),
+            new My\ContactBundle\MyContactBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

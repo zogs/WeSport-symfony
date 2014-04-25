@@ -98,12 +98,12 @@
 
 					<tr>
 						<td><span class="metadata-icon date-icon ws-icon ws-icon-calendar" title="Date"></span></td>
-						<td><h2 class="event-info">{{ event.date|date('l d m') }}</h2></td>
+						<td><h2 class="event-info">{{ event.date|date('l d m') }}{# localizeddate('full','none') #}</h2></td>
 					</tr>
 
 					<tr>
 						<td><span class="metadata-icon hour-icon ws-icon ws-icon-alarm" title="Heure"></span></td>
-						<td><h2 class="event-info">{{ event.time|date('h:i') }}</h2></td>
+						<td><h2 class="event-info">{{ event.time|date('h:i',"Europe/Paris") }}</h2></td>
 					</tr>
 
 					<tr>
@@ -113,12 +113,7 @@
 								{{ event.location.city.name }}
 								<small>{{ event.location.lastState().name|lower }}</small>
 								<br>
-								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-									{{ event.address }}
-								{% else %}
-									{{ event.shortAddress }}
-									<small><a href="">Connectez-vous</a> pour voir la suite de l'adresse</small>
-								{% endif %}					
+								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}<small><a href="">Connectez-vous</a> pour voir la suite de l'adresse</small>{% endif %}					
 							</h2>
 						</td>
 					</tr>

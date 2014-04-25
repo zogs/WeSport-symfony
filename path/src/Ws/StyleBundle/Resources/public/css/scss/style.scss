@@ -1910,6 +1910,7 @@ div.col_large{
 
 
 	.event-description.block {
+		margin-top:10px;
 		.block-content {
 			padding:20px 5%;
 		}
@@ -1927,14 +1928,14 @@ h2.event-info{
 	
 }
 span.metadata-icon {
-	padding:7px;
-	border:6px solid white;
+	padding:5px;
+	border:7px solid white;
 	background-color: #FFF;
 	@include rem(35);
 	@include border-radius(100px);
 }
-span.metadata-icon.date-icon { border-color:rgba($lightred,0.7); }
-span.metadata-icon.city-icon { border-color:rgba($lightgreen,0.7); }
+span.metadata-icon.date-icon { border-color:rgba($softred,0.7); }
+span.metadata-icon.hour-icon { border-color:rgba($lightgreen,0.7); }
 span.metadata-icon.city-icon { border-color:rgba($deepred,0.7); }
 
 

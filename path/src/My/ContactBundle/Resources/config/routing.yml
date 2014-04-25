@@ -1,0 +1,9 @@
+my_contact_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: MyContactBundle:Default:index }
+
+my_contact:
+    pattern: /contact
+    defaults: { _controller: MyContactBundle:Default:contact }
+    requirements:
+        _method: GET|POST
