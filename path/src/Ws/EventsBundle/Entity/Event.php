@@ -351,6 +351,16 @@ class Event
         return $this->address;
     }
 
+        /**
+     * Get address
+     *
+     * @return string 
+     */
+    public function getFullAddress()
+    {
+        return $this->address.', '.$this->location->getCity()->getName().', '.$this->location->getCountry()->getName();;
+    }
+
     /**
      * Get short adress
      *
