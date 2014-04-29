@@ -203,9 +203,21 @@ class DefaultController extends Controller
     public function viewAction(Event $event)
     {
         
+        $gmap = $this->get('world.gmap');
+        $gmap->setSize('100%','100px');
+        $gmap->setLang($this->getRequest()->getLocale());
+        $gmap->setEnableWindowZoom(true);
+        $gmap->addMarkerByAddress($event->getFullAddress(),$event->getTitle());
+        $gmap->setCenter($event->getFullAddress());
+        $gmap->setZoom(12);
+        $gmap->generate();
+        $gmap = $gmap->getGoogleMap();
+
+
         return $this->render('WsEventsBundle:Default:view.html.twig',array(
-            'event'=>$event,
-            'token'=>$this->get('form.csrf_provider')->generateCsrfToken('delete_event')
+            'event'=> $event,
+            'gmap'=> $gmap,
+            'token'=> $this->get('form.csrf_provider')->generateCsrfToken('delete_event')
             )
         );
     }

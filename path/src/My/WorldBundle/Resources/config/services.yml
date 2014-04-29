@@ -19,3 +19,10 @@ services:
     world.location_manager:
         class: My\WorldBundle\Manager\LocationManager
         arguments: [@doctrine.orm.entity_manager]
+
+    world.map_manager:
+        class: My\WorldBundle\Geomapper\MapManager
+        arguments: [@doctrine.orm.entity_manager,@security.context]
+
+    world.gmap:
+        class: My\WorldBundle\Geomapper\GoogleMapAPI        
