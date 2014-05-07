@@ -14,21 +14,7 @@ class DefaultController extends Controller
 
         $page = $em->getRepository('MyPageBundle:Page')->find($id);
 
-    	return $this->render('MyPageBundle:Default:page_view.html.twig',array('page'=>$page));
+    	return $this->render('MyPageBundle:Page:view.html.twig',array('page'=>$page));
     }
-
-    public function showMenuAction(){
-
-
-    	$em = $this->getDoctrine()->getManager();
-
-        $pages = $em->getRepository('MyPageBundle:Page')->findAll();
-
-    	return $this->render('MyPageBundle:Default:page_menu.html.twig',array(
-    		'menuPages'=> $pages
-    		)
-    	);
-    }
-
     
 }

@@ -12,6 +12,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class PageRepository extends EntityRepository
 {
+	public function findByMenu($menu)
+	{
+		$qb = $this->_em->createQueryBuilder('p');
+	    $qb->select('p')
+	    ->from($this->_entityName, 'p')
+	    ->where($qb->expr()->eq('p.menu',':menu'))
+	    ;
+	    $qb->setParameter('menu',$menu);
+
+	    return $qb->getQuery()->getResult();
+	}
+
+	public function findSingleBySlug($slug)
+	{
+		$qb = $this->_em->createQueryBuilder('p');
+	    $qb->select('p')
+	    ->from($this->_entityName, 'p')
+	    ->where($qb->expr()->eq('p.slug',':slug'))
+	    ;
+	    $qb->setParameter('slug',$slug);
+
+	    return $qb->getQuery()->getSingleResult();
+	}
 }
 
 ?>

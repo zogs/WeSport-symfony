@@ -13,3 +13,9 @@ services:
             - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
 
 
+#Twig extension
+    page.twig.link:
+        class: My\PageBundle\Twig\PageLinkExtension
+        arguments: [@router]
+        tags:
+            - { name: twig.extension }

@@ -14,6 +14,15 @@ use My\PageBundle\Form\PageType;
  */
 class PageController extends Controller
 {
+    public function viewAction($slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $page = $em->getRepository('MyPageBundle:Page')->findSingleBySlug($slug);
+
+        return $this->render('MyPageBundle:Page:view.html.twig',array('page'=>$page));
+    }
+
 
     /**
      * Lists all Page entities.

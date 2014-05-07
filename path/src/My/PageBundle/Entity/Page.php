@@ -28,6 +28,12 @@ class Page implements Translatable
     private $title;
 
     /**
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(length=255, unique=true)
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(name="content", type="text")
      * @Gedmo\Translatable     
      */
@@ -50,9 +56,9 @@ class Page implements Translatable
      */
     private $menu;
     /**
-     *  @ORM\Column(name="pos", type="smallint", nullable=true)
+     *  @ORM\Column(name="position", type="smallint", nullable=true)
      */
-    private $pos;
+    private $position;
 
     /**
      *  @ORM\Column(name="icon", type="string", length=20, nullable=true)
@@ -113,6 +119,29 @@ class Page implements Translatable
     }
 
     /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Page
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Set content
      *
      * @param string $content
@@ -164,9 +193,9 @@ class Page implements Translatable
      * @param integer $position
      * @return Page
      */
-    public function setPos($position)
+    public function setPosition($position)
     {
-        $this->pos = $position;
+        $this->position = $position;
 
         return $this;
     }
@@ -176,9 +205,9 @@ class Page implements Translatable
      *
      * @return integer 
      */
-    public function getPos()
+    public function getPosition()
     {
-        return $this->pos;
+        return $this->position;
     }
 
     /**

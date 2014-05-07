@@ -1,0 +1,20 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+	
+	<div class="head-sheet">
+		<h1 class="title-sheet">
+			{{ page.title }}	
+		</h1>
+	</div>
+
+	<div class="page-content page-{{ page.slug }}">
+		{{ page.content|raw }}		
+	</div>	
+
+	{% if is_granted('ROLE_ADMIN') %}
+	<p>id:{{ page.id }} locale:{{ app.request.get('_locale') }}</p>
+	<p><a href="{{path('page_edit',{id: page.id}) }}">Editer cette page</a></p>
+	{% endif %}
+
+{% endblock %}

@@ -71,7 +71,7 @@
                             <a class="mainbutton" href="{{ path('ws_events_new') }} ">Poster un sport</a>
                         </li>
 
-                         {{ render(controller('MyPageBundle:Default:showMenu', {
+                         {{ render(controller('MyPageBundle:Menu:TopMenu', {
                             'max': 3
                         })) }}
                         
@@ -121,6 +121,14 @@
             {% block body %}
             {% endblock %}
 
+        </div>
+
+        <div class="footer container-fluid">
+            <div class="container">
+                {{ render(controller('MyPageBundle:Menu:BottomMenu', {
+                    'max': 3
+                })) }}
+            </div>
         </div>
 
 

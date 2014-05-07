@@ -1,0 +1,5 @@
+<ul class="footer-menu">
+	{% for page in menuPages %}
+		<li><a href="{{ page|link2page }}">{{ page.title }}</a></li>
+	{% endfor %}	
+</ul>
