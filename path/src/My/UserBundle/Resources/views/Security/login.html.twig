@@ -5,15 +5,19 @@
 
 
 {% block page_content %}
-	{% if error %}
-    <div>{{ error|trans }}</div>    
-{% endif %}
+	
 
 
 <div class="head-sheet">
 	<h1 class="title-sheet">CONNEXION</h1>
 
 	<form class="form form-ws label-hidden w50 fleft form-register" action="{{ path("fos_user_security_check") }}" method="post">
+
+	{% if error %}
+	    <div class="ws-alert alert-error">{{ error|trans }}</div>    
+	{% endif %}
+
+	
 	    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />	
 
 		<p class="intro"></p>

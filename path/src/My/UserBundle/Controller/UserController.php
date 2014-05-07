@@ -67,6 +67,7 @@ class UserController extends Controller
         if($this->getRequest()->isMethod('POST')){
 
             $form->handleRequest($this->getRequest());
+            
             if($form->isValid()){
                 
                 $userManager = $this->container->get('fos_user.user_manager');

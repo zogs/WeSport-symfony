@@ -14,14 +14,15 @@ class AvatarType extends AbstractType
                 $now = new \DateTime('now');
 
                 $builder
-                        ->add('file','file',array(
-                        	'required'=> false,
-                        	'label'=> "Votre avatar",
-                        	))
-                        ->add('updated','hidden',array(
-                            'data'=> $now->format('Y-m-d H:i:s')
-                            ))
-                        ;
+                    ->add('file','file',array(
+                        'required'=> false,
+                        'label'=> "Votre avatar",
+                        'image_path'=> 'webPath',
+                    ))
+                    ->add('updated','hidden',array(
+                        'data'=> $now->format('Y-m-d H:i:s')
+                    ))
+                    ;
 
         }
 

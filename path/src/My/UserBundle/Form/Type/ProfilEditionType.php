@@ -166,6 +166,9 @@ class ProfilEditionType extends AbstractType
         
         $builder->addEventListener(FormEvents::POST_SUBMIT, function($event) use($user,$action) {
 
+            /**
+             * set the filename for the avatar 
+             */ 
             if($action=="avatar"){
                 //get user
                 $user = $event->getForm()->getData();

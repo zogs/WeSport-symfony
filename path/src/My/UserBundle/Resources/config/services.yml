@@ -20,6 +20,12 @@ services:
         tags:
             - { name: form.type, alias: avatar_type }
 
+   #Form Extension
+    user_bundle.image_type_extension:
+        class: My\UserBundle\Form\Extension\ImageTypeExtension
+        tags:
+            - { name: form.type_extension, alias: file }
+
     #Event Listner
     user_bundle.listener.init_registration:
         class: My\UserBundle\EventListener\RegistrationListener

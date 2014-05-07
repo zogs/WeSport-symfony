@@ -12,7 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Doctrine\ORM\EntityManager;
 
-use My\WorldBundle\Form\DataTransformer\StatesToLocationTransformer;
 
 class LocationSelectType extends AbstractType
 {
@@ -97,14 +96,7 @@ class LocationSelectType extends AbstractType
                 ))                                                                     
         ;
 
-
-        //add transformer
-        //$transformer = new StatesToLocationTransformer($this->em);
-        //$builder->addModelTransformer($transformer);
-
-
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
-
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
         
@@ -136,10 +128,10 @@ class LocationSelectType extends AbstractType
         //find Location that fit the form data
         $location = $this->em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
 
-        //replace with the location
+        //replace with the  object location
         $form->setData($location);
 
-        //add all geo field to render view
+        //add all relevant geo field to render view
         $this->addGeoFields($form, $location);
     }
 
