@@ -56,13 +56,14 @@ class UserController extends Controller
     {
 
         $user = $this->getUser();
+        $userManager = $this->container->get('fos_user.user_manager');
 
         if($user === null){
             $this->get('flashbag')->add("Veuillez vous reconnecter",'info');           
             return $this->redirect($this->generateUrl("fos_user_security_login")); 
         }
 
-        $form = $this->createForm(new ProfilEditionType($user,$action));   
+        $form = $this->createForm(new ProfilEditionType($action,$user,$userManager));   
 
         if($this->getRequest()->isMethod('POST')){
 
@@ -70,7 +71,6 @@ class UserController extends Controller
             
             if($form->isValid()){
                 
-                $userManager = $this->container->get('fos_user.user_manager');
                 $userManager->updateUser($user);
 
                 $this->get('flashbag')->add("Vos informations ont été sauvegardé !");

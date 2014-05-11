@@ -5,7 +5,9 @@ namespace My\UserBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 use My\WorldBundle\Form\Type\LocationSelectType;
 
@@ -14,11 +16,13 @@ class ProfilEditionType extends AbstractType
 {
     private $user;
     private $action;
+    private $userManager;
 
-    public function __construct($user, $action)
+    public function __construct($action, $user, $userManager)
     {
         $this->user = $user;
         $this->action = $action;
+        $this->userManager = $userManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -135,6 +139,7 @@ class ProfilEditionType extends AbstractType
                 $form->add('oldpassword','password',array(
                     'label' => 'Ancien mot de passe',
                     'mapped' => false,
+                    'constraints' => new UserPassword(),
                     'attr' => array(
                         'placeholder' => 'Ancien',
                         'data-icon' => 'lock',
@@ -164,21 +169,44 @@ class ProfilEditionType extends AbstractType
         });
 
         
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function($event) use($user,$action) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
 
-            /**
-             * set the filename for the avatar 
-             */ 
-            if($action=="avatar"){
-                //get user
-                $user = $event->getForm()->getData();
-                $avatar = $user->getAvatar();
-                //set the avatar filename to the login of the user
-                $avatar->setFilename($user->getUsernameCanonical());       
-            }
-            
-        });
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+
     }
+
+    public function onPostSubmit(FormEvent $event)
+    {
+        $user = $event->getForm()->getData();
+
+        if($this->action=='avatar')
+            $this->setAvatarFilename($user);
+
+    }
+
+    public function onPreSubmit(FormEvent $event)
+    {
+        if($this->action=='password')
+            $this->updateUserPassword($event->getData());
+    }
+
+    /**
+     * Set the avatar filename to the canonical username
+     */
+    public function setAvatarFilename($user)
+    {
+        $avatar = $user->getAvatar();
+        //set the avatar filename to the login of the user
+        $avatar->setFilename($user->getUsernameCanonical());   
+    }
+
+    /**
+     * Update current user plainPassword by the form data 
+     */
+    public function updateUserPassword($data)
+    {        
+        $this->user->setPlainPassword($data['plainPassword']['first']);
+    }       
 
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
