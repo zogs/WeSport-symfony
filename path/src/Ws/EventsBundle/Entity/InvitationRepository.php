@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class InvitationRepository extends EntityRepository
 {
+	public function findOneRandomly()
+	{
+		$sql = 'SELECT i.id FROM WsEventsBundle:Invitation i';
+		$query = $this->getEntityManager()->createQuery($sql);
+		$ids = $query->getScalarResult();
+
+		$randomId = $ids[array_rand($ids)];
+
+		$invit = $this->_em->getRepository('WsEventsBundle:Invitation')->find($randomId);
+		return $invit;
+	}
 }

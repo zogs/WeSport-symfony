@@ -1,0 +1,27 @@
+<html>
+<head>
+</head>
+<body>
+    Salut
+    <p>{{ invit.inviter.username }} vous invite à participer à :</p>
+    <p>
+        <strong> {{ invit.event.title }}</strong>
+        <br>
+        <strong>date:</strong> {{ invit.event.date|date('l d m') }} à {{ invit.event.time|date('h:i',"Europe/Paris") }}
+        <br>
+        <strong>à:</strong> {{ invit.event.location.city.name }}
+    </p>
+    <p>
+        Participerez-vous ? <a href="">OUI</a> | <a href="">NON</a>
+    </p>
+    <p>
+        Sinon vous pouvez en discutez en vous rendant sur <a href="">cette page</a> !      
+    </p>
+    <p>
+        <strong>Sportivement,</strong>
+        <br>
+        <small>Vous voulez ne plus recevoir d'invitation ? <a href="">Cliquez-ici</a>
+    </p>
+
+</body>
+</html>

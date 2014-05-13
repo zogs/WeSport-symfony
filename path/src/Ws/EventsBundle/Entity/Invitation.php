@@ -32,12 +32,12 @@ class Invitation
     private $inviter;
 
      /**
-    * @ORM\Column(name="name", type="string")
+    * @ORM\Column(name="name", type="string", nullable=true)
     */
     private $name;
 
      /**
-    * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invited", mappedBy="invitation")
+    * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invited", mappedBy="invitation", cascade="persist")
     */
     private $invited;
 
@@ -46,7 +46,8 @@ class Invitation
     */
     private $date;
 
-    private $content;
+    private $emails = null;
+    private $content = null;
 
 
     function __construct(){
@@ -54,7 +55,7 @@ class Invitation
     }
 
 
-    
+   
 
     /**
      * Get id
@@ -67,26 +68,26 @@ class Invitation
     }
 
     /**
-     * Set email
+     * Set name
      *
-     * @param string $email
+     * @param string $name
      * @return Invitation
      */
-    public function setEmail($email)
+    public function setName($name)
     {
-        $this->email = $email;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get email
+     * Get name
      *
      * @return string 
      */
-    public function getEmail()
+    public function getName()
     {
-        return $this->email;
+        return $this->name;
     }
 
     /**
@@ -113,29 +114,6 @@ class Invitation
     }
 
     /**
-     * Set response
-     *
-     * @param string $response
-     * @return Invitation
-     */
-    public function setResponse($response)
-    {
-        $this->response = $response;
-
-        return $this;
-    }
-
-    /**
-     * Get response
-     *
-     * @return string 
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
      * Set event
      *
      * @param \Ws\EventsBundle\Entity\Event $event
@@ -156,5 +134,107 @@ class Invitation
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * Set inviter
+     *
+     * @param \My\UserBundle\Entity\User $inviter
+     * @return Invitation
+     */
+    public function setInviter(\My\UserBundle\Entity\User $inviter = null)
+    {
+        $this->inviter = $inviter;
+
+        return $this;
+    }
+
+    /**
+     * Get inviter
+     *
+     * @return \My\UserBundle\Entity\User 
+     */
+    public function getInviter()
+    {
+        return $this->inviter;
+    }
+
+    /**
+     * Add invited
+     *
+     * @param \Ws\EventsBundle\Entity\Invited $invited
+     * @return Invitation
+     */
+    public function addInvited(\Ws\EventsBundle\Entity\Invited $invited)
+    {
+        $this->invited[] = $invited;
+
+        return $this;
+    }
+
+    /**
+     * Remove invited
+     *
+     * @param \Ws\EventsBundle\Entity\Invited $invited
+     */
+    public function removeInvited(\Ws\EventsBundle\Entity\Invited $invited)
+    {
+        $this->invited->removeElement($invited);
+    }
+
+    /**
+     * Get invited
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvited()
+    {
+        return $this->invited;
+    }
+
+    /**
+     * Set emails
+     *
+     * @param \String $emails
+     * @return Invitation
+     */
+    public function setEmails($emails)
+    {
+        $this->emails = $emails;
+
+        return $this;
+    }
+
+    /**
+     * Get emails
+     *
+     * @return \String
+     */
+    public function getEmails()
+    {
+        return $this->emails;
+    }
+
+    /**
+     * Set content
+     *
+     * @param \String $content
+     * @return Invitation
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return \String 
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 }

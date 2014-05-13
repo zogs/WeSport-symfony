@@ -33,7 +33,7 @@ class Participation
     * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Invitation")
     * @ORM\Column(nullable=true)
     */
-    private $invited;
+    private $invited = null;
 
     /**
     * @ORM\Column(name="date", type="datetime")

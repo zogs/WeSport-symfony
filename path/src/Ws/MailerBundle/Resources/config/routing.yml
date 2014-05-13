@@ -1,3 +1,7 @@
 ws_mailer_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: WsMailerBundle:Default:index }
+
+ws_mailer.test.invitation:
+    pattern: /test/template/invitation
+    defaults: { _controller: WsMailerBundle:Test:invitationTemplate }

@@ -4,11 +4,15 @@ namespace Ws\MailerBundle\Mailer;
 
 use Symfony\Component\Templating\EngineInterface;
 
+use Ws\EventsBundle\Entity\Invitation;
+
 class Mailer
 {
     protected $mailer;
 
     protected $templating;
+
+    private $expediteur = 'contact@we-sport.fr';
 
     public function __construct(\Swift_Mailer $mailer, EngineInterface $templating)
     {
@@ -23,19 +27,26 @@ class Mailer
         $this->sendMessage('sfwesport@we-sport.fr', 'guichardsim@gmail.com', 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
     }
 
-    public function sendContactMessage($contact)
+    public function sendInvitationMessage(Invitation $invit)
     {
+        $from = $this->expediteur;
 
-        $from = $contact->getEmail();
+        $subject = 'Invitation de '.$invit->getInviter()->getUsername();
 
-        $to = 'guichardsim@gmail.com';
+        $body = $this->templating->render('WsMailerBundle:Events:invitation.html.twig',array(
+            'invit' => $invit));
 
-        $subject = ' Formulaire de contact';
+        //send mailing
+        foreach ($invit->getInvited() as $key => $invited) {
 
-        $body = $this->templating->render('WsMailerBundle:Default:contact.html.twig', array('contact' => $contact));
+            $this->sendMessage($from,$invited->getEmail(),$subject,$body);
 
-        $this->sendMessage($from, $to, $subject, $body);
+        }
+
+        return true;
     }
+
+    
 
     protected function sendMessage($from, $to, $subject, $body)
     {

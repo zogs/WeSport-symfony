@@ -21,6 +21,10 @@ services:
         class: Ws\EventsBundle\Manager\CalendarManager
         arguments: [@doctrine.orm.entity_manager,@security.context]
 
+    ws_events.invit.manager:
+        class: Ws\EventsBundle\Manager\InvitationManager
+        arguments: [@doctrine.orm.entity_manager,@security.context]
+
     ws_events.twig.eventlink:
         class: Ws\EventsBundle\Twig\EventLinkExtension
         arguments: [@router]

@@ -31,16 +31,6 @@ class Invited
      */
     private $email;
 
-     /**
-    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event")
-    */
-    private $event;
-
-     /**
-    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    */
-    private $inviter;
-
     /**
     * @ORM\Column(name="date", type="datetime")
     */
@@ -164,5 +154,51 @@ class Invited
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * Set date_response
+     *
+     * @param \DateTime $dateResponse
+     * @return Invited
+     */
+    public function setDateResponse($dateResponse)
+    {
+        $this->date_response = $dateResponse;
+
+        return $this;
+    }
+
+    /**
+     * Get date_response
+     *
+     * @return \DateTime 
+     */
+    public function getDateResponse()
+    {
+        return $this->date_response;
+    }
+
+    /**
+     * Set invitation
+     *
+     * @param \Ws\EventsBundle\Entity\Invitation $invitation
+     * @return Invited
+     */
+    public function setInvitation(\Ws\EventsBundle\Entity\Invitation $invitation = null)
+    {
+        $this->invitation = $invitation;
+
+        return $this;
+    }
+
+    /**
+     * Get invitation
+     *
+     * @return \Ws\EventsBundle\Entity\Invitation 
+     */
+    public function getInvitation()
+    {
+        return $this->invitation;
     }
 }

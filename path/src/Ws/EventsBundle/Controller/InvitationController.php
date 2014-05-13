@@ -22,14 +22,25 @@ class InvitationController extends Controller
 	 */
 	public function newAction(Request $request)
 	{
-		$form = $this->createForm(new InvitationType());
+		$em = $this->getDoctrine()->getManager();
+		$user = $this->getUser();
+
+		$form = $this->createForm(new InvitationType($em,$user));
+
 		$form->handleRequest($request);
 
 		if($form->isValid()){
 
-			$data = $form->getData();
-			print_r($data);
-			exit();
+			$invit = $form->getData();
+
+			if($this->get('ws_events.invit.manager')->saveInvit($invit)){
+				$this->get('flashbag')->add('invitation enregistrés','success');
+			}
+
+			if($this->get('ws_mailer')->sendInvitationMessage($invit)){
+				$this->get('flashbag')->add('invitation envoyés','success');
+			}
+			
 		}
 
 		return $this->render('WsEventsBundle:Invitation:new.html.twig',array(
