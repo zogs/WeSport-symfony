@@ -1,37 +1,40 @@
 ws_events_homepage:
     pattern:  /hello/{name}
-    defaults: { _controller: WsEventsBundle:Default:index }
+    defaults: { _controller: WsEventsBundle:Event:index }
 
 ws_events_view:
     pattern: /view/{event}
-    defaults: { _controller: WsEventsBundle:Default:view }
+    defaults: { _controller: WsEventsBundle:Event:view }
     requirements:
         event: \d+
 
 ws_events_new:
     pattern: /new
-    defaults: { _controller: WsEventsBundle:Default:new }
+    defaults: { _controller: WsEventsBundle:Event:new }
 
 ws_events_delete:
     pattern: /delete/{event}/{token}
-    defaults: { _controller: WsEventsBundle:Default:delete }
+    defaults: { _controller: WsEventsBundle:Event:delete }
     requirements:
         event: \d+
 
 
 ws_events_week_ajax:
     pattern: /calendar/ajax/{date}
-    defaults: { _controller: WsEventsBundle:Default:weekAjax, date:'now'}
+    defaults: { _controller: WsEventsBundle:Event:weekAjax, date:'now'}
     requirements:         
         _method: GET
 
 
 ws_events_calendar:
     pattern: /calendar/{country}/{city}/{sports}/{type}/{nbdays}/{date}
-    defaults: { _controller: WsEventsBundle:Default:calendar, country:null, city:null, sports:null, date:null, nbdays:null, type:null }
+    defaults: { _controller: WsEventsBundle:Event:calendar, country:null, city:null, sports:null, date:null, nbdays:null, type:null }
     requirements:         
         _method: GET
 
+ws_new_invitations:
+    pattern: /invite
+    defaults: { _controller: WsEventsBundle:Invitation:new }
 
 
 #===========

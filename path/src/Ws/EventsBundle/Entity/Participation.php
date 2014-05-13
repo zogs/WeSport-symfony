@@ -15,26 +15,33 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Participation 
 {
-	/**
-	* @ORM\Id
-	* @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event", inversedBy="participations")
-	*/
-	private $event;
+    /**
+    * @ORM\Id
+    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event", inversedBy="participations")
+    */
+    private $event;
 
-	/**
-	* @ORM\Id
-	* @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-	*/
-	private $user;
+    /**
+    * @ORM\Id
+    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
+    * @ORM\Column(nullable=true)
+    */
+    private $user;
 
-	/**
-     * @ORM\Column(name="date", type="datetime")
-     */
+     /**
+    * @ORM\Id
+    * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Invitation")
+    * @ORM\Column(nullable=true)
+    */
+    private $invited;
+
+    /**
+    * @ORM\Column(name="date", type="datetime")
+    */
     private $date_inscription;
 
 
-	function __construct(){
-
+    function __construct(){
         $this->date_inscription = new \DateTime();
     }
 

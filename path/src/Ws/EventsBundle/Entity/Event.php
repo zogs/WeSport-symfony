@@ -79,6 +79,11 @@ class Event
      */
     private $participations;
 
+     /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="event")
+     */
+    private $invitations;
+
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
      */
