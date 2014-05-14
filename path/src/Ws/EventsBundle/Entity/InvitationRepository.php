@@ -23,4 +23,13 @@ class InvitationRepository extends EntityRepository
 		$invit = $this->_em->getRepository('WsEventsBundle:Invitation')->find($randomId);
 		return $invit;
 	}
+
+	public function findSavedInvitation($user)
+	{
+		$qb = $this->createQueryBuilder('i');
+		$qb->andWhere($qb->expr()->eq('i.inviter',':user'));
+		$qb->andWhere($qb->expr()->isNotNull('i.name'));
+		$qb->setParameter('user',$user);
+		return $qb->getQuery()->getResult();	
+	}
 }

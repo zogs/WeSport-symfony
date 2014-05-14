@@ -7,6 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 use My\UserBundle\Entity\User;
 use Ws\EventsBundle\Entity\Invitation;
@@ -26,10 +27,12 @@ class InvitationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+    	$user = $this->user;
+
         $builder
 	->add('emails','textarea',array(  
 		'mapped'=>false,                                  
-		'label'=>'Emails',
+		'label'=>'Créer une liste',
 		'attr'=>array('placeholder'=>'Entrer les adresses email de vos amis')
 		))
 
@@ -44,11 +47,6 @@ class InvitationType extends AbstractType
 			'placeholder'=>'Donner un nom pour enregistrez votre liste')
 		))
 
-	->add('inviter','entity',array(
-		'class' => 'MyUserBundle:User',
-		'property' => 'id',
-		'data' => $this->user))
-
 	->add('save','submit');
     		
 
@@ -59,7 +57,26 @@ class InvitationType extends AbstractType
 
     public function onPreSetData(FormEvent $event)
     {
+    	$form = $event->getForm();
 
+    	//add previously saved invitation's list
+    	$invits = $this->em->getRepository('WsEventsBundle:Invitation')->findSavedInvitation($this->user);
+    	$list = array();
+    	foreach($invits as $invit){
+    		$list[$invit->getId()] = $invit->getName();
+    	}
+
+
+    	if(!empty($invits)){
+    		$form->add('saved_list','choice',array(
+        		'mapped' => false,
+        		'label' => 'Utiliser une liste précédante',
+        		'expanded' => false,
+        		'multiple' => false,
+        		'choices' => $list,
+        		));
+    	}
+    	
     }	
 
     public function onPreSubmit(FormEvent $event)

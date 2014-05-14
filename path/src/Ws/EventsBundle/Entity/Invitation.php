@@ -27,7 +27,7 @@ class Invitation
     private $event;
 
      /**
-    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
+    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", inversedBy="invitations")
     */
     private $inviter;
 

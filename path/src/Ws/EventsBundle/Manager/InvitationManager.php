@@ -16,9 +16,11 @@ class InvitationManager extends AbstractManager
 	
 	public function saveInvit($invit)
 	{
-
+		//set Invited from emails list
+		//will be persisted with Invitation object
 		$invit = $this->setInvited($invit);		
 
+		//persist Invitation object
 		$this->save($invit,true);
 
 		return true;	
