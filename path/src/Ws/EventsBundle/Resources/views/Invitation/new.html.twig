@@ -12,7 +12,22 @@
             </div>
 
         <div class="col_large">
-            {{ form(form) }}
+            {{ form_start(form) }}
+
+                {{form_row(form.emails) }}
+                {{form_row(form.name) }}
+
+                {% if form.saved_list is defined %}
+                {{ form_row(form.saved_list) }}
+                {% endif %}
+
+                {% if form.event is defined %}
+                {{ form_row(form.event) }}
+                {% endif %}
+
+                <button class="btn btn-large btn-primary">Envoyer les invitations</button>
+
+            {{ form_end(form) }}
         </div>
         
         <div class="clearfix"></div>

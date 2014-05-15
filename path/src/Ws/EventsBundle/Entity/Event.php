@@ -80,7 +80,7 @@ class Event
     private $participations;
 
      /**
-     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="event", cascade="persist")
      */
     private $invitations;
 
@@ -685,5 +685,50 @@ class Event
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Add invitations
+     *
+     * @param \Ws\EventsBundle\Entity\Invitation $invitations
+     * @return Event
+     */
+    public function addInvitation(\Ws\EventsBundle\Entity\Invitation $invitations)
+    {
+        $this->invitations[] = $invitations;
+
+        return $this;
+    }
+
+    /**
+     * Remove invitations
+     *
+     * @param \Ws\EventsBundle\Entity\Invitation $invitations
+     */
+    public function removeInvitation(\Ws\EventsBundle\Entity\Invitation $invitations)
+    {
+        $this->invitations->removeElement($invitations);
+    }
+
+    /**
+     * Get invitations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvitations()
+    {
+        return $this->invitations;
+    }
+
+    /**
+     * Set invitations
+     *
+     * @return Event
+     */
+    public function setInvitations(\Ws\EventsBundle\Entity\Invitation $invitations)
+    {
+        $this->invitations[] = $invitations;
+
+        return $this;
     }
 }

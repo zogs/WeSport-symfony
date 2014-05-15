@@ -29,16 +29,22 @@
                 {{ form_row(form.description) }}
                 {{ form_row(form.phone) }}
 
+                <button type="submit" class="btn btn-large btn-primary fright">Save</button>
+                <div class="clearfix">
+                    <h5>Inviter des amis</h5>
+                    {{ form_row(form.invitations) }}
+                </div>
+                <button type="submit" class="btn btn-large btn-primary fright">Send and Save</button>
                 
-
+            {{ form_end(form) }}
                    
         </div>
 
         <div class="col_small">
             <div class="block form-submit">
-                {{ form_row(form.save) }}
+               
             </div>
-             {{ form_end(form) }}   
+             
 
              <div class="block block-yellow ">
                 <h3>Comment ça marche?</h3>

@@ -16,22 +16,20 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Participation 
 {
     /**
-    * @ORM\Id
+    * @ORM\Id @ORM\GeneratedValue
     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event", inversedBy="participations")
     */
     private $event;
 
     /**
-    * @ORM\Id
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    * @ORM\Column(nullable=true)
+    * @ORM\Column(name="user_id", nullable=true)
     */
     private $user;
 
      /**
-    * @ORM\Id
     * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Invitation")
-    * @ORM\Column(nullable=true)
+    * @ORM\Column(name="invited_id", nullable=true)
     */
     private $invited = null;
 

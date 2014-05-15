@@ -33,8 +33,10 @@ ws_events_calendar:
         _method: GET
 
 ws_new_invitations:
-    pattern: /invite
+    pattern: /invite/{event}
     defaults: { _controller: WsEventsBundle:Invitation:new }
+    requirements:
+        event: \d+
 
 
 #===========

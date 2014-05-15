@@ -13,6 +13,13 @@ services:
         class: Ws\EventsBundle\Form\Type\SerieType      
         tags:
             - { name: form.type, alias: serie }
+
+    ws_events.form.type.invitation:
+        class: Ws\EventsBundle\Form\Type\InvitationType
+        arguments: [@doctrine.orm.entity_manager,@security.context]
+        tags:
+            - { name: form.type, alias: invitation_type }
+
     ws_events.manager:
         class: Ws\EventsBundle\Manager\EventManager
         arguments: [@doctrine.orm.entity_manager,@security.context]

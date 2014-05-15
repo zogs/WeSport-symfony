@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 
 use Ws\EventsBundle\Entity\Event;
-use Ws\EventsBundle\Entity\Serie;
 use Ws\EventsBundle\Form\Type\InvitationType;
 
 
@@ -20,14 +19,14 @@ class InvitationController extends Controller
 	 * @return  view
 	 * 
 	 */
-	public function newAction(Request $request)
+	public function newAction(Event $event)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$user = $this->getUser();
+		$secu = $this->get('security.context');
 
-		$form = $this->createForm(new InvitationType($em,$user));
+		$form = $this->createForm(new InvitationType($em,$secu,$event));
 
-		$form->handleRequest($request);
+		$form->handleRequest($this->getRequest());
 
 		if($form->isValid()){
 
@@ -37,8 +36,8 @@ class InvitationController extends Controller
 				$this->get('flashbag')->add('invitation enregistrés','success');
 			}
 
-			if($this->get('ws_mailer')->sendInvitationMessage($invit)){
-				$this->get('flashbag')->add('invitation envoyés','success');
+			if($count = $this->get('ws_mailer')->sendInvitationMessage($invit)){
+				$this->get('flashbag')->add($count.' invitations envoyés','success');
 			}
 			
 		}

@@ -46,7 +46,8 @@ class EventType extends AbstractType
     		->add('nbmin','integer',array('label'=>'Nombre minimum'))
     		->add('description','textarea',array('required'=>false))
     		->add('phone','text',array('label'=>'Téléphone','required'=>false))
-    		->add('save','submit');
+            ->add('invitations','invitation_type',array())
+            ;
     		
     }
 

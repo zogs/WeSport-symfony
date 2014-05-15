@@ -17,7 +17,7 @@ class EventController extends Controller
 {
 	public function indexAction($name)
 	{
-		return $this->render('WsEventsBundle:Default:index.html.twig', array('name' => $name));
+		return $this->render('WsEventsBundle:Event:index.html.twig', array('name' => $name));
 	}
 
 	/**
@@ -119,7 +119,7 @@ class EventController extends Controller
 			}
 		}             
 
-		return $this->render('WsEventsBundle:Default:new.html.twig', array(
+		return $this->render('WsEventsBundle:Event:new.html.twig', array(
 			'form' => $form->createView(),
 			));
 	}
@@ -217,7 +217,7 @@ class EventController extends Controller
 		$gmap = $gmap->getGoogleMap();
 
 
-		return $this->render('WsEventsBundle:Default:view.html.twig',array(
+		return $this->render('WsEventsBundle:Event:view.html.twig',array(
 			'event'=> $event,
 			'gmap'=> $gmap,
 			'token'=> $this->get('form.csrf_provider')->generateCsrfToken('delete_event')

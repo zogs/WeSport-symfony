@@ -43,7 +43,7 @@ class Mailer
 
         }
 
-        return true;
+        return $key + 1;
     }
 
     

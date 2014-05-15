@@ -22,7 +22,7 @@ class Invitation
     private $id;
 
      /**
-    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event")
+    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event", inversedBy="invitations")
     */
     private $event;
 
