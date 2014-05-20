@@ -74,6 +74,7 @@ class CalendarManager extends AbstractManager
 						$this->query,
 						$this->uri
 						);		
+
 		$this->params = $this->prepareParams($params);		
 		$this->computed = true;
 		return $this->params;

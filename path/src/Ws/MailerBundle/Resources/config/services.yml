@@ -8,3 +8,5 @@ services:
     ws_mailer:
         class: Ws\MailerBundle\Mailer\mailer
         arguments: [@mailer,@templating]
+        tags:
+            - { name: ws_mailer, alias: ws_mailer }

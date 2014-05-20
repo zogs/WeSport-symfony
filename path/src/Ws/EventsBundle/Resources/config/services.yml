@@ -20,6 +20,7 @@ services:
         tags:
             - { name: form.type, alias: invitation_type }
 
+    #Managers
     ws_events.manager:
         class: Ws\EventsBundle\Manager\EventManager
         arguments: [@doctrine.orm.entity_manager,@security.context]
@@ -32,8 +33,17 @@ services:
         class: Ws\EventsBundle\Manager\InvitationManager
         arguments: [@doctrine.orm.entity_manager,@security.context]
 
+    #Twig
     ws_events.twig.eventlink:
         class: Ws\EventsBundle\Twig\EventLinkExtension
         arguments: [@router]
         tags:
             - { name: twig.extension }
+
+    #Event Listner
+    ws_events.listener.events:
+        class: Ws\EventsBundle\EventListener\EventsListener
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        scope: container
+        tags:
+            - { name: kernel.event_subscriber }

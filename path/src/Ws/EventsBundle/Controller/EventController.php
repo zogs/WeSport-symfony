@@ -11,6 +11,13 @@ use Ws\EventsBundle\Entity\Serie;
 use Ws\EventsBundle\Form\Type\EventType;
 use Ws\EventsBundle\Form\Type\CalendarSearchType;
 use Ws\EventsBundle\Form\Type\InvitationType;
+use Ws\EventsBundle\Event\WsEvents;
+use Ws\EventsBundle\Event\CreateEvents;
+use Ws\EventsBundle\Event\DeleteEvent;
+use Ws\EventsBundle\Event\DeleteSerie;
+use Ws\EventsBundle\Event\ViewEvent;
+use Ws\EventsBundle\Event\AddParticipant;
+use Ws\EventsBundle\Event\CancelParticipant;
 
 
 class EventController extends Controller
@@ -40,8 +47,9 @@ class EventController extends Controller
 			);        
 		//get manager
 		$manager = $this->get('calendar.manager');
+
 		//set search parameter
-		$manager->setCookieParams($this->getRequest()->cookies->all());
+		//$manager->setCookieParams($this->getRequest()->cookies->all());
 		$manager->setRequestParams($this->getRequest()->query->all());
 		$manager->setUriParams($params);
 		//find searched week
@@ -109,6 +117,10 @@ class EventController extends Controller
 			$event->setLocation($location);
 			$event->setOrganizer($this->getUser());
 			
+			//throw event CONFIRM_EVENT
+			$sfevent = new CreateEvent($event,$this->getUser());
+			$this->get('event_dispatcher')->dispatch(WsEvents::CREATE_EVENTS, $sfevent);   
+
 
 			if($this->get('ws_events.manager')->saveAll($event)){
 
@@ -138,6 +150,11 @@ class EventController extends Controller
 			throw $this->createNotFoundException('Vous ne pouvez pas supprimer cet événement');        
 		} 
 
+		//throw event CONFIRM_EVENT
+		$sfevent = new ConfirmEvent($event,$this->getUser());
+		$this->get('event_dispatcher')->dispatch(WsEvents::CONFIRM_EVENT, $sfevent);   
+
+
 		$this->get('ws_events.manager')->confirmEvent($event);
 		$this->get('flashbag')->add("L'événement a été confirmé !");
 
@@ -161,7 +178,12 @@ class EventController extends Controller
 
 		if($this->getUser()!=$event->getOrganizer()) {
 			throw $this->createNotFoundException('Vous ne pouvez pas supprimer cet événement');        
-		}   
+		}
+
+		//throw event DELETE_EVENT
+		$sfevent = new DeleteEvent($event,$this->getUser());
+		$this->get('event_dispatcher')->dispatch(WsEvents::DELETE_EVENT, $sfevent);   
+
 
 		$this->get('ws_events.manager')->deleteEvent($event);
 		$this->get('flashbag')->add("L'événement a été supprimé !");
@@ -188,7 +210,15 @@ class EventController extends Controller
 			throw $this->createNotFoundException('Vous ne pouvez pas supprimer cette série');        
 		}   
 
-		$this->get('ws_events.manager')->deleteSerie($event);
+		//get whole serie
+		$serie = $event->getSerie();
+
+		//throw event DELETE_SERIE
+		$sfevent = new DeleteSerie($serie,$this->getUser());
+		$this->get('event_dispatcher')->dispatch(WsEvents::DELETE_SERIE, $sfevent);
+
+
+		$this->get('ws_events.manager')->deleteSerie($serie);
 		$this->get('flashbag')->add("Tous les événements ont été supprimés !",'success');
 
 		$this->redirect($this->generateUrl("ws_events_new")); 
@@ -216,7 +246,10 @@ class EventController extends Controller
 		$gmap->generate();
 		$gmap = $gmap->getGoogleMap();
 
+		//throw event		
+		$this->get('event_dispatcher')->dispatch(WsEvents::VIEW_EVENT, new ViewEvent($event,$this->getUser()));
 
+		//render
 		return $this->render('WsEventsBundle:Event:view.html.twig',array(
 			'event'=> $event,
 			'gmap'=> $gmap,
@@ -238,6 +271,11 @@ class EventController extends Controller
 		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
+
+		//throw event ADD_PARTICIPANT
+		$sfevent = new AddParticipant($event,$this->getUser());
+		$this->get('event_dispatcher')->dispatch(WsEvents::ADD_PARTICIPANT, $sfevent);   
+
 
 		$this->get('ws_events.manager')->saveParticipation($event,$this->getUser(),true);
 		$this->get('flashbag')->add("Merci de votre participation !");
@@ -264,6 +302,11 @@ class EventController extends Controller
 		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
+
+		//throw event CONFIRM_EVENT
+		$sfevent = new CancelParticipant($event,$this->getUser());
+		$this->get('event_dispatcher')->dispatch(WsEvents::CANCEL_PARTICIPANT, $sfevent);   
+
 
 		$this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
 		$this->get('flashbag')->add("Une prochaine fois peut être !",'info');

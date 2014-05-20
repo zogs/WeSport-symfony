@@ -5,6 +5,7 @@ namespace Ws\EventsBundle\Manager;
 use My\ManagerBundle\Manager\AbstractManager;
 
 use Ws\EventsBundle\Entity\Participation;
+use Ws\EventsBundle\Entity\Serie;
 
 class EventManager extends AbstractManager
 {
@@ -110,9 +111,8 @@ class EventManager extends AbstractManager
      *
      * @return boolean
      */
-	public function deleteSerie($event)
+	public function deleteSerie(Serie $serie)
 	{
-		$serie = $event->getSerie();
 		//delete all events of the serie
 		$events = $this->getRepository('WsEventsBundle:Event')->findBySerie($serie);
 		foreach ($events as $event) {			
