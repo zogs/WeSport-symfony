@@ -130,11 +130,11 @@ class InvitationType extends AbstractType
 
     		$emails = \My\UtilsBundle\Utils\String::findEmailsInString($data['emails']);
     		foreach ($emails as $key => $email) {	
-    			             if($key>=10) break;
-
+                
+    			if($key>=10) break;
 				$o = new Invited();
 				$o->setEmail($email);
-                                                    $o->setUser($this->em->getRepository('MyUserBundle:User')->findOneByEmail($email));
+                $o->setUser($this->em->getRepository('MyUserBundle:User')->findOneByEmail($email));
 				$o->setInvitation($invit);
 				$invit->addInvited($o);
 			}			

@@ -6,7 +6,7 @@
 	    {% for message in messages %}
 	        <div class="ws-alert alert-{{ type }}">
 	        	<span class="flash-icon"><span class="ws-icon-{{ icons[type] }}"></span></span>
-	            <p>{{ message }}</p>
+	            <p>{{ message|raw }}</p>
 	            <button class="close" data-dismiss="alert"><span class="ws-icon-close"></span></button>
 	        </div>
 	    {% endfor %}

@@ -12,16 +12,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class ParticipationRepository extends EntityRepository
 {
-	public function findParticipation($event,$user)
+	public function findParticipation($event,$user=null,$invited=null)
 	{
 		$qb = $this->createQueryBuilder('p');
-		$qb->where('p.event',':event')
-			->andWhere('p.user',':user')
-			->setParameter('user',$user)
-			->setParameter('event',$event)
-			;
+		$qb->andWhere('p.event = :event')->setParameter('event',$event);
 
-		return $qb->getQuery->getOneOrNullResult();
+		if(isset($user))
+			$qb->andWhere('p.user = :user')->setParameter('user',$user);
+		if(isset($invited))
+			$qb->andWhere('p.invited = :invited')->setParameter('invited',$invited);			
+
+		return $qb->getQuery()->getOneOrNullResult();
+	}
+
+	public function findParticipationAndRemove($event,$user=null,$invited=null)
+	{
+		$particip = $this->findParticipation($event,$user,$invited);
+		if(isset($particip))
+			return $this->removeParticipation($particip);
+		return false;
+	}
+
+	public function removeParticipation($particip)
+	{
+		$this->_em->remove($particip);
+		$this->_em->flush();
+		return true;
 	}
 
 }

@@ -10,10 +10,13 @@ class TestController extends Controller
     {
     	
     	$invit = $this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Invitation')->findOneRandomly();
+    	$invited = $this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Invited')->findOneRandomly();
 
     	$invit->setContent("Salut l'ami, on va faire un parti de sea sex and sun, tu viens ??");
 
-
-        return $this->render('WsMailerBundle:Events:invitation.html.twig', array('invit' => $invit));
+        return $this->render('WsMailerBundle:Events:invitation.html.twig', array(
+        	'invit' => $invit,
+        	'invited' => $invited
+        	));
     }
 }

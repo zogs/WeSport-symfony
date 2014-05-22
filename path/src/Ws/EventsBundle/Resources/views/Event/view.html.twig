@@ -188,6 +188,8 @@
 						<div class="block-content">
 							<ul>
 								{% for p in event.participations %}
+
+									{% if p.user is not null %}									
 									<li>
 										<a class="user-linklist" href="" rel="me nofollow">
 											<img src="" alt="" class="event-avatar event-participant-avatar tooltitop" data-toggle="tooltip" title="{{ p.user.username }} ({{ p.user.age }} )" />
@@ -198,6 +200,16 @@
 											</p>
 										</a>
 									</li>
+									{% elseif p.invited is not null %}
+									<li>
+										<img src="" alt="" class="tooltitop" data-toggle="tooltip" title="Invité (non-inscrit)">
+										<p>
+											<strong>Invité(e)</strong>
+											<br>
+											<small>(non-inscrit)</small>
+										</p>
+									</li>
+									{% endif %}
 								{% endfor %}
 							</ul>
 						</div>

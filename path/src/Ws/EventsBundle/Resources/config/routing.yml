@@ -38,6 +38,25 @@ ws_new_invitations:
     requirements:
         event: \d+
 
+ws_invitations_add_blacklist:
+    pattern: /invitation/addblacklist/{emails}
+    defaults: { _controller: WsEventsBundle:Invitation:addBlacklist, emails: null }
+
+ws_invitations_remove_blacklist:
+    pattern: /invitation/removeblacklist/{emails}
+    defaults: { _controller: WsEventsBundle:Invitation:removeBlacklist, emails: null}
+
+ws_invited_confirm:
+    pattern: /invite/confirm/{invited}
+    defaults: { _controller: WsEventsBundle:Invitation:confirmParticipation }
+    requirements:
+        invited: \d+
+
+ws_invited_deny:
+    pattern: /invite/deny/{invited}
+    defaults: { _controller: WsEventsBundle:Invitation:denyParticipation }
+    requirements:
+        invited: \d+
 
 #===========
 #  Admin

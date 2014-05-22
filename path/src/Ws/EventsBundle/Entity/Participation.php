@@ -16,20 +16,23 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Participation 
 {
     /**
-    * @ORM\Id @ORM\GeneratedValue
+     * @ORM\Id @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event", inversedBy="participations")
     */
     private $event;
 
     /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    * @ORM\Column(name="user_id", nullable=true)
     */
-    private $user;
+    private $user = null;
 
      /**
-    * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Invitation")
-    * @ORM\Column(name="invited_id", nullable=true)
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Invited")    
     */
     private $invited = null;
 
@@ -96,7 +99,7 @@ class Participation
      * @param \My\UserBundle\Entity\User $user
      * @return Participation
      */
-    public function setUser(\My\UserBundle\Entity\User $user)
+    public function setUser(\My\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -114,4 +117,27 @@ class Participation
     }
 
     
+
+    /**
+     * Set invited
+     *
+     * @param \Ws\EventsBundle\Entity\Invited $invited
+     * @return Participation
+     */
+    public function setInvited(\Ws\EventsBundle\Entity\Invited $invited = null)
+    {
+        $this->invited = $invited;
+
+        return $this;
+    }
+
+    /**
+     * Get invited
+     *
+     * @return \Ws\EventsBundle\Entity\Invited 
+     */
+    public function getInvited()
+    {
+        return $this->invited;
+    }
 }

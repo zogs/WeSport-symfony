@@ -8,11 +8,13 @@
 				<img src="{{ asset('bundles/wssports/img/sport_icon/' ~ event.sport.icon ~ '.gif') }}">
 			</td>
 			<td>
-				<strong> {{ event.title }}</strong>
+				<a href="{{ event|link2event }}">
+					<strong> {{ event.title }}</strong>
+				</a>
 				<br>
-				<strong>date:</strong> {{ event.date|date('l d m') }} à {{ event.time|date('h:i',"Europe/Paris") }}
+				<small><strong>date:</strong></small> {{ event.date|date('l d m') }} à {{ event.time|date('h:i',"Europe/Paris") }}
 				<br>
-				<strong>à:</strong> {{ event.location.city.name }}
+				<small><strong>à:</strong></small> {{ event.location.city.name }}
 			</td>	
 		</tr>
 	</tbody>

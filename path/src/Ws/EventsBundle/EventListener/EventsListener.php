@@ -39,12 +39,12 @@ class EventsListener implements EventSubscriberInterface
 
 	public function onNewEvents(NewEventsEvent $event)
 	{
-		exit('onNewEvents WIN');
+		//exit('onNewEvents WIN');
 	}
 
 	public function onViewEvent(ViewEvent $event)
 	{
-		exit('viewEvent WIN');
+		//exit('viewEvent WIN');
 	}
 
 

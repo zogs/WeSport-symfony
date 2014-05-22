@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Invitation
  *
  * @ORM\Table(name="events_invited")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\InvitationRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\InvitedRepository")
  */
 class Invited
 {
@@ -28,7 +28,6 @@ class Invited
 
       /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    * @ORM\Column(name="user", nullable=true)
     */
     private $user = null;
 
@@ -140,29 +139,6 @@ class Invited
     }
 
     /**
-     * Set event
-     *
-     * @param \Ws\EventsBundle\Entity\Event $event
-     * @return Invitation
-     */
-    public function setEvent(\Ws\EventsBundle\Entity\Event $event = null)
-    {
-        $this->event = $event;
-
-        return $this;
-    }
-
-    /**
-     * Get event
-     *
-     * @return \Ws\EventsBundle\Entity\Event 
-     */
-    public function getEvent()
-    {
-        return $this->event;
-    }
-
-    /**
      * Set date_response
      *
      * @param \DateTime $dateResponse
@@ -170,7 +146,8 @@ class Invited
      */
     public function setDateResponse($dateResponse)
     {
-        $this->date_response = $dateResponse;
+        if($dateResponse=='now') $this->date_response = new \DateTime();
+        else $this->date_response = $dateResponse;
 
         return $this;
     }
@@ -228,6 +205,11 @@ class Invited
      */
     public function getUser()
     {
-        return $this->user;
+        return (isset($this->user)? $this->user : null);
+    }
+
+    public function isRegisteredUser()
+    {
+        return (isset($this->user)? true : false);
     }
 }

@@ -1,8 +1,8 @@
 {% extends 'WsMailerBundle:Template:personal.html.twig' %}
 
 {% block title %}
-    <strong>Bonjour,</strong><br />
-    Vous avez reçu une invitation !
+    <strong>{% if invit.user is defined %} {{ invit.user.username }} {% else %} Bonjour,{% endif %}</strong><br />
+    Vous avez reçu une invitation d'un ami !
 {% endblock title %}
 
 {% block content %}
@@ -10,7 +10,7 @@
         <tbody>
             <tr height="50">
                 <td>
-                    <strong>{{ invit.inviter.username|capitalize }}</strong> vous invite à participer à :
+                    <strong>{{ invit.inviter.username|capitalize }}</strong> vous invite à participer au sport :
                 </td>
             </tr>
             <tr>
@@ -38,13 +38,19 @@
             </tr>
             {% endif %}
 
-            <tr height="50">
+            <tr height="50" style="font-size:80%">
                     <td>
-                        Participerez-vous ? <a href="">OUI</a> | <a href="">NON</a>
+                        Participerez-vous ? <a href="">OUI</a> | <a href="">NON</a> | <a href="{{ invit.event|link2event }}">En savoir +</a>
                         <br/>
-                        Sinon vous pouvez en discutez en vous rendant sur <a href="">cette page</a> !
+                        Discutez de l'événement avec {{ invit.inviter.username|capitalize }} en vous rendant <a href="{{ invit.event|link2event }}">sur cette page</a> !
                     </td>
-            </tr>    
+            </tr> 
+            <tr>
+                <td style="text-align:right">
+                    <br>
+                    <small><small><a href="{{path('ws_invitations_add_blacklist',{emails: invited.email}) }}" style="color:#D5D5D5;" >Vous ne souhaitez plus reçevoir d'invitation de coSporturage.fr</a></small></small>
+                </td>
+            </tr>   
         </tbody>
     </table>
 {% endblock content %}
