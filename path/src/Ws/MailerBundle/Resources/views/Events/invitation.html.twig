@@ -1,27 +1,50 @@
-<html>
-<head>
-</head>
-<body>
-    Salut
-    <p>{{ invit.inviter.username }} vous invite à participer à :</p>
-    <p>
-        <strong> {{ invit.event.title }}</strong>
-        <br>
-        <strong>date:</strong> {{ invit.event.date|date('l d m') }} à {{ invit.event.time|date('h:i',"Europe/Paris") }}
-        <br>
-        <strong>à:</strong> {{ invit.event.location.city.name }}
-    </p>
-    <p>
-        Participerez-vous ? <a href="">OUI</a> | <a href="">NON</a>
-    </p>
-    <p>
-        Sinon vous pouvez en discutez en vous rendant sur <a href="">cette page</a> !      
-    </p>
-    <p>
-        <strong>Sportivement,</strong>
-        <br>
-        <small>Vous voulez ne plus recevoir d'invitation ? <a href="">Cliquez-ici</a>
-    </p>
+{% extends 'WsMailerBundle:Template:personal.html.twig' %}
 
-</body>
-</html>
+{% block title %}
+    <strong>Bonjour,</strong><br />
+    Vous avez reçu une invitation !
+{% endblock title %}
+
+{% block content %}
+    <table cellpadding="0" cellspacing="0" border="0" class="content">
+        <tbody>
+            <tr height="50">
+                <td>
+                    <strong>{{ invit.inviter.username|capitalize }}</strong> vous invite à participer à :
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% include 'WsMailerBundle:Template:block_event.html.twig' with {'event':invit.event}  %}
+                </td>
+            </tr>
+
+            {% if invit.content is not null %}
+            <tr>
+                <td>
+                        <table cellpadding="0" cellspacing="0" border="0" style="width:80%; margin:10px 10%; font-size:12px; color:#333">
+                            <tbody>
+                                <tr>
+                                    <td><i style="text-decoration:underline">Message de {{ invit.inviter.username|capitalize }} :</i></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i>" {{ invit.content }} "</i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </td>
+            </tr>
+            {% endif %}
+
+            <tr height="50">
+                    <td>
+                        Participerez-vous ? <a href="">OUI</a> | <a href="">NON</a>
+                        <br/>
+                        Sinon vous pouvez en discutez en vous rendant sur <a href="">cette page</a> !
+                    </td>
+            </tr>    
+        </tbody>
+    </table>
+{% endblock content %}

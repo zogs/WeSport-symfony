@@ -1,0 +1,19 @@
+<style type="text/css">
+	.block_event { background-color: #FFF2DA; width:100%; padding:10px; border:1px solid #AAA; }
+</style>
+<table cellpadding="0" cellspacing="0" border="0" class="block_event" >
+	<tbody>
+		<tr>
+			<td>
+				<img src="{{ asset('bundles/wssports/img/sport_icon/' ~ event.sport.icon ~ '.gif') }}">
+			</td>
+			<td>
+				<strong> {{ event.title }}</strong>
+				<br>
+				<strong>date:</strong> {{ event.date|date('l d m') }} à {{ event.time|date('h:i',"Europe/Paris") }}
+				<br>
+				<strong>à:</strong> {{ event.location.city.name }}
+			</td>	
+		</tr>
+	</tbody>
+</table>

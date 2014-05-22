@@ -1,0 +1,66 @@
+<html>
+<head>
+	<style type="text/css">
+		body { font-family:"Lucida Grande", Verdana, Arial, Helvetica, sans-serif;}
+		.background { background-color:#DDD; position:relative;}
+		.centered { background-color: #fff; border-left:1px solid #CCC; border-right:1px solid #CCC; position:relative;}
+		.header { background-color: #f2f2f2; border-bottom:1px solid #CCC;}
+		.content { background-color:#FFF;  position: relative; width:100%; padding:0 10%; ;}
+		.footer {  background-color:#f2f2f2;  position: relative; padding:20px 10%; border-top:5px solid #DADADA; margin-top:30px; font-size:12px; background-size:100%; background-image:url({{ asset('bundles/wsstyle/img/fresque.jpg')}}); }
+		.footer_content { background-color:#eee; border-top:4px solid #aaa; position: relative; }
+	</style>
+</head>
+
+<body>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="background">
+		<tbody>
+		<tr> 
+		<td>
+			<table align="center" cellpadding="0" cellspacing="0" border="0" width="670" class="centered">
+				<tbody>
+				<tr>
+				<td>
+				<!-- HEADER -->
+					<table cellpadding="0" cellspacing="0" border="0" width="670" height="80" class="header" >
+					<tbody>
+					<tr>
+						<td class="logo_header" style="width:70px">
+							<a href="http://www.cosporturage.fr"><img src="{{ asset('bundles/wsstyle/img/LOGO.gif') }}" alt="" style="width:50px; padding:0 10px;"></a>
+						</td>
+						<td style="width:400px">
+							{% block title %}
+							{% endblock title %}
+						</td>
+						<td style="width:200px">
+							{% block user %}
+							{% endblock user %}
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<!-- CONTENT -->
+					{% block content %}
+					{% endblock content %}
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<!-- FOOTER -->
+					{% block footer %}
+						{% include 'WsMailerBundle:Template:footer.html.twig'  %}
+					{% endblock footer %}
+				</td>
+				</tr>
+				</tbody>
+			</table>		
+		</td>
+		</tr>
+		</tbody>			
+	</table>
+</body>
+</html>
+

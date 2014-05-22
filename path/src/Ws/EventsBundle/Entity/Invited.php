@@ -26,6 +26,12 @@ class Invited
     */
     private $invitation;
 
+      /**
+    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
+    * @ORM\Column(name="user", nullable=true)
+    */
+    private $user = null;
+
     /**
      * @ORM\Column(name="email", type="string", length=255)     
      */
@@ -200,5 +206,28 @@ class Invited
     public function getInvitation()
     {
         return $this->invitation;
+    }
+
+    /**
+     * Set user
+     *
+     * @param string $user
+     * @return Invited
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
