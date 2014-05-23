@@ -99,7 +99,7 @@ class EventController extends Controller
 	 *
 	 * @return View
 	 */
-	public function newAction(Request $request)
+	public function createAction(Request $request)
 	{
 
 		$event = new Event();

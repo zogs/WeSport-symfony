@@ -9,8 +9,8 @@ ws_events_view:
         event: \d+
 
 ws_events_new:
-    pattern: /new
-    defaults: { _controller: WsEventsBundle:Event:new }
+    pattern: /create
+    defaults: { _controller: WsEventsBundle:Event:create }
 
 ws_events_delete:
     pattern: /delete/{event}/{token}

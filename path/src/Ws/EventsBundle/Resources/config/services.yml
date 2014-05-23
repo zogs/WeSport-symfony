@@ -47,3 +47,9 @@ services:
         scope: container
         tags:
             - { name: kernel.event_subscriber }
+    ws_events.listener.invitation:
+        class: Ws\EventsBundle\EventListener\InvitationListener
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        scope: container
+        tags:
+            - { name: kernel.event_subscriber }
