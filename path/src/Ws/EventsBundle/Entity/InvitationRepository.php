@@ -33,4 +33,6 @@ class InvitationRepository extends EntityRepository
 		return $qb->getQuery()->getResult();	
 	}
 
+	
+
 }

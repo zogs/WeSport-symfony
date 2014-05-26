@@ -193,6 +193,16 @@ class Invitation
     }
 
     /**
+     * Set invited
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function setInvited(\Doctrine\Common\Collections\Collection $invited)
+    {
+        return $this->invited = $invited;
+    }
+
+    /**
      * Set emails
      *
      * @param \String $emails

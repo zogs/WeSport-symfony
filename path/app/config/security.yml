@@ -21,6 +21,6 @@ security:
         - { path: ^/\w\w/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w\w/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w\w/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/\w\w/event/new, role: ROLE_USER }
+        - { path: ^/\w\w/event/create, role: ROLE_USER }
         - { path: ^/\w\w/admin/, role: ROLE_ADMIN }
         - { path: ^/\w\w/flashbag/, role: ROLE_ADMIN }

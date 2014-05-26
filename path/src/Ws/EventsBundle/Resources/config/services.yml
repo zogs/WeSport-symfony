@@ -27,7 +27,7 @@ services:
 
     calendar.manager:
         class: Ws\EventsBundle\Manager\CalendarManager
-        arguments: [@doctrine.orm.entity_manager,@security.context]
+        arguments: [@doctrine.orm.entity_manager,@security.context,@router]
 
     ws_events.invit.manager:
         class: Ws\EventsBundle\Manager\InvitationManager

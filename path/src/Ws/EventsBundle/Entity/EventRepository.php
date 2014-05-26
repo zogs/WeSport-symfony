@@ -46,8 +46,16 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterByOnline($qb);		
 		$qb = $this->filterByCityQuery($qb);
 		$qb = $this->filterByType($qb);
+		$qb = $this->filterByTime($qb);
+		$qb = $this->filterByPrice($qb);
+		$qb = $this->filterByOrganizer($qb);
 	
-
+		/*
+		\Doctrine\Common\Util\Debug::dump($qb->getParameters());
+		\Doctrine\Common\Util\Debug::dump($qb->getDQL());
+		exit();
+		*/
+		
 		return $qb->getQuery()->getResult();
 	}
 
@@ -149,6 +157,7 @@ class EventRepository extends EntityRepository
 
 	public function filterByType($qb)
 	{
+		if(empty($this->params['type'])) return $qb;
 		$qb->setParameter('type',$this->params['type']);
 		return $qb->andWhere('e.type IN (:type)');
 	}
@@ -159,6 +168,25 @@ class EventRepository extends EntityRepository
 		return $qb->andWhere(
 			$qb->expr()->eq('e.date',':date')
 			);		
+	}
+
+	public function filterByTime($qb)
+	{
+		$qb = $qb->andWhere($qb->expr()->between('e.time',':timestart',':timeend'))->setParameter('timestart',$this->params['timestart'])->setParameter('timeend',$this->params['timeend']);
+		return $qb;
+	}
+
+	public function filterByPrice($qb)
+	{
+		if(!isset($this->params['price']) || $this->params['price'] == 0) return $qb;
+		return $qb->andWhere($qb->expr()->lt('e.price',':price'))->setParameter('price',$this->params['price']);
+	}
+
+	public function filterByOrganizer($qb)
+	{
+		if(isset($this->params['organizer']) && is_numeric($this->params['organizer']))
+			return $qb->andWhere($qb->expr()->eq('e.organizer',':organizer'))->setParameter('organizer',$this->params['organizer']);
+		return $qb;
 	}
 
 	public function filterByOnline($qb)

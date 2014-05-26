@@ -35,8 +35,9 @@ class EventController extends Controller
 	 *
 	 * @return View
 	 */
-	public function calendarAction($country,$city,$sports,$date,$nbdays,$type)
+	public function calendarAction($country,$city,$sports,$date,$nbdays,$type,$time,$price,$organizer)
 	{
+		
 		$params = array(
 			'country' => $country,
 			'city_name' => $city,
@@ -44,20 +45,21 @@ class EventController extends Controller
 			'date' => $date,
 			'nbdays' => $nbdays,
 			'type' => $type,
+			'time' => $time,			
 			);        
 		//get manager
 		$manager = $this->get('calendar.manager');
 
 		//set search parameter
 		//$manager->setCookieParams($this->getRequest()->cookies->all());
-		$manager->setRequestParams($this->getRequest()->query->all());
+		//$manager->setGetParams($this->getRequest()->query->all());
 		$manager->setUriParams($params);
 		//find searched week
-		$week = $manager->findCalendarByParams();
+		$week = $manager->findCalendar();
 		//save search cookie
 		$manager->saveSearchCookies();
 		//get search params
-		$search = $manager->getSearchParams();
+		$search = $manager->getSearchData();
 		
 
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
@@ -73,15 +75,15 @@ class EventController extends Controller
 		//get manager
 		$manager = $this->get('calendar.manager');
 		//set params
-		$manager->setCookieParams($this->getRequest()->cookies->all());
-		$manager->setRequestParams($this->getRequest()->query->all());
-		$manager->setUriParams(array('date'=>$date));
+		//$manager->setCookieParams($this->getRequest()->cookies->all());
+		$manager->setGetParams($this->getRequest()->query->all());
+		$manager->setDateWeek($date);
 		//find searched week
 		$week = $manager->findCalendarByParams();
 		//save search cookie
 		$manager->saveSearchCookies();
 		//get search params
-		$search = $manager->getSearchParams();
+		$search = $manager->getSearchData();
 
 
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
@@ -115,19 +117,19 @@ class EventController extends Controller
 
 			$event = $form->getData();
 			$event->setLocation($location);
-			$event->setOrganizer($this->getUser());
-			
-			//throw event CONFIRM_EVENT
-			$sfevent = new CreateEvent($event,$this->getUser());
-			$this->get('event_dispatcher')->dispatch(WsEvents::CREATE_EVENTS, $sfevent);   
+			$event->setOrganizer($this->getUser());						
 
 
 			if($this->get('ws_events.manager')->saveAll($event)){
 
-				$this->get('flashbag')->add('formulaire valide','success');
+				//set flash message
+				$this->get('flashbag')->add('Bravo, votre activité est en ligne !','success');
+				
+				//throw CREATE_EVENTS
+				$this->get('event_dispatcher')->dispatch(WsEvents::CREATE_EVENTS, new CreateEvents($event,$this->getUser()));  
 			}
 			else {
-				$this->get('flashbag')->add('peut pas sauvegarder !','error');
+				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
 			}
 		}             
 

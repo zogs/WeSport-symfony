@@ -27,14 +27,14 @@ ws_events_week_ajax:
 
 
 ws_events_calendar:
-    pattern: /calendar/{country}/{city}/{sports}/{type}/{nbdays}/{date}
-    defaults: { _controller: WsEventsBundle:Event:calendar, country:null, city:null, sports:null, date:null, nbdays:null, type:null }
+    pattern: /calendar/{country}/{city}/{sports}/{type}/{nbdays}/{date}/{time}/{price}/{organizer}
+    defaults: { _controller: WsEventsBundle:Event:calendar, country:null, city:null, sports:null, date:null, nbdays:null, type:null, time:null, price:null, organizer:null }
     requirements:         
         _method: GET
 
 ws_new_invitations:
     pattern: /invite/{event}
-    defaults: { _controller: WsEventsBundle:Invitation:new }
+    defaults: { _controller: WsEventsBundle:Invitation:create}
     requirements:
         event: \d+
 

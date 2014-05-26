@@ -109,6 +109,11 @@ class Event
     private $nbmax;
 
     /**
+     * @ORM\Column(name="price", type="smallint")
+     */
+    private $price = 0;
+
+    /**
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
      */
     private $phone;
@@ -730,5 +735,28 @@ class Event
         $this->invitations[] = $invitations;
 
         return $this;
+    }
+
+    /**
+     * Set price
+     *
+     * @param integer $price
+     * @return Event
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return integer 
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 }

@@ -34,7 +34,7 @@ $(document).ready(function(){
 
 
 		//Appel la semaine courante
-		callThisWeek();
+		//callThisWeek();
 
 		window.cancelRequestAnimFrame = ( function() {
 		    return window.cancelAnimationFrame          ||

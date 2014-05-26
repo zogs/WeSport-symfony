@@ -39,6 +39,7 @@ class InvitationType extends AbstractType
         ->add('emails','textarea',array(  
 	        'mapped'=>false,                                  
 	        'label'=>'Créer une liste',
+            'required'=> false,
 	        'attr'=>array(
 	        	'placeholder'=>'Entrer les adresses email de vos amis')
         ))
@@ -74,6 +75,7 @@ class InvitationType extends AbstractType
         		'expanded' => false,
         		'multiple' => false,
         		'choices' => $list,
+                'required' => false,
         		));
     	}
 
@@ -139,6 +141,12 @@ class InvitationType extends AbstractType
 				$invit->addInvited($o);
 			}			
     	}
+
+        //get previously saved listing and set as Invitation 
+        if(!empty($data['saved_list']) && is_numeric($data['saved_list'])){
+
+            $invit = $this->em->getRepository('WsEventsBundle:Invitation')->find($data['saved_list']);           
+        }
 
     	$form->setData($invit);
     	

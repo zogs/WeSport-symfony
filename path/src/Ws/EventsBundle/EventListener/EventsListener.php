@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as Router;
 use My\FlashBundle\Controller\FlashController as Flashbag;
 use Ws\MailerBundle\Mailer\Mailer;
 use Ws\EventsBundle\Event\WsEvents;
-use Ws\EventsBundle\Event\NewEvents;
+use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\ViewEvent;
 
 
@@ -37,7 +37,7 @@ class EventsListener implements EventSubscriberInterface
 		);
 	}
 
-	public function onNewEvents(NewEventsEvent $event)
+	public function onNewEvents(CreateEvents $event)
 	{
 		//exit('onNewEvents WIN');
 	}

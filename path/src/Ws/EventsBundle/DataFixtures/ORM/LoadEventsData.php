@@ -25,6 +25,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$event1->setAddress("10 rue Henry Dunant BEAUNE 21200");
 		$event1->setOrganizer($this->getReference('user1'));
 		$event1->setLocation($this->getReference('location_beaune'));
+		$event1->setPrice(10);
 
 		$manager->persist($event1);
 

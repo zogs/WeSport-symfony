@@ -3,6 +3,7 @@ namespace My\ManagerBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Routing\RouterInterface;
 
 
 abstract class AbstractManager
@@ -21,10 +22,19 @@ abstract class AbstractManager
      */
     protected $context;
 
-    public function __construct(EntityManager $em, SecurityContext $context)
+    /**
+     * The Router
+     *
+     * @var use Symfony\Bundle\FrameworkBundle\Routing\Router;
+     */
+    protected $router;
+
+
+    public function __construct(EntityManager $em, SecurityContext $context, RouterInterface $router = null)
     {
         $this->em = $em;
         $this->context = $context;
+        $this->router = $router;
     }
     /**
      * {@inheritDoc}

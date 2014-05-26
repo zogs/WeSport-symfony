@@ -22,13 +22,13 @@ class InvitationController extends Controller
 	 * @return  view
 	 * 
 	 */
-	public function newAction(Event $event)
+	public function createAction(Event $event)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$secu = $this->get('security.context');
 
 		$form = $this->createForm(new InvitationType($em,$secu,$event));
-
+	
 		$form->handleRequest($this->getRequest());
 
 		if($form->isValid()){
@@ -37,10 +37,10 @@ class InvitationController extends Controller
 
 			if($this->get('ws_events.invit.manager')->saveInvit($invit)){
 				$this->get('flashbag')->add('invitation enregistrés','success');
-			}
+			}			
 
-			if($count = $this->get('ws_mailer')->sendInvitationMessage($invit)){
-				$this->get('flashbag')->add($count.' invitations envoyés','success');
+			if($emails = $this->get('ws_mailer')->sendInvitationMessages($invit)){
+				$this->get('flashbag')->add('Vous avez envoyé '.count($emails).' invitations !','success');
 			}
 			
 		}

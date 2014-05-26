@@ -12,7 +12,7 @@ class Mailer
 
     protected $templating;
 
-    private $expediteur = 'contact@we-sport.fr';
+    private $expediteur = array('contact@cosporturage.fr' => 'coSporturage.fr');
 
     public function __construct(\Swift_Mailer $mailer, EngineInterface $templating)
     {
@@ -27,23 +27,28 @@ class Mailer
         $this->sendMessage('sfwesport@we-sport.fr', 'guichardsim@gmail.com', 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
     }
 
-    public function sendInvitationMessage(Invitation $invit)
+    public function sendInvitationMessages(Invitation $invit)
     {
+        //set expeditor
         $from = $this->expediteur;
-
+        //set subject
         $subject = 'Invitation de '.$invit->getInviter()->getUsername();
 
-        $body = $this->templating->render('WsMailerBundle:Events:invitation.html.twig',array(
-            'invit' => $invit));
-
-        //send mailing
+        $emails = array();
         foreach ($invit->getInvited() as $key => $invited) {
 
+            //templating
+            $body = $this->templating->render('WsMailerBundle:Events:invitation.html.twig',array(
+                'invit' => $invit,
+                'invited' => $invited
+                ));
+            //send message
             $this->sendMessage($from,$invited->getEmail(),$subject,$body);
-
+            //stock sended email
+            $emails[] = $invited->getEmail();
         }
 
-        return $key + 1;
+        return $emails;
     }
 
     

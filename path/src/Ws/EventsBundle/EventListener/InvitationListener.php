@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as Router;
 use My\FlashBundle\Controller\FlashController as Flashbag;
 use Ws\MailerBundle\Mailer\Mailer;
 use Ws\EventsBundle\Event\WsEvents;
-use Ws\EventsBundle\Event\NewEvents;
+use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\ViewEvent;
 
 
@@ -37,12 +37,21 @@ class InvitationListener implements EventSubscriberInterface
 		);
 	}
 
-	public function onNewEvents(NewEventsEvent $event)
+	public function onNewEvents(CreateEvents $event)
 	{
-		$event = $event->getEvent();
-		$user = $event->getUser();
+		$wsevent = $event->getEvent();
+		$user = $event->getUser();		
 
-		$invitation = $event->getInvitation();
+		if($invitations = $wsevent->getInvitations()){
+
+			//first invitations is the one created with the event
+			$invitation = $invitations[0];
+			//send the invitations
+			$emails = $this->mailer->sendInvitationMessages($invitation);
+			//add flash message
+			$this->flashbag->add(count($emails).' invitations ont été envoyées !');
+		}
+
 	}
 
 
