@@ -316,6 +316,8 @@ $(document).ready(function(){
 					_newWeekFirst = _newWeeks.find('.events-week:first');				
 					_newDays = _newWeeks.find('td.events-day');
 					_newHidden = _newDays.find('.hidden');
+					_search_url = _newWeeks.attr('data-search-url');
+					console.log(_search_url);
 
 					_hidden = [];
 					for(var i=0; i<_newHidden.length; i++){
@@ -341,8 +343,9 @@ $(document).ready(function(){
 						$('a.calendar-nav-prev').show();
 					}
 
+					updateUrl(_search_url);
 					
-				
+									
 					_loader.hide();
 
 
@@ -353,7 +356,17 @@ $(document).ready(function(){
 			return false;
 		}
 
+		function updateUrl(search_url)
+		{	
+			var state = {
+			  "slider_calendar": true
+			};
 
+			var url = document.URL;
+			var reg = new RegExp("/(calendar\/?.*)", "g");
+			url = url.replace(reg, '/calendar/'+search_url);
+			history.pushState(state, search_url, url);
+		}
 
 		function addEventBefore(obj,evt){
 

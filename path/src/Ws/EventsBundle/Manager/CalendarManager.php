@@ -34,7 +34,7 @@ class CalendarManager extends AbstractManager
 		'type' => array()
 		);
 
-	private $params2IgnoreInCookie = array('PHPSESSID','hl');
+	private $params2IgnoreInCookie = array('PHPSESSID','hl','organizer');
 	private $typeAllowed = array('person','asso','pro');
 	private $cookies = array();
 	private $query = array();
@@ -123,6 +123,8 @@ class CalendarManager extends AbstractManager
 
 		if(!empty($this->params['type']))
 			$this->full['type'] = $this->params['type'];
+		else
+			$this->full['type'] = $this->default['type'];
 
 		
 		$this->full['sports'] = array();
@@ -339,7 +341,7 @@ class CalendarManager extends AbstractManager
         	$params['nbdays'] = (int) $params['nbdays'];
         else
         	$params['nbdays'] = $this->default['nbdays'];
-       
+
         return $this->params = $params;
     }
 

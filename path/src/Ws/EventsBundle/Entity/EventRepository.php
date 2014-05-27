@@ -23,7 +23,7 @@ class EventRepository extends EntityRepository
 
 		$day = $params['date'];
 		$events = array();
-		for ($i=1; $i < $params['nbdays']; $i++) { 
+		for ($i=1; $i <= $params['nbdays']; $i++) { 
 
 			$events[$day] = $this->findEventsByDate($day);
 			$day = date("Y-m-d", strtotime($day. " +1 day"));

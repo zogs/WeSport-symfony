@@ -51,8 +51,7 @@ class EventController extends Controller
 		$manager = $this->get('calendar.manager');
 
 		//set search parameter
-		//$manager->setCookieParams($this->getRequest()->cookies->all());
-		//$manager->setGetParams($this->getRequest()->query->all());
+		$manager->setCookieParams($this->getRequest()->cookies->all());
 		$manager->setUriParams($params);
 		//find searched week
 		$week = $manager->findCalendar();
@@ -75,11 +74,11 @@ class EventController extends Controller
 		//get manager
 		$manager = $this->get('calendar.manager');
 		//set params
-		//$manager->setCookieParams($this->getRequest()->cookies->all());
+		$manager->setCookieParams($this->getRequest()->cookies->all());
 		$manager->setGetParams($this->getRequest()->query->all());
 		$manager->setDateWeek($date);
 		//find searched week
-		$week = $manager->findCalendarByParams();
+		$week = $manager->findCalendar();
 		//save search cookie
 		$manager->saveSearchCookies();
 		//get search params

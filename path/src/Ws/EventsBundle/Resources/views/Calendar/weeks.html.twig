@@ -3,7 +3,8 @@
 {% block calendar_week %}
 	<div class="events-weeks {% if search.nbdays > 7 %}minified-events{% endif %}
 	 {% if "now"|date('Y-m-d') == search.date|date('Y-m-d') %}current-week{% endif %}" 
-	 data-first-day="{{ search.date }}" >
+	 data-first-day="{{ search.date }}" 
+	 data-search-url="{{ search.url }}">
 		<table>
 			{% for week in weeks %}
 			
