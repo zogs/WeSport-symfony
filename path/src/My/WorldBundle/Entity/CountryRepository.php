@@ -38,6 +38,21 @@ class CountryRepository extends EntityRepository
 		return $qb->getQuery()->getSingleResult();
 	}
 
+	public function findCountryByName($name)
+	{
+
+		$qb = $this->createQueryBuilder('c');
+
+		$qb->select('c')
+			->where(
+				$qb->expr()->eq('c.name',':name')
+				);
+
+		$qb->setParameter('name',$name);
+
+		return $qb->getQuery()->getSingleResult();
+	}
+
 	public function findCountryById($id)
 	{
 

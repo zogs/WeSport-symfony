@@ -28,7 +28,7 @@ class CalendarController extends Controller
 		
 		$params = array(
 			'country' => $country,
-			'city_name' => $city,
+			'city' => $city,
 			'sports' => $sports,
 			'date' => $date,
 			'nbdays' => $nbdays,

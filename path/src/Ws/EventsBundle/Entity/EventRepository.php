@@ -61,13 +61,10 @@ class EventRepository extends EntityRepository
 
 
 	public function filterByCityQuery($qb)
-	{
-		if(empty($this->params['city_id']) && empty($this->params['city_name'])) return $qb;
+	{		
+		if(!isset($this->params['city'])) return $qb;
 
-		if(!empty($this->params['city_id']))
-			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']);
-		elseif(!empty($this->params['city_name']))
-			$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityName($this->params['city_name'],$this->params['country']);		
+		$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']->getId());
 
 		//free memory
 		$this->_em->detach($location);
@@ -147,9 +144,7 @@ class EventRepository extends EntityRepository
 
 	public function filterBySports($qb)
 	{
-
-		if(!empty($this->params['sport'])) $this->params['sports'] = array($this->params['sport']);
-		if(empty($this->params['sports'])) return $qb;
+		if(empty($this->params['sports'])) return $qb;		
 
 		$qb->setParameter(':sports',$this->params['sports']); // ex :sports = array(67,68,98);
 		return $qb->andWhere('e.sport IN (:sports)');		
@@ -158,6 +153,7 @@ class EventRepository extends EntityRepository
 	public function filterByType($qb)
 	{
 		if(empty($this->params['type'])) return $qb;
+
 		$qb->setParameter('type',$this->params['type']);
 		return $qb->andWhere('e.type IN (:type)');
 	}
@@ -172,21 +168,23 @@ class EventRepository extends EntityRepository
 
 	public function filterByTime($qb)
 	{
-		$qb = $qb->andWhere($qb->expr()->between('e.time',':timestart',':timeend'))->setParameter('timestart',$this->params['timestart'])->setParameter('timeend',$this->params['timeend']);
-		return $qb;
+		if(empty($this->params['time'])) return $qb;
+
+		return $qb->andWhere($qb->expr()->between('e.time',':timestart',':timeend'))->setParameter('timestart',$this->params['time']['start'])->setParameter('timeend',$this->params['time']['end']);
+		
 	}
 
 	public function filterByPrice($qb)
 	{
-		if(!isset($this->params['price']) || $this->params['price'] == 0) return $qb;
+		if(!isset($this->params['price'])) return $qb;
 		return $qb->andWhere($qb->expr()->lt('e.price',':price'))->setParameter('price',$this->params['price']);
 	}
 
 	public function filterByOrganizer($qb)
 	{
-		if(isset($this->params['organizer']) && is_numeric($this->params['organizer']))
-			return $qb->andWhere($qb->expr()->eq('e.organizer',':organizer'))->setParameter('organizer',$this->params['organizer']);
-		return $qb;
+		if(!isset($this->params['organizer'])) return $qb;
+
+		return $qb->andWhere($qb->expr()->eq('e.organizer',':organizer'))->setParameter('organizer',$this->params['organizer']);		
 	}
 
 	public function filterByOnline($qb)

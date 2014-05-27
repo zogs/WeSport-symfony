@@ -9,7 +9,8 @@ class CalendarUrlGenerator {
 	private $router;
 	private $params;
 	private $url = '';
-	public static $defaults = array(
+	private $fragments = array();
+	private $defaults = array(
 		'country' => 'allcountry',
 		'city' => 'allcity',
 		'sports' => 'allsports',
@@ -23,7 +24,7 @@ class CalendarUrlGenerator {
 
 	public function __construct()
 	{
-		self::$defaults['date'] = \date('Y-m-d');
+		$this->defaults['date'] = \date('Y-m-d');
 	}
 
 	public function setRouter(RouterInterface $router)
@@ -42,24 +43,26 @@ class CalendarUrlGenerator {
 		$defaultUrl = $this->getRouteUrl();
 		//get the params ( in the right order)
 		preg_match_all('/\{([a-z]+)\}/',$defaultUrl,$defaultParams);		
-		//call function for each param
+		//get each fragment param
 		foreach ($defaultParams[1] as $k => $param) {			
-			call_user_func(array($this,'add'.ucfirst($param).'Param'));
+			$this->fragments[$param] = call_user_func(array($this,'get'.ucfirst($param).'Param'));
 		}
+		//replace null fragment with default value
+		foreach ($this->fragments as $k => $value) {
+			if($value === null) $this->fragments[$k] = $this->defaults[$k];
+		}
+		//remove last fragments if = defaults
+		$this->fragments = array_reverse($this->fragments);
+		foreach ($this->fragments as $k => $value) {
+			if($value == $this->defaults[$k]) unset($this->fragments[$k]);
+			else break;			
+		}
+		$this->fragments = array_reverse($this->fragments);
 
 		//clear lasts url fragments if they are useless
-		$this->url = trim($this->url,'/');
-		$fragments = explode('/',$this->url);
-		foreach ($fragments as $key => $value) {
-			if(end($fragments) == end(self::$defaults)){
-				echo $value.'<br>';
-				array_pop($fragments);
-				array_pop(self::$defaults);
-			} 
-		}		
-		$this->url = implode('/',$fragments);
+		$this->url = implode('/',$this->fragments);
 
-		exit($this->url);
+		//exit($this->url);
 		//return url
 		return $this->url;
 	}
@@ -69,143 +72,96 @@ class CalendarUrlGenerator {
 		return $this->router->getRouteCollection()->get('en__RG__ws_events_calendar')->getPath();
 	}
 
-	private function addCountryParam()
+	private function getCountryParam()
 	{
-		$this->url .= $this->params['country']->getName();
-		$this->url .= '/';		
+		return $this->params['country']->getName();		
 	}
 
-	private function addCityParam()
+	private function getCityParam()
 	{
 		//if a city is enquire
 		if(isset($this->params['location']) && method_exists($this->params['location'], 'getCity') && $this->params['location']->getCity()->getId() != NULL){
-			$this->url .= $this->params['location']->getCity()->getName();					
+			$str = $this->params['location']->getCity()->getName();					
 			if(!empty($this->params['area'])) {
-				$this->url .= str_replace('km','',$this->params['area']);
+				$str .= '+'.str_replace('km','',$this->params['area']);
 			}
+			return $str;
 		}
 		else
-			$this->url .= self::$defaults['city'];	
-			
-		$this->url .= '/';	
+			return null;	
 	}
 
-	private function addSportsParam()
+	private function getSportsParam()
 	{
 		if(!empty($this->params['sports'])){			
+			$str = '';
 			foreach ($this->params['sports'] as $k => $sport) {
-				$this->url .= $sport['slug'].'-';
+				$str .= $sport['slug'].'-';
 			}	
-			$this->url = trim($this->url,'-');				
+			$str = trim($str,'-');
+			return $str;				
 		}
 		else
-			$this->url .= self::$defaults['sports'];
-
-		$this->url .= '/';
+			return null;
 	}
 
-	private function addTypeParam()
+	private function getTypeParam()
 	{
 		if(!empty($this->params['type'])){
+
+			if(count($this->params['type'])>=3) return null;
+			$str = '';
 			foreach ($this->params['type'] as $k => $type) {
-				$this->url .= $type.'-';
+				$str .= $type.'-';
 			}
-			$this->url = trim($this->url,'-');
+			$str = trim($str,'-');
+			return $str;
 		}
 		else 
-			$this->url .= self::$defaults['type'];
-
-		$this->url .= '/';
+			return null;
 	}
 
-	private function addNbdaysParam()
+	private function getNbdaysParam()
 	{
 		if(!empty($this->params['nbdays']))
-			$this->url .= $this->params['nbdays'];
+			return $this->params['nbdays'];
 		else
-			$this->url .= self::$defaults['nbdays'];
-
-		$this->url .= '/';
+			return null;
 	}
 
-	private function addDateParam()
+	private function getDateParam()
 	{
 		if(!empty($this->params['date']))
-			$this->url .= $this->params['date'];
+			return $this->params['date'];
 		else
-			$this->url .= self::$defaults['date'];
-
-		$this->url .= '/';
+			return null;
 	}
 
-	private function addTimeParam()
-	{
-		if($this->params['time']['timestart'] != '00:00:00' || $this->params['time']['timeend'] !== '24:00:00'){
-			$this->url .= $this->params['time']['timestart'].'-'.$this->params['time']['timeend'];
+	private function getTimeParam()
+	{		
+		if(!empty($this->params['time']) && $this->params['time']['start'] !== '00:00:00' && $this->params['time']['end'] !== '24:00:00'){
+			return $this->params['time']['start'].'-'.$this->params['time']['end'];
 		}
 		else
-			$this->url .= self::$defaults['time'];
-
-		$this->url .= '/';
+			return null;
 	}
 
-	public function addPriceParam()
+	public function getPriceParam()
 	{
 		if(!empty($this->params['price'])){
-			$this->url .= $this->params['price'];
+			return $this->params['price'];
 		}
 		else
-			$this->url .= self::$defaults['price'];
-
-		$this->url .= '/';
+			return null;
 	}
 
-	public function addOrganizerParam()
+	public function getOrganizerParam()
 	{
 		if(!empty($this->params['organizer'])){
-			$this->url .= $this->params['organizer']->getUsername();
+			return $this->params['organizer']->getUsername();
 		}
 		else
-			$this->url .= self::$defaults['organizer'];
-
-		$this->url .= '/';
+			return null;
 	}
 
-	public function getUrlStringParam()
-	{
-		return '';
-		$s = '';
-		$s .= $this->full['country']->getName();
-		$s .= '/';
-		$s .= $this->full['location']->getCity()->getName();
-		if(!empty($this->params['area'])) {
-			$s .= '+'.$this->params['area'];
-		}
-		$s .= '/';
-		if(empty($this->params['sports'])){
-			$s .= 'all';
-		} else {
-			foreach ($this->full['sports'] as $k => $sport) {
-				$s .= $sport->getSlug().'+';
-			}	
-			$s = trim($s,'+');		
-		}
-		$s .= '/';
-		if(empty($this->params['sports'])){
-			$s .= 'all';
-		} else {
-			foreach ($this->params['type'] as $k => $type) {
-				$s .= $type.'-';
-			}
-			$s = trim($s,'-');
-		}
-		$s .= '/';
-		$s .= $this->params['nbdays'];		
-		$s .= '/';
-		$s .= $this->params['date'];
-		$s .= '/';
-		$s .= (isset($this->params['startime'])? $this->params['timestart'].'-'.$this->params['timeend'] : 'allday');
-
-		return $s;
-	}
 }

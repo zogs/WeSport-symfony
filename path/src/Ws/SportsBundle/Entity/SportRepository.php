@@ -28,7 +28,7 @@ class SportRepository extends EntityRepository
 
 	}	
 
-	public function findRowsById($id)
+	public function findRawById($id)
 	{
 		$qb = $this->createQueryBuilder('s');
 		$qb->where($qb->expr()->eq('s.id',':id'));
@@ -37,7 +37,7 @@ class SportRepository extends EntityRepository
 		return $qb->getQuery()->getSingleResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 	}
 
-	public function findRowsBySlug($slug)
+	public function findRawBySlug($slug)
 	{
 		$qb = $this->createQueryBuilder('s');
 		$qb->where($qb->expr()->eq('s.slug',':slug'));
