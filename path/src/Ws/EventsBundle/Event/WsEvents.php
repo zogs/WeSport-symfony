@@ -19,4 +19,8 @@ final class WsEvents {
 	const ADD_PARTICIPANT = 'ws.participant.add';
 
 	const CANCEL_PARTICIPANT = 'ws.participant.cancel';
+
+	const VIEW_CALENDAR = 'ws.calendar.view';
+
+	const AJAX_CALENDAR = 'ws.calendar.ajax';
 }

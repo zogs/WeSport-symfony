@@ -21,14 +21,14 @@ ws_events_delete:
 
 ws_events_week_ajax:
     pattern: /calendar/ajax/{date}
-    defaults: { _controller: WsEventsBundle:Event:weekAjax, date:'now'}
+    defaults: { _controller: WsEventsBundle:Calendar:ajax, date:'now'}
     requirements:         
         _method: GET
 
 
 ws_events_calendar:
-    pattern: /calendar/{country}/{city}/{sports}/{type}/{nbdays}/{date}/{time}/{price}/{organizer}
-    defaults: { _controller: WsEventsBundle:Event:calendar, country:null, city:null, sports:null, date:null, nbdays:null, type:null, time:null, price:null, organizer:null }
+    pattern: /calendar/{date}{country}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{organizer}
+    defaults: { _controller: WsEventsBundle:Calendar:load, country:null, city:null, sports:null, date:null, nbdays:null, type:null, time:null, price:null, organizer:null }
     requirements:         
         _method: GET
 

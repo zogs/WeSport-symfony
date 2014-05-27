@@ -2612,543 +2612,563 @@ if(f.maximumInputLength&&d.val().length>f.maximumInputLength)return J(f.formatIn
 
 $(document).ready(function(){
 
-	//init var 
-	var _body = $('body');
-	var _cal = $('#calendar-content');
-	var _zone = $('#calendar');
-	var _aPrev = $('#pullPrev');
-	var _aNext = $('#pullNext');	
-	var _loader = $('#calendar .calendar-loader .loadingbar');
-	var _screenWidth = $(window).width();
-	var _drag = false;
-	var _cWeek = true;
-	var _anim;
-	var _nbDays = 0, _displayDays, _dayDisplayed = 0;
-	var _newPage=1, _loadingEvents= false, _moreEvents = true;
-	var _newWeeks, _newWeekFirst, _oldWeek, _newDays, _newHidden, _hidden;
-	var _wDrag = 150;
-	var _xO;
-	var _yO;
-	var _cX,_cY;
-	var _mxO;
-	var _myO;
-	var _x;
-	var _y;
-	var _lock;
+
+	if($('#calendar-content').length){
 
 
-	//Appel la semaine courante
-	callThisWeek();
-
-	window.cancelRequestAnimFrame = ( function() {
-	    return window.cancelAnimationFrame          ||
-	        window.webkitCancelRequestAnimationFrame    ||
-	        window.mozCancelRequestAnimationFrame       ||
-	        window.oCancelRequestAnimationFrame     ||
-	        window.msCancelRequestAnimationFrame        ||
-	        clearTimeout
-	} )();
-
-	window.requestAnimFrame = (function(){
-	    return  window.requestAnimationFrame       || 
-	        window.webkitRequestAnimationFrame || 
-	        window.mozRequestAnimationFrame    || 
-	        window.oRequestAnimationFrame      || 
-	        window.msRequestAnimationFrame     || 
-	        function(/* function */ callback, /* DOMElement */ element){
-	            return window.setTimeout(callback, 1000 / 60);
-	        };
-	})();
-
-
-	//set drag listeners
-	setInitialListener();
-	function setInitialListener(){
-		_zone.on('mousedown touchstart',startDrag);
-		$(window).on('mouseup touchend',stopDrag);
-		setCalendarOrigin();
-	}
-	function setCalendarOrigin(){
-		pos = _cal.position();
-		_xO = pos.left;
-	}
-	function setMouseOrigin(e){
-		_mxO = getClientX(e) +_xO;
-	}
-	function setMouseCoord(e){
-		_cX = getClientX(e);
-	}
-	function getClientX(e){
-		if(e.clientX) return e.clientX;
-		if(e.originalEvent.changedTouches[0].clientX) return e.originalEvent.changedTouches[0].clientX;
-	}
-	function startDrag(e){			
-		
-		if(e.which == 2 ||e.which == 3) return; //if middle click or right click , cancel drag
-
-		setMouseOrigin(e);
-		setMouseCoord(e);
-
-		_drag = true;
-		
-		$(window).on('mousemove touchmove',setMouseCoord);
-
-		dragCalendar();
-	}
-
-	function stopDrag(e){		
-
-		if(_lock=='left'){ 
-			callPreviousWeek(); 
-			lockLoad();
-		}
-		else if(_lock=='right'){ 
-			callNextWeek();  
-			lockLoad();
-		}
-		else {
-			revert();
-			_drag = false;
-		}
-
-		if (navigator.vibrate) { navigator.vibrate(0); }
-		$(window).off('mousemove touchmove');
-		cancelRequestAnimFrame(_anim);
-
-
-	}
-
-	function dragCalendar(e){
-
-		//distance between mouse coord and initial coord
-		var x = _xO + _cX - _mxO;
-
-		//console.log('_xO='+_xO+' _cX='+_cX+' _mxO='+_mxO+' == '+x);
-		//if it is the first week and drag to previous return false
-		if(isCurrentWeek()==true && x>0 ) {
-			_anim = requestAnimFrame(dragCalendar,_cal);
-			return;
-		}
-		//if the drag distance if inferior to 10 px , return false
-		if(Math.sqrt(Math.pow(x,2))<10) {
-			_anim = requestAnimFrame(dragCalendar,_cal);
-			return;
-		}
-		//if the drag distance is superior to the trigger width
-
-		//prevent android bug where touchmove fire only once
-		//if( navigator.userAgent.match(/Android/i) ) {
-		//    e.preventDefault();
-		//}
-
-
-		if(x>=_wDrag) {
-			_cal.css('left',_wDrag);
-			lockPrev(); //set lock to previous
-			if (navigator.vibrate) { navigator.vibrate(2000); }
-			_anim = requestAnimFrame(dragCalendar,_cal);
-			return;
-		}
-		if(x<=-_wDrag) {
-			_cal.css('left',-_wDrag);
-			lockNext(); //set lock to next week
-			if (navigator.vibrate) { navigator.vibrate(2000); }
-			_anim = requestAnimFrame(dragCalendar,_cal);
-			return;
-		}
-		//set no lock
-		nolock();
-
-		x += 'px';
-
-		_cal.css('left',x);
-		_cal.css('z-index',0);
-
-		_anim = requestAnimFrame(dragCalendar,_cal);
-	}
-
-	function revert(){
-		_cal.animate({left:0}, _wDrag, 'swing');
-	}
-
-	function nolock(){
-		_lock = '';		
-		_cal.find('#pullPrev,#pullNext').removeClass('locked').removeClass('loading');
-	}
-	function lockPrev(){
-		_lock = 'left';
-		_cal.find('#pullPrev').addClass('locked');
-	}
-	function lockNext(){
-		_lock = 'right';
-		_cal.find('#pullNext').addClass('locked');		
-	}
-	function lockLoad(){
-		_lock='';
-		_cal.find('#pullPrev,#pullNext').removeClass('locked').addClass('loading');
-	}
-
-	function slideCalendar(direction){
-
-		var width = _screenWidth;
-		var slideDuration = 700;
-		var delayDisplay = parseInt(slideDuration/_nbDays);
-
-		if(direction == 'right') {
-			contentPosition = width;
-			contentSliding = '-='+width;
-		}
-		if(direction == 'left') {
-			contentPosition = -width;
-			contentSliding = '+='+width;
-		}
-		if(typeof direction == 'undefined'){
-			contentPosition = -width;
-			contentSliding = '+='+width;
-			slideDuration = 0;
-		}
-
-		var weeks = _oldWeek.add(_newWeeks);
-
-		_cal.css('left',0);
-		
-		weeks.addClass('sliding');
-
-		_newWeeks.css({'left':contentPosition+'px'});
-
-		if(direction=='left') _newDays = _newDays.get().reverse(); //reverse order the colomn are displayed
-		_displayDays = setInterval(function(){ displayColomns(direction)},delayDisplay);
-
-		_oldWeek.find('.events-day').empty();
-		console.log('animate');
-		_newWeeks.animate({
-			left:contentSliding,
-			},slideDuration,'easeOutCirc',function(){ 
-					console.log('callback');
-					_oldWeek.remove();
-					_newWeeks.removeClass('sliding');
-					setHeightCalendar();						
-					return;				
+		$('#calendar-search .ajax-refresh').on('change',function(){
+			//callThisWeek();
 		});
 
+		//init var 
+		var _body = $('body');
+		var _cal = $('#calendar-content');
+		var _zone = $('#calendar');
+		var _aPrev = $('#pullPrev');
+		var _aNext = $('#pullNext');	
+		var _loader = $('#calendar-loader');
+		var _screenWidth = $(window).width();
+		var _drag = false;
+		var _cWeek = true;
+		var _anim;
+		var _nbDays = 0, _displayDays, _dayDisplayed = 0;
+		var _newPage=1, _loadingEvents= false, _moreEvents = true;
+		var _newWeeks, _newWeekFirst, _oldWeek, _newDays, _newHidden, _hidden;
+		var _wDrag = 150;
+		var _xO;
+		var _yO;
+		var _cX,_cY;
+		var _mxO;
+		var _myO;
+		var _x;
+		var _y;
+		var _lock;
 
-	}
 
-	function clickEvent(e){
-		
-		if(_drag==true) {
-			e.preventDefault();
-			return false;
+		//Appel la semaine courante
+		//callThisWeek();
+
+		window.cancelRequestAnimFrame = ( function() {
+		    return window.cancelAnimationFrame          ||
+		        window.webkitCancelRequestAnimationFrame    ||
+		        window.mozCancelRequestAnimationFrame       ||
+		        window.oCancelRequestAnimationFrame     ||
+		        window.msCancelRequestAnimationFrame        ||
+		        clearTimeout
+		} )();
+
+		window.requestAnimFrame = (function(){
+		    return  window.requestAnimationFrame       || 
+		        window.webkitRequestAnimationFrame || 
+		        window.mozRequestAnimationFrame    || 
+		        window.oRequestAnimationFrame      || 
+		        window.msRequestAnimationFrame     || 
+		        function(/* function */ callback, /* DOMElement */ element){
+		            return window.setTimeout(callback, 1000 / 60);
+		        };
+		})();
+
+
+		//set drag listeners
+		setInitialListener();
+		function setInitialListener(){
+			_zone.on('mousedown touchstart',startDrag);
+			$(window).on('mouseup touchend',stopDrag);
+			setCalendarOrigin();
 		}
-		else {
-			var link = e.currentTarget;			
-			$(link).parent().addClass('clicked');				
+		function setCalendarOrigin(){
+			pos = _cal.position();
+			_xO = pos.left;
 		}
-	}
-
-
-	function displayColomns(direction){
-
-		var colomn = $(_newDays[_dayDisplayed])
-		colomn.addClass('displayed');
-
-		colomnBindEvent(colomn);
-
-		_dayDisplayed++;
-		if(_dayDisplayed>=_nbDays) {
-			clearInterval(_displayDays);
-			_dayDisplayed = 0;
+		function setMouseOrigin(e){
+			_mxO = getClientX(e) +_xO;
 		}
-	}
-
-	function colomnBindEvent(colomn){
-		colomn.on('click','.events-link',clickEvent);
-		colomn.find('.tooltipbottom').tooltip({ placement : 'bottom', delay: { show: 200, hide: 100 }});
-	}
-
-
-
-
-
-	function setHeightCalendar(){
-
-		var minHeight = parseInt(_newWeeks.css('minHeight'));
-		var heightCalendar = _newWeeks.css('height','auto').height();	
-
-		if(heightCalendar > minHeight){
-			_cal.css('height',heightCalendar);
-			_newWeeks.css('height',heightCalendar);
-		} else {
-			_cal.css('height',minHeight);
-			_newWeeks.css('height',minHeight);
+		function setMouseCoord(e){
+			_cX = getClientX(e);
 		}
-		
-	}
-
-
-	function isCurrentWeek(){
-		
-		if(_cWeek==true) return true;
-		return false;
-	}
-
-	function setCurrentWeek(){
-		
-		if(_newWeeks.hasClass('current-week')) _cWeek = true;
-		else _cWeek = false;
-		return _cWeek;
-	}
-
-	function callWeek(url,direction){		
-
-		_loader.show();		
-		
-		var form = $('#calendar_search').serialize();
-		form += '&nbdays='+findNumberDayPerWeek();
-
-		$.ajax({
-			type:'GET',
-			url: url,
-			data : form,
-			success: function( newhtml ){						
-
-				var oldhtml = _cal.html();
-				document.getElementById('calendar-content').innerHTML = oldhtml+newhtml;
-
-				_oldWeek = _cal.find(".events-weeks:first").attr('id','old-week');
-				_newWeeks = _cal.find(".events-weeks:last").attr('id','new-week');	
-				_newWeekFirst = _newWeeks.find('.events-week:first');				
-				_newDays = _newWeeks.find('td.events-day');
-				_newHidden = _newDays.find('.hidden');
-
-				_hidden = [];
-				for(var i=0; i<_newHidden.length; i++){
-					var obj = $(_newHidden[i]);									
-					_hidden[obj.attr('id')] = obj.offset().top;
-					
-				}				
-
-				slideCalendar(direction);	  				
-				
-				setCurrentWeek();
-
-				$(window).scroll(); //refresh scroll function to display new event
-
-				_newPage = 1;
-				_moreEvents = true;
-				_drag = false;
-
-				if(isCurrentWeek()){					
-					$('a.calendar-nav-prev').hide();
-				}
-				else{
-					$('a.calendar-nav-prev').show();
-				}
-
-				
+		function getClientX(e){
+			if(e.clientX) return e.clientX;
+			if(e.originalEvent.changedTouches[0].clientX) return e.originalEvent.changedTouches[0].clientX;
+		}
+		function startDrag(e){			
 			
-				_loader.hide();
+			if(e.which == 2 ||e.which == 3) return; //if middle click or right click , cancel drag
+
+			setMouseOrigin(e);
+			setMouseCoord(e);
+
+			_drag = true;
+			
+			$(window).on('mousemove touchmove',setMouseCoord);
+
+			dragCalendar();
+		}
+
+		function stopDrag(e){		
+
+			if(_lock=='left'){ 
+				callPreviousWeek(); 
+				lockLoad();
+			}
+			else if(_lock=='right'){ 
+				callNextWeek();  
+				lockLoad();
+			}
+			else {
+				revert();
+				_drag = false;
+			}
+
+			if (navigator.vibrate) { navigator.vibrate(0); }
+			$(window).off('mousemove touchmove');
+			cancelRequestAnimFrame(_anim);
 
 
-			},
-			dataType:'html'
-		});		
+		}
 
-		return false;
-	}
+		function dragCalendar(e){
 
+			//distance between mouse coord and initial coord
+			var x = _xO + _cX - _mxO;
 
+			//console.log('_xO='+_xO+' _cX='+_cX+' _mxO='+_mxO+' == '+x);
+			//if it is the first week and drag to previous return false
+			if(isCurrentWeek()==true && x>0 ) {
+				_anim = requestAnimFrame(dragCalendar,_cal);
+				return;
+			}
+			//if the drag distance if inferior to 10 px , return false
+			if(Math.sqrt(Math.pow(x,2))<10) {
+				_anim = requestAnimFrame(dragCalendar,_cal);
+				return;
+			}
+			//if the drag distance is superior to the trigger width
 
-	function addEventBefore(obj,evt){
-
-		$(obj).before(evt);
-
-		setHeightCalendar();
-	}
-
-	function addEventsToColomn(colomn,evts){
-
-		var obj = $(colomn).find('.addEvent');
-		var delay = 50;
-
-		for(var i in evts){
-			setTimeout(function(){
-				addEventBefore(obj,evts[i]);
-			},delay*i);			
-		}		
-		$(colomn).on('click','.events-link',clickEvent);
-	}
-	function loadBottomEvents(){
-
-		console.log('load bottom');
-
-		_loader.show();
-		var url = _cal.attr('data-url-calendar-bottom');
-		var form = $('#calendar_search').serialize();
-		form += '&maxdays='+findNumberDayPerWeek();
-		form += '&page='+_newPage;
+			//prevent android bug where touchmove fire only once
+			//if( navigator.userAgent.match(/Android/i) ) {
+			//    e.preventDefault();
+			//}
 
 
-		$.ajax({
-			type:'GET',
-			url: url,
-			data : form,
-			success: function( data ){				
-				
-				if(data.results!='empty'){
+			if(x>=_wDrag) {
+				_cal.css('left',_wDrag);
+				lockPrev(); //set lock to previous
+				if (navigator.vibrate) { navigator.vibrate(2000); }
+				_anim = requestAnimFrame(dragCalendar,_cal);
+				return;
+			}
+			if(x<=-_wDrag) {
+				_cal.css('left',-_wDrag);
+				lockNext(); //set lock to next week
+				if (navigator.vibrate) { navigator.vibrate(2000); }
+				_anim = requestAnimFrame(dragCalendar,_cal);
+				return;
+			}
+			//set no lock
+			nolock();
 
-					var results = data.results;
-					
-					$(_newDays).each(function(){						
+			x += 'px';
 
-						var date = $(this).attr('data-date');
+			_cal.css('left',x);
+			_cal.css('z-index',0);
 
-						if(results[date]){
+			_anim = requestAnimFrame(dragCalendar,_cal);
+		}
 
-							//addEventsToColomn(this,results[date]);
-							$('#addPoint'+date).before(results[date]);
+		function revert(){
+			_cal.animate({left:0}, _wDrag, 'swing');
+		}
 
-							var new_events = $('#colomn-'+date).find('.hidden');
-							new_events.each(function(){								
-								_hidden[$(this).attr('id')] = $(this).offset().top;
-							});
+		function nolock(){
+			_lock = '';		
+			_cal.find('#pullPrev,#pullNext').removeClass('locked').removeClass('loading');
+		}
+		function lockPrev(){
+			_lock = 'left';
+			_cal.find('#pullPrev').addClass('locked');
+		}
+		function lockNext(){
+			_lock = 'right';
+			_cal.find('#pullNext').addClass('locked');		
+		}
+		function lockLoad(){
+			_lock='';
+			_cal.find('#pullPrev,#pullNext').removeClass('locked').addClass('loading');
+		}
 
-							$(window).scroll(); //refresh scroll function to display new event
+		function slideCalendar(direction){
+
+			var width = _screenWidth;
+			var slideDuration = 700;
+			var delayDisplay = parseInt(slideDuration/_nbDays);
+
+			if(direction == 'right') {
+				contentPosition = width;
+				contentSliding = '-='+width;
+			}
+			if(direction == 'left') {
+				contentPosition = -width;
+				contentSliding = '+='+width;
+			}
+			if(typeof direction == 'undefined'){
+				contentPosition = -width;
+				contentSliding = '+='+width;
+				slideDuration = 0;
+			}
+
+			var weeks = _oldWeek.add(_newWeeks);
+
+			_cal.css('left',0);
+			
+			weeks.addClass('sliding');
+
+			_newWeeks.css({'left':contentPosition+'px'});
+
+			if(direction=='left') _newDays = _newDays.get().reverse(); //reverse order the colomn are displayed
+			_displayDays = setInterval(function(){ displayColomns(direction)},delayDisplay);
+
+			_oldWeek.find('.events-day').empty();
+
+			_newWeeks.animate({
+				left:contentSliding,
+				},slideDuration,'easeOutCirc',function(){ 
 						
-							colomnBindEvent($(this));
-
-							//reset height of the calendar after all the hidden events have been displayed
-							setTimeout(function(){ setHeightCalendar();},1000);
-
-						}
-					});	
-					
-				}
-				else{	
-					console.log('empty');				
-					_moreEvents = false;
-					_newPage = 1;
-				
-				}
-
-				_loader.hide();
-				_loadingEvents = false;
+						_oldWeek.remove();
+						_newWeeks.removeClass('sliding');
+						setHeightCalendar();						
+						return;				
+			});
 
 
-			},
-			dataType:'json'
-		});		
+		}
 
-	}
-
-
-	//infiniteEvents();
-    function infiniteEvents() {
-
-        $(window).scroll(function(){
-            
-            //position du scrolling
-            var scrollPos = parseInt($(window).scrollTop()+$(window).height());
-
-
-            //vérifie si chaque evenement caché est revélé par le scroll
-            for(var id in _hidden){
-            	var y = _hidden[id];            	
-            	if( y <= scrollPos){
-					//si oui afficher l'evenement avec un petit delai            		          		            		
-            		$('#'+id).css('visibility','visible').hide().delay(300).fadeIn(200);
-            		//enlever l'evenement concerné du tableau
-            		delete _hidden[id];
-            		  
-            	}
-            }
-
-
-
-            //
-            if($(_newWeekFirst).length!=0){
-            	//position du bas de la premiere ligne
-            	var y = parseInt($(_newWeekFirst).offset().top+$(_newWeekFirst).height()); 
-            
-	            //si le bas est atteint && calendar is not dragged && no events is loading && more events are possibbly to call
-	            //console.log(y+' <= '+scrollPos+' && '+_drag+' && '+_loadingEvents+' && '+_moreEvents);
-	            if( (y <= scrollPos ) && _drag===false && _loadingEvents === false && _moreEvents === true ) 
-	            {               		            	
-	                _loadingEvents = true;
-	                _newPage        = _newPage+1;                                
-	                loadBottomEvents();		                                   
-	            }
-            }
-            
-
-            
-        });
-    };
-
-
-
-	function findNumberDayPerWeek(){
-
-		if(_nbDays!=0) return _nbDays;
-		//Nombre de jour à afficher en fonction de la largeur de l'écran
-		var dayPerWeek = {320:1,480:2,768:3,1024:4,1280:5,1440:6,10000:7};
-
-		for(var maxwidth in dayPerWeek){	
-			if(_screenWidth<=maxwidth) {
-				_nbDays = dayPerWeek[maxwidth];	
-				return _nbDays;
+		function clickEvent(e){
+			
+			if(_drag==true) {
+				e.preventDefault();
+				return false;
+			}
+			else {
+				var link = e.currentTarget;			
+				$(link).parent().addClass('clicked');				
 			}
 		}
-		return _nbDays;
-	}
 
-	function callNextWeek(){
-		var url = _cal.attr('data-url-calendar-next');
-		var direction = 'right';
-		callWeek(url,direction);
-	}
 
-	function callPreviousWeek(){
-		var url = _cal.attr('data-url-calendar-prev');
-		var direction = 'left';
-		callWeek(url,direction);
-	}
+		function displayColomns(direction){
 
-	function callThisWeek(direction){
-		var url = _cal.attr('data-url-calendar-now');
-		callWeek(url,direction);
-	}
+			var colomn = $(_newDays[_dayDisplayed])
+			colomn.addClass('displayed');
 
-	function callCurrentWeek(direction){
-		var url = _cal.attr('data-url-calendar-date');
-		var date = $('.events-weeks').attr('data-first-day');
-		url = url+'/'+date;
-		callWeek(url,direction);
-	}
+			colomnBindEvent(colomn);
 
-	$('a.calendar-nav-prev').on('click',function(e){
-			callPreviousWeek();
-			e.preventDefault();
-			e.stopPropagation();
-			//ga('send','event','Calendrier','SemainePrecedante');
-			//ga('send', 'pageview', '/calendar/prev');
+			_dayDisplayed++;
+			if(_dayDisplayed>=_nbDays) {
+				clearInterval(_displayDays);
+				_dayDisplayed = 0;
+			}
+		}
+
+		function colomnBindEvent(colomn){
+			colomn.on('click','.events-link',clickEvent);
+			colomn.find('.tooltipbottom').tooltip({ placement : 'bottom', delay: { show: 200, hide: 100 }});
+		}
+
+
+
+
+
+		function setHeightCalendar(){
+
+			var minHeight = parseInt(_newWeeks.css('minHeight'));
+			var heightCalendar = _newWeeks.css('height','auto').height();	
+
+			if(heightCalendar > minHeight){
+				_cal.css('height',heightCalendar);
+				_newWeeks.css('height',heightCalendar);
+			} else {
+				_cal.css('height',minHeight);
+				_newWeeks.css('height',minHeight);
+			}
+			
+		}
+
+
+		function isCurrentWeek(){
+			
+			if(_cWeek==true) return true;
 			return false;
-	});
-	$('a.calendar-nav-next').on('click',function(e){
-			callNextWeek();
-			e.preventDefault();
-			e.stopPropagation();
-			//ga('send','event','Calendrier','SemaineSuivante');
-			//ga('send', 'pageview', '/calendar/next');
-			return false;		
-	});
-	$('a.calendar-nav-now').on('click',function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			callThisWeek('prev');
-			return false;
-	});
+		}
 
+		function setCurrentWeek(){
+			
+			if(_newWeeks.hasClass('current-week')) _cWeek = true;
+			else _cWeek = false;
+			return _cWeek;
+		}
+
+		function callWeek(url,direction){		
+
+			_loader.show();		
+			
+			var form = $('#calendar_search').serialize();
+			form += '&nbdays='+findNumberDayPerWeek();
+
+			$.ajax({
+				type:'GET',
+				url: url,
+				data : form,
+				success: function( newhtml ){						
+
+					var oldhtml = _cal.html();
+					document.getElementById('calendar-content').innerHTML = oldhtml+newhtml;
+
+					_oldWeek = _cal.find(".events-weeks:first").attr('id','old-week');
+					_newWeeks = _cal.find(".events-weeks:last").attr('id','new-week');	
+					_newWeekFirst = _newWeeks.find('.events-week:first');				
+					_newDays = _newWeeks.find('td.events-day');
+					_newHidden = _newDays.find('.hidden');
+					_search_url = _newWeeks.attr('data-search-url');
+
+					_hidden = [];
+					for(var i=0; i<_newHidden.length; i++){
+						var obj = $(_newHidden[i]);									
+						_hidden[obj.attr('id')] = obj.offset().top;
+						
+					}				
+
+					slideCalendar(direction);	  				
+					
+					setCurrentWeek();
+
+					$(window).scroll(); //refresh scroll function to display new event
+
+					_newPage = 1;
+					_moreEvents = true;
+					_drag = false;
+
+					if(isCurrentWeek()){					
+						$('a.calendar-nav-prev').hide();
+					}
+					else{
+						$('a.calendar-nav-prev').show();
+					}
+
+					updateUrl(_search_url);
+					
+									
+					_loader.hide();
+
+
+				},
+				dataType:'html'
+			});		
+
+			return false;
+		}
+
+		function updateUrl(search_url)
+		{	
+			var state = {
+			  "slider_calendar": true
+			};
+
+			var url = document.URL;
+			var reg = new RegExp("/(calendar\/?.*)", "g");
+			url = url.replace(reg, '/calendar/'+search_url);
+			history.pushState(state, search_url, url);
+		}
+
+		function addEventBefore(obj,evt){
+
+			$(obj).before(evt);
+
+			setHeightCalendar();
+		}
+
+		function addEventsToColomn(colomn,evts){
+
+			var obj = $(colomn).find('.addEvent');
+			var delay = 50;
+
+			for(var i in evts){
+				setTimeout(function(){
+					addEventBefore(obj,evts[i]);
+				},delay*i);			
+			}		
+			$(colomn).on('click','.events-link',clickEvent);
+		}
+		function loadBottomEvents(){
+
+			console.log('load bottom');
+
+			_loader.show();
+			var url = _cal.attr('data-url-calendar-bottom');
+			var form = $('#calendar_search').serialize();
+			form += '&maxdays='+findNumberDayPerWeek();
+			form += '&page='+_newPage;
+
+
+			$.ajax({
+				type:'GET',
+				url: url,
+				data : form,
+				success: function( data ){				
+					
+					if(data.results!='empty'){
+
+						var results = data.results;
+						
+						$(_newDays).each(function(){						
+
+							var date = $(this).attr('data-date');
+
+							if(results[date]){
+
+								//addEventsToColomn(this,results[date]);
+								$('#addPoint'+date).before(results[date]);
+
+								var new_events = $('#colomn-'+date).find('.hidden');
+								new_events.each(function(){								
+									_hidden[$(this).attr('id')] = $(this).offset().top;
+								});
+
+								$(window).scroll(); //refresh scroll function to display new event
+							
+								colomnBindEvent($(this));
+
+								//reset height of the calendar after all the hidden events have been displayed
+								setTimeout(function(){ setHeightCalendar();},1000);
+
+							}
+						});	
+						
+					}
+					else{	
+						console.log('empty');				
+						_moreEvents = false;
+						_newPage = 1;
+					
+					}
+
+					_loader.hide();
+					_loadingEvents = false;
+
+
+				},
+				dataType:'json'
+			});		
+
+		}
+
+
+		//infiniteEvents();
+	    function infiniteEvents() {
+
+	        $(window).scroll(function(){
+	            
+	            //position du scrolling
+	            var scrollPos = parseInt($(window).scrollTop()+$(window).height());
+
+
+	            //vérifie si chaque evenement caché est revélé par le scroll
+	            for(var id in _hidden){
+	            	var y = _hidden[id];            	
+	            	if( y <= scrollPos){
+						//si oui afficher l'evenement avec un petit delai            		          		            		
+	            		$('#'+id).css('visibility','visible').hide().delay(300).fadeIn(200);
+	            		//enlever l'evenement concerné du tableau
+	            		delete _hidden[id];
+	            		  
+	            	}
+	            }
+
+
+
+	            //
+	            if($(_newWeekFirst).length!=0){
+	            	//position du bas de la premiere ligne
+	            	var y = parseInt($(_newWeekFirst).offset().top+$(_newWeekFirst).height()); 
+	            
+		            //si le bas est atteint && calendar is not dragged && no events is loading && more events are possibbly to call
+		            //console.log(y+' <= '+scrollPos+' && '+_drag+' && '+_loadingEvents+' && '+_moreEvents);
+		            if( (y <= scrollPos ) && _drag===false && _loadingEvents === false && _moreEvents === true ) 
+		            {               		            	
+		                _loadingEvents = true;
+		                _newPage        = _newPage+1;                                
+		                loadBottomEvents();		                                   
+		            }
+	            }
+	            
+
+	            
+	        });
+	    };
+
+
+
+		function findNumberDayPerWeek(){
+
+			if(_nbDays!=0) return _nbDays;
+			//Nombre de jour à afficher en fonction de la largeur de l'écran
+			var dayPerWeek = {320:1,480:2,768:3,1024:4,1280:5,1440:6,10000:7};
+
+			for(var maxwidth in dayPerWeek){	
+				if(_screenWidth<=maxwidth) {
+					_nbDays = dayPerWeek[maxwidth];	
+					return _nbDays;
+				}
+			}
+			return _nbDays;
+		}
+
+		function callNextWeek(){
+			var url = _cal.attr('data-url-calendar-next');
+			var direction = 'right';
+			callWeek(url,direction);
+		}
+
+		function callPreviousWeek(){
+			var url = _cal.attr('data-url-calendar-prev');
+			var direction = 'left';
+			callWeek(url,direction);
+		}
+
+		function callThisWeek(direction){
+			var url = _cal.attr('data-url-calendar-now');
+			callWeek(url,direction);
+		}
+
+		function callCurrentWeek(direction){
+			var url = _cal.attr('data-url-calendar-date');
+			var date = $('.events-weeks').attr('data-first-day');
+			url = url+'/'+date;
+			callWeek(url,direction);
+		}
+
+		$('a.calendar-nav-prev').on('click',function(e){
+				callPreviousWeek();
+				e.preventDefault();
+				e.stopPropagation();
+				//ga('send','event','Calendrier','SemainePrecedante');
+				//ga('send', 'pageview', '/calendar/prev');
+				return false;
+		});
+		$('a.calendar-nav-next').on('click',function(e){
+				callNextWeek();
+				e.preventDefault();
+				e.stopPropagation();
+				//ga('send','event','Calendrier','SemaineSuivante');
+				//ga('send', 'pageview', '/calendar/next');
+				return false;		
+		});
+		$('a.calendar-nav-now').on('click',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				callThisWeek('prev');
+				return false;
+		});
+	}
 });
 /*
  * jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
@@ -3435,12 +3455,50 @@ if ( requestAnimationFrame ) {
 ;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
 $(document).ready(function() {
 	
+
+	/*===========================================================
+	// Autocomplete cityName input
+============================================================*/	
+ 	$('input#sport_name').click(function(e){ 		
+		$(this).val('');
+		$('input#sport_id').val('');		
+	});
+	
+    $('input#sport_name').typeahead({
+    	name:'sport',
+    	valueKey:'name',
+		limit: 6,
+		minLength: 3,
+		allowDuplicates: true,	
+		//local: array of datums,
+		//prefetch: link to a json file with array of datums,
+		remote: $("#sport_name").attr('data-autocomplete-url')+'/%QUERY',			
+		template: [ '<p class="tt-name">{{name}}</p>',
+					'<p class="tt-sub">{{category}}</p>',
+					'<p class="tt-id">{{id}} (à cacher)</p>',
+					].join(''),
+		engine: Hogan ,
+
+		//header: 'header',
+		//footer: 'footer',
+
+	}).on('typeahead:selected',function( evt, datum ){
+		$(this).val(datum.name);		
+		$('#sport_id').val( datum.id );
+		$('#sport_name').removeClass('empty');
+		$('#sport_name').val(datum.name);
+	}).on('typeahead:opened',function(e){
+		$("#sport_name").addClass('open');		
+	}).on('typeahead:closed',function(e){
+		$("#sport_name").removeClass('open');
+		
+	});
+
+
 	if($("select.iconSportSelect").length != 0){
 
-	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    	
-	    	
+	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    		    	
 	}
-
 
 });
 
@@ -3455,10 +3513,10 @@ $(document).ready(function() {
 
 /*===========================================================
 	// Autocomplete cityName input
-============================================================*/	
+============================================================*/
  	$('input#city_name').click(function(e){ 		
 		$(this).val('');
-		$('input#event_location_city_id').val('');		
+		$('input#city_id').val('');		
 	});
 	
     $('input#city_name').typeahead({
@@ -3476,7 +3534,7 @@ $(document).ready(function() {
 					].join(''),
 		engine: Hogan ,
 
-		//header: 'header',
+		header: 'Sélectionner une ville',
 		//footer: 'footer',
 
 	}).on('typeahead:selected',function( evt, datum ){
@@ -3491,38 +3549,43 @@ $(document).ready(function() {
 		
 	});
 
+
+
 	if($('.geo-select').length != 0){
 
 		$('.geo-select-country').select2({ formatResult: countryFlag, formatSelection: countryFlag});				
 		$('.geo-select:not(.geo-select-country,.hide)').select2();
 	}
-});
 
 
-/*===========================================================
+	/*===========================================================
 	// Location FORM
-============================================================*/	
-$('.geo-select-ajax').change(function(){
+	============================================================*/	
+	$('.geo-select-ajax').change(function(){
 
-	var parent = $(this);
-	var url = parent.attr('data-ajax-url');
-	var level = parent.attr('data-geo-level');
-	var value = parent.val();
-	parent.addClass('geo-loading');
+		var parent = $(this);
+		var url = parent.attr('data-ajax-url');
+		var level = parent.attr('data-geo-level');
+		var value = parent.val();
+		parent.addClass('geo-loading');
 
-	$.ajax({
-		type: 'GET',
-		url: url,
-		data: { level: level, value: value },
-		dataType: 'json',
-		success: function(data){
+		$.ajax({
+			type: 'GET',
+			url: url,
+			data: { level: level, value: value },
+			dataType: 'json',
+			success: function(data){
 
-			parent.removeClass('geo-loading');
-			$('#'+data.level+'_select_field').empty().append(data.options).select2().show();
-						
-		}
-	})
+				parent.removeClass('geo-loading');
+				$('#'+data.level+'_select_field').empty().append(data.options).select2().show();
+							
+			}
+		})
+	});
 });
+
+
+
 
 function countryFlag(state) {
 

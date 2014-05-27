@@ -6,7 +6,7 @@ use My\ManagerBundle\Manager\AbstractManager;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
-use Ws\EventsBundle\Manager\SearchUrlGenerator;
+use Ws\EventsBundle\Manager\CalendarUrlGenerator;
 
 class CalendarManager extends AbstractManager
 {
@@ -43,8 +43,7 @@ class CalendarManager extends AbstractManager
 
 	public function findCalendar()
 	{
-		$params = $this->computeParams();
-
+		$params = $this->computeParams();	
 		return $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($params);
 	}
 
@@ -149,7 +148,7 @@ class CalendarManager extends AbstractManager
 
 	public function getSearchUrl($params)
 	{
-		$generator = new SearchUrlGenerator();
+		$generator = new CalendarUrlGenerator();
 		$generator->setRouter($this->router);
 		$generator->setParams($params);
 
@@ -258,7 +257,7 @@ class CalendarManager extends AbstractManager
 			unset($city);
 			$this->em->clear();
 		}  		
-
+;
 		return $this->params = $params;
 	}
 

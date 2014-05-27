@@ -25,73 +25,7 @@ class EventController extends Controller
 	public function indexAction($name)
 	{
 		return $this->render('WsEventsBundle:Event:index.html.twig', array('name' => $name));
-	}
-
-	/**
-	 * Get the calendar of events
-	 *
-	 * @param string action
-	 * @param date date
-	 *
-	 * @return View
-	 */
-	public function calendarAction($country,$city,$sports,$date,$nbdays,$type,$time,$price,$organizer)
-	{
-		
-		$params = array(
-			'country' => $country,
-			'city_name' => $city,
-			'sports' => $sports,
-			'date' => $date,
-			'nbdays' => $nbdays,
-			'type' => $type,
-			'time' => $time,			
-			);        
-		//get manager
-		$manager = $this->get('calendar.manager');
-
-		//set search parameter
-		$manager->setCookieParams($this->getRequest()->cookies->all());
-		$manager->setUriParams($params);
-		//find searched week
-		$week = $manager->findCalendar();
-		//save search cookie
-		$manager->saveSearchCookies();
-		//get search params
-		$search = $manager->getSearchData();
-		
-
-		return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
-			'weeks' => array($week),
-			'is_ajax' => false,
-			'search' => $search,            
-			));
-	}   
-
-
-	public function weekAjaxAction($date)
-	{
-		//get manager
-		$manager = $this->get('calendar.manager');
-		//set params
-		$manager->setCookieParams($this->getRequest()->cookies->all());
-		$manager->setGetParams($this->getRequest()->query->all());
-		$manager->setDateWeek($date);
-		//find searched week
-		$week = $manager->findCalendar();
-		//save search cookie
-		$manager->saveSearchCookies();
-		//get search params
-		$search = $manager->getSearchData();
-
-
-		return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
-			'weeks' => array($week),
-			'is_ajax' => true,
-			'search' => $search,
-			));
-	}
-
+	}	
 	
 	/**
 	 * Get and manage the creation form

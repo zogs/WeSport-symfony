@@ -317,7 +317,6 @@ $(document).ready(function(){
 					_newDays = _newWeeks.find('td.events-day');
 					_newHidden = _newDays.find('.hidden');
 					_search_url = _newWeeks.attr('data-search-url');
-					console.log(_search_url);
 
 					_hidden = [];
 					for(var i=0; i<_newHidden.length; i++){

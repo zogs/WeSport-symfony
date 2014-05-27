@@ -4,7 +4,7 @@ namespace Ws\EventsBundle\Manager;
 
 use Symfony\Component\Routing\RouterInterface;
 
-class SearchUrlGenerator {
+class CalendarUrlGenerator {
 
 	private $router;
 	private $params;
@@ -52,12 +52,14 @@ class SearchUrlGenerator {
 		$fragments = explode('/',$this->url);
 		foreach ($fragments as $key => $value) {
 			if(end($fragments) == end(self::$defaults)){
+				echo $value.'<br>';
 				array_pop($fragments);
 				array_pop(self::$defaults);
 			} 
 		}		
 		$this->url = implode('/',$fragments);
 
+		exit($this->url);
 		//return url
 		return $this->url;
 	}
@@ -70,19 +72,20 @@ class SearchUrlGenerator {
 	private function addCountryParam()
 	{
 		$this->url .= $this->params['country']->getName();
-		$this->url .= '/';
+		$this->url .= '/';		
 	}
 
 	private function addCityParam()
 	{
-		if(isset($this->params['location']) && method_exists($this->params['location'], 'getCity')){
+		//if a city is enquire
+		if(isset($this->params['location']) && method_exists($this->params['location'], 'getCity') && $this->params['location']->getCity()->getId() != NULL){
 			$this->url .= $this->params['location']->getCity()->getName();					
 			if(!empty($this->params['area'])) {
 				$this->url .= str_replace('km','',$this->params['area']);
 			}
 		}
 		else
-			$this->url = self::$defaults['city'];	
+			$this->url .= self::$defaults['city'];	
 			
 		$this->url .= '/';	
 	}
