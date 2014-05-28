@@ -2,10 +2,14 @@
 
 namespace Ws\EventsBundle\Manager;
 
-use My\ManagerBundle\Manager\AbstractManager;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\DependencyInjection\Container;
 
+use My\ManagerBundle\Manager\AbstractManager;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
 
 class CalendarManager extends AbstractManager
@@ -18,7 +22,7 @@ class CalendarManager extends AbstractManager
 	private $search = array(
 		'date' => null,
 		'country' => null,
-		'location' => null,
+		'city' => null,
 		'area' => null,
 		'sports' => null,
 		'nbdays' => null,
@@ -44,16 +48,25 @@ class CalendarManager extends AbstractManager
 
 		);
 
+	private $serializer;
+	private $urlGenerator;
 	private $params_cookie_ignored = array('PHPSESSID','hl','organizer');
 	private $params_allowed = array(
 		'type'=> array('person','asso','pro')
 		);
 
+	public function __construct(Container $container)
+	{
+		parent::__construct($container);
+
+		$this->urlGenerator = new CalendarUrlGenerator();
+		$this->serializer = $container->get('jms_serializer');
+	}
 
 	public function findCalendar()
 	{
-		$params = $this->computeParams();
-		return $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($params);
+		$this->computeParams();
+		return $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($this->search);
 	}
 
 	public function getParams()
@@ -117,13 +130,9 @@ class CalendarManager extends AbstractManager
 
 	public function getSearchUrl($params)
 	{
-		$generator = new CalendarUrlGenerator();
-		$generator->setRouter($this->router);
-		$generator->setParams($params);
-
-		$url = $generator->getSearchUrl();
-		
-		return $url;
+		$this->urlGenerator->setRouter($this->router);
+		$this->urlGenerator->setParams($params);
+		return $this->urlGenerator->getSearchUrl();
 	}
 
 	public function saveSearchCookies()
@@ -147,13 +156,13 @@ class CalendarManager extends AbstractManager
 	{
 		if(empty($this->params)) return $this->params = array();
 
+		$this->prepareDateParams();
 		$this->prepareCountryParams();
 		$this->prepareCityParams();
 		$this->prepareAreaParams();
-		$this->prepareSportParams();
-		$this->prepareNbDaysParams();
 		$this->prepareTypeParams();
-		$this->prepareStartDate();
+		$this->prepareSportsParams();
+		$this->prepareNbdaysParams();
 		$this->prepareTimeParams();
 		$this->preparePriceParams();
 		$this->prepareOrganizerParams();
@@ -161,7 +170,7 @@ class CalendarManager extends AbstractManager
 		return $this->params;
 	}
 
-	public function prepareStartDate()
+	public function prepareDateParams()
 	{
 		$today = \date('Y-m-d');
 		$cookie_date = (isset($this->cookies['date']) && $this->isFormattedDate($this->cookies['date']) == true)? $this->cookies['date'] : $today;		
@@ -198,7 +207,7 @@ class CalendarManager extends AbstractManager
 	}
 
 	private function prepareCountryParams()
-	{				
+	{	
 		//replace country name by country code
 		if(isset($this->params['country']) && is_numeric($this->params['country']))
 			$country = $this->em->getRepository('MyWorldBundle:Country')->findOneById($this->params['country']);
@@ -214,13 +223,13 @@ class CalendarManager extends AbstractManager
 
 	private function prepareCityParams()
 	{		
+		if($this->params['city'] == $this->urlGenerator->defaults['city']) return;
+
+		$city = null;
 		if(!empty($this->params['city'])){
 			if(strpos($this->params['city'],'+') > 0) {
 				$r = explode('+',$this->params['city'],2);       
-				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName(
-																			$r[0],
-																			$this->search['country']->getCode()
-																			);     	                      
+				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($r[0],$this->search['country']->getCode());     	                      
 				if(isset($r[1])) $this->prepareAreaParams($r[1]);
 			}
 			else {
@@ -231,14 +240,13 @@ class CalendarManager extends AbstractManager
 			$city = $this->em->getRepository('MyWorldBundle:City')->find($this->params['city_id']);
 		}
 		elseif(!empty($this->params['city_name'])){
-			$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName(
-																			$this->params['city_name'],
-																			$this->search['country']->getCode()
-																			);
+			$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($this->params['city_name'],$this->search['country']->getCode());
 		}
 
-		$this->search['city'] = $city;
-		$this->search['location'] = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());
+
+		\Doctrine\Common\Util\Debug::dump($city);
+		exit();
+		$this->search['city'] = $city;		
 
 		return;
 
@@ -258,7 +266,7 @@ class CalendarManager extends AbstractManager
     }
 
 
-    private function prepareSportParams()
+    private function prepareSportsParams()
     {    	
     	$sports = array();
 
@@ -305,23 +313,25 @@ class CalendarManager extends AbstractManager
     	return;
     }
 
-    private function prepareNbDaysParams()
+    private function prepareNbdaysParams()
     {
     	//check days is numeric
-        if(isset($this->params['nbdays']) && is_numeric($this->params['nbdays']))
-        	$nb = $this->params['nbdays'];
-        else
-        	$nb = $this->default['nbdays'];
+	    if(isset($this->params['nbdays']) && is_numeric($this->params['nbdays']))
+	    	$nb = $this->params['nbdays'];
+	    else
+	    	$nb = $this->default['nbdays'];
 
-        $this->search['nbdays'] = $nb;
-        return;
+	    $this->search['nbdays'] = $nb;
+	    return;
     }
 
     private function prepareTimeParams()
     {
+    	if($this->params['time'] == $this->urlGenerator->defaults['time']) return;
+
     	$time = array();
     	if(isset($this->params['time']) && !empty($this->params['time'])){
-    		$r = explode('-',$params['time'],2);
+    		$r = explode('-',$this->params['time'],2);
     		if(empty($r)) return null;
     		$time['start'] = $this->formatTime($r[0]);
     		$time['end'] = $this->formatTime($r[1]);    		

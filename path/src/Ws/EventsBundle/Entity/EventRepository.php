@@ -23,6 +23,7 @@ class EventRepository extends EntityRepository
 
 		$day = $params['date'];
 		$events = array();
+
 		for ($i=1; $i <= $params['nbdays']; $i++) { 
 
 			$events[$day] = $this->findEventsByDate($day);
@@ -64,7 +65,7 @@ class EventRepository extends EntityRepository
 	{		
 		if(!isset($this->params['city'])) return $qb;
 
-		$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city_id']->getId());
+		$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city']->getId());
 
 		//free memory
 		$this->_em->detach($location);

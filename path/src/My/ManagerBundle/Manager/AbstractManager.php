@@ -4,10 +4,17 @@ namespace My\ManagerBundle\Manager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 
 abstract class AbstractManager
 {
+     /**
+     * The Dependency injection Container
+     *
+     * @var \Symfony\Component\DependencyInjection\Containe  
+     */
+    protected $container;
     /**
      * The Entity Manager
      *
@@ -30,11 +37,12 @@ abstract class AbstractManager
     protected $router;
 
 
-    public function __construct(EntityManager $em, SecurityContext $context, RouterInterface $router = null)
+    public function __construct(Container $container)
     {
-        $this->em = $em;
-        $this->context = $context;
-        $this->router = $router;
+        $this->container = $container;
+        $this->em = $container->get('doctrine.orm.entity_manager');
+        $this->context = $container->get('security.context');
+        $this->router = $container->get('router');
     }
     /**
      * {@inheritDoc}

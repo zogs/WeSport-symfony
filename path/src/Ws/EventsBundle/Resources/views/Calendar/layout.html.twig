@@ -17,8 +17,8 @@
 				<label for="city_name">
 					<span class="city-icon ws-icon ws-icon-office"></span>
 				</label>
-				<input type="text" id="city_name" name="city_name" value="{{ search.location.city.name }}" placeholder='ex: Montpellier'>
-				<input type="hidden" id="city_id" name="city_id" value="{{ search.location.city.id }}" data-autocomplete-url="{{ path('my_world_autocompletecity')}}">
+				<input type="text" id="city_name" name="city_name" value="{% if search.city is not null %}{{ search.city.name }}{% endif %}" placeholder='ex: Montpellier'>
+				<input type="hidden" id="city_id" name="city_id" value="{% if search.city is not null %}{{ search.city.id }}{% endif %}" data-autocomplete-url="{{ path('my_world_autocompletecity')}}">
 			</div>
 
 			<div class="wrapper area-wrapper">						

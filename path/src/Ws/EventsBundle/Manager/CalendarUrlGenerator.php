@@ -10,9 +10,10 @@ class CalendarUrlGenerator {
 	private $params;
 	private $url = '';
 	private $fragments = array();
-	private $defaults = array(
+	public $defaults = array(
 		'country' => 'allcountry',
 		'city' => 'allcity',
+		'area' => null, 
 		'sports' => 'allsports',
 		'type' => 'alltype',
 		'nbdays' => 7,
@@ -89,6 +90,11 @@ class CalendarUrlGenerator {
 		}
 		else
 			return null;	
+	}
+
+	private function getAreaParam()
+	{
+		return null; //is contained in the city param string
 	}
 
 	private function getSportsParam()
