@@ -30,43 +30,21 @@ class AlertController extends Controller
 		$alert = new Alert();
 		$alert->setSearch($search);
 		$alert->setUser($this->getUser());
-
+		
 		$form = $this->createForm(new AlertType(),$alert);
 
 		$form->handleRequest($this->getRequest());
 
-		if($form->isSubmitted()){
+		if($form->isValid()){
 
 			$alert = $form->getData();
 
 			if($this->get('ws_events.alert.manager')->saveAlert($alert)){
 				$this->get('flashbag')->add("Voila ! J'espère que vous allez recevoir plein d'email !",'success');			
 			}
-		}
+		}		
+
 		
-		/*
-		$em = $this->getDoctrine()->getManager();
-		$secu = $this->get('security.context');
-
-		$form = $this->createForm(new InvitationType($em,$secu,$event));
-	
-		$form->handleRequest($this->getRequest());
-
-		if($form->isValid()){
-
-			$invit = $form->getData();
-
-			if($this->get('ws_events.invit.manager')->saveInvit($invit)){
-				$this->get('flashbag')->add('invitation enregistrés','success');
-			}			
-
-			if($emails = $this->get('ws_mailer')->sendInvitationMessages($invit)){
-				$this->get('flashbag')->add('Vous avez envoyé '.count($emails).' invitations !','success');
-			}
-			
-		}
-		*/
-
 		return $this->render('WsEventsBundle:Alert:create.html.twig',array(
 			'form' => $form->createView(),
 			));
@@ -86,15 +64,17 @@ class AlertController extends Controller
 	}
 
 
-	public function viewAction(Alert $alert)
+	public function deleteAction(Alert $alert)
 	{
 		$user = $this->getUser();
 
-		$form = $this->createForm(new AlertType(),$alert);
+		if($user != $alert->getUser()) throw new Exception("Sorry but you can't delete someone else's alert", 1);
+		
+		$this->get('ws_events.alert.manager')->deleteAlert($alert);
 
-		return $this->render('WsEventsBundle:Alert:create.html.twig',array(
-			'form' => $form->createView(),
-			));
+		$this->get('flashbag')->add("Alerte correctement supprimé.","success");
+
+		return $this->redirect($this->generateUrl('ws_events_index_alert'));
 	}
 
 

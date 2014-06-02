@@ -12,7 +12,7 @@
             </div>
 
         <div class="col_large">
-           
+
            {% for alert in alerts %}
                    <table>
                        <tr>
@@ -23,11 +23,15 @@
                                à {{ alert.search.location.city.name }}
                            </td>
                            <td>
-                               <a href="{{ path('ws_events.alert.edit',{alert:alert.id}) }}">Lien</a>
+                               <a href="{{ path('ws_events_delete_alert',{alert:alert.id}) }}">Supprimer</a>
                            </td>
                        </tr>
                    </table>
             {% endfor %}
+
+            {% if alerts is empty %}
+              <p>Pas d'alerte créé. <a href="{{path('ws_events_create_alert')}}">En créer une !</a></p>
+            {% endif %}
                    
         </div>
 

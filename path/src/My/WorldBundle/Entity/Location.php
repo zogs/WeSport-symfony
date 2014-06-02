@@ -251,6 +251,32 @@ class Location
     }
 
     /**
+     * Get city id
+     *
+     * @return integer 
+     */
+    public function getCityId()
+    {
+        if(isset($this->city))
+            return $this->city->getId();
+        else
+            return 0;
+    }
+
+    /**
+     * Get city name
+     *
+     * @return string 
+     */
+    public function getCityName()
+    {
+        if(isset($this->city))
+            return $this->city->getName();
+        else
+            return '';
+    }
+
+    /**
      * Get last state
      *
      * @return string 

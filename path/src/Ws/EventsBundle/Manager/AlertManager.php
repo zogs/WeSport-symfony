@@ -23,5 +23,11 @@ class AlertManager extends AbstractManager
 		return true;	
 	}	
 
+	public function deleteAlert($alert)
+	{
+		$this->delete($alert,true);
+		return true;
+	}
+
 }
 ?>

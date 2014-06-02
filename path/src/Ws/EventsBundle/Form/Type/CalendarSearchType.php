@@ -28,7 +28,7 @@ class CalendarSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('location', new AutoCompleteCityType(), array(
+            ->add('location', 'auto_complete_city', array(
                 'required'=>false,
                 ))
             ->add('area','choice',array(
@@ -112,7 +112,8 @@ class CalendarSearchType extends AbstractType
         $this->manager->prepareParams();
         $search = $this->manager->getSearch();
         //\My\UtilsBundle\Utils\Debug::debug($search);
-        $event->setData($search);
+        
+        $form->setData($search);
 
 
     }
@@ -130,10 +131,9 @@ class CalendarSearchType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
-            'invalid_message' => 'error in search type form',
+            //'invalid_message' => 'error in search type form',
 	        'data_class' => 'Ws\EventsBundle\Entity\Search',
-            'cascade_validation' => false,
-            'validation_groups' => false,
+            'cascade_validation' => true,
 	    ));
 	}
 }

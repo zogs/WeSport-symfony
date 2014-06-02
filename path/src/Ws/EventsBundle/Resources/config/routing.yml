@@ -73,7 +73,7 @@ ws_events_index_alert:
     defaults: { _controller: WsEventsBundle:Alert:index }
     requirements:
         _method: GET
-ws_events_edit_alert:
+ws_events_delete_alert:
     pattern: /alert/edit/{alert}
     defaults: { _controller: WsEventsBundle:Alert:view }
     requirements:

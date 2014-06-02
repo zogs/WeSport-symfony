@@ -49,6 +49,7 @@ class AlertType extends AbstractType
 	    $resolver->setDefaults(array(
             'invalid_message' => 'humm les alertes cest pas encore ça...',
 	        'data_class' => 'Ws\EventsBundle\Entity\Alert',
+            'cascade_validation' => true,
 	    ));
 	}
 }
