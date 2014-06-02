@@ -58,7 +58,6 @@ class Location
      */
     protected $city;
 
-
     
     /**
      * Set Id
@@ -224,6 +223,18 @@ class Location
         $this->city = $city;
 
         return $this;
+    }
+
+    /**
+     * Has city
+     *
+     * @return boolean
+     */
+    public function hasCity()
+    {
+        if(isset($this->city)) return true;
+        return false;
+
     }
 
     /**

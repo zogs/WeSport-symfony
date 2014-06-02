@@ -79,11 +79,11 @@ class Country
 	 */
 	private $description;
 
-    private $level;
+    private $level = 'country';
 
     public function getLevel()
     {
-        return 'country';
+        return $this->level;
     }
 
     public function exist()

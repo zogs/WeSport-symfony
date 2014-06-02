@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class AutoCompleteCityType extends AbstractType
 {
@@ -16,9 +18,29 @@ class AutoCompleteCityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('city_id','hidden',array('mapped'=>false))
-            ->add('city_name','text',array('mapped'=>false, 'label'=>'Ville'))                                                   
+            ->add('city_id','hidden',array(
+                'required'=>false
+                ))
+            ->add('city_name','text',array(
+                'required'=>false, 
+                'label'=>'Ville'
+                ))                                                   
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+    }
+
+    public function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $location = $event->getData(); 
+
+        if(isset($location) && $location->hasCity()){
+            $data = array();
+            $data['city_id'] = $location->getCity()->getId();
+            $data['city_name'] = $location->getCity()->getName();
+            $event->setData($data);
+        }
     }
     
     /**
@@ -27,8 +49,8 @@ class AutoCompleteCityType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'My\WorldBundle\Entity\Location',
-            'cascade_validation' => true
+            'data_class' => null,
+            'cascade_validation' => false
         ));
     }
 

@@ -30,37 +30,37 @@ class State
 	/**
 	 * @ORM\Column(name="UFI", type="integer")
 	 */
-	private $UFI;
+	private $ufi;
 
 	/**
 	 * @ORM\Column(name="UNI", type="integer")
 	 */
-	private $UNI;
+	private $uni;
 
 	/**
 	 * @ORM\Column(name="CC1", type="string", length=2)
 	 */
-	private $CC1;
+	private $cc1;
 
 	/**
 	 * @ORM\Column(name="DSG", type="string", length=4)
 	 */
-	private $DSG;
+	private $dsg;
 
 	/**
 	 * @ORM\Column(name="ADM_PARENT", type="string", length=3)
 	 */
-	private $ADM_PARENT;
+	private $adm_parent;
 
 	/**
 	 * @ORM\Column(name="ADM_CODE", type="string", length=3)
 	 */
-	private $ADM_CODE;
+	private $adm_code;
 
 	/**
 	 * @ORM\Column(name="NT", type="smallint")
 	 */
-	private $NT;
+	private $nt;
 
 	/**
 	 * @ORM\Column(name="LC", type="string", length=3)
@@ -70,12 +70,12 @@ class State
 	/**
 	 * @ORM\Column(name="SHORTFORM", type="string", length=56)
 	 */
-	private $SHOTFORM;
+	private $shortform;
 
 	/**
 	 * @ORM\Column(name="FULLNAME", type="string", length=83)
 	 */
-	private $FULLNAME;
+	private $fullname;
 
 	/**
 	 * @ORM\Column(name="FULLNAMEND", type="string", length=79)
@@ -85,16 +85,16 @@ class State
 	/**
 	 * @ORM\Column(name="CHARACTERS", type="string", length=18)
 	 */
-	private $CHARACTERS;
+	private $characters;
 
     private $level;
 
     public function getLevel()
     {
-        if($this->DSG=='ADM1') return 'region';
-        if($this->DSG=='ADM2') return 'department';
-        if($this->DSG=='ADM3') return 'district';
-        if($this->DSG=='ADM4') return 'division';
+        if($this->dsg=='ADM1') return 'region';
+        if($this->dsg=='ADM2') return 'department';
+        if($this->dsg=='ADM3') return 'district';
+        if($this->dsg=='ADM4') return 'division';
     }
 
     public function exist()
@@ -102,6 +102,8 @@ class State
         if($this->id!=NULL) return 1;
         return 0;
     }
+
+    
 
     /**
      * Set id
@@ -150,164 +152,164 @@ class State
     }
 
     /**
-     * Set UFI
+     * Set ufi
      *
-     * @param integer $uFI
+     * @param integer $ufi
      * @return State
      */
-    public function setUFI($uFI)
+    public function setUfi($ufi)
     {
-        $this->UFI = $uFI;
+        $this->ufi = $ufi;
 
         return $this;
     }
 
     /**
-     * Get UFI
+     * Get ufi
      *
      * @return integer 
      */
-    public function getUFI()
+    public function getUfi()
     {
-        return $this->UFI;
+        return $this->ufi;
     }
 
     /**
-     * Set UNI
+     * Set uni
      *
-     * @param integer $uNI
+     * @param integer $uni
      * @return State
      */
-    public function setUNI($uNI)
+    public function setUni($uni)
     {
-        $this->UNI = $uNI;
+        $this->uni = $uni;
 
         return $this;
     }
 
     /**
-     * Get UNI
+     * Get uni
      *
      * @return integer 
      */
-    public function getUNI()
+    public function getUni()
     {
-        return $this->UNI;
+        return $this->uni;
     }
 
     /**
-     * Set CC1
+     * Set cc1
      *
-     * @param string $cC1
+     * @param string $cc1
      * @return State
      */
-    public function setCC1($cC1)
+    public function setCc1($cc1)
     {
-        $this->CC1 = $cC1;
+        $this->cc1 = $cc1;
 
         return $this;
     }
 
     /**
-     * Get CC1
+     * Get cc1
      *
      * @return string 
      */
-    public function getCC1()
+    public function getCc1()
     {
-        return $this->CC1;
+        return $this->cc1;
     }
 
     /**
-     * Set DSG
+     * Set dsg
      *
-     * @param string $dSG
+     * @param string $dsg
      * @return State
      */
-    public function setDSG($dSG)
+    public function setDsg($dsg)
     {
-        $this->DSG = $dSG;
+        $this->dsg = $dsg;
 
         return $this;
     }
 
     /**
-     * Get DSG
+     * Get dsg
      *
      * @return string 
      */
-    public function getDSG()
+    public function getDsg()
     {
-        return $this->DSG;
+        return $this->dsg;
     }
 
     /**
-     * Set ADM_PARENT
+     * Set adm_parent
      *
-     * @param string $aDMPARENT
+     * @param string $admParent
      * @return State
      */
-    public function setADMPARENT($aDMPARENT)
+    public function setAdmParent($admParent)
     {
-        $this->ADM_PARENT = $aDMPARENT;
+        $this->adm_parent = $admParent;
 
         return $this;
     }
 
     /**
-     * Get ADM_PARENT
+     * Get adm_parent
      *
      * @return string 
      */
-    public function getADMPARENT()
+    public function getAdmParent()
     {
-        return $this->ADM_PARENT;
+        return $this->adm_parent;
     }
 
     /**
-     * Set ADM_CODE
+     * Set adm_code
      *
-     * @param string $aDMCODE
+     * @param string $admCode
      * @return State
      */
-    public function setADMCODE($aDMCODE)
+    public function setAdmCode($admCode)
     {
-        $this->ADM_CODE = $aDMCODE;
+        $this->adm_code = $admCode;
 
         return $this;
     }
 
     /**
-     * Get ADM_CODE
+     * Get adm_code
      *
      * @return string 
      */
-    public function getADMCODE()
+    public function getAdmCode()
     {
-        return $this->ADM_CODE;
+        return $this->adm_code;
     }
 
     /**
-     * Set NT
+     * Set nt
      *
-     * @param integer $nT
+     * @param integer $nt
      * @return State
      */
-    public function setNT($nT)
+    public function setNt($nt)
     {
-        $this->NT = $nT;
+        $this->nt = $nt;
 
         return $this;
     }
 
     /**
-     * Get NT
+     * Get nt
      *
      * @return integer 
      */
-    public function getNT()
+    public function getNt()
     {
-        return $this->NT;
+        return $this->nt;
     }
 
     /**
@@ -334,49 +336,49 @@ class State
     }
 
     /**
-     * Set SHOTFORM
+     * Set shortform
      *
-     * @param string $sHOTFORM
+     * @param string $shortform
      * @return State
      */
-    public function setSHOTFORM($sHOTFORM)
+    public function setShortform($shortform)
     {
-        $this->SHOTFORM = $sHOTFORM;
+        $this->shortform = $shortform;
 
         return $this;
     }
 
     /**
-     * Get SHOTFORM
+     * Get shortform
      *
      * @return string 
      */
-    public function getSHOTFORM()
+    public function getShortform()
     {
-        return $this->SHOTFORM;
+        return $this->shortform;
     }
 
     /**
-     * Set FULLNAME
+     * Set fullname
      *
-     * @param string $fULLNAME
+     * @param string $fullname
      * @return State
      */
-    public function setFULLNAME($fULLNAME)
+    public function setFullname($fullname)
     {
-        $this->FULLNAME = $fULLNAME;
+        $this->fullname = $fullname;
 
         return $this;
     }
 
     /**
-     * Get FULLNAME
+     * Get fullname
      *
      * @return string 
      */
-    public function getFULLNAME()
+    public function getFullname()
     {
-        return $this->FULLNAME;
+        return $this->fullname;
     }
 
     /**
@@ -403,25 +405,25 @@ class State
     }
 
     /**
-     * Set CHARACTERS
+     * Set characters
      *
-     * @param string $cHARACTERS
+     * @param string $characters
      * @return State
      */
-    public function setCHARACTERS($cHARACTERS)
+    public function setCharacters($characters)
     {
-        $this->CHARACTERS = $cHARACTERS;
+        $this->characters = $characters;
 
         return $this;
     }
 
     /**
-     * Get CHARACTERS
+     * Get characters
      *
      * @return string 
      */
-    public function getCHARACTERS()
+    public function getCharacters()
     {
-        return $this->CHARACTERS;
+        return $this->characters;
     }
 }

@@ -11,6 +11,10 @@ use Symfony\Component\DependencyInjection\Container;
 
 use My\ManagerBundle\Manager\AbstractManager;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
+use Ws\EventsBundle\Entity\Search;
+use My\WorldBundle\Entity\Country;
+use My\WorldBundle\Entity\City;
+use My\UserBundle\Entity\User;
 
 class CalendarManager extends AbstractManager
 {
@@ -41,16 +45,19 @@ class CalendarManager extends AbstractManager
 		'sports'=> array(), //array(67,68,72)
 		'nbdays'=>7,
 		'type' => array('pro','asso','person'),
-		'timestart' => 0,
-		'timeend' => 24,
-		'price' => 0,
+		'time' => array('start'=>'00:00:00','end'=>'00:00:00'),
+		'timestart'=> null,
+		'timeend' => null,
+		'price' => null,
 		'organizer' => null,
+		'dayofweek'=>array(),
 
 		);
 
+	private $flashbag;
 	private $serializer;
 	private $urlGenerator;
-	private $params_cookie_ignored = array('PHPSESSID','hl','organizer');
+	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek');
 	private $params_allowed = array(
 		'type'=> array('person','asso','pro')
 		);
@@ -59,100 +66,152 @@ class CalendarManager extends AbstractManager
 	{
 		parent::__construct($container);
 
-		$this->urlGenerator = new CalendarUrlGenerator();
+		$this->params = $this->default;
+		$this->search = new Search();
+		$this->urlGenerator = $container->get('calendar.url.generator');
 		$this->serializer = $container->get('jms_serializer');
+		$this->flashbag = $container->get('flashbag');
 	}
 
 	public function findCalendar()
 	{
-		$this->computeParams();
-		return $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($this->search);
-	}
+		$this->prepareParams();
+
+		$calendar = $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($this->getSearch());
+
+		$this->saveSearchCookie();
+
+		return $calendar;
+	}	
 
 	public function getParams()
 	{
 		return $this->params;
 	}
 
-	public function setGetParams($params)
-	{
-		$this->query = $params;
+	public function addParams($params)
+	{		
+		$this->addParameters($params);
 	}
 
-	public function setUriParams($params)
+	public function addParamsURI($params)
 	{
 		foreach ($params as $key => $value) {
 			if( NULL === $params[$key]) unset($params[$key]);
 		}
-		$this->uri = $params;
+		$this->addParameters($params);
 	}
 
-	public function setCookieParams($cookies)
-	{
+	public function addParamsFromCookies($cookies)
+	{		
+		$a = array();
 		foreach ($cookies as $k => $value) {
-			//if array unserialize it
-			if(strpos($value,'[array]') === 0) $value = unserialize(str_replace('[array]','',$value));
-			elseif(strpos($value,'[obj]') === 0) $value = str_replace('[obj]','',$value);
-			$cookies[$k] = $value;
-		}
-		$this->cookies = $cookies;
+			if(in_array($k,$this->params_cookie_ignored)) continue;
+			if(strpos('calendar_param_',$k)==0){												
+				if(strpos($value,'[array]') === 0) $value = unserialize(str_replace('[array]','',$value));//if array unserialize it				
+				elseif(strpos($value,'[obj]') === 0) $value = str_replace('[obj]','',$value);
+				$param = str_replace('calendar_param_','',$k);
+				$a[$param] = $value;				
+			}
+		}		
+
+		$this->cookies = $a;
+		$this->addParameters($a);		
 	}
 
-	public function setDateWeek($date)
+	public function addParamsFromUrl($url)
 	{
-		$this->uri['date'] = $date; //override all date params
+		$params = array();
+		$urlParams = explode('/', str_replace(' ','+',$url));
+		$index = $this->urlGenerator->getRouteParams();
+		foreach ($urlParams as $key => $value) {
+			$params[$index[$key]] = $value;
+		}		
+		$this->addParameters($params);	
 	}
 
-
-	public function computeParams()
+	public function addParamsDate($date)
 	{
-		if($this->computed) return $this->params;
-		$this->params = array_merge(
-						$this->default,
-						$this->cookies,
-						$this->query,
-						$this->uri
-						);		
-
-		$this->prepareParams();		
-		$this->computed = true;
-		return $this->params;
-	}
-	public function getSearchData()
-	{		
-
-		$a = $this->search;
-		$a['raw'] = $this->getParams();
-		$a['url'] = $this->getSearchUrl($a);
-
-		return $a;
+		$this->addParameters(array('date'=>$date));		
 	}
 
-	public function getSearchUrl($params)
+
+	private function addParameters($params)
 	{
-		$this->urlGenerator->setRouter($this->router);
-		$this->urlGenerator->setParams($params);
-		return $this->urlGenerator->getSearchUrl();
+		$this->params = array_merge($this->params,$params);
 	}
 
-	public function saveSearchCookies()
-	{		
+	public function resetParams($resetCookie = true)
+	{
+		$this->params = $this->default;
+		if($resetCookie == true) $this->resetCookie();
+	}
+
+	private function resetCookie()
+	{
 		$response = new Response();
-		foreach ($this->params as $key => $value) {			
+		$allparams = array_merge((array)$this->search,$this->default);		
+		foreach ($allparams as $key => $value) {						
 
-			if(in_array($key,$this->params_cookie_ignored)) continue;			
-			if(isset($value)){			
+			$cookie1 = new Cookie('calendar_param_'.$key,'',time() - 3600, '/');
+			$cookie2 = new Cookie($key,'',time() - 3600, '/');											
+			$response->headers->setCookie($cookie1);
+			$response->headers->setCookie($cookie2);			
+		}			
+		$response->send();	
+	}
+
+	private function saveSearchCookie()
+	{		
+		$response = new Response();		
+
+		foreach ($this->search as $key => $value) {			
+
+			if(in_array($key,$this->params_cookie_ignored)) continue; //some params dont go in cookie	
+
+			if(isset($value)){
 				if(is_array($value)) $value = '[array]'.serialize($value);
 				if(is_object($value)) $value = '[obj]'.$value->getId();
-				$cookie = new Cookie($key,$value,time() + 3600 * 24 * 7);
-				$response->headers->setCookie($cookie);
-			}
-		}
-		
+				$cookie = new Cookie('calendar_param_'.$key,$value,time() + 3600 * 24 * 7, '/');				
+			} else {
+				$cookie = new Cookie('calendar_param_'.$key,'',time() - 3600, '/');				
+			}		
+			
+			$response->headers->setCookie($cookie);		
+		}		
 		$response->send();		
 	}
 
-	private function prepareParams()
+
+	public function getSearch()
+	{
+		$this->search->setRawData($this->getParams());
+		$this->urlGenerator->setSearch($this->search);
+		$this->search->setUrl($this->urlGenerator->getUrl());
+		$this->search->setUrlParams($this->urlGenerator->getUrlParams());
+		$this->search->setShortUrlParams($this->urlGenerator->getShortUrlParams());
+		return $this->search;
+	}
+
+	public function getSerializedSearch()
+	{		
+		return $this->serializer->serialize($this->search,'json');
+	}
+
+	public function setSerializedSearch($json)
+	{
+		exit('to be tested');
+		$data = json_decode($json);
+		foreach ($data as $key => $value) {
+			if($key=='country') $data->$key = new Country((array)$value);
+			if($key=='city') $data->$key = new City((array)$value);
+			if($key=='organizer') $data->$key = new User((array)$value);
+			
+		}
+		$this->search = (array)$data;
+	}	
+
+	public function prepareParams()
 	{
 		if(empty($this->params)) return $this->params = array();
 
@@ -166,45 +225,30 @@ class CalendarManager extends AbstractManager
 		$this->prepareTimeParams();
 		$this->preparePriceParams();
 		$this->prepareOrganizerParams();
+		$this->prepareDayOfWeekParams();		
 
-		return $this->params;
+		return $this->search;
 	}
 
 	public function prepareDateParams()
 	{
-		$today = \date('Y-m-d');
-		$cookie_date = (isset($this->cookies['date']) && $this->isFormattedDate($this->cookies['date']) == true)? $this->cookies['date'] : $today;		
+		$today = \date('Y-m-d');	
+		$cookie_date = (isset($this->cookies['date']))? $this->cookies['date'] : $today;		
 
 		if(isset($this->params['date'])) {
 			if($this->params['date'] == 'now') $day = $today;
 			elseif($this->params['date'] == 'next')  $day = date('Y-m-d',strtotime($cookie_date.' + '.$this->params['nbdays'].' days'));
 			elseif($this->params['date'] == 'prev') $day = date('Y-m-d',strtotime($cookie_date.' - '.$this->params['nbdays'].' days'));
-			elseif($this->isFormattedDate($this->params['date'])) $day = $this->params['date'];
-			else $day = $today;	
+			elseif($this->params['date'] == 'none') $day = null;
+			else $day = $this->formatDate($this->params['date']);
 		}		
 		else $day = $today;
 
-		$this->search['date'] = $day;
+		$this->search->setDate($day);
 		$this->params['date'] = $day;
 		return;
 	}
 
-
-	private function prepareTypeParams()
-	{
-		$t = array();
-		if(is_string($this->params['type'])) $t = explode('-',trim($this->params['type'],'-'));
-		if(is_array($this->params['type'])) $t = $this->params['type'];		
-		foreach ($t as $k => $type) {
-			if(!in_array($type,$this->params_allowed['type'])) unset($t[$k]);
-		}    	
-
-		$this->search['type'] = $t;
-
-		if(count(array_diff($this->params_allowed['type'],$t)) == 0) unset($this->params['type']);
-
-		return;
-	}
 
 	private function prepareCountryParams()
 	{	
@@ -216,58 +260,76 @@ class CalendarManager extends AbstractManager
 		elseif(isset($this->params['country']) && strlen($this->params['country']) <=2)
 			$country = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
 
-		$this->search['country'] = $country;
+		if(!isset($country)) $this->flashbag->add('Veuillez choisir un pays','info');
 
+		$this->search->setCountry($country);
 		return;
 	}
 
 	private function prepareCityParams()
 	{		
-		if($this->params['city'] == $this->urlGenerator->defaults['city']) return;
-
+		//return null
+		if(empty($this->params['city']) && empty($this->params['city_id']) && empty($this->params['city_name']) && empty($this->params['location'])) return; //if none of the parameters are set
+		if(isset($this->params['city']) && empty($this->params['city_id']) && empty($this->params['city_name']) && $this->params['city'] == $this->urlGenerator->defaults['city']) return;	//if the URI parameter equal the default one
+		
+		
 		$city = null;
-		if(!empty($this->params['city'])){
+		if(!empty($this->params['location'])){			
+			if(!empty($this->params['location']['city_id'])) $this->params['city_id'] = $this->params['location']['city_id'];
+			if(!empty($this->params['location']['city_name'])) $this->params['city_name'] = $this->params['location']['city_name'];
+		}
+		if(!empty($this->params['city'])){			
 			if(strpos($this->params['city'],'+') > 0) {
-				$r = explode('+',$this->params['city'],2);       
-				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($r[0],$this->search['country']->getCode());     	                      
-				if(isset($r[1])) $this->prepareAreaParams($r[1]);
-			}
-			else {
-				$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($this->params['city'],$this->search['country']->getCode());
+				$r = explode('+',$this->params['city'],2); 
+				$city = $r[0];				    
+				if(isset($r[1])) $area = $r[1];
+			} else {
+				$city = $this->params['city'];				
 			}
 		}
-		elseif(!empty($this->params['city_id']) && is_numeric($this->params['city_id'])){
-			$city = $this->em->getRepository('MyWorldBundle:City')->find($this->params['city_id']);
-		}
-		elseif(!empty($this->params['city_name'])){
-			$city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($this->params['city_name'],$this->search['country']->getCode());
+		if(!empty($this->params['city_name'])) $city = $this->params['city_name'];
+		if(!empty($this->params['city_id'])) $city = $this->params['city_id'];					
+
+		if(is_numeric($city)) $city = $this->em->getRepository('MyWorldBundle:City')->find($city);
+		elseif(is_string($city)) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($city,$this->search->getCountry()->getCode());
+
+		if(!isset($city) || (isset($city) && $city->getId() == 0)) {
+			$this->flashbag->add("Cette ville n'a pas été trouvé... Et vous sûr que ça s'écrit comme ça ?",'warning');
+			return;
 		}
 
+		$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());
+		
+		$this->search->setLocation($location);
 
-		\Doctrine\Common\Util\Debug::dump($city);
-		exit();
-		$this->search['city'] = $city;		
+		if(!empty($area)) $this->prepareAreaParams($area);
 
 		return;
 
 	}
 
     private function prepareAreaParams($area = 0)
-    {
+    {    	
+    	//return null if no city or no location
+    	if($this->search->hasLocation() == false || ($this->search->hasLocation() === true && $this->search->getLocation()->hasCity() === false)) return null;
 		//remove "+" and "km"
-		if(isset($this->params['area'])) $area = (int) trim(str_replace('km','',str_replace('+','',$this->params['area'])));
+		if(!empty($this->params['area'])) $area = (int) trim(str_replace('km','',str_replace('+','',$this->params['area'])));
 		//set to null if not numeric
 		if(!is_numeric($area) || $area == 0) return null;
 		//set a maximum
 		if($area > 200) $area = 200;
 
-		$this->search['area'] = $area;
+
+		$this->search->setArea($area);
 		return;
     }
 
 
     private function prepareSportsParams()
     {    	
+    	if(empty($this->params['sports']) && empty($this->params['sport_name']) && empty($this->params['sport_id'])) return;
+    	if(isset($this->params['sports']) && empty($this->params['sport_name']) && empty($this->params['sport_id']) && is_string($this->params['sports']) && $this->params['sports'] == $this->urlGenerator->defaults['sports']) return;    	
+    	
     	$sports = array();
 
     	if(!empty($this->params['sports'])){
@@ -293,25 +355,52 @@ class CalendarManager extends AbstractManager
 
     	//find sports in database   
     	$repo = $this->em->getRepository('WsSportsBundle:Sport');
-       	foreach ($sports as $k => $sport) {
+       	foreach ($sports as $k => $slug) {
     		
-    		if(is_numeric($sport))
-    			$sport = $repo->findRawById($sport);
-    		elseif(is_string($sport))
-    			$sport = $repo->findRawBySlug($sport);    		  
-    	}
+    		if(is_numeric($slug))
+    			$sport = $repo->findRawById($slug);
+    		elseif(is_string($slug))
+    			$sport = $repo->findRawBySlug($slug);  
+    		elseif(is_array($slug))
+    			$sport = $slug;
+
+    		if(empty($sport)) $this->flashbag->add('Pardon mais ce sport n\'est pas reconnu : '.$slug,'error');
+
+    		$sports[$k] = $sport;  		      		
+    	}    
 
     	//avoid doublon
-    	$sports = array_unique($sports); 
+    	$ids = array();
+    	foreach ($sports as $k => $sport) {
+			if(in_array($sport['id'], $ids)) unset($sports[$k]);
+			$ids[] = $sport['id'];
+    	}
 		
-    	$this->search['sports'] = $sports;
-
-    	unset($sports);
-    	unset($sport);
-    	
-    	
+    	$this->search->setSports($sports);
     	return;
     }
+
+
+	private function prepareTypeParams()
+	{
+		//return null
+		if(empty($this->params['type'])) return; //if not set
+		if(is_string($this->params['type']) && $this->params['type'] == $this->urlGenerator->defaults['type']) return; //if equal to URL default value
+
+		$t = array();
+		if(is_string($this->params['type'])) $t = explode('-',trim($this->params['type'],'-'));
+		if(is_array($this->params['type'])) $t = $this->params['type'];		
+		foreach ($t as $k => $type) {
+			if(!in_array($type,$this->params_allowed['type'])) unset($t[$k]);
+		}    	
+
+		$this->search->setType($t);
+
+		if(count(array_diff($this->params_allowed['type'],$t)) == 0) unset($this->params['type']);
+
+		return;
+	}
+
 
     private function prepareNbdaysParams()
     {
@@ -321,66 +410,101 @@ class CalendarManager extends AbstractManager
 	    else
 	    	$nb = $this->default['nbdays'];
 
-	    $this->search['nbdays'] = $nb;
+	    $this->search->setNbDays($nb);
 	    return;
     }
 
     private function prepareTimeParams()
-    {
-    	if($this->params['time'] == $this->urlGenerator->defaults['time']) return;
+    {    	
+    	//return null 
+    	if(empty($this->params['time']) && empty($this->params['timeend']) && empty($this->params['timestart'])) return; //if time not set
+    	if(is_string($this->params['time']) && $this->params['time'] == $this->urlGenerator->defaults['time']) return; //if equal to URL default value
+    	if(is_array($this->params['time']) && empty($this->params['timeend']) && empty($this->params['timestart']) && count(array_diff($this->default['time'],$this->params['time'])) == 0) return; //if equal to array default value
 
     	$time = array();
-    	if(isset($this->params['time']) && !empty($this->params['time'])){
+    	if(is_string($this->params['time'])){
     		$r = explode('-',$this->params['time'],2);
     		if(empty($r)) return null;
     		$time['start'] = $this->formatTime($r[0]);
     		$time['end'] = $this->formatTime($r[1]);    		
     	}
-    	if(isset($this->params['timestart']) && is_numeric($this->params['timestart'])) $time['start'] = $this->formatTime($this->params['timestart']);
-    	if(isset($this->params['timeend']) && is_numeric($this->params['timeend'])) $time['end'] = $this->formatTime($this->params['timeend']);
+    	if(is_array($this->params['time'])) $time = $this->params['time'];
+    	if(isset($this->params['timestart'])) $time['start'] = $this->formatTime($this->params['timestart']);
+    	if(isset($this->params['timeend'])) $time['end'] = $this->formatTime($this->params['timeend']);
 
-    	$this->search['time'] = $time;
+    	$this->search->setTime($time);
     	return;
     }
 
     private function preparePriceParams()
     {
     	if(isset($this->params['price']) && !is_numeric($this->params['price'])) return null;
+    	if(is_string($this->params['price']) && $this->params['price'] == $this->urlGenerator->defaults['price']) return; //if equal to URL default value
 
-    	$this->search['price'] = $this->params['price'];
+    	$this->search->setPrice($this->params['price']);
 		return;
     }
 
     private function prepareOrganizerParams()
     {
-    	if(!empty($this->params['organizer'])){
-	    	if(is_numeric($this->params['organizer'])){
-	    		$user = $this->em->getRepository('MyUserBundle:User')->findOneById($this->params['organizer']); 
-	    	}
-	    	elseif(is_string($this->params['organizer'])){
-	    		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername($this->params['organizer']);    			    		
-	    	}
+    	if(empty($this->params['organizer'])) return;
+		if(is_string($this->params['organizer']) && $this->params['organizer'] == $this->urlGenerator->defaults['organizer']) return; //if equal to URL default value    	
 
-	    	$this->search['organizer'] = $user;
-	    	return;
-    		
+    	$user = null;
+    	if(is_numeric($this->params['organizer'])){
+    		$user = $this->em->getRepository('MyUserBundle:User')->findOneById($this->params['organizer']); 
     	}
+    	elseif(is_string($this->params['organizer'])){
+    		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername($this->params['organizer']);    			    		
+    	}
+
+    	if(!isset($user) || (isset($user) && $user->getId() == 0)) $this->flashbag->add("Cet utilisateur n'existe pas : ".$this->params['organizer'],'error');
+
+    	$this->search->setOrganizer($user);
+    	return;
+    		
+    	
     }
 
-    private function formatTime($time){
-    	if(is_numeric($time) && $time >= 0 && $time <=9) return '0'.(int)$time.':00:00';
-    	if(is_numeric($time) && $time >=10 && $time <=24) return (int)$time.':00:00';
-    	return '00:00:00';
+    private function prepareDayOfWeekParams()
+    {
+    	if(empty($this->params['dayofweek'])) return;
+
+    	if(is_array($this->params['dayofweek'])) $days = $this->params['dayofweek'];
+    	if(is_string($this->params['dayofweek'])) $days = explode('-',$this->params['dayofweek']);
+
+    	$this->search->setDayOfWeek($days);
+    	return;
+    }
+
+    private function formatTime($t){  
+
+    	if(is_string($t)){
+    		if(preg_match('/^[0-9]{2}\:[0-9]{2}\:[0-9]{2}$/',$t)) return $t;  
+    		if(preg_match('/^[0-9]{2}\:[0-9]{2}$/',$t)) return $t.':00';  
+    		if(preg_match('/^[0-9]{1}\:[0-9]{2}$/',$t)) return '0'.$t.':00';  
+    		if(preg_match('/^[0-9]{1}\:[0-9]{1}$/',$t)) return '0'.$t.'0:00';
+    		if(preg_match('/^[0-9]{2}\:[0-9]{1}$/',$t)) return $t.'0:00';   	    
+    	}
+    	if(is_array($t)){
+    		if(isset($t['hour']) && isset($t['minute'])) return $this->formatTime($t['hour'].':'.$t['minute']);
+    	}
+    	return;
     }
 
 
-	private function isFormattedDate($date)
+	private function formatDate($date)
 	{
-		$d = \DateTime::createFromFormat("Y-m-d",$date);
-        if($d !== false && !array_sum($d->getLastErrors()))
-            return $date;
-        else 
-            return false;
+		if(preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{1,2}/', $date)){
+			$d = \DateTime::createFromFormat('Y-m-d',$date);
+			if($d !== false && !array_sum($d->getLastErrors())) return $d->format('Y-m-d');
+		}
+		if(preg_match('/[0-9]{2}[a-zA-Z]{3}[0-9]{2}/',$date)){
+			$d = \DateTime::createFromFormat('dMy',$date);
+			if($d !== false && !array_sum($d->getLastErrors())) return $d->format('Y-m-d');	
+		}
+        
+        return \date('Y-m-d');        
 	}
 
 }

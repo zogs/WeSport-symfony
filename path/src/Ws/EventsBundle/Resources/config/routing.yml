@@ -1,3 +1,4 @@
+#EVENTS
 ws_events_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: WsEventsBundle:Event:index }
@@ -7,56 +8,66 @@ ws_events_view:
     defaults: { _controller: WsEventsBundle:Event:view }
     requirements:
         event: \d+
-
 ws_events_new:
     pattern: /create
     defaults: { _controller: WsEventsBundle:Event:create }
-
 ws_events_delete:
     pattern: /delete/{event}/{token}
     defaults: { _controller: WsEventsBundle:Event:delete }
     requirements:
         event: \d+
 
-
-ws_events_week_ajax:
+#CALENDAR
+ws_events_calendar_ajax:
     pattern: /calendar/ajax/{date}
     defaults: { _controller: WsEventsBundle:Calendar:ajax, date:'now'}
     requirements:         
         _method: GET
-
-
-ws_events_calendar:
-    pattern: /calendar/{date}{country}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{organizer}
-    defaults: { _controller: WsEventsBundle:Calendar:load, country:null, city:null, sports:null, date:null, nbdays:null, type:null, time:null, price:null, organizer:null }
+ws_events_calendar_reset:
+    pattern: /calendar/reset
+    defaults: { _controller: WsEventsBundle:Calendar:reset}
     requirements:         
         _method: GET
+ws_events_calendar:
+    pattern: /calendar/{date}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{organizer}
+    defaults: { _controller: WsEventsBundle:Calendar:load, city:null, sports:null, date:null, nbdays:null, type:null, time:null, price:null, organizer:null }
+    requirements:         
+        _method: GET
+ws_events_calendar_update:
+    pattern: /calendar/update
+    defaults: { _controller:WsEventsBundle:Calendar:update }
+    requirements:
+        _method: POST
 
+#INVITATION
 ws_new_invitations:
     pattern: /invite/{event}
     defaults: { _controller: WsEventsBundle:Invitation:create}
     requirements:
         event: \d+
-
 ws_invitations_add_blacklist:
     pattern: /invitation/addblacklist/{emails}
     defaults: { _controller: WsEventsBundle:Invitation:addBlacklist, emails: null }
-
 ws_invitations_remove_blacklist:
     pattern: /invitation/removeblacklist/{emails}
     defaults: { _controller: WsEventsBundle:Invitation:removeBlacklist, emails: null}
-
 ws_invited_confirm:
     pattern: /invite/confirm/{invited}
     defaults: { _controller: WsEventsBundle:Invitation:confirmParticipation }
     requirements:
         invited: \d+
-
 ws_invited_deny:
     pattern: /invite/deny/{invited}
     defaults: { _controller: WsEventsBundle:Invitation:denyParticipation }
     requirements:
         invited: \d+
+
+#ALERTS
+ws_events_create_alert:
+    pattern: /alert/create
+    defaults: { _controller: WsEventsBundle:Alert:create }
+    requirements:
+        _method: GET|POST
 
 #===========
 #  Admin

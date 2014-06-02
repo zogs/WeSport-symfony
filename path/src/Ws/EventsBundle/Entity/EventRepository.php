@@ -4,6 +4,7 @@ namespace Ws\EventsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+use Ws\EventsBundle\Entity\Search;
 /**
  * EventRepository
  *
@@ -12,21 +13,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventRepository extends EntityRepository
 {
-	private $params;
+	private $search;	
 
-	public function findCalendarEvents($params = array())
+	public function findCalendarEvents(Search $search)
 	{
-		$this->params = $params;
-		
+		$this->search = $search;
+
 		//disable sql logging
 		$this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
 
-		$day = $params['date'];
+		$day = $search->getDate();
 		$events = array();
 
-		for ($i=1; $i <= $params['nbdays']; $i++) { 
+		$nb = $this->search->getNbDays();
+		for ($i=1; $i <= $nb; $i++) { 
 
-			$events[$day] = $this->findEventsByDate($day);
+			$this->search->setDate($day);
+			$events[$day] = $this->findEvents();
 			$day = date("Y-m-d", strtotime($day. " +1 day"));
 		}
 		//prevent memory leak
@@ -35,51 +38,54 @@ class EventRepository extends EntityRepository
 		return $events;
 	}
 
-	public function findEventsByDate($date)
+	public function findEvents()
 	{
 
 		$qb = $this->createQueryBuilder('e');
 
 		$qb->select('e');
 
-		$qb = $this->filterByDate($qb,$date);
+		$qb = $this->filterByDate($qb);
 		$qb = $this->filterBySports($qb);
 		$qb = $this->filterByOnline($qb);		
-		$qb = $this->filterByCityQuery($qb);
+		$qb = $this->filterByCity($qb);
 		$qb = $this->filterByType($qb);
 		$qb = $this->filterByTime($qb);
 		$qb = $this->filterByPrice($qb);
 		$qb = $this->filterByOrganizer($qb);
+		$qb = $this->filterByDayOfWeek($qb);
 	
 		/*
-		\Doctrine\Common\Util\Debug::dump($qb->getParameters());
-		\Doctrine\Common\Util\Debug::dump($qb->getDQL());
+		\My\UtilsBundle\Utils\Debug::debug($qb->getParameters());
+		\My\UtilsBundle\Utils\Debug::debug($qb->getDQL());
 		exit();
-		*/
+	*/
+		
+		
 		
 		return $qb->getQuery()->getResult();
 	}
 
 
-	public function filterByCityQuery($qb)
+	public function filterByCity($qb)
 	{		
-		if(!isset($this->params['city'])) return $qb;
+		if($this->search->hasLocation() === false || $this->search->getLocation()->hasCity() === false ) return $qb;
 
-		$location = $this->_em->getRepository('MyWorldBundle:Location')->findLocationByCityId($this->params['city']->getId());
+		$location = $this->search->getLocation();
 
-		//free memory
-		$this->_em->detach($location);
-
-		if(empty($this->params['area']))
-			return $this->filterByLocation($qb,$location);
-		else
+		if($this->search->hasArea())
 			return $this->filterByArea($qb,$location);
+		else
+			return $this->filterByLocation($qb,$location);
 	}
 
 	public function filterByArea($qb,$location)
 	{
+		if($this->search->hasArea() === false) return $qb;		
+
 		$onedegree = 111.045;
 		$earthradius = 6366.565;
+		/* not use, extend_metric is not a param available
 		if(!empty($this->params['extend_metric']) && $this->params['extend_metric'] == 'km'){ // in km
 			$onedegree = 111.045;
 			$earthradius = 6366.565;
@@ -88,22 +94,23 @@ class EventRepository extends EntityRepository
 			$onedegree = 69;
 			$earthradius = 3956;
 		}
+		*/
 
-		$cityLat = $location->getCity()->getLat();
-		$cityLon = $location->getCity()->getLon();
-		$distance= $this->params['area'];
+		$cityLat = $location->getCity()->getLatitude();
+		$cityLon = $location->getCity()->getLongitude();
+		$distance= $this->search->getArea();
 		$lon1 = $cityLon-$distance/abs(cos(deg2rad($cityLat))*$onedegree);
 		$lon2 = $cityLon+$distance/abs(cos(deg2rad($cityLat))*$onedegree);
 		$lat1 = $cityLat-($distance/$onedegree);
 		$lat2 = $cityLat+($distance/$onedegree);
 
-		$extend_zone = "$earthradius * 2 * ASIN(SQRT(POWER(SIN(($cityLat - C.LATITUDE) *  pi()/180 / 2), 2) +COS($cityLat * pi()/180) * COS(C.LATITUDE * pi()/180) * POWER(SIN(($cityLon - C.LONGITUDE) * pi()/180 / 2), 2) )) as HIDDEN distance";
+		$extend_zone = "$earthradius * 2 * ASIN(SQRT(POWER(SIN(($cityLat - C.latitude) *  pi()/180 / 2), 2) +COS($cityLat * pi()/180) * COS(C.latitude * pi()/180) * POWER(SIN(($cityLon - C.longitude) * pi()/180 / 2), 2) )) as HIDDEN distance";
 								
 		$qb->select('e',$extend_zone);
 		$qb->innerJoin('e.location','L');
 		$qb->innerJoin('L.city','C');
 
-		$qb->andWhere('C.LONGITUDE BETWEEN '.$lon1.' AND '.$lon2.' AND C.LATITUDE BETWEEN '.$lat1.' AND '.$lat2);
+		$qb->andWhere('C.longitude BETWEEN '.$lon1.' AND '.$lon2.' AND C.latitude BETWEEN '.$lat1.' AND '.$lat2);
 
 
 		return $qb;
@@ -112,12 +119,14 @@ class EventRepository extends EntityRepository
 
 	public function filterByCityArround($qb,$location)
 	{
+		if($this->search->hasArea() === false) return $qb;
+
 		//get cities arroud the location
 		$cities = $this->_em->getRepository('MyWorldBundle:City')->findCitiesArround(
-			$this->params['area'],
+			$this->search->getArea(),
 			$location->getCity()->getLat(),
 			$location->getCity()->getLon(),
-			$this->params['country']
+			$this->search->getCountry()
 			);
 
 		//get location of cities
@@ -132,7 +141,7 @@ class EventRepository extends EntityRepository
 	}
 
 	public function filterByLocation($qb,$location)
-	{		
+	{				
 		$qb->setParameter('location',$location);
 		return $qb->andWhere($qb->expr()->eq('e.location',':location'));
 	}
@@ -145,23 +154,24 @@ class EventRepository extends EntityRepository
 
 	public function filterBySports($qb)
 	{
-		if(empty($this->params['sports'])) return $qb;		
+		if($this->search->hasSports() === false) return $qb;		
 
-		$qb->setParameter(':sports',$this->params['sports']); // ex :sports = array(67,68,98);
+		$qb->setParameter(':sports',$this->search->getSports()); // ex :sports = array(67,68,98);
 		return $qb->andWhere('e.sport IN (:sports)');		
 	}
 
 	public function filterByType($qb)
 	{
-		if(empty($this->params['type'])) return $qb;
+		if($this->search->hasType() === false) return $qb;
 
-		$qb->setParameter('type',$this->params['type']);
+		$qb->setParameter('type',$this->search->getType());
 		return $qb->andWhere('e.type IN (:type)');
 	}
 
-	public function filterByDate($qb,$date)
+	public function filterByDate($qb)
 	{
-		$qb->setParameter('date',$date);
+		if($this->search->hasDate() === false) return $qb;
+		$qb->setParameter('date',$this->search->getDate());
 		return $qb->andWhere(
 			$qb->expr()->eq('e.date',':date')
 			);		
@@ -169,23 +179,31 @@ class EventRepository extends EntityRepository
 
 	public function filterByTime($qb)
 	{
-		if(empty($this->params['time'])) return $qb;
+		if($this->search->hasTime() === false) return $qb;
 
-		return $qb->andWhere($qb->expr()->between('e.time',':timestart',':timeend'))->setParameter('timestart',$this->params['time']['start'])->setParameter('timeend',$this->params['time']['end']);
+		return $qb->andWhere($qb->expr()->between('e.time',':timestart',':timeend'))->setParameter('timestart',$this->search->getTime('start'))->setParameter('timeend',$this->search->getTime('end'));
 		
 	}
 
 	public function filterByPrice($qb)
 	{
-		if(!isset($this->params['price'])) return $qb;
-		return $qb->andWhere($qb->expr()->lt('e.price',':price'))->setParameter('price',$this->params['price']);
+		if($this->search->hasPrice() === false) return $qb;
+		if($this->search->getPrice() > 0) return $qb->andWhere($qb->expr()->lt('e.price',':price'))->setParameter('price',$this->search->getPrice());
+		if($this->search->getPrice() == 0 ) return $qb->andWhere($qb->expr()->eq('e.price',0));
 	}
 
 	public function filterByOrganizer($qb)
 	{
-		if(!isset($this->params['organizer'])) return $qb;
+		if($this->search->hasOrganizer() === false) return $qb;
 
-		return $qb->andWhere($qb->expr()->eq('e.organizer',':organizer'))->setParameter('organizer',$this->params['organizer']);		
+		return $qb->andWhere($qb->expr()->eq('e.organizer',':organizer'))->setParameter('organizer',$this->search->getOrganizer());		
+	}
+
+	public function filterByDayOfWeek($qb)
+	{
+		if($this->search->hasDayOfWeek() === false) return $qb;
+
+		return $qb->andWhere('DAYNAME(e.date) IN (:days)')->setParameter('days',$this->search->getDayOfWeek());
 	}
 
 	public function filterByOnline($qb)

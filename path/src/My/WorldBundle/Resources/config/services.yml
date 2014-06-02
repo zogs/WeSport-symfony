@@ -22,7 +22,7 @@ services:
 
     world.map_manager:
         class: My\WorldBundle\Geomapper\MapManager
-        arguments: [@doctrine.orm.entity_manager,@security.context]
+        arguments: [@service_container]
 
     world.gmap:
         class: My\WorldBundle\Geomapper\GoogleMapAPI        

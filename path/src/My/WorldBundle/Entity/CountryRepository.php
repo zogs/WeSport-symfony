@@ -23,17 +23,17 @@ class CountryRepository extends EntityRepository
 	    return $qb->getQuery()->getResult();
 	}
 
-	public function findCountryByCode($CC1)
+	public function findCountryByCode($cc1)
 	{
 
 		$qb = $this->createQueryBuilder('c');
 
 		$qb->select('c')
 			->where(
-				$qb->expr()->eq('c.code',':CC1')
+				$qb->expr()->eq('c.code',':cc1')
 				);
 
-		$qb->setParameter('CC1',$CC1);
+		$qb->setParameter('cc1',$cc1);
 
 		return $qb->getQuery()->getSingleResult();
 	}

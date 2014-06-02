@@ -569,11 +569,11 @@ div.mm-is-menu * {
 		}
 	}
 }
-.left-wrapper { width:15%;}
-.city-wrapper { width:20%;}
-.area-wrapper { width:20%;}
+.left-wrapper { width:10%;}
+.city-wrapper { width:25%;}
+.area-wrapper { width:10%;}
 .sport-wrapper { width:20%;}
-.submit-wrapper { width:10%;}
+.submit-wrapper { width:20%;}
 
 .area-wrapper {
 	padding-top:15px;
@@ -1220,7 +1220,7 @@ TYPEAHEAD CUSTOM STYLE
 		width:96%;
 		max-width:300px;
 		display: inline-block;
-		margin:0 auto 5px 0;
+		margin:0 auto 15px 0;
 		text-align:left;
 		padding:10px 8px 8px 8px;
 		background-color:#FFF;
@@ -1228,6 +1228,28 @@ TYPEAHEAD CUSTOM STYLE
 		border-bottom:4px solid rgba(0,0,0,0.4);
 		@include border-radius(10px);
 		//@include transition(all 0.2s ease-in-out);
+
+		&:before {
+			content:' ';
+			display: block;
+			position:absolute;
+			bottom:-25px; right:0;	
+			width:110px; height:55px;		
+			background-image: url('../img/calendar_event_virgule.gif');
+			background-repeat: no-repeat;	
+			background-position:bottom right;	
+		}
+
+		a.events-link:before{
+			content:' ';
+			display: block;
+			position:absolute;
+			left:0px; top:-13px;	
+			width:80px; height:80px;		
+			background-image:url('../img/calendar_event_sport_rounded.gif');
+			background-repeat: no-repeat;
+			background-size:50px;		
+		}
 	}
 
 	.events .loader {
@@ -1271,6 +1293,7 @@ TYPEAHEAD CUSTOM STYLE
 		margin-left:40px;
 		position:relative;
 
+		
 		.events-meta{
 			display: block;
 			width:100%;
@@ -1311,15 +1334,18 @@ TYPEAHEAD CUSTOM STYLE
 
 		.events-logo{
 			position:absolute;
-			top:0;
+			top:-16px;
 			left:-40px;
+
+			z-index:10;
 
 			.ws-sport-icon { 					
 				span {
 					@include rem(35); color:#111; 
 				}
-			}
+			}			
 		}
+
 	
 		.events-title{			
 			display:inline-block;			

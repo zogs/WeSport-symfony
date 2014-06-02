@@ -13,19 +13,19 @@ use Doctrine\ORM\EntityRepository;
 class StateRepository extends EntityRepository
 {
 	
-	public function findStateByCodes($CC1,$ADM1,$ADM2 = null,$ADM3 = null,$ADM4 = null)
+	public function findStateByCodes($cc1,$adm1,$adm2 = null,$adm3 = null,$adm4 = null)
 	{
-		if(!empty($ADM4))
-			return $this->findStateByCode($CC1,$ADM4,'ADM4');
-		if(!empty($ADM3))
-			return $this->findStateByCode($CC1,$ADM3,'ADM3');
-		if(!empty($ADM2))
-			return $this->findStateByCode($CC1,$ADM2,'ADM2');
-		if(!empty($ADM1))
-			return $this->findStateByCode($CC1,$ADM1,'ADM1');
+		if(!empty($adm4))
+			return $this->findStateByCode($cc1,$adm4,'adm4');
+		if(!empty($adm3))
+			return $this->findStateByCode($cc1,$adm3,'adm3');
+		if(!empty($adm2))
+			return $this->findStateByCode($cc1,$adm2,'adm2');
+		if(!empty($adm1))
+			return $this->findStateByCode($cc1,$adm1,'adm1');
 	}
 
-	public function findStateByCode($CC1, $code, $level)
+	public function findStateByCode($cc1, $code, $level)
 	{
 		//return empty State if no code specified
 		if(empty($code)) return new State();
@@ -34,15 +34,15 @@ class StateRepository extends EntityRepository
 			SELECT s 
 			FROM MyWorldBundle:State s
 			JOIN MyWorldBundle:Country c
-			WITH c.code = s.CC1
-			WHERE s.CC1 = :CC1			
-			AND s.ADM_CODE = :code
-			AND s.DSG = :level
+			WITH c.code = s.cc1
+			WHERE s.cc1 = :cc1			
+			AND s.adm_code = :code
+			AND s.dsg = :level
 			AND s.lang = c.lang
 			");
 
 		$q->setParameters(array(
-			'CC1'=>$CC1,
+			'cc1'=>$cc1,
 			'code'=>$code,
 			'level'=>$level)
 		);
@@ -50,21 +50,21 @@ class StateRepository extends EntityRepository
 		return $q->getSingleResult();
 	}
 
-	public function findStatesByParent($level, $CC1, $parent = '')
+	public function findStatesByParent($level, $cc1, $parent = '')
 	{
 		$q = $this->getEntityManager()->createQuery("
 			SELECT s 
 			FROM MyWorldBundle:State s 
 			JOIN MyWorldBundle:Country c 
-			WITH c.code = s.CC1 
-			WHERE s.CC1 = :CC1 
-			AND s.ADM_PARENT = :parent
-			AND s.DSG = :level
+			WITH c.code = s.cc1 
+			WHERE s.cc1 = :cc1 
+			AND s.adm_parent = :parent
+			AND s.dsg = :level
 			AND s.lang = c.lang
 			");
 
 		$q->setParameters(array(
-			'CC1'=>$CC1,
+			'cc1'=>$cc1,
 			'parent'=>$parent,
 			'level'=>$level
 			));

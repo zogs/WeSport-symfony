@@ -20,18 +20,37 @@ services:
         tags:
             - { name: form.type, alias: invitation_type }
 
+    ws_events.form.type.alert:
+        class: Ws\EventsBundle\Form\Type\AlertType      
+        tags:
+            - { name: form.type, alias: alert_type }
+
+    ws_events.form.type.search:
+        class: Ws\EventsBundle\Form\Type\CalendarSearchType 
+        arguments: [@calendar.manager]
+        tags:
+            - { name: form.type, alias: calendar_search_type }
+
     #Managers
     ws_events.manager:
         class: Ws\EventsBundle\Manager\EventManager
-        arguments: [@doctrine.orm.entity_manager,@security.context]
+        arguments: [@service_container]
 
     calendar.manager:
         class: Ws\EventsBundle\Manager\CalendarManager
         arguments: [@service_container]
 
+    calendar.url.generator:
+        class: Ws\EventsBundle\Manager\CalendarUrlGenerator
+        arguments: [@router]
+
     ws_events.invit.manager:
         class: Ws\EventsBundle\Manager\InvitationManager
-        arguments: [@doctrine.orm.entity_manager,@security.context]
+        arguments: [@service_container]
+
+    ws_events.alert.manager:
+        class: Ws\EventsBundle\Manager\AlertManager
+        arguments: [@service_container]
 
     #Twig
     ws_events.twig.eventlink:

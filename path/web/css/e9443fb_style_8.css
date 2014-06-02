@@ -620,17 +620,17 @@ div.mm-is-menu * {
 
 /* line 572, scss/style.scss */
 .left-wrapper {
-  width: 15%;
+  width: 10%;
 }
 
 /* line 573, scss/style.scss */
 .city-wrapper {
-  width: 20%;
+  width: 25%;
 }
 
 /* line 574, scss/style.scss */
 .area-wrapper {
-  width: 20%;
+  width: 10%;
 }
 
 /* line 575, scss/style.scss */
@@ -640,7 +640,7 @@ div.mm-is-menu * {
 
 /* line 576, scss/style.scss */
 .submit-wrapper {
-  width: 10%;
+  width: 20%;
 }
 
 /* line 578, scss/style.scss */

@@ -2911,7 +2911,7 @@ $(document).ready(function(){
 
 			_loader.show();		
 			
-			var form = $('#calendar_search').serialize();
+			var form = $('#calendar-search').serialize();
 			form += '&nbdays='+findNumberDayPerWeek();
 
 			$.ajax({
@@ -2976,7 +2976,7 @@ $(document).ready(function(){
 			var url = document.URL;
 			var reg = new RegExp("/(calendar\/?.*)", "g");
 			url = url.replace(reg, '/calendar/'+search_url);
-			history.pushState(state, search_url, url);
+			history.replaceState(state, search_url, url);
 		}
 
 		function addEventBefore(obj,evt){

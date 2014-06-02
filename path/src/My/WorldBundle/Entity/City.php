@@ -31,151 +31,151 @@ class City
 	/**
 	 * @ORM\Column(name="UFI", type="integer")
 	 */
-	private $UFI;
+	private $ufi;
 
 	/**
 	 * @ORM\Column(name="UNI", type="integer")
 	 */
-	private $UNI;
+	private $uni;
 
 	/**
 	 * @ORM\Column(name="CC1", type="string", length=2)
 	 */
-	private $CC1;
+	private $cc1;
 
 	/**
 	 * @ORM\Column(name="DSG", type="string", length=5)
 	 */
-	private $DSG;
+	private $dsg;
 
 	/**
 	 * @ORM\Column(name="ADM1", type="string", length=3)
 	 */
-	private $ADM1;
+	private $adm1;
 
 	/**
 	 * @ORM\Column(name="ADM2", type="string", length=3)
 	 */
-	private $ADM2;
+	private $adm2;
 
 	/**
 	 * @ORM\Column(name="ADM3", type="string", length=3)
 	 */
-	private $ADM3;
+	private $adm3;
 
 	/**
 	 * @ORM\Column(name="ADM4", type="string", length=3)
 	 */
-	private $ADM4;
+	private $adm4;
 
 	/**
 	 * @ORM\Column(name="NT", type="string", length=1)
 	 */
-	private $NT;
+	private $nt;
 
 	/**
 	 * @ORM\Column(name="LC", type="string", length=3)
 	 */
-	private $LC;
+	private $lc;
 
 	/**
 	 * @ORM\Column(name="SHORTFORM", type="string", length=128)
 	 */
-	private $SHORTFORM;
+	private $shortform;
 
 	/**
 	 * @ORM\Column(name="FULLNAME", type="string", length=200)
 	 */
-	private $FULLNAME;
+	private $fullname;
 
 	/**
 	 * @ORM\Column(name="FULLNAMEND", type="string", length=200)
 	 */
-	private $FULLNAMEND;
+	private $fullnamed;
 
 	/**
 	 * @ORM\Column(name="CHARACTERS", type="string", length=24)
 	 */
-	private $CHARACTERS;
+	private $characters;
 
 	/**
 	 * @ORM\Column(name="LATITUDE", type="float")
 	 */
-	private $LATITUDE;
+	private $latitude;
 
 	/**
 	 * @ORM\Column(name="LONGITUDE", type="float")
 	 */
-	private $LONGITUDE;
+	private $longitude;
 
 	/**
 	 * @ORM\Column(name="DMSLAT", type="integer")
 	 */
-	private $DMSLAT;
+	private $dmslat;
 
 	/**
 	 * @ORM\Column(name="DMSLONG", type="integer")
 	 */
-	private $DMSLONG;
+	private $dmslong;
 
     /**
      * @ORM\Column(name="SOUNDEX", type="string", length=20, nullable=true)
      */
-    private $SOUNDEX;
+    private $soundex;
 
     /**
      * @ORM\Column(name="METAPHONE", type="string", length=22, nullable=true)
      */
-    private $METAPHONE;
+    private $metaphone;
 
     /**
      * @ORM\Column(name="CP", type="string", length=255, nullable=true)
      */
-    private $CP;
+    private $cp;
 
     /**
      * @ORM\Column(name="POP", type="integer", nullable=true)
      */
-    private $POP;
+    private $pop;
 
     /**
      * @ORM\Column(name="POP_ORDER", type="integer", nullable=true)
      */
-    private $POP_ORDER;
+    private $pop_order;
 
     /**
      * @ORM\Column(name="SFC", type="integer", nullable=true)
      */
-    private $SFC;
+    private $sfc;
 
     /**
      * @ORM\Column(name="SFC_ORDER", type="integer", nullable=true)
      */
-    private $SFC_ORDER;
+    private $sfc_order;
 
-    private $level;
+    private $level = 'city';
 
     public function getLevel()
     {
-        return 'city';
+        return $this->level;
     }
 
-    public function getLastADM()
+    public function getLastAdm()
     {
-        if(!empty($this->ADM4)) return $this->ADM4;
-        if(!empty($this->ADM3)) return $this->ADM3;
-        if(!empty($this->ADM2)) return $this->ADM2;
-        if(!empty($this->ADM1)) return $this->ADM1;
-        if(!empty($this->CC1)) return $this->CC1;
+        if(!empty($this->adm4)) return $this->adm4;
+        if(!empty($this->adm3)) return $this->adm3;
+        if(!empty($this->adm2)) return $this->adm2;
+        if(!empty($this->adm1)) return $this->adm1;
+        if(!empty($this->cc1)) return $this->cc1;
     }
 
-    public function getLastADMLevel()
+    public function getLastAdmLevel()
     {
-        if(!empty($this->ADM4)) return 'ADM4';
-        if(!empty($this->ADM3)) return 'ADM3';
-        if(!empty($this->ADM2)) return 'ADM2';
-        if(!empty($this->ADM1)) return 'ADM1';
-        if(!empty($this->CC1)) return 'CC1';
+        if(!empty($this->adm4)) return 'adm4';
+        if(!empty($this->adm3)) return 'adm3';
+        if(!empty($this->adm2)) return 'adm2';
+        if(!empty($this->adm1)) return 'adm1';
+        if(!empty($this->cc1)) return 'CC1';
     }
 
 
@@ -184,6 +184,14 @@ class City
         if($this->id!=NULL) return 1;
         return 0;
     }
+
+    public function getName()
+    {
+        return $this->fullnamed;
+    }
+
+ 
+
 
     /**
      * Set id
@@ -232,459 +240,577 @@ class City
     }
 
     /**
-     * Set UFI
+     * Set ufi
      *
-     * @param integer $uFI
+     * @param integer $ufi
      * @return City
      */
-    public function setUFI($uFI)
+    public function setUfi($ufi)
     {
-        $this->UFI = $uFI;
+        $this->ufi = $ufi;
 
         return $this;
     }
 
     /**
-     * Get UFI
+     * Get ufi
      *
      * @return integer 
      */
-    public function getUFI()
+    public function getUfi()
     {
-        return $this->UFI;
+        return $this->ufi;
     }
 
     /**
-     * Set UNI
+     * Set uni
      *
-     * @param integer $uNI
+     * @param integer $uni
      * @return City
      */
-    public function setUNI($uNI)
+    public function setUni($uni)
     {
-        $this->UNI = $uNI;
+        $this->uni = $uni;
 
         return $this;
     }
 
     /**
-     * Get UNI
+     * Get uni
      *
      * @return integer 
      */
-    public function getUNI()
+    public function getUni()
     {
-        return $this->UNI;
+        return $this->uni;
     }
 
     /**
-     * Set CC1
+     * Set cc1
      *
-     * @param string $cC1
+     * @param string $cc1
      * @return City
      */
-    public function setCC1($cC1)
+    public function setCc1($cc1)
     {
-        $this->CC1 = $cC1;
+        $this->cc1 = $cc1;
 
         return $this;
     }
 
     /**
-     * Get CC1
+     * Get cc1
      *
      * @return string 
      */
-    public function getCC1()
+    public function getCc1()
     {
-        return $this->CC1;
+        return $this->cc1;
     }
 
     /**
-     * Set DSG
+     * Set dsg
      *
-     * @param string $dSG
+     * @param string $dsg
      * @return City
      */
-    public function setDSG($dSG)
+    public function setDsg($dsg)
     {
-        $this->DSG = $dSG;
+        $this->dsg = $dsg;
 
         return $this;
     }
 
     /**
-     * Get DSG
+     * Get dsg
      *
      * @return string 
      */
-    public function getDSG()
+    public function getDsg()
     {
-        return $this->DSG;
+        return $this->dsg;
     }
 
     /**
-     * Set ADM1
+     * Set adm1
      *
-     * @param string $aDM1
+     * @param string $adm1
      * @return City
      */
-    public function setADM1($aDM1)
+    public function setAdm1($adm1)
     {
-        $this->ADM1 = $aDM1;
+        $this->adm1 = $adm1;
 
         return $this;
     }
 
     /**
-     * Get ADM1
+     * Get adm1
      *
      * @return string 
      */
-    public function getADM1()
+    public function getAdm1()
     {
-        return $this->ADM1;
+        return $this->adm1;
     }
 
     /**
-     * Set ADM2
+     * Set adm2
      *
-     * @param string $aDM2
+     * @param string $adm2
      * @return City
      */
-    public function setADM2($aDM2)
+    public function setAdm2($adm2)
     {
-        $this->ADM2 = $aDM2;
+        $this->adm2 = $adm2;
 
         return $this;
     }
 
     /**
-     * Get ADM2
+     * Get adm2
      *
      * @return string 
      */
-    public function getADM2()
+    public function getAdm2()
     {
-        return $this->ADM2;
+        return $this->adm2;
     }
 
     /**
-     * Set ADM3
+     * Set adm3
      *
-     * @param string $aDM3
+     * @param string $adm3
      * @return City
      */
-    public function setADM3($aDM3)
+    public function setAdm3($adm3)
     {
-        $this->ADM3 = $aDM3;
+        $this->adm3 = $adm3;
 
         return $this;
     }
 
     /**
-     * Get ADM3
+     * Get adm3
      *
      * @return string 
      */
-    public function getADM3()
+    public function getAdm3()
     {
-        return $this->ADM3;
+        return $this->adm3;
     }
 
     /**
-     * Set ADM4
+     * Set adm4
      *
-     * @param string $aDM4
+     * @param string $adm4
      * @return City
      */
-    public function setADM4($aDM4)
+    public function setAdm4($adm4)
     {
-        $this->ADM4 = $aDM4;
+        $this->adm4 = $adm4;
 
         return $this;
     }
 
     /**
-     * Get ADM4
+     * Get adm4
      *
      * @return string 
      */
-    public function getADM4()
+    public function getAdm4()
     {
-        return $this->ADM4;
+        return $this->adm4;
     }
 
     /**
-     * Set NT
+     * Set nt
      *
-     * @param string $nT
+     * @param string $nt
      * @return City
      */
-    public function setNT($nT)
+    public function setNt($nt)
     {
-        $this->NT = $nT;
+        $this->nt = $nt;
 
         return $this;
     }
 
     /**
-     * Get NT
+     * Get nt
      *
      * @return string 
      */
-    public function getNT()
+    public function getNt()
     {
-        return $this->NT;
+        return $this->nt;
     }
 
     /**
-     * Set LC
+     * Set lc
      *
-     * @param string $lC
+     * @param string $lc
      * @return City
      */
-    public function setLC($lC)
+    public function setLc($lc)
     {
-        $this->LC = $lC;
+        $this->lc = $lc;
 
         return $this;
     }
 
     /**
-     * Get LC
+     * Get lc
      *
      * @return string 
      */
-    public function getLC()
+    public function getLc()
     {
-        return $this->LC;
+        return $this->lc;
     }
 
     /**
-     * Set SHORTFORM
+     * Set shortform
      *
-     * @param string $sHORTFORM
+     * @param string $shortform
      * @return City
      */
-    public function setSHORTFORM($sHORTFORM)
+    public function setShortform($shortform)
     {
-        $this->SHORTFORM = $sHORTFORM;
+        $this->shortform = $shortform;
 
         return $this;
     }
 
     /**
-     * Get SHORTFORM
+     * Get shortform
      *
      * @return string 
      */
-    public function getSHORTFORM()
+    public function getShortform()
     {
-        return $this->SHORTFORM;
+        return $this->shortform;
     }
 
     /**
-     * Set FULLNAME
+     * Set fullname
      *
-     * @param string $fULLNAME
+     * @param string $fullname
      * @return City
      */
-    public function setFULLNAME($fULLNAME)
+    public function setFullname($fullname)
     {
-        $this->FULLNAME = $fULLNAME;
+        $this->fullname = $fullname;
 
         return $this;
     }
 
     /**
-     * Get FULLNAME
+     * Get fullname
      *
      * @return string 
      */
-    public function getFULLNAME()
+    public function getFullname()
     {
-        return $this->FULLNAME;
+        return $this->fullname;
     }
 
     /**
-     * Set FULLNAMEND
+     * Set fullnamed
      *
-     * @param string $fULLNAMEND
+     * @param string $fullnamed
      * @return City
      */
-    public function setFULLNAMEND($fULLNAMEND)
+    public function setFullnamed($fullnamed)
     {
-        $this->FULLNAMEND = $fULLNAMEND;
+        $this->fullnamed = $fullnamed;
 
         return $this;
     }
 
     /**
-     * Get FULLNAMEND
+     * Get fullnamed
      *
      * @return string 
      */
-    public function getFULLNAMEND()
+    public function getFullnamed()
     {
-        return $this->FULLNAMEND;
+        return $this->fullnamed;
     }
 
     /**
-     * Set Name
+     * Set characters
      *
-     * @param string $fULLNAMEND
+     * @param string $characters
      * @return City
      */
-    public function setName($name)
+    public function setCharacters($characters)
     {
-        $this->FULLNAMEND = $name;
+        $this->characters = $characters;
 
         return $this;
     }
 
     /**
-     * Get Name
+     * Get characters
      *
      * @return string 
      */
-    public function getName()
+    public function getCharacters()
     {
-        return $this->FULLNAMEND;
+        return $this->characters;
     }
 
     /**
-     * Set CHARACTERS
+     * Set latitude
      *
-     * @param string $cHARACTERS
+     * @param float $latitude
      * @return City
      */
-    public function setCHARACTERS($cHARACTERS)
+    public function setLatitude($latitude)
     {
-        $this->CHARACTERS = $cHARACTERS;
+        $this->latitude = $latitude;
 
         return $this;
     }
 
     /**
-     * Get CHARACTERS
+     * Get latitude
      *
-     * @return string 
+     * @return float 
      */
-    public function getCHARACTERS()
+    public function getLatitude()
     {
-        return $this->CHARACTERS;
+        return $this->latitude;
     }
 
     /**
-     * Set LATITUDE
+     * Set longitude
      *
-     * @param string $lATITUDE
+     * @param float $longitude
      * @return City
      */
-    public function setLATITUDE($lATITUDE)
+    public function setLongitude($longitude)
     {
-        $this->LATITUDE = $lATITUDE;
+        $this->longitude = $longitude;
 
         return $this;
     }
 
     /**
-     * Get LATITUDE
+     * Get longitude
      *
-     * @return string 
+     * @return float 
      */
-    public function getLATITUDE()
+    public function getLongitude()
     {
-        return $this->LATITUDE;
+        return $this->longitude;
     }
 
     /**
-     * Set LONGITUDE
+     * Set dmslat
      *
-     * @param string $lONGITUDE
+     * @param integer $dmslat
      * @return City
      */
-    public function setLONGITUDE($lONGITUDE)
+    public function setDmslat($dmslat)
     {
-        $this->LONGITUDE = $lONGITUDE;
+        $this->dmslat = $dmslat;
 
         return $this;
     }
 
     /**
-     * Get LONGITUDE
-     *
-     * @return string 
-     */
-    public function getLONGITUDE()
-    {
-        return $this->LONGITUDE;
-    }
-
-    /**
-     * Set DMSLAT
-     *
-     * @param integer $dMSLAT
-     * @return City
-     */
-    public function setDMSLAT($dMSLAT)
-    {
-        $this->DMSLAT = $dMSLAT;
-
-        return $this;
-    }
-
-    /**
-     * Get DMSLAT
+     * Get dmslat
      *
      * @return integer 
      */
-    public function getDMSLAT()
+    public function getDmslat()
     {
-        return $this->DMSLAT;
+        return $this->dmslat;
     }
 
     /**
-     * Set DMSLONG
+     * Set dmslong
      *
-     * @param integer $dMSLONG
+     * @param integer $dmslong
      * @return City
      */
-    public function setDMSLONG($dMSLONG)
+    public function setDmslong($dmslong)
     {
-        $this->DMSLONG = $dMSLONG;
+        $this->dmslong = $dmslong;
 
         return $this;
     }
 
     /**
-     * Get DMSLONG
+     * Get dmslong
      *
      * @return integer 
      */
-    public function getDMSLONG()
+    public function getDmslong()
     {
-        return $this->DMSLONG;
+        return $this->dmslong;
     }
 
     /**
-     * Get LATITUDE
+     * Set soundex
      *
-     * @return decimal 
+     * @param string $soundex
+     * @return City
      */
-    public function getLat()
+    public function setSoundex($soundex)
     {
-        return $this->LATITUDE;
+        $this->soundex = $soundex;
+
+        return $this;
     }
 
     /**
-     * Get LONGITUDE
+     * Get soundex
      *
-     * @return decimal 
+     * @return string 
      */
-    public function getLon()
+    public function getSoundex()
     {
-        return $this->LONGITUDE;
+        return $this->soundex;
+    }
+
+    /**
+     * Set metaphone
+     *
+     * @param string $metaphone
+     * @return City
+     */
+    public function setMetaphone($metaphone)
+    {
+        $this->metaphone = $metaphone;
+
+        return $this;
+    }
+
+    /**
+     * Get metaphone
+     *
+     * @return string 
+     */
+    public function getMetaphone()
+    {
+        return $this->metaphone;
+    }
+
+    /**
+     * Set cp
+     *
+     * @param string $cp
+     * @return City
+     */
+    public function setCp($cp)
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    /**
+     * Get cp
+     *
+     * @return string 
+     */
+    public function getCp()
+    {
+        return $this->cp;
+    }
+
+    /**
+     * Set pop
+     *
+     * @param integer $pop
+     * @return City
+     */
+    public function setPop($pop)
+    {
+        $this->pop = $pop;
+
+        return $this;
+    }
+
+    /**
+     * Get pop
+     *
+     * @return integer 
+     */
+    public function getPop()
+    {
+        return $this->pop;
+    }
+
+    /**
+     * Set pop_order
+     *
+     * @param integer $popOrder
+     * @return City
+     */
+    public function setPopOrder($popOrder)
+    {
+        $this->pop_order = $popOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get pop_order
+     *
+     * @return integer 
+     */
+    public function getPopOrder()
+    {
+        return $this->pop_order;
+    }
+
+    /**
+     * Set sfc
+     *
+     * @param integer $sfc
+     * @return City
+     */
+    public function setSfc($sfc)
+    {
+        $this->sfc = $sfc;
+
+        return $this;
+    }
+
+    /**
+     * Get sfc
+     *
+     * @return integer 
+     */
+    public function getSfc()
+    {
+        return $this->sfc;
+    }
+
+    /**
+     * Set sfc_order
+     *
+     * @param integer $sfcOrder
+     * @return City
+     */
+    public function setSfcOrder($sfcOrder)
+    {
+        $this->sfc_order = $sfcOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get sfc_order
+     *
+     * @return integer 
+     */
+    public function getSfcOrder()
+    {
+        return $this->sfc_order;
     }
 }

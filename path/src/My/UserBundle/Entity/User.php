@@ -80,8 +80,6 @@ class User extends BaseUser
      * @ORM\Column(type="text", length=6, nullable=true)
      */
     private $lang = '';
-    
-
 
     /**
      * @ORM\PostLoad

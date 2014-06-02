@@ -7,7 +7,7 @@ use Symfony\Component\Routing\RouterInterface;
 class CalendarUrlGenerator {
 
 	private $router;
-	private $params;
+	private $search;
 	private $url = '';
 	private $fragments = array();
 	public $defaults = array(
@@ -23,8 +23,10 @@ class CalendarUrlGenerator {
 		'organizer' => 'allorganizer'
 		);
 
-	public function __construct()
+	public function __construct(RouterInterface $router)
 	{
+		$this->router = $router;
+
 		$this->defaults['date'] = \date('Y-m-d');
 	}
 
@@ -33,39 +35,81 @@ class CalendarUrlGenerator {
 		$this->router = $router;
 	}
 
-	public function setParams($params)
+	public function setSearch($search)
 	{
-		$this->params = $params;
+		$this->search = $search;
+
+		return $this;
 	}
 
-	public function getSearchUrl()
+	public function getUrl()
 	{
-		//get the default route url
-		$defaultUrl = $this->getRouteUrl();
-		//get the params ( in the right order)
-		preg_match_all('/\{([a-z]+)\}/',$defaultUrl,$defaultParams);		
-		//get each fragment param
-		foreach ($defaultParams[1] as $k => $param) {			
-			$this->fragments[$param] = call_user_func(array($this,'get'.ucfirst($param).'Param'));
-		}
-		//replace null fragment with default value
-		foreach ($this->fragments as $k => $value) {
-			if($value === null) $this->fragments[$k] = $this->defaults[$k];
-		}
-		//remove last fragments if = defaults
-		$this->fragments = array_reverse($this->fragments);
-		foreach ($this->fragments as $k => $value) {
-			if($value == $this->defaults[$k]) unset($this->fragments[$k]);
+		//compute parameters
+		$fragments = $this->computeFragments();
+		//replace default value
+		$fragments = $this->fragmentsReplaceDefaults($fragments);
+		//remove last fragments if defaults
+		$fragments = array_reverse($fragments);
+		foreach ($fragments as $k => $value) {
+			if($value == $this->defaults[$k]) unset($fragments[$k]);
 			else break;			
 		}
-		$this->fragments = array_reverse($this->fragments);
+		$fragments = array_reverse($fragments);
 
 		//clear lasts url fragments if they are useless
-		$this->url = implode('/',$this->fragments);
+		$this->url = implode('/',$fragments);
 
-		//exit($this->url);
 		//return url
 		return $this->url;
+	}
+
+	public function getUrlParams($withDefault = false)
+	{
+		$params = $this->computeFragments();
+		if($withDefault == true) $params = $this->fragmentsReplaceDefaults($params);
+
+		return $params;
+	}
+
+	public function getShortUrlParams()
+	{
+		$params = $this->getUrlParams(false);
+		$params = array_reverse($params);
+		foreach ($params as $param => $value) {			
+			if(empty($value) || $value == $this->defaults[$param]){
+				unset($params[$param]);
+			}
+			else break;
+		}
+		return array_reverse($params);
+	}
+
+	private function computeFragments()
+	{		
+		$routeParams = $this->getRouteParams();	
+		//get each route params value
+		foreach ($routeParams as $k => $param) {			
+			$this->fragments[$param] = call_user_func(array($this,'get'.ucfirst($param).'Param'));
+		}
+
+		return $this->fragments;		
+	}
+
+	private function fragmentsReplaceDefaults($fragments)
+	{
+		//replace with default value if needed
+		foreach ($fragments as $k => $value) {
+			if($value === null) $fragments[$k] = $this->defaults[$k];
+		}
+		return $fragments;
+	}
+
+	public function getRouteParams()
+	{
+		$route = $this->getRouteUrl();
+		//get the params ( in the right order)
+		preg_match_all('/\{([a-z]+)\}/',$route,$routeParams);
+		return $routeParams[1];
 	}
 
 	private function getRouteUrl()
@@ -75,16 +119,16 @@ class CalendarUrlGenerator {
 
 	private function getCountryParam()
 	{
-		return $this->params['country']->getName();		
+		return $this->search->getCountry()->getName();		
 	}
 
 	private function getCityParam()
 	{
 		//if a city is enquire
-		if(isset($this->params['location']) && method_exists($this->params['location'], 'getCity') && $this->params['location']->getCity()->getId() != NULL){
-			$str = $this->params['location']->getCity()->getName();					
-			if(!empty($this->params['area'])) {
-				$str .= '+'.str_replace('km','',$this->params['area']);
+		if($this->search->hasLocation()){
+			$str = $this->search->getLocation()->getCity()->getName();					
+			if($this->search->hasArea()) {
+				$str .= '+'.str_replace('km','',$this->search->getArea());
 			}
 			return $str;
 		}
@@ -99,9 +143,9 @@ class CalendarUrlGenerator {
 
 	private function getSportsParam()
 	{
-		if(!empty($this->params['sports'])){			
+		if($this->search->hasSports()){			
 			$str = '';
-			foreach ($this->params['sports'] as $k => $sport) {
+			foreach ($this->search->getSports() as $k => $sport) {
 				$str .= $sport['slug'].'-';
 			}	
 			$str = trim($str,'-');
@@ -113,11 +157,9 @@ class CalendarUrlGenerator {
 
 	private function getTypeParam()
 	{
-		if(!empty($this->params['type'])){
-
-			if(count($this->params['type'])>=3) return null;
+		if($this->search->hasType()){
 			$str = '';
-			foreach ($this->params['type'] as $k => $type) {
+			foreach ($this->search->getType() as $k => $type) {
 				$str .= $type.'-';
 			}
 			$str = trim($str,'-');
@@ -129,24 +171,28 @@ class CalendarUrlGenerator {
 
 	private function getNbdaysParam()
 	{
-		if(!empty($this->params['nbdays']))
-			return $this->params['nbdays'];
+		if($this->search->hasNbDays())
+			return $this->search->getNbDays();
 		else
 			return null;
 	}
 
 	private function getDateParam()
 	{
-		if(!empty($this->params['date']))
-			return $this->params['date'];
+		if($this->search->hasDate()){
+			$d = \DateTime::createFromFormat('Y-m-d',$this->search->getDate());
+			if($d !== false && !array_sum($d->getLastErrors())) return $d->format('dMy');
+			return $this->search->getDate();
+		}
 		else
 			return null;
 	}
 
 	private function getTimeParam()
 	{		
-		if(!empty($this->params['time']) && $this->params['time']['start'] !== '00:00:00' && $this->params['time']['end'] !== '24:00:00'){
-			return $this->params['time']['start'].'-'.$this->params['time']['end'];
+		if($this->search->hasTime()){
+			$time = $this->search->getTime();
+			return substr($time['start'],0,5).'-'.substr($time['end'],0,5);
 		}
 		else
 			return null;
@@ -154,8 +200,8 @@ class CalendarUrlGenerator {
 
 	public function getPriceParam()
 	{
-		if(!empty($this->params['price'])){
-			return $this->params['price'];
+		if($this->search->hasPrice()){
+			return $this->search->getPrice();
 		}
 		else
 			return null;
@@ -163,8 +209,8 @@ class CalendarUrlGenerator {
 
 	public function getOrganizerParam()
 	{
-		if(!empty($this->params['organizer'])){
-			return $this->params['organizer']->getUsername();
+		if($this->search->hasOrganizer()){	
+			return $this->search->getOrganizer()->getUsername();
 		}
 		else
 			return null;

@@ -13,7 +13,7 @@ class DefaultController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
     	$articles = $em->getRepository('MyBlogBundle:Article')->findAll();
-
+        
         return $this->render('MyBlogBundle:Default:index.html.twig', array(
         	'articles' => $articles));
     }

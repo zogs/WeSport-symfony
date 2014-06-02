@@ -16,11 +16,23 @@ class CityRepository extends EntityRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 		$qb->where(
-			$qb->expr()->eq('c.UNI',':UNI')
+			$qb->expr()->eq('c.uni',':uni')
 			);
-		$qb->setParameter('UNI',$uni);
+		$qb->setParameter('uni',$uni);
 		
 		return $qb->getQuery()->getSingleResult();
+
+	}
+
+	public function findCityById($id)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->where(
+			$qb->expr()->eq('c.id',':id')
+			);
+		$qb->setParameter('id',$id);
+		
+		return $qb->getQuery()->getOneOrNullResult();
 
 	}
 
@@ -29,46 +41,46 @@ class CityRepository extends EntityRepository
 		$qb = $this->createQueryBuilder('c');
 
 		if(isset($countryCode))
-			$qb->andWhere($qb->expr()->eq('c.CC1',$qb->expr()->literal($countryCode)));
+			$qb->andWhere($qb->expr()->eq('c.cc1',$qb->expr()->literal($countryCode)));
 		if(isset($regionCode))
 			$qb->andWhere($qb->expr()->eq('c.ADM1',$qb->expr()->literal($regionCode)));
 		if(isset($departementCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM2',$qb->expr()->literal($departementCode)));
+			$qb->andWhere($qb->expr()->eq('c.adm2',$qb->expr()->literal($departementCode)));
 		if(isset($districtCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM3',$qb->expr()->literal($districtCode)));
+			$qb->andWhere($qb->expr()->eq('c.adm3',$qb->expr()->literal($districtCode)));
 		if(isset($divisionCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM4',$qb->expr()->literal($divisionCode)));
+			$qb->andWhere($qb->expr()->eq('c.adm4',$qb->expr()->literal($divisionCode)));
 
 		$qb->andWhere(
-			$qb->expr()->eq('c.FULLNAMEND',$qb->expr()->literal($name)));
+			$qb->expr()->eq('c.fullnamed',$qb->expr()->literal($name)));
 
-		$qb->addOrderBy('c.POP','DESC');
+		$qb->addOrderBy('c.pop','DESC');
 		$qb->setMaxResults(1);
 
-		return $qb->getQuery()->getSingleResult();
+		return $qb->getQuery()->getOneOrNullResult();
 	}
 	public function findCitiesSuggestions( $limit, $prefix , $countryCode = null, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null){
 
 		$qb = $this->createQueryBuilder('c');
 
 		if(isset($countryCode))
-			$qb->andWhere($qb->expr()->eq('c.CC1',$qb->expr()->literal($countryCode)));			
+			$qb->andWhere($qb->expr()->eq('c.cc1',$qb->expr()->literal($countryCode)));			
 		if(isset($regionCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM1',$qb->expr()->literal($regionCode)));			
+			$qb->andWhere($qb->expr()->eq('c.adm1',$qb->expr()->literal($regionCode)));			
 		if(isset($departementCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM2',$qb->expr()->literal($departementCode)));
+			$qb->andWhere($qb->expr()->eq('c.adm2',$qb->expr()->literal($departementCode)));
 		if(isset($districtCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM3',$qb->expr()->literal($districtCode)));
+			$qb->andWhere($qb->expr()->eq('c.adm3',$qb->expr()->literal($districtCode)));
 		if(isset($divisionCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM4',$qb->expr()->literal($divisionCode)));			
+			$qb->andWhere($qb->expr()->eq('c.adm4',$qb->expr()->literal($divisionCode)));			
 
 		$qb->andWhere(
-				$qb->expr()->like('c.FULLNAMEND',$qb->expr()->literal($prefix.'%'))
+				$qb->expr()->like('c.fullnamed',$qb->expr()->literal($prefix.'%'))
 			);
 
 		$qb->setMaxResults( $limit );
-		$qb->orderBy('c.FULLNAMEND','ASC');
-		$qb->addOrderBy('c.POP','DESC');
+		$qb->orderBy('c.fullnamed','ASC');
+		$qb->addOrderBy('c.pop','DESC');
 
 		return $qb->getQuery()->getResult();
 	}
@@ -77,15 +89,15 @@ class CityRepository extends EntityRepository
 	public function findCitiesByStateParent($parent)
 	{
 		if($parent->getLevel()=='country')
-			return $this->findCitiesByCode($parent->getCC1());
+			return $this->findCitiesByCode($parent->getCc1());
 		if($parent->getLevel()=='region')
-			return $this->findCitiesByCode($parent->getCC1(),$parent->getADMCODE());
+			return $this->findCitiesByCode($parent->getCc1(),$parent->getADMCODE());
 		if($parent->getLevel()=='department')
-			return $this->findCitiesByCode($parent->getCC1(),$parent->getADMPARENT(),$parent->getADMCODE());
+			return $this->findCitiesByCode($parent->getCc1(),$parent->getADMPARENT(),$parent->getADMCODE());
 		if($parent->getLevel()=='district')
-			return $this->findCitiesByCode($parent->getCC1(),null,$parent->getADMPARENT(),$parent->getADMCODE());
+			return $this->findCitiesByCode($parent->getCc1(),null,$parent->getADMPARENT(),$parent->getADMCODE());
 		if($parent->getLevel()=='division')
-			return $this->findCitiesByCode($parent->getCC1(),null,null,$parent->getADMPARENT(),$parent->getADMCODE());
+			return $this->findCitiesByCode($parent->getCc1(),null,null,$parent->getADMPARENT(),$parent->getADMCODE());
 		
 	}
 	public function findCitiesByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
@@ -94,37 +106,37 @@ class CityRepository extends EntityRepository
 			SELECT s
 			FROM MyWorldBundle:City s 
 			JOIN MyWorldBundle:Country c 
-			WITH c.code = s.CC1
-			WHERE s.CC1 = :CC1
+			WITH c.code = s.cc1
+			WHERE s.cc1 = :cc1
 			AND (
 				";
 		if(isset($regionCode))
-			$sql .= " s.ADM1 = :ADM1 ";
+			$sql .= " s.adm1 = :adm1 ";
 		if(isset($departementCode))
-			$sql .= " AND s.ADM2 = :ADM2 ";
+			$sql .= " AND s.adm2 = :adm2 ";
 		if(isset($districtCode))
-			$sql .= " AND s.ADM3 = :ADM3 ";
+			$sql .= " AND s.adm3 = :adm3 ";
 		if(isset($divisionCode))
-			$sql .= " AND s.ADM4 = :ADM4 ";
+			$sql .= " AND s.adm4 = :adm4 ";
 		$sql .="
 			)
 			AND (
-				s.LC = c.lang
+				s.lc = c.lang
 				OR
-				s.LC = ''
+				s.lc = ''
 				)
-			ORDER BY s.FULLNAMEND ";
+			ORDER BY s.fullnamed ";
 		
 		$query = $this->getEntityManager()->createQuery($sql);
-		$query->setParameter('CC1',$countryCode);
+		$query->setParameter('cc1',$countryCode);
 		if(isset($regionCode))
-			$query->setParameter('ADM1',$regionCode);
+			$query->setParameter('adm1',$regionCode);
 		if(isset($departementCode))
-			$query->setParameter('ADM2',$departementCode);
+			$query->setParameter('adm2',$departementCode);
 		if(isset($districtCode))
-			$query->setParameter('ADM3',$districtCode);
+			$query->setParameter('adm3',$districtCode);
 		if(isset($divisionCode))
-			$query->setParameter('ADM4',$divisionCode);
+			$query->setParameter('adm4',$divisionCode);
 
 		return $query->getResult();
 	}
@@ -150,21 +162,21 @@ class CityRepository extends EntityRepository
 		$lat2 = $lat+($radius/$onedegree);
 
 		//calculation of distance field
-		$distance_formula = " $earthradius * 2 * ASIN(SQRT( POWER(SIN(($lat - C.LATITUDE) *  pi()/180 / 2), 2) +COS($lat * pi()/180) * COS(C.LATITUDE * pi()/180) * POWER(SIN(($lon - C.LONGITUDE) * pi()/180 / 2), 2) )) as distance ";
+		$distance_formula = " $earthradius * 2 * ASIN(SQRT( POWER(SIN(($lat - C.latitude) *  pi()/180 / 2), 2) +COS($lat * pi()/180) * COS(C.latitude * pi()/180) * POWER(SIN(($lon - C.longitude) * pi()/180 / 2), 2) )) as distance ";
 
 		$sql = 'SELECT *, '.$distance_formula;
 		$sql .= 'FROM world_cities as C ';
 		$sql .= 'WHERE 1=1 ';
 		if(isset($countryCode))
-			$sql .= 'AND CC1=:CC1 ';
-		$sql .= ' AND C.LONGITUDE BETWEEN '.$lon1.' AND '.$lon2.' AND C.LATITUDE BETWEEN '.$lat1.' AND '.$lat2.' ';
+			$sql .= 'AND cc1=:cc1 ';
+		$sql .= ' AND C.longitude BETWEEN '.$lon1.' AND '.$lon2.' AND C.latitude BETWEEN '.$lat1.' AND '.$lat2.' ';
 		$sql .= 'having distance < '.$radius;
 
 		
 		$rsm = $this->resultSetMappingCity();
 		
 		$query = $this->_em->createNativeQuery($sql,$rsm);
-		$query->setParameter('CC1',$countryCode);
+		$query->setParameter('cc1',$countryCode);
 
 		return $query->getResult();
 		//return $this->getQuery($sql)->getResult();
@@ -178,18 +190,17 @@ class CityRepository extends EntityRepository
 		$rsm->addEntityResult('My\WorldBundle\Entity\City', 'C');
 		$rsm->addFieldResult('C', 'id', 'id');
 		$rsm->addFieldResult('C', 'CHAR_CODE', 'char_code');		
-		$rsm->addFieldResult('C', 'UNI', 'UNI');
-		$rsm->addFieldResult('C', 'CC1', 'CC1');
-		$rsm->addFieldResult('C', 'DSG', 'DSG');
-		$rsm->addFieldResult('C', 'ADM1', 'ADM1');
-		$rsm->addFieldResult('C', 'ADM2', 'ADM2');
-		$rsm->addFieldResult('C', 'ADM3', 'ADM3');
-		$rsm->addFieldResult('C', 'ADM3', 'ADM3');
-		$rsm->addFieldResult('C', 'ADM4', 'ADM4');
-		$rsm->addFieldResult('C', 'LC', 'LC');
-		$rsm->addFieldResult('C', 'FULLNAMEND', 'FULLNAMEND');
-		$rsm->addFieldResult('C', 'LATITUDE', 'LATITUDE');
-		$rsm->addFieldResult('C', 'LONGITUDE', 'LONGITUDE');		
+		$rsm->addFieldResult('C', 'UNI', 'uni');
+		$rsm->addFieldResult('C', 'CC1', 'cc1');
+		$rsm->addFieldResult('C', 'DSG', 'dsg');
+		$rsm->addFieldResult('C', 'ADM1', 'adm1');
+		$rsm->addFieldResult('C', 'ADM2', 'adm2');
+		$rsm->addFieldResult('C', 'ADM3', 'adm3');
+		$rsm->addFieldResult('C', 'ADM4', 'adm4');
+		$rsm->addFieldResult('C', 'LC', 'lc');
+		$rsm->addFieldResult('C', 'FULLNAMED', 'fullnamed');
+		$rsm->addFieldResult('C', 'LATITUDE', 'latitude');
+		$rsm->addFieldResult('C', 'LONGITUDE', 'longitude');		
 
 		return $rsm;
 	}
