@@ -1,0 +1,44 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+
+    <div class="indexAlert">
+        <div class="fresque"></div>
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                   Mes alertes
+                </h1>
+            </div>
+
+        <div class="col_large">
+           
+           {% for alert in alerts %}
+                   <table>
+                       <tr>
+                           <td>
+                               Jusqu'au {{ alert.dateStop|date('Y-m-d') }}
+                           </td>
+                           <td>
+                               à {{ alert.search.location.city.name }}
+                           </td>
+                           <td>
+                               <a href="{{ path('ws_events.alert.edit',{alert:alert.id}) }}">Lien</a>
+                           </td>
+                       </tr>
+                   </table>
+            {% endfor %}
+                   
+        </div>
+
+        <div class="col_small">
+           
+        </div>
+        
+        <div class="clearfix"></div>
+        <div class="fresque"></div>
+    
+    </div>
+    
+{% endblock %}
+

@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * EventParticipants
  *
  * @ORM\Table(name="events_participants")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\ParticipationRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\ParticipationRepository")
  */
 class Participation 
 {

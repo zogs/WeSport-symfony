@@ -19,8 +19,6 @@ class AlertManager extends AbstractManager
 		$alert->setDateStop($stop);
 
 
-
-
 		$this->save($alert,true);
 		return true;	
 	}	

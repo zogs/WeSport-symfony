@@ -82,7 +82,18 @@ class CalendarManager extends AbstractManager
 		$this->saveSearchCookie();
 
 		return $calendar;
+	}
+
+	public function disableFlashbag()
+	{
+		$this->flashbag = null;
 	}	
+
+	public function isFlashbagActive()
+	{
+		if(isset($this->flashbag)) return true;
+		return false;
+	}
 
 	public function getParams()
 	{
@@ -260,25 +271,20 @@ class CalendarManager extends AbstractManager
 		elseif(isset($this->params['country']) && strlen($this->params['country']) <=2)
 			$country = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
 
-		if(!isset($country)) $this->flashbag->add('Veuillez choisir un pays','info');
+		if(!isset($country) && $this->isFlashbagActive()) $this->flashbag->add('Veuillez choisir un pays','info');
 
 		$this->search->setCountry($country);
 		return;
 	}
 
 	private function prepareCityParams()
-	{		
-		//return null
-		if(empty($this->params['city']) && empty($this->params['city_id']) && empty($this->params['city_name']) && empty($this->params['location'])) return; //if none of the parameters are set
-		if(isset($this->params['city']) && empty($this->params['city_id']) && empty($this->params['city_name']) && $this->params['city'] == $this->urlGenerator->defaults['city']) return;	//if the URI parameter equal the default one
-		
-		
+	{	
 		$city = null;
-		if(!empty($this->params['location'])){			
+		if(!empty($this->params['location']) && is_array($this->params['location']) ){			
 			if(!empty($this->params['location']['city_id'])) $this->params['city_id'] = $this->params['location']['city_id'];
 			if(!empty($this->params['location']['city_name'])) $this->params['city_name'] = $this->params['location']['city_name'];
 		}
-		if(!empty($this->params['city'])){			
+		if(!empty($this->params['city']) && $this->params['city'] != $this->urlGenerator->defaults['city']){			
 			if(strpos($this->params['city'],'+') > 0) {
 				$r = explode('+',$this->params['city'],2); 
 				$city = $r[0];				    
@@ -288,20 +294,18 @@ class CalendarManager extends AbstractManager
 			}
 		}
 		if(!empty($this->params['city_name'])) $city = $this->params['city_name'];
-		if(!empty($this->params['city_id'])) $city = $this->params['city_id'];					
+		if(!empty($this->params['city_id']) && is_numeric($this->params['city_id'])) $city = $this->params['city_id'];					
 
 		if(is_numeric($city)) $city = $this->em->getRepository('MyWorldBundle:City')->find($city);
 		elseif(is_string($city)) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($city,$this->search->getCountry()->getCode());
-
+				
 		if(!isset($city) || (isset($city) && $city->getId() == 0)) {
-			$this->flashbag->add("Cette ville n'a pas été trouvé... Et vous sûr que ça s'écrit comme ça ?",'warning');
+			if($this->isFlashbagActive()) $this->flashbag->add("Cette ville n'a pas été trouvé... Et vous sûr que ça s'écrit comme ça ?",'warning');
 			return;
 		}
-
 		$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());
 		
 		$this->search->setLocation($location);
-
 		if(!empty($area)) $this->prepareAreaParams($area);
 
 		return;
@@ -364,7 +368,7 @@ class CalendarManager extends AbstractManager
     		elseif(is_array($slug))
     			$sport = $slug;
 
-    		if(empty($sport)) $this->flashbag->add('Pardon mais ce sport n\'est pas reconnu : '.$slug,'error');
+    		if(empty($sport) && $this->isFlashbagActive() ) $this->flashbag->add('Pardon mais ce sport ne nous dit rien... '.$slug.'??','error');
 
     		$sports[$k] = $sport;  		      		
     	}    
@@ -458,7 +462,7 @@ class CalendarManager extends AbstractManager
     		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername($this->params['organizer']);    			    		
     	}
 
-    	if(!isset($user) || (isset($user) && $user->getId() == 0)) $this->flashbag->add("Cet utilisateur n'existe pas : ".$this->params['organizer'],'error');
+    	if($this->isFlashbagActive() && !isset($user) || (isset($user) && $user->getId() == 0))  $this->flashbag->add("Cet utilisateur n'existe pas : ".$this->params['organizer'],'error');
 
     	$this->search->setOrganizer($user);
     	return;

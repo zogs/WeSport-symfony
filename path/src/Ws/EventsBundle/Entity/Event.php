@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Category
  *
  * @ORM\Table(name="events_event")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\EventRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\EventRepository")
  */
 class Event 
 {

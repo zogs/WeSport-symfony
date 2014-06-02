@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Serie
  *
  * @ORM\Table(name="events_serie")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\SerieRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\SerieRepository")
  */
 class Serie 
 {

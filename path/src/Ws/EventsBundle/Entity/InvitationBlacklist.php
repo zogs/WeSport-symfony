@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Invitation Blacklist
  *
  * @ORM\Table(name="events_invitation_blacklist")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\InvitationBlacklistRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\InvitationBlacklistRepository")
  */
 class InvitationBlacklist
 {

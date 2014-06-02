@@ -17,7 +17,7 @@ use My\WorldBundle\Entity\Location;
  * Search
  *
  * @ORM\Table(name="events_alert_search")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\AlertRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\AlertRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Search
@@ -34,7 +34,7 @@ class Search
     public $date_created = null;
 
     /**
-    * @ORM\Column(name="date", type="datetime", nullable=true)
+    * @ORM\Column(name="date", type="string", nullable=true)
     */
     private $date = null;
 
@@ -75,12 +75,12 @@ class Search
     public $time = array();
 
     /**
-    * @ORM\Column(name="price", type="integer")
+    * @ORM\Column(name="price", type="integer", nullable=true)
     */
     public $price = null;
 
     /**
-    * @ORM\Column(name="organizer_id")
+    * @ORM\Column(name="organizer_id", nullable=true)
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
     */
     public $organizer = null;

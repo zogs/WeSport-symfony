@@ -12,7 +12,7 @@ use Ws\EventsBundle\Entity\Search;
  * Alert
  *
  * @ORM\Table(name="events_alert")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\AlertRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\AlertRepository")
  */
 class Alert
 {
@@ -69,7 +69,7 @@ class Alert
     private $date_created;
 
     function __construct(){
-        $this->date_created = new \DateTime();
+        $this->date_created = new \DateTime('now');
     }
 
 
@@ -229,7 +229,7 @@ class Alert
      * @param \DateTime $dateStart
      * @return Alert
      */
-    public function setDateStart($dateStart)
+    public function setDateStart(\DateTime $dateStart)
     {
         $this->date_start = $dateStart;
 
@@ -252,7 +252,7 @@ class Alert
      * @param \DateTime $dateStop
      * @return Alert
      */
-    public function setDateStop($dateStop)
+    public function setDateStop(\DateTime $dateStop)
     {
         $this->date_stop = $dateStop;
 

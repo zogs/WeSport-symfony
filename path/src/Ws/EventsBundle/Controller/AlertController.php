@@ -21,6 +21,7 @@ class AlertController extends Controller
 	public function createAction(Request $request)
 	{		
 		$manager = $this->get('calendar.manager');
+		$manager->disableFlashbag();
 		$manager->addParamsFromCookies($request->cookies->all());
 		$manager->addParamsFromUrl($request->query->get('url'));
 		$manager->prepareParams();
@@ -35,10 +36,11 @@ class AlertController extends Controller
 		$form->handleRequest($this->getRequest());
 
 		if($form->isSubmitted()){
+
 			$alert = $form->getData();
 
 			if($this->get('ws_events.alert.manager')->saveAlert($alert)){
-				$this->get('flashbag')->add('alert saved','success');			
+				$this->get('flashbag')->add("Voila ! J'espère que vous allez recevoir plein d'email !",'success');			
 			}
 		}
 		
@@ -70,6 +72,31 @@ class AlertController extends Controller
 			));
 
 	}
+
+	public function indexAction()
+	{
+		$user = $this->getUser();
+
+		$alerts = $this->getDoctrine()->getRepository('WsEventsBundle:Alert')->findByUser($user);
+
+		return $this->render('WsEventsBundle:Alert:index.html.twig',array(
+			'alerts'=>$alerts,
+			));
+
+	}
+
+
+	public function viewAction(Alert $alert)
+	{
+		$user = $this->getUser();
+
+		$form = $this->createForm(new AlertType(),$alert);
+
+		return $this->render('WsEventsBundle:Alert:create.html.twig',array(
+			'form' => $form->createView(),
+			));
+	}
+
 
 	
 }

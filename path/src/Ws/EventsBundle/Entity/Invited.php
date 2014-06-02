@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Invitation
  *
  * @ORM\Table(name="events_invited")
- * @ORM\Entity(repositoryClass="Ws\EventsBundle\Entity\InvitedRepository")
+ * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\InvitedRepository")
  */
 class Invited
 {
