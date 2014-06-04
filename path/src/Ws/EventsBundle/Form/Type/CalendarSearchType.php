@@ -28,7 +28,7 @@ class CalendarSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('location', 'auto_complete_city', array(
+            ->add('location', 'city_to_location_type', array(
                 'required'=>false,
                 ))
             ->add('area','choice',array(
@@ -62,7 +62,9 @@ class CalendarSearchType extends AbstractType
                 'view_timezone'=>'Europe/Paris',
                 'with_seconds'=>false,
                 'hours'=>array(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0),
-                'minutes'=>array(0,10,20,30,40,50),
+                'minutes'=>array(0),
+                'empty_value' => "A partir de:",
+                'required' => false,
                 ))
             ->add('timeend','time',array(
                 'widget'=>'choice',
@@ -71,7 +73,9 @@ class CalendarSearchType extends AbstractType
                 'view_timezone'=>'Europe/Paris',
                 'with_seconds'=>false,
                 'hours'=>array(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0),
-                'minutes'=>array(0,10,20,30,40,50),
+                'minutes'=>array(0),
+                'empty_value' => "Avant :",
+                'required' => false,
                 ))
             ->add('dayofweek','choice',array(
                 'choices'=>array('Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'),

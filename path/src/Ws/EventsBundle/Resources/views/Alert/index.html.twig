@@ -11,16 +11,47 @@
                 </h1>
             </div>
 
-        <div class="col_large">
 
            {% for alert in alerts %}
-                   <table>
+                   <table width="100%">
                        <tr>
                            <td>
                                Jusqu'au {{ alert.dateStop|date('Y-m-d') }}
                            </td>
                            <td>
                                à {{ alert.search.location.city.name }}
+                           </td>                           
+                           <td>
+                             concernant : 
+                             {% for sport in alert.search.sports %}
+                             
+                                  {{ sport.name }} ,
+                              {% endfor %}
+                           </td>
+                           <td>
+                             du type :
+                             {% for type in alert.search.type %}
+                              	{{ type }} ,
+                             {% endfor %}
+                           </td>
+                           <td>
+                           	de {{ alert.search.time.start }} à {{ alert.search.time.end }}
+                           </td>
+                           <td>
+                           	d'un prix inférieur à {{ alert.search.price }}
+                           </td>
+                           <td>
+                           {% if alert.search.organizer is not null %}
+                           		de l'utilisateur {{ alert.search.organizer.username }}
+                           	{% else %}
+                           		de tous les utilisateurs
+                           {% endif %}
+                           </td>
+                           <td>
+                           	les jours suivant : 
+                           	{% for day in alert.search.dayOfWeek %}
+                           		{{ day }}
+                           	{% endfor %}
                            </td>
                            <td>
                                <a href="{{ path('ws_events_delete_alert',{alert:alert.id}) }}">Supprimer</a>
@@ -33,12 +64,7 @@
               <p>Pas d'alerte créé. <a href="{{path('ws_events_create_alert')}}">En créer une !</a></p>
             {% endif %}
                    
-        </div>
-
-        <div class="col_small">
-           
-        </div>
-        
+        <a href="{{ path('ws_events_create_alert') }}">Créer une autre alerte</a>
         <div class="clearfix"></div>
         <div class="fresque"></div>
     

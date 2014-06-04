@@ -75,13 +75,32 @@ class CalendarManager extends AbstractManager
 
 	public function findCalendar()
 	{
+		//prepare search
 		$this->prepareParams();
 
-		$calendar = $this->em->getRepository('WsEventsBundle:Event')->findCalendarEvents($this->getSearch());
+		//disable sql logging
+		$this->em->getConnection()->getConfiguration()->setSQLLogger(null);
 
+		//get first day of the week
+		$day = $this->search->getDate();
+		if($day == null) throw new Exception("First day of the week is missing", 1);
+		
+		$events = array();
+		$nb = $this->search->getNbDays();
+		$repo = $this->em->getRepository('WsEventsBundle:Event');
+		
+		for ($i=1; $i <= $nb; $i++) { 
+
+			$this->search->setDate($day);			
+			$events[$day] = $repo->findEvents($this->getSearch());
+			$day = date("Y-m-d", strtotime($day. " +1 day"));
+		}
+		//prevent memory leak
+		$this->em->clear();
+		//save the search in cookie
 		$this->saveSearchCookie();
 
-		return $calendar;
+		return $events;
 	}
 
 	public function disableFlashbag()
@@ -379,7 +398,9 @@ class CalendarManager extends AbstractManager
 			if(in_array($sport['id'], $ids)) unset($sports[$k]);
 			$ids[] = $sport['id'];
     	}
-		
+
+    	$sports = array_values($sports); //reset keys value for futur use
+
     	$this->search->setSports($sports);
     	return;
     }
@@ -476,6 +497,8 @@ class CalendarManager extends AbstractManager
 
     	if(is_array($this->params['dayofweek'])) $days = $this->params['dayofweek'];
     	if(is_string($this->params['dayofweek'])) $days = explode('-',$this->params['dayofweek']);
+
+    	$days = array_values($days); 
 
     	$this->search->setDayOfWeek($days);
     	return;

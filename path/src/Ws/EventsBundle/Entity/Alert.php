@@ -29,7 +29,7 @@ class Alert
 
     /**
     * @ORM\JoinColumn(name="search_id", referencedColumnName="id")
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"persist", "merge", "remove"})
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"persist", "merge", "remove"}, fetch="EAGER")
     */
     private $search;
 

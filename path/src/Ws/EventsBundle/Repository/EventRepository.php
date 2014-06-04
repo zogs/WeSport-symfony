@@ -15,34 +15,11 @@ class EventRepository extends EntityRepository
 {
 	private $search;	
 
-	public function findCalendarEvents(Search $search)
+	public function findEvents(Search $search)
 	{
 		$this->search = $search;
 
-		//disable sql logging
-		$this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
-
-		$day = $search->getDate();
-		$events = array();
-
-		$nb = $this->search->getNbDays();
-		for ($i=1; $i <= $nb; $i++) { 
-
-			$this->search->setDate($day);
-			$events[$day] = $this->findEvents();
-			$day = date("Y-m-d", strtotime($day. " +1 day"));
-		}
-		//prevent memory leak
-		$this->_em->clear();
-
-		return $events;
-	}
-
-	public function findEvents()
-	{
-
 		$qb = $this->createQueryBuilder('e');
-
 		$qb->select('e');
 
 		$qb = $this->filterByDate($qb);
@@ -56,11 +33,11 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterByDayOfWeek($qb);
 	
 		/*
+		\My\UtilsBundle\Utils\Debug::debug($search);
 		\My\UtilsBundle\Utils\Debug::debug($qb->getParameters());
 		\My\UtilsBundle\Utils\Debug::debug($qb->getDQL());
 		exit();
-	*/
-		
+		*/
 		
 		
 		return $qb->getQuery()->getResult();
@@ -179,10 +156,10 @@ class EventRepository extends EntityRepository
 
 	public function filterByTime($qb)
 	{
-		if($this->search->hasTime() === false) return $qb;
+		if($this->search->hasTime('start')) $qb->andWhere($qb->expr()->gte('e.time',':timestart'))->setParameter('timestart',$this->search->getTime('start'));
+		if($this->search->hasTime('end')) $qb->andWhere($qb->expr()->lte('e.time',':timeend'))->setParameter('timeend',$this->search->getTime('end'));
 
-		return $qb->andWhere($qb->expr()->between('e.time',':timestart',':timeend'))->setParameter('timestart',$this->search->getTime('start'))->setParameter('timeend',$this->search->getTime('end'));
-		
+		return $qb;				
 	}
 
 	public function filterByPrice($qb)

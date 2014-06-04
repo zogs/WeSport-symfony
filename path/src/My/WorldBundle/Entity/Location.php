@@ -263,6 +263,16 @@ class Location
             return 0;
     }
 
+    public function setCityId()
+    {
+        return null;
+    }
+
+    public function setCityName()
+    {
+        return null;
+    }
+
     /**
      * Get city name
      *

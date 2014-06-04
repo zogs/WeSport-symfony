@@ -191,8 +191,11 @@ class CalendarUrlGenerator {
 	private function getTimeParam()
 	{		
 		if($this->search->hasTime()){
-			$time = $this->search->getTime();
-			return substr($time['start'],0,5).'-'.substr($time['end'],0,5);
+			$str = '';
+			if($this->search->hasTime('start')) $str .= substr($this->search->getTime('start'),0,5);
+			$str .= '-';
+			if($this->search->hasTime('end')) $str .= substr($this->search->getTime('end'),0,5);
+			return $str;
 		}
 		else
 			return null;

@@ -14,7 +14,7 @@ use My\WorldBundle\Form\DataTransformer\CityIdToLocationTransformer;
 use My\WorldBundle\Form\DataTransformer\CityNameToLocationTransformer;
 use My\WorldBundle\Form\DataTransformer\CityToLocationTransformer;
 
-class AutoCompleteCityType extends AbstractType
+class CityToLocationType extends AbstractType
 {
     public $em;
 
@@ -52,6 +52,7 @@ class AutoCompleteCityType extends AbstractType
             ;
 
        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+       $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }
 
     public function onPreSetData(FormEvent $event)
@@ -59,12 +60,19 @@ class AutoCompleteCityType extends AbstractType
         $form = $event->getForm();
         $location = $event->getData(); 
 
-        if(isset($location) && $location->hasCity()){
-            $data = array();
-            $data['city_id'] = $location->getCity()->getId();
-            $data['city_name'] = $location->getCity()->getName();            
-            $event->setData($data);
-        }
+    }
+
+    public function onPreSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        $location = null;
+        if(!empty($data['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
+        elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);
+        
+        $form->setData($location);
+
     }
     
     /**
@@ -74,7 +82,7 @@ class AutoCompleteCityType extends AbstractType
     {
         $resolver->setDefaults(array(
             'invalid_message' => 'Form AutoCompleteCityType Error',
-            'data_class' => null,
+            'data_class' => 'My\WorldBundle\Entity\Location',
             'cascade_validation' => false
         ));
     }
@@ -84,6 +92,6 @@ class AutoCompleteCityType extends AbstractType
      */
     public function getName()
     {
-        return 'auto_complete_city';
+        return 'city_to_location_type';
     }
 }

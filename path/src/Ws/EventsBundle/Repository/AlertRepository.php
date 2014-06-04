@@ -12,4 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class AlertRepository extends EntityRepository
 {
+	public function findDailyAlerts()
+	{
+
+		$qb = $this->createQueryBuilder('a');
+		$qb->andWhere($qb->expr()->eq('a.active',true));
+		$qb->andWhere($qb->expr()->eq('a.frequency',':frequency'))->setParameter('frequency','daily');
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function findWeeklyAlerts()
+	{
+
+		$qb = $this->createQueryBuilder('a');
+		$qb->andWhere($qb->expr()->eq('a.active',true));
+		$qb->andWhere($qb->expr()->eq('a.frequency',':frequency'))->setParameter('frequency','weekly');
+
+		return $qb->getQuery()->getResult();
+	}
 }

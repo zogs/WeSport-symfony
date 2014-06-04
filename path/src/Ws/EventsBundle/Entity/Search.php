@@ -104,10 +104,10 @@ class Search
      */
     public function onPrePersist()
     {
-        $this->sports = json_encode($this->sports);
-        $this->type = json_encode($this->type);
-        $this->time = json_encode($this->time);
-        $this->day_of_week = json_encode($this->day_of_week);
+        $this->sports = json_encode($this->sports, JSON_FORCE_OBJECT);
+        $this->type = json_encode($this->type, JSON_FORCE_OBJECT);
+        $this->time = json_encode($this->time, JSON_FORCE_OBJECT);
+        $this->day_of_week = json_encode($this->day_of_week, JSON_FORCE_OBJECT);
         $this->date_created = new \DateTime();
     }
 
@@ -116,10 +116,10 @@ class Search
      */
     public function onPostLoad()
     {
-        $this->sports = json_decode($this->sports);
-        $this->type = json_decode($this->type);
-        $this->time = json_decode($this->time);
-        $this->day_of_week = json_decode($this->day_of_week);
+        $this->sports = json_decode($this->sports, JSON_FORCE_OBJECT);
+        $this->type = json_decode($this->type, JSON_FORCE_OBJECT);
+        $this->time = json_decode($this->time, JSON_FORCE_OBJECT);
+        $this->day_of_week = json_decode($this->day_of_week, JSON_FORCE_OBJECT);
     }
 
 
@@ -259,11 +259,14 @@ class Search
 
     }
 
-    public function hasTime()
+    public function hasTime($t = null)
     {
-        if(!empty($this->time) && count(array_diff($this->default['time'],$this->time)) != 0) return true;
-        return false;
+        if($t=='start' && !empty($this->time['start'])) return true;
+        if($t=='end' && !empty($this->time['end'])) return true;
+        if($t==null && ( $this->time['start'] !== null || $this->time['end'] !== null )) return true;
+        return false;       
     }
+    
     public function setTime($time)
     {
         if(is_array($time)){

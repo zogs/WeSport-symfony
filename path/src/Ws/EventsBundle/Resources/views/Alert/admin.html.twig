@@ -1,0 +1,31 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+
+    <div class="adminAlert">
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                   ADMIN
+                </h1>
+            </div>
+
+            {{ sended|length }} emails envoyés :
+            
+            <table>
+            {% for send in sended %}
+              <tr>
+                <td>
+                    {{send.alert.user.email}} --> {{ send.events|length }} événements
+                </td>
+              </tr>
+            {% endfor %}
+            </table>
+
+                   
+        
+        <div class="clearfix"></div>    
+    </div>
+    
+{% endblock %}
+

@@ -74,10 +74,13 @@ ws_events_index_alert:
     requirements:
         _method: GET
 ws_events_delete_alert:
-    pattern: /alert/edit/{alert}
-    defaults: { _controller: WsEventsBundle:Alert:view }
+    pattern: /alert/delete/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:delete }
     requirements:
         _method: GET|POST
+ws_alerts_daily_mailing:
+    pattern: /alert/send/daily
+    defaults: { _controller: WsEventsBundle:Alert:dailyAlerting }
 
 #===========
 #  Admin

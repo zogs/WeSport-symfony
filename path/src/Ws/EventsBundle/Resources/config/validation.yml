@@ -1,0 +1,27 @@
+Ws\EventsBundle\Entity\Search:
+    properties:
+        area:
+            - Range:
+                min: 0
+                max: 200
+                minMessage: 
+                maxMessage: La valeur maximal est 200 km
+            - Type:
+                type: numeric
+                message: La valeur {{ value }} n est pas un type {{ numeric }} valide.
+        day_of_week:
+            - Type:
+                type: array
+                message: La valeur {{ value }} n est pas un type {{ type }} valide.
+        type:
+            - Type:
+                type: array
+                message: La valeur {{ value }} n est pas un type {{ type }} valide.
+        price:
+            - Type:
+                type: numeric
+                message: La valeur {{ value }} n est pas un type {{ type }} valide.
+        price:
+            - Type:
+                type: numeric
+                message: La valeur {{ value }} n est pas un type {{ type }} valide.

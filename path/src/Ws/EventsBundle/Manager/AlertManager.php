@@ -18,6 +18,7 @@ class AlertManager extends AbstractManager
 		$stop = new \DateTime('+'.$alert->getDuration().' month');
 		$alert->setDateStop($stop);
 
+		$alert->getSearch()->setDate('none');
 
 		$this->save($alert,true);
 		return true;	
