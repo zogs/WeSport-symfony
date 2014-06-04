@@ -101,13 +101,14 @@ class Search
 
     /**
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function onPrePersist()
     {
-        $this->sports = json_encode($this->sports, JSON_FORCE_OBJECT);
-        $this->type = json_encode($this->type, JSON_FORCE_OBJECT);
-        $this->time = json_encode($this->time, JSON_FORCE_OBJECT);
-        $this->day_of_week = json_encode($this->day_of_week, JSON_FORCE_OBJECT);
+        if(is_array($this->sports)) $this->sports = json_encode($this->sports, JSON_FORCE_OBJECT);
+        if(is_array($this->type)) $this->type = json_encode($this->type, JSON_FORCE_OBJECT);
+        if(is_array($this->time)) $this->time = json_encode($this->time, JSON_FORCE_OBJECT);
+        if(is_array($this->day_of_week)) $this->day_of_week = json_encode($this->day_of_week, JSON_FORCE_OBJECT);
         $this->date_created = new \DateTime();
     }
 
@@ -131,7 +132,7 @@ class Search
 
     public function hasDate()
     {
-        if(isset($this->date)) return true;
+        if(isset($this->date) && $this->date != 'none') return true;
         return false;
     }
     public function setDate($date)
@@ -263,7 +264,7 @@ class Search
     {
         if($t=='start' && !empty($this->time['start'])) return true;
         if($t=='end' && !empty($this->time['end'])) return true;
-        if($t==null && ( $this->time['start'] !== null || $this->time['end'] !== null )) return true;
+        if($t==null && ( isset($this->time['start']) || isset($this->time['end']) ) ) return true;
         return false;       
     }
     

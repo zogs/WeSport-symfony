@@ -31,4 +31,5 @@ class AlertRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
 }

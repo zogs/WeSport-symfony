@@ -28,7 +28,7 @@
             {% if events|length > nb_displayed %}
             <tr>
                 <td>
-                    ... plus {{ events|length - nb_displayed }} qui sont visibles sur coSporturage 
+                    <strong>... plus {{ events|length - nb_displayed }} autres</strong> qui sont visibles sur coSporturage 
                         <a href="{{ path('ws_events_calendar',{
                                                                 date:'now',
                                                                 city: url_params.city,

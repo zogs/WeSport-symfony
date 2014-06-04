@@ -299,6 +299,7 @@ class CalendarManager extends AbstractManager
 	private function prepareCityParams()
 	{	
 		$city = null;
+		$findme = null;
 		if(!empty($this->params['location']) && is_array($this->params['location']) ){			
 			if(!empty($this->params['location']['city_id'])) $this->params['city_id'] = $this->params['location']['city_id'];
 			if(!empty($this->params['location']['city_name'])) $this->params['city_name'] = $this->params['location']['city_name'];
@@ -306,29 +307,28 @@ class CalendarManager extends AbstractManager
 		if(!empty($this->params['city']) && $this->params['city'] != $this->urlGenerator->defaults['city']){			
 			if(strpos($this->params['city'],'+') > 0) {
 				$r = explode('+',$this->params['city'],2); 
-				$city = $r[0];				    
+				$findme = $r[0];				    
 				if(isset($r[1])) $area = $r[1];
 			} else {
-				$city = $this->params['city'];				
+				$findme = $this->params['city'];				
 			}
 		}
-		if(!empty($this->params['city_name'])) $city = $this->params['city_name'];
-		if(!empty($this->params['city_id']) && is_numeric($this->params['city_id'])) $city = $this->params['city_id'];					
+		if(!empty($this->params['city_name'])) $findme = $this->params['city_name'];
+		if(!empty($this->params['city_id']) && is_numeric($this->params['city_id'])) $findme = $this->params['city_id'];					
 
-		if(is_numeric($city)) $city = $this->em->getRepository('MyWorldBundle:City')->find($city);
-		elseif(is_string($city)) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($city,$this->search->getCountry()->getCode());
-				
-		if(!isset($city) || (isset($city) && $city->getId() == 0)) {
-			if($this->isFlashbagActive()) $this->flashbag->add("Cette ville n'a pas été trouvé... Et vous sûr que ça s'écrit comme ça ?",'warning');
-			return;
+		if(is_numeric($findme)) $city = $this->em->getRepository('MyWorldBundle:City')->find($findme);
+		elseif(is_string($findme)) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($findme,$this->search->getCountry()->getCode());
+			
+		if(isset($city) && $city->exist()){
+			$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());		
+			$this->search->setLocation($location);
+			if(!empty($area)) $this->prepareAreaParams($area);
 		}
-		$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());
-		
-		$this->search->setLocation($location);
-		if(!empty($area)) $this->prepareAreaParams($area);
+		elseif(isset($findme)){
 
+			if($this->isFlashbagActive()) $this->flashbag->add("Cette ville n'a pas été trouvé... Et vous sûr que ça s'écrit comme ça ?",'warning');
+		}				
 		return;
-
 	}
 
     private function prepareAreaParams($area = 0)

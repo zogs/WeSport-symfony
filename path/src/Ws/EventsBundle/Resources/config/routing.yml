@@ -79,7 +79,7 @@ ws_events_delete_alert:
     requirements:
         _method: GET|POST
 ws_alerts_daily_mailing:
-    pattern: /alert/send/daily
+    pattern: /alert/senddaily
     defaults: { _controller: WsEventsBundle:Alert:dailyAlerting }
 
 #===========

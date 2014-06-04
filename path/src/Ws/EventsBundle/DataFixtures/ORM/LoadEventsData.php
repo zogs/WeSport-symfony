@@ -33,13 +33,13 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		
 
 		//serie 
-		for($i=0; $i<=3; $i++){
+		for($i=0; $i<=10; $i++){
 
 			$event = new Event();
 			$event->setTitle("Cherche copain nageur");
 			$today = new \DateTime();
 			$event->setDate($today->modify('+'.$i.' days'));
-			$event->setTime($today);
+			$event->setTime($today->modify('+'.$i.' hours'));
 			$event->setSerie($this->getReference('serie2'));
 			$event->setSport($this->getReference('sport_natation'));
 			$event->setDescription("Cherche un ami pour pas nager seul");
@@ -56,14 +56,14 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		}
 
 		//serie 
-		for($i=0; $i<=3; $i++){
+		for($i=0; $i<=20; $i++){
 
 			$event = new Event();
-			$event->setTitle("Sparing partner boxe");
-			$d = $i*7;
+			$event->setTitle("Capoera !");
+			$d = $i*2;
 			$today = new \DateTime();
 			$event->setDate($today->modify('+'.$d.' days'));
-			$event->setTime($today);
+			$event->setTime($today->modify('+'.$d.' hours'));
 			$event->setSerie($this->getReference('serie3'));
 			$event->setSport($this->getReference('sport_boxe'));
 			$event->setDescription("Cherche un Sparing pour entrainement");

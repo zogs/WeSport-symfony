@@ -34,6 +34,11 @@ class Alert
     private $search;
 
     /**
+    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Alerted", inversedBy="alert")
+    */
+    private $sended;
+
+    /**
     * @ORM\Column(name="frequency", type="string")
     */
     private $frequency;
@@ -54,9 +59,14 @@ class Alert
     private $date_stop;
 
     /**
-    * @ORM\Column(name="email", type="boolean")
+    * @ORM\Column(name="nb_emails", type="integer")
     */
-    private $email = true;
+    private $nb_emails = 0;
+
+     /**
+    * @ORM\Column(name="nb_events", type="integer")
+    */
+    private $nb_events = 0;
 
     /**
     * @ORM\Column(name="active", type="boolean")
@@ -313,5 +323,74 @@ class Alert
     public function getDuration()
     {
         return $this->duration;
+    }
+
+    /**
+     * Set nb_emails
+     *
+     * @param integer $nbEmails
+     * @return Alert
+     */
+    public function setNbEmails($nbEmails)
+    {
+        $this->nb_emails = $nbEmails;
+
+        return $this;
+    }
+
+    /**
+     * Get nb_emails
+     *
+     * @return integer 
+     */
+    public function getNbEmails()
+    {
+        return $this->nb_emails;
+    }
+
+    /**
+     * Set nb_events
+     *
+     * @param integer $nbEvents
+     * @return Alert
+     */
+    public function setNbEvents($nbEvents)
+    {
+        $this->nb_events = $nbEvents;
+
+        return $this;
+    }
+
+    /**
+     * Get nb_events
+     *
+     * @return integer 
+     */
+    public function getNbEvents()
+    {
+        return $this->nb_events;
+    }
+
+    /**
+     * Set sended
+     *
+     * @param \Ws\EventsBundle\Entity\Alerted $sended
+     * @return Alert
+     */
+    public function setSended(\Ws\EventsBundle\Entity\Alerted $sended = null)
+    {
+        $this->sended = $sended;
+
+        return $this;
+    }
+
+    /**
+     * Get sended
+     *
+     * @return \Ws\EventsBundle\Entity\Alerted 
+     */
+    public function getSended()
+    {
+        return $this->sended;
     }
 }

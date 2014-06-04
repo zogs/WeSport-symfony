@@ -84,8 +84,8 @@ class AlertController extends Controller
 	{
 
 		$em = $this->getDoctrine()->getManager();
-		$manager = $this->get('calendar.manager');
 		$mailer = $this->get('ws_mailer');
+		$manager = $this->get('ws_events.alert.manager');
 		$generator = $this->get('calendar.url.generator');
 
 		$alerts = $em->getRepository('WsEventsBundle:Alert')->findDailyAlerts();
@@ -94,17 +94,17 @@ class AlertController extends Controller
 		$sended = array();
 		foreach ($alerts as $k => $alert) {
 						
-			$search = $alert->getSearch();
-			$events = $repo->findEvents($search);
+			$events = $repo->findEvents($alert->getSearch());
 
 			if(!empty($events)){
-				$mailer->sendAlertMessage($alert,$generator,$events);
-				
+				//$mailer->sendAlertMessage($alert,$generator,$events);
+				$manager->saveAlerted($alert,$events);				
 				$sended[] = array('alert'=>$alert,'events'=>$events);
 			}
-
 		}
 
+		$manager->flush();
+	
 		return $this->render('WsEventsBundle:Alert:admin.html.twig',array(
 			'sended'=>$sended,
 			));

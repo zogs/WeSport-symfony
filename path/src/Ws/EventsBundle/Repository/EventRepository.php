@@ -31,20 +31,22 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterByPrice($qb);
 		$qb = $this->filterByOrganizer($qb);
 		$qb = $this->filterByDayOfWeek($qb);
+		$qb = $this->filterByAlerted($qb);
 	
-		/*
-		\My\UtilsBundle\Utils\Debug::debug($search);
-		\My\UtilsBundle\Utils\Debug::debug($qb->getParameters());
+		$results = $qb->getQuery()->getResult();
+		\My\UtilsBundle\Utils\Debug::debug($results);
+		//\My\UtilsBundle\Utils\Debug::debug($search);
+		//\My\UtilsBundle\Utils\Debug::debug($qb->getParameters());
 		\My\UtilsBundle\Utils\Debug::debug($qb->getDQL());
 		exit();
-		*/
+		
 		
 		
 		return $qb->getQuery()->getResult();
 	}
 
 
-	public function filterByCity($qb)
+	private function filterByCity($qb)
 	{		
 		if($this->search->hasLocation() === false || $this->search->getLocation()->hasCity() === false ) return $qb;
 
@@ -56,7 +58,7 @@ class EventRepository extends EntityRepository
 			return $this->filterByLocation($qb,$location);
 	}
 
-	public function filterByArea($qb,$location)
+	private function filterByArea($qb,$location)
 	{
 		if($this->search->hasArea() === false) return $qb;		
 
@@ -94,7 +96,7 @@ class EventRepository extends EntityRepository
 
 	}
 
-	public function filterByCityArround($qb,$location)
+	private function filterByCityArround($qb,$location)
 	{
 		if($this->search->hasArea() === false) return $qb;
 
@@ -117,19 +119,19 @@ class EventRepository extends EntityRepository
 		return $this->filterByLocationArray($qb,$locations);
 	}
 
-	public function filterByLocation($qb,$location)
+	private function filterByLocation($qb,$location)
 	{				
 		$qb->setParameter('location',$location);
 		return $qb->andWhere($qb->expr()->eq('e.location',':location'));
 	}
 
-	public function filterByLocationArray($qb,$locations)
+	private function filterByLocationArray($qb,$locations)
 	{
 		$qb->setParameter(':locations',$locations);
 		return $qb->andWhere('e.location IN (:locations)');
 	}
 
-	public function filterBySports($qb)
+	private function filterBySports($qb)
 	{
 		if($this->search->hasSports() === false) return $qb;		
 
@@ -137,7 +139,7 @@ class EventRepository extends EntityRepository
 		return $qb->andWhere('e.sport IN (:sports)');		
 	}
 
-	public function filterByType($qb)
+	private function filterByType($qb)
 	{
 		if($this->search->hasType() === false) return $qb;
 
@@ -145,7 +147,7 @@ class EventRepository extends EntityRepository
 		return $qb->andWhere('e.type IN (:type)');
 	}
 
-	public function filterByDate($qb)
+	private function filterByDate($qb)
 	{
 		if($this->search->hasDate() === false) return $qb;
 		$qb->setParameter('date',$this->search->getDate());
@@ -154,51 +156,56 @@ class EventRepository extends EntityRepository
 			);		
 	}
 
-	public function filterByTime($qb)
+	private function filterByTime($qb)
 	{
 		if($this->search->hasTime('start')) $qb->andWhere($qb->expr()->gte('e.time',':timestart'))->setParameter('timestart',$this->search->getTime('start'));
-		if($this->search->hasTime('end')) $qb->andWhere($qb->expr()->lte('e.time',':timeend'))->setParameter('timeend',$this->search->getTime('end'));
+		if($this->search->hasTime('end')) $qb->andWhere($qb->expr()->lt('e.time',':timeend'))->setParameter('timeend',$this->search->getTime('end'));
 
 		return $qb;				
 	}
 
-	public function filterByPrice($qb)
+	private function filterByPrice($qb)
 	{
 		if($this->search->hasPrice() === false) return $qb;
 		if($this->search->getPrice() > 0) return $qb->andWhere($qb->expr()->lt('e.price',':price'))->setParameter('price',$this->search->getPrice());
 		if($this->search->getPrice() == 0 ) return $qb->andWhere($qb->expr()->eq('e.price',0));
 	}
 
-	public function filterByOrganizer($qb)
+	private function filterByOrganizer($qb)
 	{
 		if($this->search->hasOrganizer() === false) return $qb;
 
 		return $qb->andWhere($qb->expr()->eq('e.organizer',':organizer'))->setParameter('organizer',$this->search->getOrganizer());		
 	}
 
-	public function filterByDayOfWeek($qb)
+	private function filterByDayOfWeek($qb)
 	{
 		if($this->search->hasDayOfWeek() === false) return $qb;
 
 		return $qb->andWhere('DAYNAME(e.date) IN (:days)')->setParameter('days',$this->search->getDayOfWeek());
 	}
 
-	public function filterByOnline($qb)
+	private function filterByOnline($qb)
 	{
 		return $qb->andWhere('e.online = 1');
 	}
 
-	public function filterByOffline($qb)
+	private function filterByOffline($qb)
 	{
 		return $qb->andWhere('e.online = 1');
 	}
 
-	public function filterByBothline($qb)
+	private function filterByBothline($qb)
 	{
 		return $qb->andWhere('e.online = 1 OR e.online = 0');
 	}
 
-	
+	private function filterByAlerted($qb)
+	{
+		$qb->leftjoin('Ws\EventsBundle\Entity\Alerted','a','WITH','a.alert = 3 AND a.event = e')->andWhere($qb->expr()->isNull('a'));
+
+		return $qb;
+	}
 
 
 
