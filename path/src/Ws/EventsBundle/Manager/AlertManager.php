@@ -22,6 +22,8 @@ class AlertManager extends AbstractManager
 
 		$alert->getSearch()->setDate('none');
 
+		$alert->getSearch()->setAlert($alert);
+
 		$this->save($alert,true);
 		return true;	
 	}	

@@ -77,7 +77,7 @@ class EventController extends Controller
 
 	public function confirmAction(Event $event, $token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
@@ -93,7 +93,7 @@ class EventController extends Controller
 		$this->get('ws_events.manager')->confirmEvent($event);
 		$this->get('flashbag')->add("L'événement a été confirmé !");
 
-		$this->redirect($this->generateUrl("ws_events_new")); 
+		$this->redirect($this->generateUrl("ws_event_new")); 
 	}
 
 
@@ -107,7 +107,7 @@ class EventController extends Controller
 	 */
 	public function deleteAction(Event $event,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
@@ -123,7 +123,7 @@ class EventController extends Controller
 		$this->get('ws_events.manager')->deleteEvent($event);
 		$this->get('flashbag')->add("L'événement a été supprimé !");
 
-		$this->redirect($this->generateUrl("ws_events_new"));     
+		$this->redirect($this->generateUrl("ws_event_new"));     
 	}
 
 
@@ -137,7 +137,7 @@ class EventController extends Controller
 	 */
 	public function deleteSerieAction(Event $event,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_serie', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
@@ -156,7 +156,7 @@ class EventController extends Controller
 		$this->get('ws_events.manager')->deleteSerie($serie);
 		$this->get('flashbag')->add("Tous les événements ont été supprimés !",'success');
 
-		$this->redirect($this->generateUrl("ws_events_new")); 
+		$this->redirect($this->generateUrl("ws_event_new")); 
 
 	}
 
@@ -188,7 +188,7 @@ class EventController extends Controller
 		return $this->render('WsEventsBundle:Event:view.html.twig',array(
 			'event'=> $event,
 			'gmap'=> $gmap,
-			'token'=> $this->get('form.csrf_provider')->generateCsrfToken('delete_event')
+			'token'=> $this->get('form.csrf_provider')->generateCsrfToken('event_token')
 			)
 		);
 	}
@@ -203,7 +203,7 @@ class EventController extends Controller
 	 */
 	public function addParticipationAction(Event $event,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
@@ -216,7 +216,7 @@ class EventController extends Controller
 		$this->get('flashbag')->add("Merci de votre participation !");
 
 		$this->redirect($this->generateUrl(
-			'ws_events_view',array(
+			'ws_event_view',array(
 				'sport'=>$event->getSport(),
 				'slug'=>$event->getSlug(),
 				'event'=>$event->getId()
@@ -234,7 +234,7 @@ class EventController extends Controller
 	 */
 	public function removeParticipationAction(Event $event,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_event', $token)) {
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
@@ -247,7 +247,7 @@ class EventController extends Controller
 		$this->get('flashbag')->add("Une prochaine fois peut être !",'info');
 
 		$this->redirect($this->generateUrl(
-			'ws_events_view',array(
+			'ws_event_view',array(
 				'sport'=>$event->getSport(),
 				'slug'=>$event->getSlug(),
 				'event'=>$event->getId()

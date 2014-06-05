@@ -33,15 +33,15 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterByDayOfWeek($qb);
 		$qb = $this->filterByAlerted($qb);
 	
-		$results = $qb->getQuery()->getResult();
-		\My\UtilsBundle\Utils\Debug::debug($results);
+		
+		
 		//\My\UtilsBundle\Utils\Debug::debug($search);
 		//\My\UtilsBundle\Utils\Debug::debug($qb->getParameters());
-		\My\UtilsBundle\Utils\Debug::debug($qb->getDQL());
-		exit();
+		//\My\UtilsBundle\Utils\Debug::debug($qb->getDQL());
+		//\My\UtilsBundle\Utils\Debug::debug($qb->getQuery()->getResult());
+		//exit();
 		
-		
-		
+					
 		return $qb->getQuery()->getResult();
 	}
 
@@ -202,7 +202,9 @@ class EventRepository extends EntityRepository
 
 	private function filterByAlerted($qb)
 	{
-		$qb->leftjoin('Ws\EventsBundle\Entity\Alerted','a','WITH','a.alert = 3 AND a.event = e')->andWhere($qb->expr()->isNull('a'));
+		if($this->search->hasAlert() === false ) return $qb;
+
+		$qb->leftjoin('Ws\EventsBundle\Entity\Alerted','a','WITH','a.alert = :alert AND a.event = e')->andWhere($qb->expr()->isNull('a'))->setParameter('alert',$this->search->getAlert());
 
 		return $qb;
 	}

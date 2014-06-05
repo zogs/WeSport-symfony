@@ -167,6 +167,12 @@ class Event
         if($this->date == date('Y-m-d') && $this->time == date('H:i:s')) return 'current';
     }
 
+    public function isAdmin(\My\UserBundle\Entity\User $user)
+    {
+        if($this->organizer == $user) return true;
+        return false;
+    }
+
     /**
      * Get id
      *

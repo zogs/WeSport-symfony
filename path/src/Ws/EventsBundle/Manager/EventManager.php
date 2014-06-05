@@ -114,7 +114,7 @@ class EventManager extends AbstractManager
 	public function deleteSerie(Serie $serie)
 	{
 		//delete all events of the serie
-		$events = $this->getRepository('WsEventsBundle:Event')->findBySerie($serie);
+		$events = $this->em->getRepository('WsEventsBundle:Event')->findBySerie($serie);
 		foreach ($events as $event) {			
 			$this->delete($event);
 		}
@@ -144,6 +144,35 @@ class EventManager extends AbstractManager
 	}
 
 	/**
+	 * Check if a user participe
+	 *
+	 * @param object $event
+	 * @param object $user	 
+	 */
+	public function isNotParticipating($event,$user)
+	{
+		if($this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user))
+			return false;
+		else
+			return true;
+	}
+
+	/**
+	 * Check if a user participe
+	 *
+	 * @param object $event
+	 * @param object $user	 
+	 */
+	public function isParticipating($event,$user)
+	{
+		if($this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user))
+			return true;
+		else
+			return false;
+	}
+
+
+	/**
      * Delete a participation to an event
      *
      * @param object event
@@ -151,7 +180,7 @@ class EventManager extends AbstractManager
      */
 	public function deleteParticipation($event,$user,$flush = false)
 	{
-		$part = $this->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user);
+		$part = $this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user);
 
 		if($part)
 			$this->delete($part,$flush);

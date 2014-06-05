@@ -15,6 +15,9 @@
            {% for alert in alerts %}
                    <table width="100%">
                        <tr>
+                            <td>
+                              Envoi {{ alert.frequency }}
+                            </td>
                            <td>
                                Jusqu'au {{ alert.dateStop|date('Y-m-d') }}
                            </td>
@@ -54,17 +57,17 @@
                            	{% endfor %}
                            </td>
                            <td>
-                               <a href="{{ path('ws_events_delete_alert',{alert:alert.id}) }}">Supprimer</a>
+                               <a href="{{ path('ws_alerts_delete',{alert:alert.id}) }}">Supprimer</a>
                            </td>
                        </tr>
                    </table>
             {% endfor %}
 
             {% if alerts is empty %}
-              <p>Pas d'alerte créé. <a href="{{path('ws_events_create_alert')}}">En créer une !</a></p>
+              <p>Pas d'alerte créé. <a href="{{path('ws_alerts_create')}}">En créer une !</a></p>
             {% endif %}
                    
-        <a href="{{ path('ws_events_create_alert') }}">Créer une autre alerte</a>
+        <a href="{{ path('ws_alerts_create') }}">Créer une autre alerte</a>
         <div class="clearfix"></div>
         <div class="fresque"></div>
     

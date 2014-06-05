@@ -7,6 +7,8 @@ use Symfony\Component\Templating\EngineInterface;
 use Ws\EventsBundle\Entity\Invitation;
 use Ws\EventsBundle\Entity\Alert;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
+use My\UserBundle\Entity\User;
+use Ws\EventsBundle\Entity\Event;
 
 class Mailer
 {
@@ -27,6 +29,40 @@ class Mailer
     {
 
         $this->sendMessage('sfwesport@we-sport.fr', 'guichardsim@gmail.com', 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
+    }
+
+    public function sendParticipationAddedToAdmin(Event $event, User $participant)
+    {
+        $admin_email = $event->getOrganizer()->getEmail();
+
+        $subject = ucfirst($participant->getUsername())." participe à votre activité ".ucfirst($event->getTitle());
+
+        $body = $this->templating->render('WsMailerBundle:Participation:inform_organizer_participation_added.html.twig',array(
+            'event' => $event,
+            'participant' => $participant,
+            ));
+
+        if($this->sendMessage($this->expediteur,$admin_email,$subject,$body))
+            return true;
+        else
+            return false;
+    }
+
+    public function sendParticipationCanceledToAdmin(Event $event, User $participant)
+    {
+        $admin_email = $event->getOrganizer()->getEmail();
+
+        $subject = ucfirst($participant->getUsername())." annule sa participation à votre activité...";
+
+        $body = $this->templating->render('WsMailerBundle:Participation:inform_organizer_participation_canceled.html.twig',array(
+            'event' => $event,
+            'participant' => $participant,
+            ));
+
+        if($this->sendMessage($this->expediteur,$admin_email,$subject,$body))
+            return true;
+        else
+            return false;
     }
 
     public function sendAlertMessage(Alert $alert, CalendarUrlGenerator $generator, $events)

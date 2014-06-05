@@ -12,6 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class AlertRepository extends EntityRepository
 {
+
+	public function findAlerts($type)
+	{
+		if($type == 'daily') return $this->findDailyAlerts();
+		elseif($type == 'weekly') return $this->findWeeklyAlerts();
+		else throw new Exception("Type of alerts in not defined", 1);
+		
+	}
+
 	public function findDailyAlerts()
 	{
 

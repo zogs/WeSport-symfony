@@ -31,7 +31,7 @@ class AddParticipant extends Event
 	}
 
 	// Le listener doit avoir accès à l'utilisateur
-	public function getUser()
+	public function getParticipant()
 	{
 		return $this->user;
 	}

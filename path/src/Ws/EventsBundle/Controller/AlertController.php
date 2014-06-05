@@ -43,7 +43,7 @@ class AlertController extends Controller
 				$this->get('flashbag')->add("Voila ! On espère que vous allez recevoir plein d'annonces :)",'success');			
 			}
 
-			return $this->redirect($this->generateUrl('ws_events_index_alert'));
+			return $this->redirect($this->generateUrl('ws_alerts_index'));
 		}		
 
 		
@@ -76,11 +76,11 @@ class AlertController extends Controller
 
 		$this->get('flashbag')->add("Alerte correctement supprimé.","success");
 
-		return $this->redirect($this->generateUrl('ws_events_index_alert'));
+		return $this->redirect($this->generateUrl('ws_alerts_index'));
 	}
 
 
-	public function dailyAlertingAction()
+	public function sendAlertsAction($type)
 	{
 
 		$em = $this->getDoctrine()->getManager();
@@ -88,18 +88,21 @@ class AlertController extends Controller
 		$manager = $this->get('ws_events.alert.manager');
 		$generator = $this->get('calendar.url.generator');
 
-		$alerts = $em->getRepository('WsEventsBundle:Alert')->findDailyAlerts();
+		$alerts = $em->getRepository('WsEventsBundle:Alert')->findAlerts($type);
 		$repo = $em->getRepository('WsEventsBundle:Event');		
 
 		$sended = array();
+		$nb_events = 0;
 		foreach ($alerts as $k => $alert) {
 						
 			$events = $repo->findEvents($alert->getSearch());
 
 			if(!empty($events)){
-				//$mailer->sendAlertMessage($alert,$generator,$events);
-				$manager->saveAlerted($alert,$events);				
+				$mailer->sendAlertMessage($alert,$generator,$events);
+				$manager->saveAlerted($alert,$events);			
+
 				$sended[] = array('alert'=>$alert,'events'=>$events);
+				$nb_events += count($events);
 			}
 		}
 
@@ -107,6 +110,9 @@ class AlertController extends Controller
 	
 		return $this->render('WsEventsBundle:Alert:admin.html.twig',array(
 			'sended'=>$sended,
+			'alerts'=>$alerts,
+			'nb_events'=>$nb_events,
+			'type'=>$type,
 			));
 	}
 

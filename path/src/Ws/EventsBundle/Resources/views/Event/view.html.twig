@@ -49,18 +49,18 @@
 														<i class="icon icon-ok-sign icon-white"></i>
 														Vous participez !
 													</a>
-													<a class="btn btn-link" href="" rel="nofollow"><i class="icon-remove"></i> Annuler</a>
+													<a class="btn btn-link" href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}" rel="nofollow"><i class="icon-remove"></i> Annuler</a>
 												{% else %}
-													<a class="btn-ws btn-ws-small btn-ws-submit" href="" rel="nofollow">											
+													<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('ws_participation_add',{event:event.id,token:token}) }}" rel="nofollow">											
 															<i class="icon-white icon-plus"></i> Participer !
 														</a>
 												{% endif %}
 											{% else %}
-												<a class="btn btn-small" href="" rel="nofollow">Modifier mon annonce</a>	
+												<a class="btn btn-small" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a>	
 											{% endif %}	
 										{% else %}
-											<a class="btn-ws btn-ws-small btn-ws-submit" href="">Connexion</a>
-											<a class="btn-ws btn-ws-small btn-ws-submit" href="">Inscription</a>
+											<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('fos_user_security_login') }}">Connexion</a>
+											<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('fos_user_registration_register') }}">Inscription</a>
 										{% endif %}
 									{% endif %}
 								</div>							
@@ -113,7 +113,11 @@
 								{{ event.location.city.name }}
 								<small>{{ event.location.lastState().name|lower }}</small>
 								<br>
-								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}<small><a href="">Connectez-vous</a> pour voir la suite de l'adresse</small>{% endif %}					
+								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+									<small>{{ event.address }}</small>
+								{% else %}
+									<small><a href="{{ path('fos_user_security_login') }}">Connectez-vous</a> pour voir l'adresse exacte</small>
+								{% endif %}					
 							</h2>
 						</td>
 					</tr>
@@ -126,7 +130,7 @@
 								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 									{{ event.phone }}
 								{% else %}
-									<small><a href="">Connectez-vous</a> pour voir le numéro de téléphone</small>
+									<small><a href="{{ path('fos_user_security_login') }}">Connectez-vous</a> pour voir le numéro de téléphone</small>
 								{% endif %}
 							</h2>
 						</td>
@@ -149,16 +153,16 @@
 				{% if event.timing == 'tocome' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 					<div class="block block-action">
 						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-							<a class="btn btn-small" href="" rel="nofollow">Modifier mon annonce</a>
+							<a class="btn btn-small" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a>
 						{% else %}
 							{% if event.userParticipate(app.user) %}
 								<a class="btn-ws btn-ws-success" rel="nofollow"> 
 									<i class="icon icon-ok-sign icon-white"></i>
 									Vous participez !
 								</a>
-								<a class="btn btn-link" href="" rel="nofollow"><i class="icon-remove"></i> Annuler</a>								
+								<a class="btn btn-link" href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}" rel="nofollow"><i class="icon-remove"></i> Annuler</a>								
 							{% else %}
-								<a class="btn-ws btn-ws-submit" href="" rel="nofollow">
+								<a class="btn-ws btn-ws-submit" href="{{ path('ws_participation_add',{event:event.id,token:token}) }}" rel="nofollow">
 									<i class="icon-white icon-plus"></i>
 									Je veux participer!
 								</a>
@@ -191,7 +195,7 @@
 
 									{% if p.user is not null %}									
 									<li>
-										<a class="user-linklist" href="" rel="me nofollow">
+										<a class="user-linklist" href="{{ event.organizer|link2user }}" rel="me nofollow">
 											<img src="" alt="" class="event-avatar event-participant-avatar tooltitop" data-toggle="tooltip" title="{{ p.user.username }} ({{ p.user.age }} )" />
 											<p>
 												<strong>{{ p.user.username }}</strong>

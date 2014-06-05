@@ -31,7 +31,13 @@ class Search
     /**
     * @ORM\Column(name="date_created", type="datetime")
     */
-    public $date_created = null;
+    private $date_created = null;
+
+    /**
+    * @ORM\JoinColumn(name="alert_id", referencedColumnName="id")
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert")
+    */
+    private $alert = null;
 
     /**
     * @ORM\Column(name="date", type="string", nullable=true)
@@ -42,49 +48,48 @@ class Search
     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location")
     * @ORM\JoinColumn(name="location_id", referencedColumnName="id", nullable=false)
     */
-    public $location = null;
+    private $location = null;
 
     /**
     * @ORM\Column(name="area_distance", type="integer", nullable=true)
     */
-    public $area = null;
+    private $area = null;
 
     /**
     * @ORM\Column(name="sports", type="string", nullable=true)
     */
-    public $sports = array();
+    private $sports = array();
 
     /**
     * @ORM\Column(name="nb_days", type="integer", nullable=true)
     */
-    public $nb_days = null;
+    private $nb_days = null;
 
     /**
     * @ORM\Column(name="day_of_week", type="string", nullable=true)
     */
-    public $day_of_week = array();
+    private $day_of_week = array();
 
     /**
     * @ORM\Column(name="type", type="string")
     */
-    public $type = array();
+    private $type = array();
 
     /**
     * @ORM\Column(name="time", type="string")
     */
-    public $time = array();
+    private $time = array();
 
     /**
     * @ORM\Column(name="price", type="integer", nullable=true)
     */
-    public $price = null;
+    private $price = null;
 
     /**
     * @ORM\Column(name="organizer_id", nullable=true)
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
     */
     public $organizer = null;
-
 
     public $country;
     public $timestart = null;
@@ -138,6 +143,22 @@ class Search
     public function setDate($date)
     {
         $this->date = $date;
+    }
+
+    public function setAlert(Alert $alert)
+    {
+        $this->alert = $alert;
+    }
+
+    public function getAlert()
+    {
+        return $this->alert;
+    }
+
+    public function hasAlert()
+    {
+        if(isset($this->alert)) return true;
+        return false;
     }
 
     public function getCountry()

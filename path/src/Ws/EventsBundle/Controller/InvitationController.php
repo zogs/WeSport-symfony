@@ -67,7 +67,7 @@ class InvitationController extends Controller
 		
 		$this->get('flashbag')->add($message);
 
-		return $this->redirect($this->generateUrl('ws_events_view',array('event'=>$invited->getInvitation()->getEvent()->getId())));
+		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId())));
 	}
 
 	/**
@@ -86,7 +86,7 @@ class InvitationController extends Controller
 		
 		$this->get('flashbag')->add($message,'warning');
 
-		return $this->redirect($this->generateUrl('ws_events_view',array('event'=>$invited->getInvitation()->getEvent()->getId())));
+		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId())));
 	}
 
 	/**
@@ -104,7 +104,7 @@ class InvitationController extends Controller
 
 		$this->get('flashbag')->add('Voila, vous ne recevrez plus d\'invitation de la part des utilisateurs de coSporturage.fr... Mais vous pouvez toujours changer d\'avis !!');
 
-		return $this->redirect($this->generateUrl('ws_events_calendar'));
+		return $this->redirect($this->generateUrl('ws_calendar'));
 	}
 
 	/**
@@ -122,6 +122,6 @@ class InvitationController extends Controller
 
 		$this->get('flashbag')->add('Bravo! Vous allez pouvoir recevoir des invitations de la part des membres de coSporturage.fr');
 
-		return $this->redirect($this->generateUrl('ws_events_calendar'));
+		return $this->redirect($this->generateUrl('ws_calendar'));
 	}
 }

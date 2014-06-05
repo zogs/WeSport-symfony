@@ -114,7 +114,7 @@ class CalendarUrlGenerator {
 
 	private function getRouteUrl()
 	{
-		return $this->router->getRouteCollection()->get('en__RG__ws_events_calendar')->getPath();
+		return $this->router->getRouteCollection()->get('en__RG__ws_calendar')->getPath();
 	}
 
 	private function getCountryParam()

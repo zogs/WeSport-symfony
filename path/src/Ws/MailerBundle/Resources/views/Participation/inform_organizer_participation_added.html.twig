@@ -1,0 +1,38 @@
+{% extends 'WsMailerBundle:Template:personal.html.twig' %}
+
+{% block title %}
+    <strong>{% if event.organizer is not null %} {{ event.organizer.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
+    Quelqu'un participe à votre activité !
+{% endblock title %}
+
+{% block content %}
+    <table cellpadding="0" cellspacing="0" border="0" class="content" style="background-color:#FFF;  position: relative; width:100%; padding:0 10%;">
+        <tbody>
+            <tr height="50">
+                <td>
+                    <strong>{{ participant.username|capitalize }}</strong> participe à votre activité :
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {# BLOCK_EVENT #}
+                    {% include 'WsMailerBundle:Template:block_user.html.twig' with {'user':participant}  %}                   
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {# BLOCK_EVENT #}
+                    {% include 'WsMailerBundle:Template:block_event.html.twig' with {'event':event}  %}                   
+                </td>
+            </tr>
+
+
+            <tr height="50">
+                    <td>
+                        Pour retrouver la fiche de l'activité, <a href="{{ event|link2event }}">Cliquez-ici</a>.
+                    </td>
+            </tr> 
+             
+        </tbody>
+    </table>
+{% endblock content %}

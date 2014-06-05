@@ -3,52 +3,71 @@ ws_events_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: WsEventsBundle:Event:index }
 
-ws_events_view:
-    pattern: /view/{event}
+ws_event_view:
+    pattern: /view/{event}/{slug}
     defaults: { _controller: WsEventsBundle:Event:view }
     requirements:
         event: \d+
-ws_events_new:
+ws_event_new:
     pattern: /create
     defaults: { _controller: WsEventsBundle:Event:create }
-ws_events_delete:
+ws_event_delete:
     pattern: /delete/{event}/{token}
     defaults: { _controller: WsEventsBundle:Event:delete }
     requirements:
         event: \d+
+ws_event_edit:
+    pattern: /edit/{event}
+    defaults: { _controller: WsEventsBundle:Event:edit }
+    requirements:
+        event: \d+
+        _method: GET|POST
 
 #CALENDAR
-ws_events_calendar_ajax:
+ws_calendar_ajax:
     pattern: /calendar/ajax/{date}
     defaults: { _controller: WsEventsBundle:Calendar:ajax, date:'now'}
     requirements:         
         _method: GET
-ws_events_calendar_reset:
+ws_calendar_reset:
     pattern: /calendar/reset
     defaults: { _controller: WsEventsBundle:Calendar:reset}
     requirements:         
         _method: GET
-ws_events_calendar:
+ws_calendar:
     pattern: /calendar/{date}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{organizer}
     defaults: { _controller: WsEventsBundle:Calendar:load, city:null, sports:null, date:null, nbdays:null, type:null, time:null, price:null, organizer:null }
     requirements:         
         _method: GET
-ws_events_calendar_update:
+ws_calendar_update:
     pattern: /calendar/update
     defaults: { _controller:WsEventsBundle:Calendar:update }
     requirements:
         _method: POST
 
+#PARTICIPATION
+ws_participation_add:
+    pattern: /add/me/{event}/{token}
+    defaults: { _controller: WsEventsBundle:Participation:add }
+    requirements:
+        _method: GET
+ws_participation_cancel:
+    pattern: /cancel/me/{event}/{token}
+    defaults: { _controller: WsEventsBundle:Participation:cancel }
+    requirements:
+        _method: GET
+
+
 #INVITATION
-ws_new_invitations:
+ws_invit_new:
     pattern: /invite/{event}
     defaults: { _controller: WsEventsBundle:Invitation:create}
     requirements:
         event: \d+
-ws_invitations_add_blacklist:
+ws_invit_blacklist_add:
     pattern: /invitation/addblacklist/{emails}
     defaults: { _controller: WsEventsBundle:Invitation:addBlacklist, emails: null }
-ws_invitations_remove_blacklist:
+ws_invit_blacklist_remove:
     pattern: /invitation/removeblacklist/{emails}
     defaults: { _controller: WsEventsBundle:Invitation:removeBlacklist, emails: null}
 ws_invited_confirm:
@@ -63,24 +82,26 @@ ws_invited_deny:
         invited: \d+
 
 #ALERTS
-ws_events_create_alert:
+ws_alerts_create:
     pattern: /alert/create
     defaults: { _controller: WsEventsBundle:Alert:create }
     requirements:
         _method: GET|POST
-ws_events_index_alert:
+ws_alerts_index:
     pattern: /alert/index
     defaults: { _controller: WsEventsBundle:Alert:index }
     requirements:
         _method: GET
-ws_events_delete_alert:
+ws_alerts_delete:
     pattern: /alert/delete/{alert}
     defaults: { _controller: WsEventsBundle:Alert:delete }
     requirements:
         _method: GET|POST
-ws_alerts_daily_mailing:
-    pattern: /alert/senddaily
-    defaults: { _controller: WsEventsBundle:Alert:dailyAlerting }
+ws_alerts_mailing:
+    pattern: /alert/send/{type}
+    defaults: { _controller: WsEventsBundle:Alert:sendAlerts, type: daily }
+    requirements:
+        type: daily|weekly
 
 #===========
 #  Admin

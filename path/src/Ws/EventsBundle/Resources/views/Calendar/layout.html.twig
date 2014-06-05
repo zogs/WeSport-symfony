@@ -8,9 +8,9 @@
 
 	{% block search_calendar %}
 				
-		<form id="calendar-search" action="{{ path('ws_events_calendar_update') }}" method="POST">
+		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
 			<div class="wrapper left-wrapper">
-				<a href="{{ path('ws_events_calendar_reset') }}">Réinitialiser les critères de sélection</a>
+				<a href="{{ path('ws_calendar_reset') }}">Réinitialiser les critères de sélection</a>
 			</div>
 
 			<div class="wrapper city-wrapper">
@@ -38,7 +38,7 @@
 
 			<div class="wrapper submit-wrapper">
 				<button type="submit" class="mainbutton">Go</button>
-				<a class="btn-link" href="{{ path('ws_events_create_alert')}}?url={{ search.url }}">Créer une alerte pour cette recherche</button>				
+				<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}">Créer une alerte pour cette recherche</button>				
 			</div>
 			
 	{% endblock %}
@@ -145,10 +145,10 @@
 				<td>
 					<div class="calendar-content"
 						id="calendar-content" 
-						data-url-calendar="{{ path('ws_events_calendar_ajax')}}"
-						data-url-calendar-prev="{{ path('ws_events_calendar_ajax',{date:'prev'})}}"
-						data-url-calendar-next="{{ path('ws_events_calendar_ajax',{date:'next'})}}"
-						data-url-calendar-now="{{ path('ws_events_calendar_ajax',{date:'now'})}}"
+						data-url-calendar="{{ path('ws_calendar_ajax')}}"
+						data-url-calendar-prev="{{ path('ws_calendar_ajax',{date:'prev'})}}"
+						data-url-calendar-next="{{ path('ws_calendar_ajax',{date:'next'})}}"
+						data-url-calendar-now="{{ path('ws_calendar_ajax',{date:'now'})}}"
 						data-url-calendar-bottom=""
 						>
 

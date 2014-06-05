@@ -1,0 +1,42 @@
+<style type="text/css">
+	.block_event { background-color: #FFF2DA; width:100%; padding:10px; border:1px solid #AAA; }
+</style>
+<table cellpadding="0" cellspacing="0" border="0" class="block_event" >
+	<tbody>
+		<tr>
+			<td>
+				<img src="{{ asset(user.avatar.getWebPath) }}">
+			</td>
+			<td>
+				<a href="{{ user|link2user }}">
+					<strong>{{ user.username|capitalize }}</strong>
+				</a>
+				<br>
+				{% if user.isPerson %}
+					<strong>Age:</strong>
+					{% if user.age != '' %}
+						{{ user.age }}
+					{% else %}
+						<small>N'a pas renseigné son age</small>
+					{% endif %}
+
+					<br>
+					{% if user.gender is not null %}
+					<strong>Est:</strong>
+						{% if user.gender == 'f' %} 
+							une fille 
+						{% else if user.gender == 'h' %} 
+							un garçon 
+						{% else %}
+							<small>N'a pas renseigné son genre</small>
+						{% endif %}
+					{% endif %}
+					<br>
+					{% if user.location is not null %}
+					<strong>Habite:</strong> {{ user.location.lastState.name }}
+					{% endif %}
+				{% endif %}
+			</td>	
+		</tr>
+	</tbody>
+</table>

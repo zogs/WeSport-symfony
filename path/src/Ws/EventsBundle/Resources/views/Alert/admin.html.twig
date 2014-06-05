@@ -10,7 +10,8 @@
                 </h1>
             </div>
 
-            {{ sended|length }} emails envoyés :
+            <p>{{ alerts|length }} {{ type }} alertes</p>
+            <p>{{ sended|length }} emails envoyés, {{ nb_events }} activités proposés</p>
             
             <table>
             {% for send in sended %}
