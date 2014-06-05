@@ -1,8 +1,8 @@
 {% extends 'WsMailerBundle:Template:personal.html.twig' %}
 
 {% block title %}
-    <strong>{% if event.organizer is not null %} {{ event.organizer.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
-    Quelqu'un participe à votre activité !
+    <strong>{% if event.organizer is not null %} Cher {{ event.organizer.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
+   Voila une bonne nouvelle,
 {% endblock title %}
 
 {% block content %}
@@ -10,17 +10,17 @@
         <tbody>
             <tr height="50">
                 <td>
-                    <strong>{{ participant.username|capitalize }}</strong> participe à votre activité :
+                    <strong>{{ participant.username|capitalize }}</strong> participe à votre activité !
                 </td>
             </tr>
             <tr>
-                <td>
+                <td height="50">
                     {# BLOCK_EVENT #}
                     {% include 'WsMailerBundle:Template:block_user.html.twig' with {'user':participant}  %}                   
                 </td>
             </tr>
             <tr>
-                <td>
+                <td height="50">
                     {# BLOCK_EVENT #}
                     {% include 'WsMailerBundle:Template:block_event.html.twig' with {'event':event}  %}                   
                 </td>

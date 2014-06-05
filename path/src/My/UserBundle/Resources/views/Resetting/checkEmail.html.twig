@@ -1,9 +1,22 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends '::layout_centered.html.twig' %}
 
-{% trans_default_domain 'FOSUserBundle' %}
+{% block page_content %}
+	
+	<div class="head-sheet">
+		<h1 class="title-sheet">
+			Réinitialiser mon mot de passe
+		</h1>
+	</div>
 
-{% block fos_user_content %}
-<p>
-{{ 'resetting.check_email'|trans({'%email%': email}) }}
-</p>
+	<div class="page-content">
+		<p>
+		{% trans_default_domain 'FOSUserBundle' %}
+		{{ 'resetting.check_email'|trans({'%email%': email}) }}
+		</p>	
+		<p>
+			<a href="{{ path('fos_user_resetting_request')}}">Je n'ai pas reçu d'email, rentrer une nouvelle adresse.</a>
+		</p>
+	</div>	
+	
+
 {% endblock %}

@@ -1,5 +1,10 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "::layout_centered.html.twig" %}
 
-{% block fos_user_content %}
+{% block page_content %}
+	<div class="head-sheet">
+		<h1 class="title-sheet">
+			Réinitialiser mon mot de passe
+		</h1>
+	</div>
 {% include "FOSUserBundle:Resetting:request_content.html.twig" %}
-{% endblock fos_user_content %}
+{% endblock page_content %}

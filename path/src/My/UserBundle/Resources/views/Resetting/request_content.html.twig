@@ -1,14 +1,18 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request form form-ws w100 form-register" style="padding-left:15%;padding-right:15%;">
     <div>
         {% if invalid_username is defined %}
             <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
         {% endif %}
-        <label for="username">{{ 'resetting.request.username'|trans }}</label>
-        <input type="text" id="username" name="username" required="required" />
+        <div class="control-group" id="control-email">
+            <label class="control-label" for="username">{{ 'resetting.request.username'|trans }}</label>
+            <div class="controls">
+                <input type="text" id="username" name="username" required="required" placeholder="Entrer ici votre adresse email ou votre nom d'utilisateur" />                
+            </div>
+        </div>
     </div>
-    <div>
-        <input type="submit" value="{{ 'resetting.request.submit'|trans }}" />
+    <div style="text-align:center;">
+        <input type="submit" class="btn-ws"  style="float:none" value="M'envoyer l'email de réinitialisation" />
     </div>
 </form>

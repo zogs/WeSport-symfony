@@ -1,0 +1,17 @@
+{% extends 'WsMailerBundle:Template:personal.html.twig' %}
+
+{% block title %}
+    <strong>{% if user is not null %} Cher {{ user|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
+   Vous avez oublié votre mot de passe ?
+{% endblock title %}
+
+{% block content %}
+    <table cellpadding="0" cellspacing="0" border="0" class="content" style="background-color:#FFF;  position: relative; width:100%; padding:0 10%;">
+        <tbody>
+            <tr height="100">
+                <td>
+                    Pas de panique ! <a href="{{ confirmationUrl }}">Cliquez-ici</a> pour le réinitialiser.
+                </td>                               
+        </tbody>
+    </table>
+{% endblock content %}

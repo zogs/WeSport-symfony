@@ -145,17 +145,18 @@ fos_user:
     user_class: My\UserBundle\Entity\User
     registration:
         confirmation:
-            enabled: true
+            enabled: true 
+            template: MyUserBundle:Registration:confirm_email.html.twig
         form:
             type: my_user_registration
     from_email:
-        address: noreply@demosf2.com
-        sender_name: demosf2
+        address: contact@cosporturage.fr
+        sender_name: cosporturage.fr
     service:
         mailer: fos_user.mailer.twig_swift
     resetting:
         email:
-            template: MyUserBundle:ChangePassword:email.txt.twig
+            template: MyUserBundle:Resetting:email.html.twig
 
 fos_comment:
     db_driver: orm

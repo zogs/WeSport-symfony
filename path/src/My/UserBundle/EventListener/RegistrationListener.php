@@ -39,7 +39,7 @@ class RegistrationListener implements EventSubscriberInterface
   public function onRegistrationSuccess( FormEvent $event )
   {
 
-    $url = $this->router->generate('ws_events_calendar');
+    $url = $this->router->generate('ws_calendar');
 
     $event->setResponse(new RedirectResponse($url));
   }
@@ -53,9 +53,9 @@ class RegistrationListener implements EventSubscriberInterface
   public function onRegistrationConfirm( GetResponseUserEvent  $event )
   {
 
-    $this->flash->bag("Félicitations, vous êtes maintenant connecté !");
+    $this->flashbag->add("Félicitations, vous êtes maintenant connecté !");
 
-    $url = $this->router->generate('ws_events_calendar');
+    $url = $this->router->generate('ws_calendar');
 
     $event->setResponse(new RedirectResponse($url));
   }

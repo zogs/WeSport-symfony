@@ -1,7 +1,7 @@
 {% extends 'WsMailerBundle:Template:personal.html.twig' %}
 
 {% block title %}
-    <strong>{% if event.organizer is not null %} {{ event.organizer.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
+    <strong>{% if event.organizer is not null %} Cher {{ event.organizer.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
  
 {% endblock title %}
 

@@ -66,7 +66,7 @@ class ParticipationController extends Controller
 		if($this->get('ws_events.manager')->isParticipating($event,$this->getUser())){
 
 			$this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
-			$this->get('flashbag')->add("Une prochaine fois peut être !",'info');
+			$this->get('flashbag')->add("Ok... une prochaine fois peut être !",'info');
 
 			//throw event
 			$this->get('event_dispatcher')->dispatch(WsEvents::CANCEL_PARTICIPANT, new CancelParticipant($event,$this->getUser()));   
