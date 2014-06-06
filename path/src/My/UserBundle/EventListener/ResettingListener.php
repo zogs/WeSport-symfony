@@ -42,13 +42,16 @@ class ResettingListener implements EventSubscriberInterface
 
   public function onResettingSuccess( FilterUserResponseEvent $event )
   {
-    \My\UtilsBundle\Utils\Debug::debug($event->getResponse());
-    exit();
+    
   }
 
   public function onResettingCompleted( GetResponseUserEvent  $event )
   {
+    $this->flashbag->add("Et hop, mot de passe changé! C'est reparti! ");
 
+    $url = $this->router->generate('user_profil_view');
+
+    $event->setResponse(new RedirectResponse($url));
   }
 
   public function onRegistrationConfirmed( FilterUserResponseEvent $event )

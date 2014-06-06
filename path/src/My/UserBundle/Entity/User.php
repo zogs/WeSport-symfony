@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use My\UserBundle\Entity\Avatar;
+use My\UserBundle\Entity\Settings;
 
 /**
  * @ORM\Entity
@@ -51,6 +52,11 @@ class User extends BaseUser
     private $avatar = null;
 
     /**
+     * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\Settings", cascade={"persist","remove"})
+     */
+    private $settings = null;
+
+    /**
      * @ORM\Column(type="string", length=1, nullable=true)
      */
     private $gender = '';
@@ -62,7 +68,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=true, name="location_id", referencedColumnName="id")
+     * @ORM\JoinColumn(nullable=true, name="location_id")
      */
     private $location = null;
 
@@ -81,6 +87,13 @@ class User extends BaseUser
      */
     private $lang = '';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->settings = new Settings();     
+
+    }
     /**
      * @ORM\PostLoad
      */
@@ -420,6 +433,24 @@ class User extends BaseUser
     public function setDefaultAvatar()
     {        
         if(!isset($this->avatar)) $this->avatar = new Avatar();
+    }
+
+    /**
+     * Get settings
+     *
+     * @return object settings 
+     */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    /**
+     * Set Settings
+     */
+    public function setSettings(Settings $settings)
+    {        
+        $this->settings = $settings;
     }
 
 

@@ -47,7 +47,7 @@ class RegistrationListener implements EventSubscriberInterface
   public function onRegistrationCompleted( FilterUserResponseEvent $event )
   {
 
-    $this->flashbag->clear()->add('info','Un email a été envoyé blabla...');
+    $this->flashbag->clear()->add('Inscription presque terminé, un email de confirmation vous a envoyé! Allez voir...','success');
   }
 
   public function onRegistrationConfirm( GetResponseUserEvent  $event )

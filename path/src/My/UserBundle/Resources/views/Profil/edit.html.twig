@@ -68,6 +68,14 @@
 						{{ form_row(form.avatar.updated) }}
 					{% endif %}
 
+					{% if action == 'mailing' %}
+						<div class="module-header">
+							<h2>Mes préférences mailing</h2>
+						</div>
+
+						{{ form_row(form.settings) }}
+						
+					{% endif %}
 
 
 					{% if action == 'password' %}

@@ -153,7 +153,7 @@ fos_user:
         address: contact@cosporturage.fr
         sender_name: cosporturage.fr
     service:
-        mailer: fos_user.mailer.twig_swift
+        mailer: my_user.mailer
     resetting:
         email:
             template: MyUserBundle:Resetting:email.html.twig

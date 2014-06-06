@@ -34,7 +34,7 @@ class Search
     private $date_created = null;
 
     /**
-    * @ORM\JoinColumn(name="alert_id", referencedColumnName="id")
+    * @ORM\Column(name="alert_id")
     * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert")
     */
     private $alert = null;
@@ -46,7 +46,7 @@ class Search
 
     /**
     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location")
-    * @ORM\JoinColumn(name="location_id", referencedColumnName="id", nullable=false)
+    * @ORM\Column(name="location_id", nullable=false)
     */
     private $location = null;
 

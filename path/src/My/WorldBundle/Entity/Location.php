@@ -58,7 +58,10 @@ class Location
      */
     protected $city;
 
-    
+    public function __toString()
+    {
+        return strval($this->id);
+    }
     /**
      * Set Id
      *
@@ -291,7 +294,7 @@ class Location
      *
      * @return string 
      */
-    public function getlastState()
+    public function getLastState()
     {
        if(!empty($this->division)) return $this->division;
        if(!empty($this->district)) return $this->district;
@@ -304,7 +307,7 @@ class Location
      *
      * @return array 
      */
-    public function getallRegions()
+    public function getAllRegions()
     {
         $r = array();
         if(!empty($this->country)) $r[] = $this->country;

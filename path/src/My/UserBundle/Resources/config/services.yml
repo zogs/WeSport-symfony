@@ -19,6 +19,11 @@ services:
         arguments: [@security.context]
         tags:
             - { name: form.type, alias: avatar_type }
+    #Mailer
+    my_user.mailer:
+        class: My\UserBundle\Mailer\Mailer
+        arguments: [@mailer,@templating,@router]
+
 
    #Form Extension
     user_bundle.image_type_extension:

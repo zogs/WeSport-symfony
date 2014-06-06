@@ -133,6 +133,12 @@ class ProfilEditionType extends AbstractType
                     ));
             }
 
+            if($action=='mailing'){
+
+                $form->add('settings','ws_mailer_settings_type',array(
+                    'data' => $user->getSettings()
+                    ));
+            }
 
             if($action=='password'){
 

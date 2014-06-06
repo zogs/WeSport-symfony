@@ -28,8 +28,8 @@ class Alert
     private $user;
 
     /**
-    * @ORM\JoinColumn(name="search_id", referencedColumnName="id")
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"persist", "merge", "remove"}, fetch="EAGER")
+    * @ORM\Column(name="search_id")
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"persist", "remove"}, fetch="EAGER")
     */
     private $search;
 

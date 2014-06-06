@@ -11,10 +11,10 @@
 	<div class="page-content">
 		<p>
 		{% trans_default_domain 'FOSUserBundle' %}
-		{{ 'resetting.check_email'|trans({'%email%': email}) }}
+		{{ 'resetting.check_email'|trans({'%email%': '<strong>'~email~'</strong>'}) }}
 		</p>	
 		<p>
-			<a href="{{ path('fos_user_resetting_request')}}">Je n'ai pas reçu d'email, rentrer une nouvelle adresse.</a>
+			<a href="{{ path('fos_user_resetting_request')}}">Je n'ai pas reçu d'email, je vais rentrer une nouvelle adresse.</a>
 		</p>
 	</div>	
 	

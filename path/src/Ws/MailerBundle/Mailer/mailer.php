@@ -9,6 +9,7 @@ use Ws\EventsBundle\Entity\Alert;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
 use My\UserBundle\Entity\User;
 use Ws\EventsBundle\Entity\Event;
+use Ws\MailerBundle\Entity\Settings;
 
 class Mailer
 {
@@ -33,6 +34,8 @@ class Mailer
 
     public function sendParticipationAddedToAdmin(Event $event, User $participant)
     {
+        if($event->getOrganizer()->getSettings()->isAuthorizedEmail(Settings::EVENT_ADD_PARTICIPATION) === false) return;
+
         $admin_email = $event->getOrganizer()->getEmail();
 
         $subject = ucfirst($participant->getUsername())." participe à votre activité ".ucfirst($event->getTitle());
@@ -50,6 +53,8 @@ class Mailer
 
     public function sendParticipationCanceledToAdmin(Event $event, User $participant)
     {
+        if($event->getOrganizer()->getSettings()->isAuthorizedEmail(Settings::EVENT_CANCEL_PARTICIPATION) === false) return;
+
         $admin_email = $event->getOrganizer()->getEmail();
 
         $subject = ucfirst($participant->getUsername())." annule sa participation à votre activité...";
