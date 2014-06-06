@@ -51,7 +51,7 @@ class CalendarController extends Controller
 		$search = $manager->getSearch();
 		
 		//throw VIEW_CALENDAR
-		$this->get('event_dispatcher')->dispatch(WsEvents::VIEW_CALENDAR, new ViewCalendar($search,$this->getUser())); 
+		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_VIEW, new ViewCalendar($search,$this->getUser())); 
 
 
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
@@ -94,7 +94,7 @@ class CalendarController extends Controller
 		$search = $manager->getSearch();
 
 		//throw AJAX_CALENDAR
-		$this->get('event_dispatcher')->dispatch(WsEvents::AJAX_CALENDAR, new AjaxCalendar($search,$this->getUser())); 
+		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_AJAX, new AjaxCalendar($search,$this->getUser())); 
 
 
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
@@ -114,7 +114,7 @@ class CalendarController extends Controller
 		//get search params
 		$search = $manager->getSearch();
 		//throw RESET_CALENDAR
-		$this->get('event_dispatcher')->dispatch(WsEvents::RESET_CALENDAR, new ResetCalendar($search,$this->getUser())); 
+		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_RESET, new ResetCalendar($search,$this->getUser())); 
 
 
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(

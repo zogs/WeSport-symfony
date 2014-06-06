@@ -32,7 +32,7 @@ class InvitationListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			WsEvents::CREATE_EVENTS => 'onNewEvents',
+			WsEvents::SERIE_CREATE => 'onNewEvents',
 
 		);
 	}

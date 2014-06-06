@@ -4,25 +4,27 @@ namespace Ws\EventsBundle\Event;
 
 final class WsEvents {
 
-	const CREATE_EVENTS = 'ws.events.new';
+	const SERIE_CREATE = 'ws.serie.new';
 
-	const CANCEL_EVENT = 'ws.events.cancel';
+	const SERIE_DELETE = 'ws.serie.delete';
 
-	const CONFIRM_EVENT = 'ws.events.confirm';
+	const EVENT_CANCEL = 'ws.event.cancel';
 
-	const DELETE_EVENT = 'ws.events.delete';
+	const EVENT_CHANGE = 'ws.event.cancel';
 
-	const VIEW_EVENT = 'ws.events.view';
+	const EVENT_CONFIRM = 'ws.event.confirm';
 
-	const DELETE_SERIE = 'ws.serie.delete';
+	const EVENT_DELETE = 'ws.event.delete';
 
-	const ADD_PARTICIPANT = 'ws.participant.add';
+	const EVENT_VIEW = 'ws.event.view';
 
-	const CANCEL_PARTICIPANT = 'ws.participant.cancel';
+	const PARTICIPANT_ADD = 'ws.participant.add';
 
-	const VIEW_CALENDAR = 'ws.calendar.view';
+	const PARTICIPANT_CANCEL = 'ws.participant.cancel';
 
-	const AJAX_CALENDAR = 'ws.calendar.ajax';
+	const CALENDAR_VIEW = 'ws.calendar.view';
 
-	const RESET_CALENDAR = 'ws.calendar.reset';
+	const CALENDAR_AJAX = 'ws.calendar.ajax';
+
+	const CALENDAR_REST = 'ws.calendar.reset';
 }

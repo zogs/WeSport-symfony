@@ -42,7 +42,7 @@ class CityToLocationType extends AbstractType
                 ))                                                   
         ;
         */
-        $builder->add('city_id','text',array(
+        $builder->add('city_id','hidden',array(
                 'required' => false,
                 ))
                 ->add('city_name','text',array(

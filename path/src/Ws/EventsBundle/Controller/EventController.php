@@ -14,6 +14,7 @@ use Ws\EventsBundle\Form\Type\InvitationType;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\DeleteEvent;
+use Ws\EventsBundle\Event\ChangeEvent;
 use Ws\EventsBundle\Event\DeleteSerie;
 use Ws\EventsBundle\Event\ViewEvent;
 use Ws\EventsBundle\Event\AddParticipant;
@@ -48,7 +49,7 @@ class EventController extends Controller
 			$fields = $request->request->get('event');
 			$location = $this->get('world.location_manager')->getLocationFromCityArray($fields['location']);        
 
-			$event = $form->getData();
+			$event = $form->getData();			
 			$event->setLocation($location);
 			$event->setOrganizer($this->getUser());						
 
@@ -59,7 +60,7 @@ class EventController extends Controller
 				$this->get('flashbag')->add('Bravo, votre activité est en ligne !','success');
 				
 				//throw CREATE_EVENTS
-				$this->get('event_dispatcher')->dispatch(WsEvents::CREATE_EVENTS, new CreateEvents($event,$this->getUser()));  
+				$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_CREATE, new CreateEvents($event,$this->getUser()));  
 			}
 			else {
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
@@ -71,7 +72,41 @@ class EventController extends Controller
 			));
 	}
 
+	/**
+	 * Get and manage the edit form
+	 *
+	 * @param request
+	 *
+	 * @return View
+	 */
+	public function editAction(Event $event)
+	{
 
+		$form = $this->createForm('event',$event);
+
+		$form->handleRequest($this->getRequest());
+
+		if($form->isValid()){
+
+			$event = $form->getData();
+			
+			if($this->get('ws_events.manager')->saveEvent($event)){
+
+				//set flash message
+				$this->get('flashbag')->add('Votre activité a été modifié !','success');
+				
+				//throw CREATE_EVENTS
+				$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CHANGE, new ChangeEvent($event,$this->getUser()));  
+			}
+			else {
+				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
+			}
+		}             
+
+		return $this->render('WsEventsBundle:Event:edit.html.twig', array(
+			'form' => $form->createView(),
+			));
+	}
 
 
 
@@ -87,7 +122,7 @@ class EventController extends Controller
 
 		//throw event CONFIRM_EVENT
 		$sfevent = new ConfirmEvent($event,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::CONFIRM_EVENT, $sfevent);   
+		$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CONFIRM, $sfevent);   
 
 
 		$this->get('ws_events.manager')->confirmEvent($event);
@@ -117,7 +152,7 @@ class EventController extends Controller
 
 		//throw event DELETE_EVENT
 		$sfevent = new DeleteEvent($event,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::DELETE_EVENT, $sfevent);   
+		$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_DELETE, $sfevent);   
 
 
 		$this->get('ws_events.manager')->deleteEvent($event);
@@ -150,7 +185,7 @@ class EventController extends Controller
 
 		//throw event DELETE_SERIE
 		$sfevent = new DeleteSerie($serie,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::DELETE_SERIE, $sfevent);
+		$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_DELETE, $sfevent);
 
 
 		$this->get('ws_events.manager')->deleteSerie($serie);
@@ -182,7 +217,7 @@ class EventController extends Controller
 		$gmap = $gmap->getGoogleMap();
 
 		//throw event		
-		$this->get('event_dispatcher')->dispatch(WsEvents::VIEW_EVENT, new ViewEvent($event,$this->getUser()));
+		$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_VIEW, new ViewEvent($event,$this->getUser()));
 
 		//render
 		return $this->render('WsEventsBundle:Event:view.html.twig',array(
@@ -193,66 +228,4 @@ class EventController extends Controller
 		);
 	}
 
-
-	/**
-	 * Add a participant
-	 *
-	 * @param event
-	 *
-	 * @return View
-	 */
-	public function addParticipationAction(Event $event,$token)
-	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
-			throw new AccessDeniedHttpException('Invalid CSRF token.');
-		}
-
-		//throw event ADD_PARTICIPANT
-		$sfevent = new AddParticipant($event,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::ADD_PARTICIPANT, $sfevent);   
-
-
-		$this->get('ws_events.manager')->saveParticipation($event,$this->getUser(),true);
-		$this->get('flashbag')->add("Merci de votre participation !");
-
-		$this->redirect($this->generateUrl(
-			'ws_event_view',array(
-				'sport'=>$event->getSport(),
-				'slug'=>$event->getSlug(),
-				'event'=>$event->getId()
-				)
-			)
-		);
-	}
-
-	/**
-	 * remove a participant
-	 *
-	 * @param event
-	 *
-	 * @return View
-	 */
-	public function removeParticipationAction(Event $event,$token)
-	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
-			throw new AccessDeniedHttpException('Invalid CSRF token.');
-		}
-
-		//throw event CONFIRM_EVENT
-		$sfevent = new CancelParticipant($event,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::CANCEL_PARTICIPANT, $sfevent);   
-
-
-		$this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
-		$this->get('flashbag')->add("Une prochaine fois peut être !",'info');
-
-		$this->redirect($this->generateUrl(
-			'ws_event_view',array(
-				'sport'=>$event->getSport(),
-				'slug'=>$event->getSlug(),
-				'event'=>$event->getId()
-				)
-			)
-		);
-	}
 }

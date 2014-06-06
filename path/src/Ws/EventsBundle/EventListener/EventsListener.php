@@ -11,6 +11,7 @@ use Ws\MailerBundle\Mailer\Mailer;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\ViewEvent;
+use Ws\EventsBundle\Event\ChangeEvent;
 
 
 class EventsListener implements EventSubscriberInterface
@@ -32,8 +33,9 @@ class EventsListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			WsEvents::CREATE_EVENTS => 'onNewEvents',
-			WsEvents::VIEW_EVENT => 'onViewEvent',
+			WsEvents::SERIE_CREATE => 'onNewEvents',
+			WsEvents::EVENT_VIEW => 'onViewEvent',
+			WsEvents::EVENT_CHANGE => 'onChangeEvent',
 		);
 	}
 
@@ -45,6 +47,17 @@ class EventsListener implements EventSubscriberInterface
 	public function onViewEvent(ViewEvent $event)
 	{
 		//exit('viewEvent WIN');
+	}
+
+	public function onChangeEvent(ChangeEvent $event)
+	{
+		$wsevent = $event->getEvent();
+
+		$participants = $wsevent->getParticipations();
+
+		$this->mailer->sendEventModificationToParticipants($wsevent,$participants);
+
+
 	}
 
 

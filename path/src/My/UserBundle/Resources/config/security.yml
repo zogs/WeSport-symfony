@@ -25,6 +25,6 @@ security:
                 domain:  ~
             logout:       
                 path: fos_user_security_logout
-                target: blog_homepage
+                target: ws_calendar
             switch_user:  true
             entry_point: entry_point.user_login

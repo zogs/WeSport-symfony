@@ -32,6 +32,22 @@ class Mailer
         $this->sendMessage('sfwesport@we-sport.fr', 'guichardsim@gmail.com', 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
     }
 
+    public function sendEventModificationToParticipants(Event $event, $participants)
+    {
+        $subject = "L'activité suivante a été modifié: ".$event->getTitle();
+
+         $body = $this->templating->render('WsMailerBundle:Events:changes.html.twig',array(
+            'event' => $event,
+            ));
+
+         foreach ($participants as $participant) {
+             
+                if($participant->getuser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CHANGED) === false) continue;
+                $email = $participant->getUser()->getEmail();
+                $this->sendMessage($this->expediteur,$email,$subject,$body);
+         }
+    }
+
     public function sendParticipationAddedToAdmin(Event $event, User $participant)
     {
         if($event->getOrganizer()->getSettings()->isAuthorizedEmail(Settings::EVENT_ADD_PARTICIPATION) === false) return;

@@ -138,6 +138,8 @@ class Event
      */
     private $online = 1;
 
+    public $change_made;
+
     function __construct(){
 
         $this->date_depot = new \DateTime();
@@ -171,6 +173,15 @@ class Event
     {
         if($this->organizer == $user) return true;
         return false;
+    }
+
+    public function setChange($changes)
+    {
+        $this->change_made = $changes;
+    }
+    public function getChange()
+    {
+        return $this->change_made;
     }
 
     /**

@@ -12,7 +12,7 @@
 					<strong> {{ event.title }}</strong>
 				</a>
 				<br>
-				<small><strong>date:</strong></small> {{ event.date|date('l d m') }} à {{ event.time|date('h:i',"Europe/Paris") }}
+				<small><strong>date:</strong></small> {{ event.date|date('l d F') }} à {{ event.time|date('h:i',"Europe/Paris") }}
 				<br>
 				<small><strong>à:</strong></small> {{ event.location.city.name }}
 			</td>	

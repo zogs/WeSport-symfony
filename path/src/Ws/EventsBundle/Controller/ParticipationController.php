@@ -34,7 +34,7 @@ class ParticipationController extends Controller
 			$this->get('flashbag')->add("C'est parti! Amusez-vous bien.");		
 
 			//throw event
-			$this->get('event_dispatcher')->dispatch(WsEvents::ADD_PARTICIPANT, new AddParticipant($event,$this->getUser()));  
+			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));  
 
 		} else {
 			$this->get('flashbag')->add("Il semble que vous participiez déjà",'warning');
@@ -69,7 +69,7 @@ class ParticipationController extends Controller
 			$this->get('flashbag')->add("Ok... une prochaine fois peut être !",'info');
 
 			//throw event
-			$this->get('event_dispatcher')->dispatch(WsEvents::CANCEL_PARTICIPANT, new CancelParticipant($event,$this->getUser()));   
+			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));   
 		}
 
 		return $this->redirect($this->generateUrl(

@@ -32,8 +32,8 @@ class ParticipationListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			WsEvents::ADD_PARTICIPANT => 'onAddParticipant',
-			WsEvents::CANCEL_PARTICIPANT => 'onCancelParticipant',
+			WsEvents::PARTICIPANT_ADD => 'onAddParticipant',
+			WsEvents::PARTICIPANT_CANCEL => 'onCancelParticipant',
 		);
 	}
 
