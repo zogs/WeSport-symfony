@@ -1,3 +1,7 @@
+ws_statistic:
+    resource: "@WsStatisticBundle/Resources/config/routing.yml"
+    prefix:   /stats
+
 my_utils:
     resource: "@MyUtilsBundle/Resources/config/routing.yml"
     prefix:   /

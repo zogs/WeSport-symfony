@@ -1,0 +1,11 @@
+ws_statistic_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: WsStatisticBundle:Default:index }
+
+ws_statistic_update:
+    pattern: /update/{scope}
+    defaults: { _controller: WsStatisticBundle:Default:update , scope:general }
+
+ws_statistic_show:
+    pattern: /show/{scope}/{id}
+    defaults: { _controller: WsStatisticBundle:Default:show , scope:general }

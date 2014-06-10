@@ -19,6 +19,8 @@ use Ws\EventsBundle\Event\DeleteSerie;
 use Ws\EventsBundle\Event\ViewEvent;
 use Ws\EventsBundle\Event\AddParticipant;
 use Ws\EventsBundle\Event\CancelParticipant;
+use Ws\StatisticBundle\Entity\UserStat;
+
 
 
 class EventController extends Controller
@@ -60,7 +62,9 @@ class EventController extends Controller
 				$this->get('flashbag')->add('Bravo, votre activité est en ligne !','success');
 				
 				//throw CREATE_EVENTS
-				$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_CREATE, new CreateEvents($event,$this->getUser()));  
+				$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_CREATE, new CreateEvents($event,$this->getUser())); 
+
+				$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_CREATED); 
 			}
 			else {
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
@@ -120,15 +124,16 @@ class EventController extends Controller
 			throw $this->createNotFoundException('Vous ne pouvez pas supprimer cet événement');        
 		} 
 
-		//throw event CONFIRM_EVENT
-		$sfevent = new ConfirmEvent($event,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CONFIRM, $sfevent);   
+		if($this->get('ws_events.manager')->confirmEvent($event)){
+			
+			$this->get('flashbag')->add("L'événement a été confirmé !");
+			
+			$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CONFIRM, new ConfirmEvent($event,$this->getUser())); 
 
+			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_CONFIRMED);  
+		}
 
-		$this->get('ws_events.manager')->confirmEvent($event);
-		$this->get('flashbag')->add("L'événement a été confirmé !");
-
-		$this->redirect($this->generateUrl("ws_event_new")); 
+		$this->redirect($this->generateUrl("ws_event_view",array('event'=>$event->getId()))); 
 	}
 
 
@@ -150,13 +155,14 @@ class EventController extends Controller
 			throw $this->createNotFoundException('Vous ne pouvez pas supprimer cet événement');        
 		}
 
-		//throw event DELETE_EVENT
-		$sfevent = new DeleteEvent($event,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_DELETE, $sfevent);   
+		if($this->get('ws_events.manager')->deleteEvent($event)){
 
+			$this->get('flashbag')->add("L'activité a été supprimé... Tanpis, ça sera pour une prochaine fois! ");
 
-		$this->get('ws_events.manager')->deleteEvent($event);
-		$this->get('flashbag')->add("L'événement a été supprimé !");
+			$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_DELETE, new DeleteEvent($event,$this->getUser()));  
+
+			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_DELETED); 
+		}		
 
 		$this->redirect($this->generateUrl("ws_event_new"));     
 	}

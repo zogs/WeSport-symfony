@@ -1,23 +1,16 @@
 {% extends 'WsMailerBundle:Template:personal.html.twig' %}
 
 {% block title %}
-    <strong>Bonjour,</strong><br />
-    Il y a eu quelques petits changements...
+    <strong>Bonjour, {{ event.organizer.username }}</strong><br />
+    Comment ça va ?
 {% endblock title %}
 
 {% block content %}
     <table cellpadding="0" cellspacing="0" border="0" class="content" style="background-color:#FFF;  position: relative; width:100%; padding:0 10%;">
         <tbody>
             <tr height="50">
-                <td>
-                    L'organisateur de <strong>{{ event.title }}</strong> a fait quelques changements:
-                    <ul>
-                    {% for key,change in event.change %}
-                        <li>
-                            {% include 'WsMailerBundle:Template:block_event_change.html.twig' with {'key':key,'change':change}  %}   
-                        </li>
-                    {% endfor %}
-                    </ul>
+                <td>                    
+                    Y'a pas eu grand monde à ton activité ?
                 </td>
             </tr>
             <tr>
@@ -26,9 +19,13 @@
                     {# BLOCK_EVENT #}
                     {% include 'WsMailerBundle:Template:block_event.html.twig' with {'event':event}  %}                   
                 </td>
-            </tr>
-
-        
+            </tr>  
+            <tr>
+                <td>
+                    Rassure toi, ça sera mieux la prochaine fois. Essaye la semaine prochaine, ou à un horaire différent ! <br>
+                    Et puis tu sais, cosporturage.fr est encore jeune, et tout le monde n'est pas au courant que y'a des activités super dessus! ;)
+                </td>
+            </tr>      
         </tbody>
     </table>
 {% endblock content %}

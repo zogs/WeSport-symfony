@@ -32,7 +32,86 @@ class Mailer
         $this->sendMessage('sfwesport@we-sport.fr', 'guichardsim@gmail.com', 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
     }
 
-    public function sendEventModificationToParticipants(Event $event, $participants)
+    public function sendPastEventOpinionReminder(Event $event)
+    {
+        $subject = "Vous avez passé un bon moment ?";
+
+        foreach ($event->getParticipations() as $participation) {
+
+            $user = $participation->getUser();
+            
+            if($user->getSettings()->isAuthorizedEmail(Settings::EVENT_OPINION) === false ) continue;
+
+            $body = $this->templating->render('WsMailerBundle:Cron:opinion_reminder.html.twig',array(
+                'event'=>$event,
+                'user'=>$user
+                ));
+
+            $this->sendMessage($this->expediteur,$user->getEmail(),$subject,$body);
+            
+        }
+    }
+
+    public function sendPastEventEncouragement(Event $event)
+    {
+        $subject = "Personne ? La prochaine fois ça ira mieux!";
+
+        $body = $this->templating->render('WsMailerBundle:Cron:encouragement.html.twig',array(
+            'event'=>$event
+            ));
+
+        $this->sendMessage($this->expediteur,$event->getOrganizer()->getEmail(),$subject,$body);
+    }
+
+    public function sendEventCanceledToParticipants(Event $event)
+    {
+        $subject = "Cette activité manque de participants et ne peut avoir lieu pour l'instant";
+
+        $body = $this->templating->render('WsMailerBundle:Events:canceled.html.twig',array(
+            'event'=>$event
+            ));
+
+        foreach($event->getParticipations(false) as $participant){
+
+            if($participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
+
+            $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
+        }
+    }
+
+    public function sendEventDeletedToParticipants(Event $event)
+    {
+        $subject = "Une activité à laquelle vous participez a été annulée...";
+
+        $body = $this->templating->render('WsMailerBundle:Events:deleted.html.twig',array(
+            'event'=>$event
+            ));
+
+        foreach($event->getParticipations(false) as $participant){
+
+            if($participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
+
+            $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
+        }
+    }
+
+    public function sendEventConfirmedToParticipants(Event $event)
+    {
+        $subject = "L'activité ".$event->getTitle()." est confirmé !";
+
+        $body = $this->templating->render('WsMailerBundle:Events:confirmed.html.twig',array(
+            'event'=>$event
+            ));
+
+        foreach($event->getParticipations(false) as $participant){
+
+            if($participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CONFIRM) === false ) continue;
+
+            $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
+        }
+    }
+
+    public function sendEventModificationToParticipants(Event $event)
     {
         $subject = "L'activité suivante a été modifié: ".$event->getTitle();
 
@@ -40,11 +119,11 @@ class Mailer
             'event' => $event,
             ));
 
-         foreach ($participants as $participant) {
+         foreach ($event->getParticipations(false) as $participant) {
              
                 if($participant->getuser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CHANGED) === false) continue;
-                $email = $participant->getUser()->getEmail();
-                $this->sendMessage($this->expediteur,$email,$subject,$body);
+
+                $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
          }
     }
 

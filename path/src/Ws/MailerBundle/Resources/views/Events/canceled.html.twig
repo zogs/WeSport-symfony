@@ -1,0 +1,40 @@
+{% extends 'WsMailerBundle:Template:personal.html.twig' %}
+
+{% block title %}
+    <strong>Bonjour,</strong><br />
+    Il manque des participants...
+{% endblock title %}
+
+{% block content %}
+    <table cellpadding="0" cellspacing="0" border="0" class="content" style="background-color:#FFF;  position: relative; width:100%; padding:0 10%;">
+        <tbody>
+            <tr height="50">
+                <td>                    
+                    Quelqu'un s'est désisté... L'activité n'aura peut être pas lieu... <br>
+                    {% set nb = event.nbmin - event.participations|length %}
+                    {% if nb <= 1 %}
+                        Il manque 1 participant...
+                    {% else %}
+                        Il manque {{ nb }} participants...
+                    {% endif %}
+                </td>
+            </tr>
+            <tr height="50">
+                <td>
+                    {# BLOCK_EVENT #}
+                    {% include 'WsMailerBundle:Template:block_event.html.twig' with {'event':event}  %}                   
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    Mais ce l'est pas fini,
+                    <ul>
+                        <li>Des gens vont peut être se rajouter,</li>
+                        <li>Ou l'organisateur va décider de confirmer l'événement quand même!</li>
+                    </ul>
+                    Rien n'est perdu pour l'instant :)
+                </td>
+            </tr>       
+        </tbody>
+    </table>
+{% endblock content %}

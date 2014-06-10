@@ -26,3 +26,4 @@ security:
         - { path: ^/\w\w/event/alert/, role: ROLE_USER }
         - { path: ^/\w\w/admin/, role: ROLE_ADMIN }
         - { path: ^/\w\w/flashbag/, role: ROLE_ADMIN }
+        - { path: ^/\w\w/stats/, role: ROLE_ADMIN }

@@ -237,5 +237,13 @@ class EventRepository extends EntityRepository
 
 	}
 
+	public function countAll()
+	{
+		return $this->createQueryBuilder('e')
+				 ->select('COUNT(e)')
+				 ->getQuery()
+				 ->getSingleScalarResult();
+	}
+
 
 }

@@ -98,7 +98,7 @@ class EventType extends AbstractType
 			
 		}
 
-		$this->post_event->setChange($changes);
+		$this->post_event->setChanges($changes);
 		$event->setData($this->post_event);
 		
 	}

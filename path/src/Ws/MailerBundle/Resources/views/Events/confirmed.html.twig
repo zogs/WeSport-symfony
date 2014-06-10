@@ -2,22 +2,15 @@
 
 {% block title %}
     <strong>Bonjour,</strong><br />
-    Il y a eu quelques petits changements...
+    L'activité aura bien lieu!
 {% endblock title %}
 
 {% block content %}
     <table cellpadding="0" cellspacing="0" border="0" class="content" style="background-color:#FFF;  position: relative; width:100%; padding:0 10%;">
         <tbody>
             <tr height="50">
-                <td>
-                    L'organisateur de <strong>{{ event.title }}</strong> a fait quelques changements:
-                    <ul>
-                    {% for key,change in event.change %}
-                        <li>
-                            {% include 'WsMailerBundle:Template:block_event_change.html.twig' with {'key':key,'change':change}  %}   
-                        </li>
-                    {% endfor %}
-                    </ul>
+                <td>                    
+                    Le nombre minimum a été atteint ou l'organisateur a confirmé l'événement. L'activité <a href="{{ event|link2event }}">{{ event.title }}</a> aura bien lieu!
                 </td>
             </tr>
             <tr>
@@ -26,9 +19,7 @@
                     {# BLOCK_EVENT #}
                     {% include 'WsMailerBundle:Template:block_event.html.twig' with {'event':event}  %}                   
                 </td>
-            </tr>
-
-        
+            </tr>        
         </tbody>
     </table>
 {% endblock content %}

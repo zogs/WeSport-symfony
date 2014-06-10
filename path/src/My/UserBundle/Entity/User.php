@@ -10,11 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use My\UserBundle\Entity\Avatar;
 use My\UserBundle\Entity\Settings;
+use Ws\StatisticBundle\Entity\UserStat;
 
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="users")
+ * @ORM\Entity(repositoryClass="My\UserBundle\Entity\UserRepository")
  */
 class User extends BaseUser
 {
@@ -57,6 +59,11 @@ class User extends BaseUser
     private $settings = null;
 
     /**
+     * @ORM\OneToOne(targetEntity="Ws\StatisticBundle\Entity\UserStat", cascade={"persist","remove"}, mappedBy="user")
+     */
+    private $statistic = null;
+
+    /**
      * @ORM\Column(type="string", length=1, nullable=true)
      */
     private $gender = '';
@@ -91,7 +98,9 @@ class User extends BaseUser
     {
         parent::__construct();
 
-        $this->settings = new Settings();     
+        $this->settings = new Settings();    
+        $this->statistic = new UserStat();
+        $this->statistic->setUser($this); 
 
     }
     /**

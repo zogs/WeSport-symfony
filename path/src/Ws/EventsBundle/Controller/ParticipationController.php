@@ -11,6 +11,7 @@ use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\AddParticipant;
 use Ws\EventsBundle\Event\CancelParticipant;
+use Ws\StatisticBundle\Entity\UserStat;
 
 
 class ParticipationController extends Controller
@@ -34,7 +35,11 @@ class ParticipationController extends Controller
 			$this->get('flashbag')->add("C'est parti! Amusez-vous bien.");		
 
 			//throw event
-			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));  
+			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));
+
+			//update stat 
+			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_PARTICIPATION_ADDED);
+			$this->get('statistic.manager')->setContext('user')->get($event->getOrganizer())->increment(UserStat::EVENT_TOTAL_PARTICIPANTS);
 
 		} else {
 			$this->get('flashbag')->add("Il semble que vous participiez déjà",'warning');
@@ -69,7 +74,10 @@ class ParticipationController extends Controller
 			$this->get('flashbag')->add("Ok... une prochaine fois peut être !",'info');
 
 			//throw event
-			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));   
+			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));  
+
+			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_PARTICIPATION_CANCELED); 
+			$this->get('statistic.manager')->setContext('user')->get($event->getOrganizer())->decrement(UserStat::EVENT_TOTAL_PARTICIPANTS); 
 		}
 
 		return $this->redirect($this->generateUrl(

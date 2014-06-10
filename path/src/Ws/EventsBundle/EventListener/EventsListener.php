@@ -12,6 +12,7 @@ use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\ViewEvent;
 use Ws\EventsBundle\Event\ChangeEvent;
+use Ws\EventsBundle\Event\DeleteEvent;
 
 
 class EventsListener implements EventSubscriberInterface
@@ -36,6 +37,8 @@ class EventsListener implements EventSubscriberInterface
 			WsEvents::SERIE_CREATE => 'onNewEvents',
 			WsEvents::EVENT_VIEW => 'onViewEvent',
 			WsEvents::EVENT_CHANGE => 'onChangeEvent',
+			WsEvents::EVENT_CONFIRM => 'onConfirmEvent',
+			WsEvents::EVENT_DELETE => 'onDeleteEvent',
 		);
 	}
 
@@ -51,13 +54,27 @@ class EventsListener implements EventSubscriberInterface
 
 	public function onChangeEvent(ChangeEvent $event)
 	{
-		$wsevent = $event->getEvent();
+		$ev = $event->getEvent();
 
-		$participants = $wsevent->getParticipations();
+		$changes = $ev->getChanges();
 
-		$this->mailer->sendEventModificationToParticipants($wsevent,$participants);
+		if(!empty($changes)){
+			$this->mailer->sendEventModificationToParticipants($ev);			
+		}
+	}
 
+	public function onConfirmEvent(ConfirmEvent $event)
+	{
+		$ev = $event->getEvent();
 
+		$this->mailer->sendEventConfirmedToParticipants($ev);
+	}
+
+	public function onDeleteEvent(DeleteEvent $event)
+	{
+		$ev = $event->getEvent();
+
+		$this->mailer->sendEventDeletedToParticipants($ev);
 	}
 
 

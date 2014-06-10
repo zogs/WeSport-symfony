@@ -138,7 +138,7 @@ class Event
      */
     private $online = 1;
 
-    public $change_made;
+    public $changes_made;
 
     function __construct(){
 
@@ -175,13 +175,13 @@ class Event
         return false;
     }
 
-    public function setChange($changes)
+    public function setChanges($changes)
     {
         $this->change_made = $changes;
     }
-    public function getChange()
+    public function getChanges()
     {
-        return $this->change_made;
+        return $this->changes_made;
     }
 
     /**
@@ -668,11 +668,19 @@ class Event
         $this->participations->removeElement($participation);
     }
 
+    public function removeOrganizerParticipation()
+    {
+        foreach($this->getParticipations() as $p){
+            if($p->getUser() === $this->getOrganizer()) $this->removeParticipation($p);
+        }
+    }
+
     /**
      * get participations
      */
-    public function getParticipations()
+    public function getParticipations($withOrganizer = true)
     {
+        if(false == $withOrganizer) $this->removeOrganizerParticipation();
         return $this->participations;
     }
 
