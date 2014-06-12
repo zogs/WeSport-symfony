@@ -4,7 +4,7 @@ namespace Ws\StatisticBundle\Manager;
 
 use My\ManagerBundle\Manager\AbstractManager;
 
-use Ws\StatisticBundle\Entity\General;
+use Ws\StatisticBundle\Entity\GeneralStat;
 
 class StatisticManager extends AbstractManager
 {
@@ -15,63 +15,52 @@ class StatisticManager extends AbstractManager
 	public function setContext($scope)
 	{
 		$this->scope = $scope;
-
 		return $this;
-	}
-
-	public function increment($name,$i=1)
-	{
-		$this->stat->$name += $i;
-
-		$this->save($this->stat,true);
-
-		if(property_exists('General','total_'.$name)){
-			$this->incrementGeneral('total_'.$name);
-		}
-	}
-
-	public function incrementGeneral($name)
-	{
-		$stat = $this->setContext('general')->get();
-
-		$stat->$name += 1;
-
-		$this->save($stat,true);
-	}
-
-	public function decrement($name,$i=1)
-	{
-		$this->stat->$name -= $i;
-
-		$this->save($this->stat,true);
-
-		if(property_exists('General', 'total_'.$name)){
-			$this->incrementGeneral('total_'.$name);
-		}
-	}
-
-	public function decrementGeneral($name)
-	{
-		$stat = $this->setContext('General')->get();
-
-		$stat->$name -= 1;
-
-		$this->save($stat,true);
 	}
 
 	public function get($id = null)
 	{
 		if($this->scope == 'general'){			
-			$this->stat = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findOneByName('main');
+			$this->data = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findOneByName('main');
 		}
-
 		if($this->scope == 'user'){		
-			$this->stat = $this->em->getRepository('WsStatisticBundle:UserStat')->findOneByUser($id);
+			$this->data = $this->em->getRepository('WsStatisticBundle:UserStat')->findOneByUser($id);
 		}
-
 		return $this;
 		
+	}
 
+	public function increment($name,$i=1)
+	{
+		$this->data->$name += $i;
+		$this->save($this->data,true);
+		$this->saveGeneralStatistic($name,$i);		
+	}
+
+	public function decrement($name,$i=1)
+	{
+		$this->data->$name -= $i;
+		$this->save($this->data,true);
+		$this->saveGeneralStatistic($name,-$i);
+	}
+
+	private function saveGeneralStatistic($name,$i=1)
+	{
+		if(property_exists(new GeneralStat,'total_'.$name)){
+			$this->setContext('general')->get();
+			$this->data->$name += $i;
+			$this->save($this->data,true);
+		}
+	}
+
+	public function sportParticiped($sport,$user)
+	{
+		$this->em->getRepository('WsStatisticBundle:UserSportStat')->setSportParticiped($sport,$user);
+	}
+
+	public function sportCreated($sport,$user)
+	{
+		$this->em->getRepository('WsStatisticBundle:UserSportStat')->setSportCreated($sport,$user);
 	}
 
 	public function update($scope)
@@ -83,17 +72,15 @@ class StatisticManager extends AbstractManager
 
 	private function updateGeneral()
 	{
-		$this->setContext('general');
-
-		$this->get();
+		$this->setContext('general')->get();
 			
-		$this->stat->setEventTotalCount($this->em->getRepository('WsEventsBundle:Event')->countAll());
-		$this->stat->setUserTotalCount($this->em->getRepository('MyUserBundle:User')->countAll());
+		$this->data->setEventTotalCount($this->em->getRepository('WsEventsBundle:Event')->countAll());
+		$this->data->setUserTotalCount($this->em->getRepository('MyUserBundle:User')->countAll());
 
 
-		$this->save($this->stat,true);
+		$this->save($this->data,true);
 
-		return $this->stat;
+		return $this->data;
 	}
 
 }
