@@ -24,12 +24,13 @@ class Alert
 
     /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", inversedBy="alerts")
+    * @ORM\JoinColumn(name="user_id", nullable=false)
     */
     private $user;
 
     /**
-    * @ORM\Column(name="search_id")
     * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"persist", "remove"}, fetch="EAGER")
+    * @ORM\JoinColumn(name="search_id", referencedColumnName="id")
     */
     private $search;
 

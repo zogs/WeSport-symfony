@@ -61,10 +61,11 @@ class EventController extends Controller
 				//set flash message
 				$this->get('flashbag')->add('Bravo, votre activité est en ligne !','success');
 				
-				//throw CREATE_EVENTS
+				//throw event SERIE_CREATE
 				$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_CREATE, new CreateEvents($event,$this->getUser())); 
 
-				$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_CREATED); 
+				//update statistic
+				$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_CREATED); 
 			}
 			else {
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
@@ -130,7 +131,7 @@ class EventController extends Controller
 			
 			$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CONFIRM, new ConfirmEvent($event,$this->getUser())); 
 
-			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_CONFIRMED);  
+			$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_CONFIRMED);  
 		}
 
 		$this->redirect($this->generateUrl("ws_event_view",array('event'=>$event->getId()))); 
@@ -161,7 +162,7 @@ class EventController extends Controller
 
 			$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_DELETE, new DeleteEvent($event,$this->getUser()));  
 
-			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_DELETED); 
+			$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_DELETED); 
 		}		
 
 		$this->redirect($this->generateUrl("ws_event_new"));     

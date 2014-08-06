@@ -16,7 +16,7 @@ use My\WorldBundle\Entity\Location;
 /**
  * Search
  *
- * @ORM\Table(name="events_alert_search")
+ * @ORM\Table(name="events_search")
  * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\AlertRepository")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -34,10 +34,16 @@ class Search
     private $date_created = null;
 
     /**
-    * @ORM\Column(name="alert_id")
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert")
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert", mappedBy="search"))
+    * @ORM\JoinColumn(name="alert_id", referencedColumnName="id", nullable=true)
     */
     private $alert = null;
+
+     /**
+    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
+    * @ORM\JoinColumn(name="user_id", nullable=false)
+    */
+    private $user = null;
 
     /**
     * @ORM\Column(name="date", type="string", nullable=true)
@@ -45,8 +51,8 @@ class Search
     private $date = null;
 
     /**
-    * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location")
-    * @ORM\Column(name="location_id", nullable=false)
+    * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")
+    * @ORM\JoinColumn(name="location_id", nullable=false)
     */
     private $location = null;
 
@@ -86,8 +92,8 @@ class Search
     private $price = null;
 
     /**
-    * @ORM\Column(name="organizer_id", nullable=true)
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
+    * @ORM\JoinColumn(name="organizer_id", nullable=true)
     */
     public $organizer = null;
 
@@ -128,8 +134,6 @@ class Search
         $this->day_of_week = json_decode($this->day_of_week, JSON_FORCE_OBJECT);
     }
 
-
-
     public function getDate()
     {
         return $this->date;
@@ -143,6 +147,17 @@ class Search
     public function setDate($date)
     {
         $this->date = $date;
+    }
+
+    public function setUser(User $user)
+    {
+    	$this->user = $user;
+    	return $this;
+    }
+
+    public function getUser()
+    {
+    	return $this->user;
     }
 
     public function setAlert(Alert $alert)
@@ -188,9 +203,10 @@ class Search
         return false;
     }
 
-    public function setLocation($location)
+    public function setLocation(Location $location)
     {
         $this->location = $location;
+        return $this;
     }
 
     public function getArea()

@@ -4,6 +4,7 @@ namespace Ws\EventsBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormEvent;
@@ -19,9 +20,10 @@ class CalendarSearchType extends AbstractType
     private $manager;
     private $search;
 
-    public function __construct(CalendarManager $manager)
+    public function __construct(CalendarManager $manager,SecurityContext $secu)
     {
         $this->manager = $manager;
+        $this->user = $secu->getToken()->getUser();
     }
 
 
@@ -110,15 +112,21 @@ class CalendarSearchType extends AbstractType
     {
         $form = $event->getForm();
         $data = $event->getData();
-    
-        $this->manager->resetParams(false);
-        $this->manager->addParams($data);
-        $this->manager->prepareParams();
-        $search = $this->manager->getSearch();
-        //\My\UtilsBundle\Utils\Debug::debug($search);
-        
-        $form->setData($search);
 
+        //reset search params ( dont reset cookies with false)
+        $this->manager->resetParams(false);
+        //add submitted  search params
+        $this->manager->addParams($data);
+        //compute params and prepare Search object
+        $this->manager->prepareParams();
+        //get Search object
+        $search = $this->manager->getSearch();
+
+        //set user to Search
+        $search->setUser($this->user);
+
+        //return
+        $form->setData($search);
 
     }
 

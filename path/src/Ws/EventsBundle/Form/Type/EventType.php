@@ -4,12 +4,13 @@ namespace Ws\EventsBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 use Ws\SportsBundle\Form\Type\SelectSportType;
 use Ws\EventsBundle\Form\Type\SerieType;
+use Ws\EventsBundle\Form\Type\InvitationType;
 use My\WorldBundle\Form\Type\CityToLocationType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class EventType extends AbstractType
 {
@@ -61,6 +62,9 @@ class EventType extends AbstractType
 			))
 		->add('phone','text',array(
 			'label'=>'Téléphone','required'=>false
+			))
+		->add('invitations','invitation_type',array(
+			'mapped'=>false,
 			))
 	;
 

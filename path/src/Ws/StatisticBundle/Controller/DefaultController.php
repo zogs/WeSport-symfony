@@ -20,7 +20,7 @@ class DefaultController extends Controller
 
     public function showAction($scope,$id)
     {
-    	$stat = $this->get('statistic.manager')->setContext($scope)->get($id);
+    	$stat = $this->get('statistic.manager')->setContext($scope,$id)->get();
 
     	return $this->render('WsStatisticBundle:Default:index.html.twig', array('name' => 'test'));
     }

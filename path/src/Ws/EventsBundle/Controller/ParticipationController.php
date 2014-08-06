@@ -38,8 +38,8 @@ class ParticipationController extends Controller
 			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));
 
 			//update stat 
-			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_PARTICIPATION_ADDED);
-			$this->get('statistic.manager')->setContext('user')->get($event->getOrganizer())->increment(UserStat::EVENT_TOTAL_PARTICIPANTS);
+			$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_PARTICIPATION_ADDED);
+			$this->get('statistic.manager')->setContext('user',$event->getOrganizer())->get()->increment(UserStat::EVENT_TOTAL_PARTICIPANTS);
 
 		} else {
 			$this->get('flashbag')->add("Il semble que vous participiez déjà",'warning');
@@ -76,8 +76,8 @@ class ParticipationController extends Controller
 			//throw event
 			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));  
 
-			$this->get('statistic.manager')->setContext('user')->get($this->getUser())->increment(UserStat::EVENT_PARTICIPATION_CANCELED); 
-			$this->get('statistic.manager')->setContext('user')->get($event->getOrganizer())->decrement(UserStat::EVENT_TOTAL_PARTICIPANTS); 
+			$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_PARTICIPATION_CANCELED); 
+			$this->get('statistic.manager')->setContext('user',$event->getOrganizer())->get()->decrement(UserStat::EVENT_TOTAL_PARTICIPANTS); 
 		}
 
 		return $this->redirect($this->generateUrl(

@@ -10,21 +10,24 @@ class StatisticManager extends AbstractManager
 {
 	protected $em;
 	protected $stat;
-	protected $scope = 'general';
+	protected $ctx = 'general';
+	protected $ctx_id = null;
 
-	public function setContext($scope)
+	public function setContext($ctx,$id = null)
 	{
-		$this->scope = $scope;
+		$this->ctx = $ctx;
+		$this->ctx_id = $id;
+
 		return $this;
 	}
 
-	public function get($id = null)
+	public function get()
 	{
-		if($this->scope == 'general'){			
+		if($this->ctx == 'general'){			
 			$this->data = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findOneByName('main');
 		}
-		if($this->scope == 'user'){		
-			$this->data = $this->em->getRepository('WsStatisticBundle:UserStat')->findOneByUser($id);
+		if($this->ctx == 'user'){		
+			$this->data = $this->em->getRepository('WsStatisticBundle:UserStat')->findOneByUser($this->ctx_id);
 		}
 		return $this;
 		
@@ -63,11 +66,11 @@ class StatisticManager extends AbstractManager
 		$this->em->getRepository('WsStatisticBundle:UserSportStat')->setSportCreated($sport,$user);
 	}
 
-	public function update($scope)
+	public function update($ctx)
 	{
-		if($scope=='general') return $this->updateGeneral();
+		if($ctx=='general') return $this->updateGeneral();
 
-		if(isset($this->scope)) $this->update($this->scope);
+		if(isset($this->ctx)) $this->update($this->ctx);
 	}
 
 	private function updateGeneral()

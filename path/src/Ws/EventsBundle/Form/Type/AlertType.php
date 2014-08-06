@@ -3,16 +3,28 @@ namespace Ws\EventsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
+use My\WorldBundle\Form\Type\AutoCompleteCityType;
 use Ws\SportsBundle\Form\Type\SelectSportType;
 use Ws\EventsBundle\Manager\CalendarManager;
 use Ws\EventsBundle\Form\Type\SerieType;
-use My\WorldBundle\Form\Type\AutoCompleteCityType;
 use Ws\EventsBundle\Form\Type\CalendarSearchType;
 
 class AlertType extends AbstractType
 {
+
+    private $user;
+
+    public function __construct(SecurityContext $secu)
+    {
+        $this->user = $secu->getToken()->getUser();
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -37,8 +49,20 @@ class AlertType extends AbstractType
             ->add('submit','submit')
             ;
     		
+
+            $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
     }
 
+
+     public function onPostSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $alert = $event->getData();
+    
+        //Set the current user 
+        $alert->setUser($this->user);
+
+    }
     public function getName()
     {
         return 'alert_type';

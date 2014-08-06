@@ -20,24 +20,29 @@ class AlertController extends Controller
 	 */
 	public function createAction(Request $request)
 	{		
+
+		//Prepare Search request from URL
+		//get manager
 		$manager = $this->get('calendar.manager');
 		$manager->disableFlashbag();
+		//add cookie params
 		$manager->addParamsFromCookies($request->cookies->all());
+		//add URL params
 		$manager->addParamsFromUrl($request->query->get('url'));
+		//compute params and prepare Search
 		$manager->prepareParams();
 		$search = $manager->getSearch();
 
+		//Create empty alert
 		$alert = new Alert();
+		//pre-filled with Search from URL
 		$alert->setSearch($search);
-		$alert->setUser($this->getUser());
 		
-		$form = $this->createForm(new AlertType(),$alert);
-
+		//Create form
+		$form = $this->createForm('alert_type',$alert);
 		$form->handleRequest($this->getRequest());
 
 		if($form->isValid()){
-
-			$alert = $form->getData();
 
 			if($this->get('ws_events.alert.manager')->saveAlert($alert)){
 				$this->get('flashbag')->add("Voila ! On espère que vous allez recevoir plein d'annonces :)",'success');			
@@ -58,7 +63,7 @@ class AlertController extends Controller
 		$user = $this->getUser();
 
 		$alerts = $this->getDoctrine()->getRepository('WsEventsBundle:Alert')->findByUser($user);
-		
+
 		return $this->render('WsEventsBundle:Alert:index.html.twig',array(
 			'alerts'=>$alerts,
 			));
