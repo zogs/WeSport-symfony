@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Manager\CalendarManager;
 use Ws\SportsBundle\Form\Type\SelectSportType;
 use My\WorldBundle\Form\Type\AutoCompleteCityType;
@@ -40,7 +41,7 @@ class CalendarSearchType extends AbstractType
                 'required'=>false,
                 ))
             ->add('type','choice',array(
-                'choices'=>array('pro'=>'pro','asso'=>'asso','person'=>'person'),
+                'choices'=>Event::$valuesAvailable['type'],
                 'multiple'=>true,
                 'expanded'=>true,
                 'required'=>true,                
@@ -56,7 +57,13 @@ class CalendarSearchType extends AbstractType
                     'expanded'=>false,
                     'mapped'=>false,
                     'attr'=>array('class'=>'iconSportSelect'))
-            )           
+            )       
+            ->add('level','choice',array(
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+                'choices' => Event::$valuesAvailable['level'],
+                ))
             ->add('timestart','time',array(
                 'widget'=>'choice',
                 'input'=>'string',

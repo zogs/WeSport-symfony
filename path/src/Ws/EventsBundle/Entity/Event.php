@@ -55,9 +55,9 @@ class Event
     private $time;
 
     /**
-     * @ORM\Column(name="type", type="string", length=10)
+     * @ORM\Column(name="type", type="integer")
      */
-    private $type = 'person';
+    private $type = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")     
@@ -114,6 +114,11 @@ class Event
     private $price = 0;
 
     /**
+     * @ORM\Column(name="level", type="integer")
+     */
+    private $level = 0;
+
+    /**
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
      */
     private $phone;
@@ -139,6 +144,11 @@ class Event
     private $online = 1;
 
     public $changes_made;
+
+    static public $valuesAvailable = array(
+        'level' => array('all','beginner','average','confirmed','expert'),
+        'type' => array('person','asso','pro'),
+        );
 
     function __construct(){
 
@@ -284,6 +294,29 @@ class Event
     public function getTime()
     {
         return $this->time;
+    }
+
+     /**
+     * Set level
+     *
+     * @param \string $level
+     * @return Event
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return \integer 
+     */
+    public function getLevel()
+    {
+        return $this->level;
     }
 
     /**

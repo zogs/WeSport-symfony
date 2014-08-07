@@ -4,6 +4,8 @@ namespace Ws\EventsBundle\Manager;
 
 use Symfony\Component\Routing\RouterInterface;
 
+use Ws\EventsBundle\Entity\Event;
+
 class CalendarUrlGenerator {
 
 	private $router;
@@ -20,6 +22,7 @@ class CalendarUrlGenerator {
 		'date' => 'allweek',
 		'time' => 'allday',
 		'price' => 'allprice',
+		'level' => 'alllevel',
 		'organizer' => 'allorganizer'
 		);
 
@@ -160,7 +163,7 @@ class CalendarUrlGenerator {
 		if($this->search->hasType()){
 			$str = '';
 			foreach ($this->search->getType() as $k => $type) {
-				$str .= $type.'-';
+				$str .= Event::$valuesAvailable['type'][$type].'-';
 			}
 			$str = trim($str,'-');
 			return $str;
@@ -207,6 +210,20 @@ class CalendarUrlGenerator {
 			return $this->search->getPrice();
 		}
 		else
+			return null;
+	}
+
+	public function getLevelParam()
+	{
+		if($this->search->hasLevel()){
+			$str = '';
+			foreach ($this->search->getLevel() as $k => $level) {
+				$str .= Event::$valuesAvailable['level'][$level].'-';
+			}
+			$str = trim($str,'-');
+			return $str;
+		}
+		else 
 			return null;
 	}
 

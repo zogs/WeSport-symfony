@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 use My\ManagerBundle\Manager\AbstractManager;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
+use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Entity\Search;
 use My\WorldBundle\Entity\Country;
 use My\WorldBundle\Entity\City;
@@ -33,6 +34,7 @@ class CalendarManager extends AbstractManager
 		'type' => null,
 		'time' => null,
 		'price' => null,
+		'level' => null,
 		'organizer' => null,
 		);
 	private $computed = false;	
@@ -49,6 +51,7 @@ class CalendarManager extends AbstractManager
 		'timestart'=> null,
 		'timeend' => null,
 		'price' => null,
+		'level' => array('all','beginner','average','confirmed','expert'),
 		'organizer' => null,
 		'dayofweek'=>array(),
 
@@ -58,9 +61,7 @@ class CalendarManager extends AbstractManager
 	private $serializer;
 	private $urlGenerator;
 	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek');
-	private $params_allowed = array(
-		'type'=> array('person','asso','pro')
-		);
+
 
 	public function __construct(Container $container)
 	{
@@ -254,6 +255,7 @@ class CalendarManager extends AbstractManager
 		$this->prepareNbdaysParams();
 		$this->prepareTimeParams();
 		$this->preparePriceParams();
+		$this->prepareLevelParams();
 		$this->prepareOrganizerParams();
 		$this->prepareDayOfWeekParams();		
 
@@ -412,16 +414,57 @@ class CalendarManager extends AbstractManager
 		if(empty($this->params['type'])) return; //if not set
 		if(is_string($this->params['type']) && $this->params['type'] == $this->urlGenerator->defaults['type']) return; //if equal to URL default value
 
-		$t = array();
-		if(is_string($this->params['type'])) $t = explode('-',trim($this->params['type'],'-'));
-		if(is_array($this->params['type'])) $t = $this->params['type'];		
-		foreach ($t as $k => $type) {
-			if(!in_array($type,$this->params_allowed['type'])) unset($t[$k]);
+		$a = array();
+		if(is_string($this->params['type'])) $a = explode('-',trim($this->params['type'],'-'));
+		if(is_array($this->params['type'])) $a = $this->params['type'];		
+		foreach ($a as $k => $type) {
+			if(is_numeric($type)){
+				if(!array_key_exists($type, Event::$valuesAvailable['type'])) unset($a[$k]);
+				else $a[$k] = $type;
+			}
+			else if(is_string($type)){
+				if(!in_array($type,Event::$valuesAvailable['type'])) unset($a[$k]);	
+				else $a[$k] = array_search($type, Event::$valuesAvailable['type']);
+			}			
 		}    	
 
-		$this->search->setType($t);
+		if(count(array_diff(Event::$valuesAvailable['type'],$a)) == 0) {
+			unset($this->params['type']);		
+			$a = null;
+		}
+		
+		if(empty($a)) $a = null;
+		$this->search->setType($a);
 
-		if(count(array_diff($this->params_allowed['type'],$t)) == 0) unset($this->params['type']);
+		return;
+	}
+
+	private function prepareLevelParams()
+	{
+		if(empty($this->params['level'])) return ;		
+		if(is_string($this->params['level']) && $this->params['level'] == $this->urlGenerator->defaults['level']) return; //if equal to URL default value
+
+		$a = array();
+		if(is_string($this->params['level'])) $a = explode('-',trim($this->params['level'],'-'));
+		if(is_array($this->params['level'])) $a = $this->params['level'];
+		foreach ($a as $k => $level) {
+			if(is_numeric($level)){
+				if(!array_key_exists($level, Event::$valuesAvailable['level'])) unset($a[$k]);
+				else $a[$k] = $level;
+			}
+			else if(is_string($level)){
+				if(!in_array($level,Event::$valuesAvailable['level'])) unset($a[$k]);	
+				else $a[$k] = array_search($level, Event::$valuesAvailable['level']);		
+			}
+		}
+		
+		if(count(array_diff(Event::$valuesAvailable['level'],$a)) == 0) {
+			unset($this->params['level']);
+			$a = null;
+		}
+
+		if(empty($a)) $a = null;
+		$this->search->setLevel($a);		
 
 		return;
 	}

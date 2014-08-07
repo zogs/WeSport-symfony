@@ -12,6 +12,7 @@ use My\WorldBundle\Entity\Country;
 use My\WorldBundle\Entity\City;
 use My\UserBundle\Entity\User;
 use My\WorldBundle\Entity\Location;
+use Ws\EventsBundle\Entity\Event;
 
 /**
  * Search
@@ -33,17 +34,11 @@ class Search
     */
     private $date_created = null;
 
-    /**
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert", mappedBy="search"))
-    * @ORM\JoinColumn(name="alert_id", referencedColumnName="id", nullable=true)
-    */
-    private $alert = null;
-
      /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    * @ORM\JoinColumn(name="user_id", nullable=false)
+    * @ORM\JoinColumn(name="user_id")
     */
-    private $user = null;
+    private $user;
 
     /**
     * @ORM\Column(name="date", type="string", nullable=true)
@@ -92,6 +87,11 @@ class Search
     private $price = null;
 
     /**
+    * @ORM\Column(name="level", type="string")
+    */
+    private $level = array();
+
+    /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
     * @ORM\JoinColumn(name="organizer_id", nullable=true)
     */
@@ -104,8 +104,7 @@ class Search
     public $url = null;
     public $url_params = null;
     public $short_url_params = null;
-    private $default = array(
-        'type' => array('pro','asso','person'),
+    private $default = array( //usefull ?
         'time' => array('start'=>'00:00:00','end'=>'24:00:00'),
         'day_of_week' => array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'),
         );
@@ -119,6 +118,7 @@ class Search
         if(is_array($this->sports)) $this->sports = json_encode($this->sports, JSON_FORCE_OBJECT);
         if(is_array($this->type)) $this->type = json_encode($this->type, JSON_FORCE_OBJECT);
         if(is_array($this->time)) $this->time = json_encode($this->time, JSON_FORCE_OBJECT);
+        if(is_array($this->level)) $this->level = json_encode($this->level, JSON_FORCE_OBJECT);
         if(is_array($this->day_of_week)) $this->day_of_week = json_encode($this->day_of_week, JSON_FORCE_OBJECT);
         $this->date_created = new \DateTime();
     }
@@ -131,6 +131,7 @@ class Search
         $this->sports = json_decode($this->sports, JSON_FORCE_OBJECT);
         $this->type = json_decode($this->type, JSON_FORCE_OBJECT);
         $this->time = json_decode($this->time, JSON_FORCE_OBJECT);
+        $this->level = json_decode($this->level, JSON_FORCE_OBJECT);
         $this->day_of_week = json_decode($this->day_of_week, JSON_FORCE_OBJECT);
     }
 
@@ -264,7 +265,7 @@ class Search
 
     public function hasType()
     {
-        if(isset($this->type) && count(array_diff($this->default['type'],$this->type)) != 0) return true;
+        if(!empty($this->type) && count(array_diff(Event::$valuesAvailable['type'],$this->type)) != 0) return true;
         return false;
     }
 
@@ -360,6 +361,22 @@ class Search
     public function setPrice($price)
     {
         $this->price = $price;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function hasLevel()
+    {
+    	if(!empty($this->level) && count(array_diff(Event::$valuesAvailable['level'],$this->level)) != 0) return true;
+        	return false;
+    }
+
+    public function setLevel($level)
+    {
+        $this->level = $level;
     }
 
     public function getOrganizer()

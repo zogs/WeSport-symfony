@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use Ws\SportsBundle\Form\Type\SelectSportType;
+use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Form\Type\SerieType;
 use Ws\EventsBundle\Form\Type\InvitationType;
 use My\WorldBundle\Form\Type\CityToLocationType;
@@ -28,6 +29,12 @@ class EventType extends AbstractType
 			'expanded'=>false,
 			'attr'=>array('class'=>'iconSportSelect'))
 		)
+		->add('level','choice',array(
+			'multiple'=> false,
+			'expanded' => false,
+			'required' => true,
+			'choices' => Event::$valuesAvailable['level'],
+			))
 		->add('title',null,array(
 			'label'=>'Titre'
 			))
@@ -85,24 +92,23 @@ class EventType extends AbstractType
 		$form = $event->getForm();
 		$this->post_event = $event->getData();
 
-
+		//Detect eventualy modification
+		//using php reflector class
 		$reflector = new \ReflectionClass($this->post_event);
 		$properties = $reflector->getProperties();
-
 		$changes = array();
-		foreach ($properties as $property) {
-			
+		foreach ($properties as $property) {			
 			$property->setAccessible(true);
 			if($property->getValue($this->pre_event) != $property->getValue($this->post_event)){				
 				$changes[$property->getName()] = array(
 					'pre' => $property->getValue($this->pre_event),
 					'post' => $property->getValue($this->post_event)
 					);
-			}
-			
+			}			
 		}
-
+		//set array of change to the event for future uses
 		$this->post_event->setChanges($changes);
+		
 		$event->setData($this->post_event);
 		
 	}

@@ -29,6 +29,7 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterByType($qb);
 		$qb = $this->filterByTime($qb);
 		$qb = $this->filterByPrice($qb);
+		$qb = $this->filterByLevel($qb);
 		$qb = $this->filterByOrganizer($qb);
 		$qb = $this->filterByDayOfWeek($qb);
 		$qb = $this->filterByAlerted($qb);
@@ -169,6 +170,14 @@ class EventRepository extends EntityRepository
 		if($this->search->hasPrice() === false) return $qb;
 		if($this->search->getPrice() > 0) return $qb->andWhere($qb->expr()->lt('e.price',':price'))->setParameter('price',$this->search->getPrice());
 		if($this->search->getPrice() == 0 ) return $qb->andWhere($qb->expr()->eq('e.price',0));
+	}
+
+	private function filterByLevel($qb)
+	{
+		if($this->search->hasLevel() === false) return $qb;
+
+		$qb->setParameter('level',$this->search->getLevel());
+		return $qb->andWhere('e.level IN (:level)');
 	}
 
 	private function filterByOrganizer($qb)

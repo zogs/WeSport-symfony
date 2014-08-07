@@ -24,7 +24,7 @@ class CalendarController extends Controller
 	 *
 	 * @return View
 	 */
-	public function loadAction($city,$sports,$date,$nbdays,$type,$time,$price,$organizer)
+	public function loadAction($city,$sports,$date,$nbdays,$type,$time,$price,$level,$organizer)
 	{
 		
 		$params = array(
@@ -35,6 +35,7 @@ class CalendarController extends Controller
 			'type' => $type,
 			'time' => $time,	
 			'price' => $price,
+			'level' => $level,
 			'organizer' => $organizer,		
 			);   
 
