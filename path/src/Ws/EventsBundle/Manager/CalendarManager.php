@@ -60,7 +60,7 @@ class CalendarManager extends AbstractManager
 	private $flashbag;
 	private $serializer;
 	private $urlGenerator;
-	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek');
+	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time','level','price');
 
 
 	public function __construct(Container $container)
@@ -415,26 +415,27 @@ class CalendarManager extends AbstractManager
 		if(is_string($this->params['type']) && $this->params['type'] == $this->urlGenerator->defaults['type']) return; //if equal to URL default value
 
 		$a = array();
+		$r = array();
 		if(is_string($this->params['type'])) $a = explode('-',trim($this->params['type'],'-'));
 		if(is_array($this->params['type'])) $a = $this->params['type'];		
 		foreach ($a as $k => $type) {
 			if(is_numeric($type)){
-				if(!array_key_exists($type, Event::$valuesAvailable['type'])) unset($a[$k]);
-				else $a[$k] = $type;
+				if(!array_key_exists($type, Event::$valuesAvailable['type'])) continue;
+				$r[$type] = Event::$valuesAvailable['type'][$type];
 			}
 			else if(is_string($type)){
-				if(!in_array($type,Event::$valuesAvailable['type'])) unset($a[$k]);	
-				else $a[$k] = array_search($type, Event::$valuesAvailable['type']);
+				if(!in_array($type,Event::$valuesAvailable['type'])) continue;	
+				$r[array_search($type, Event::$valuesAvailable['type'])] = $type;
 			}			
 		}    	
 
-		if(count(array_diff(Event::$valuesAvailable['type'],$a)) == 0) {
+		if(count(array_diff(Event::$valuesAvailable['type'],$r)) == 0) {
 			unset($this->params['type']);		
-			$a = null;
+			$r = null;
 		}
 		
-		if(empty($a)) $a = null;
-		$this->search->setType($a);
+		if(empty($r)) $r = null;
+		$this->search->setType($r);
 
 		return;
 	}

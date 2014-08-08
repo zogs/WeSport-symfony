@@ -26,5 +26,5 @@ final class WsEvents {
 
 	const CALENDAR_AJAX = 'ws.calendar.ajax';
 
-	const CALENDAR_REST = 'ws.calendar.reset';
+	const CALENDAR_RESET = 'ws.calendar.reset';
 }

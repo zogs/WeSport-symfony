@@ -263,9 +263,14 @@ class Search
         return $this->type;
     }
 
+    public function getTypeKeys()
+    {
+        return array_keys($this->type);
+    }
+
     public function hasType()
     {
-        if(!empty($this->type) && count(array_diff(Event::$valuesAvailable['type'],$this->type)) != 0) return true;
+        if(!empty($this->type) && count($this->type) != count(Event::$valuesAvailable['type'])) return true;
         return false;
     }
 
@@ -370,7 +375,7 @@ class Search
 
     public function hasLevel()
     {
-    	if(!empty($this->level) && count(array_diff(Event::$valuesAvailable['level'],$this->level)) != 0) return true;
+    	if(!empty($this->level) && count($this->level) != count(Event::$valuesAvailable['level'])) return true;
         	return false;
     }
 

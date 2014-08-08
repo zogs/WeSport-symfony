@@ -163,7 +163,7 @@ class CalendarUrlGenerator {
 		if($this->search->hasType()){
 			$str = '';
 			foreach ($this->search->getType() as $k => $type) {
-				$str .= Event::$valuesAvailable['type'][$type].'-';
+				$str .= $type.'-';
 			}
 			$str = trim($str,'-');
 			return $str;

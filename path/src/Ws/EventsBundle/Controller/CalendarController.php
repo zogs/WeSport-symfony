@@ -51,6 +51,7 @@ class CalendarController extends Controller
 		//get search params
 		$search = $manager->getSearch();
 		
+		
 		//throw VIEW_CALENDAR
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_VIEW, new ViewCalendar($search,$this->getUser())); 
 

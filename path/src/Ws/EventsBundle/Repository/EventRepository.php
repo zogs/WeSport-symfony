@@ -144,17 +144,18 @@ class EventRepository extends EntityRepository
 	{
 		if($this->search->hasType() === false) return $qb;
 
-		$qb->setParameter('type',$this->search->getType());
+		$qb->setParameter('type',$this->search->getTypeKeys());
 		return $qb->andWhere('e.type IN (:type)');
 	}
 
 	private function filterByDate($qb)
 	{
 		if($this->search->hasDate() === false) return $qb;
-		$qb->setParameter('date',$this->search->getDate());
-		return $qb->andWhere(
-			$qb->expr()->eq('e.date',':date')
-			);		
+
+		if($this->search->getDate() == 'infutur') return $qb->andWhere($qb->expr()->gte('e.date','CURRENT_DATE()'));
+
+
+		return $qb->andWhere($qb->expr()->eq('e.date',':date'))->setParameter('date',$this->search->getDate());		
 	}
 
 	private function filterByTime($qb)

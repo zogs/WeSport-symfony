@@ -113,6 +113,9 @@ class CalendarSearchType extends AbstractType
         $form = $event->getForm();
         $search = $event->getData(); 
 
+        //set types array as key values array
+        $search->setType(array_keys($search->getType()));
+
     }
 
     public function onPreSubmit(FormEvent $event)
