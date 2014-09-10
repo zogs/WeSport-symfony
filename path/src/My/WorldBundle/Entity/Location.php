@@ -56,7 +56,10 @@ class Location
      * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\City", fetch="EAGER")
      * @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
      */
-    protected $city;
+    protected $city;    
+
+    public $city_id; //!\
+    public $city_name;//!\
 
     public function __toString()
     {

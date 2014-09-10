@@ -1230,6 +1230,8 @@ TYPEAHEAD CUSTOM STYLE
 		//@include transition(all 0.2s ease-in-out);
 
 		&:before {
+			/*
+			
 			content:' ';
 			display: block;
 			position:absolute;
@@ -1237,10 +1239,12 @@ TYPEAHEAD CUSTOM STYLE
 			width:110px; height:55px;		
 			background-image: url('../img/calendar_event_virgule.gif');
 			background-repeat: no-repeat;	
-			background-position:bottom right;	
+			background-position:bottom right;
+			*/	
 		}
 
 		a.events-link:before{
+			/*
 			content:' ';
 			display: block;
 			position:absolute;
@@ -1248,7 +1252,8 @@ TYPEAHEAD CUSTOM STYLE
 			width:80px; height:80px;		
 			background-image:url('../img/calendar_event_sport_rounded.gif');
 			background-repeat: no-repeat;
-			background-size:50px;		
+			background-size:50px;	
+			*/	
 		}
 	}
 
@@ -1334,14 +1339,14 @@ TYPEAHEAD CUSTOM STYLE
 
 		.events-logo{
 			position:absolute;
-			top:-16px;
-			left:-40px;
+			top:-20px;
+			left:-44px;
 
 			z-index:10;
 
 			.ws-sport-icon { 					
 				span {
-					@include rem(35); color:#111; 
+					@include rem(38); color:#111; 
 				}
 			}			
 		}

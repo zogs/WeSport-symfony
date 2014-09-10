@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityManager;
 
 use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Manager\CalendarManager;
@@ -20,11 +21,13 @@ class CalendarSearchType extends AbstractType
 {
     private $manager;
     private $search;
+    private $em;
 
-    public function __construct(CalendarManager $manager,SecurityContext $secu)
+    public function __construct(CalendarManager $manager,SecurityContext $secu, EntityManager $em)
     {
         $this->manager = $manager;
         $this->user = $secu->getToken()->getUser();
+        $this->em = $em;
     }
 
 
@@ -32,7 +35,7 @@ class CalendarSearchType extends AbstractType
     {
         $builder
             ->add('location', 'city_to_location_type', array(
-                'required'=>false,
+                'required'=>true,
                 ))
             ->add('area','choice',array(
                 'choices'=> array(10=>'10km',20=>'20km',50=>'50km',100=>'100km'),
@@ -53,10 +56,12 @@ class CalendarSearchType extends AbstractType
                     'class'=>'WsSportsBundle:Sport',
                     'label'=>'Sport',
                     'property'=>'name',
-                    'empty_value'=>'Choississez un sport',
                     'expanded'=>false,
+                    'multiple' => true,
                     'mapped'=>false,
-                    'attr'=>array('class'=>'iconSportSelect'))
+                    'group_by' => 'category',
+                    'required' => false,
+                    'attr'=>array('class'=>'iconSportSelect','multiple'=>true,'data-placeholder'=>'Choississez un ou plusieurs sport'))
             )       
             ->add('level','choice',array(
                 'multiple' => true,
@@ -113,8 +118,8 @@ class CalendarSearchType extends AbstractType
         $form = $event->getForm();
         $search = $event->getData(); 
 
-        //set types array as key values array
-        $search->setType(array_keys($search->getType()));
+        //set key values as array
+        if(is_array($search->getType()))  $search->setType(array_keys($search->getType()));
 
     }
 
@@ -134,7 +139,7 @@ class CalendarSearchType extends AbstractType
 
         //set user to Search
         $search->setUser($this->user);
-
+       
         //return
         $form->setData($search);
 

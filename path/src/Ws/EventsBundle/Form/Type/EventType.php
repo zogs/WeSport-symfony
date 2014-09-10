@@ -15,8 +15,8 @@ use My\WorldBundle\Form\Type\CityToLocationType;
 
 class EventType extends AbstractType
 {
-	private $pre_data;
-	private $post_data;
+	private $pre_event; //event before modification
+	private $post_event; //event after modification
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
@@ -108,6 +108,8 @@ class EventType extends AbstractType
 		}
 		//set array of change to the event for future uses
 		$this->post_event->setChanges($changes);
+		
+
 		
 		$event->setData($this->post_event);
 		

@@ -12,9 +12,23 @@
             </div>
 
         <div class="col_large">
-            {{ form(form) }}
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
 
-                   
+                {{ form_row(form.frequency) }}
+                {{ form_row(form.duration) }}
+                {{ form_widget(form.search.location.city_id, {'id':'city_id','required':'required','attr':{'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
+                {{ form_row(form.search.location.city_name,{'id':'city_name'}) }}
+                {{ form_row(form.search.area) }}
+                {{ form_row(form.search.type) }}
+                {{ form_row(form.search.price) }}
+                {{ form_row(form.search.sports) }}
+                {{ form_row(form.search.level) }}
+                {{ form_row(form.search.timestart) }}
+                {{ form_row(form.search.timeend) }}
+                {{ form_row(form.search.dayofweek) }}
+
+             {{ form_end(form) }}      
         </div>
 
         <div class="col_small">

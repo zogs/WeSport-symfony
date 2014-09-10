@@ -47,7 +47,7 @@ class Search
 
     /**
     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")
-    * @ORM\JoinColumn(name="location_id", nullable=false)
+    * @ORM\JoinColumn(name="location_id", nullable=true)
     */
     private $location = null;
 
@@ -57,7 +57,7 @@ class Search
     private $area = null;
 
     /**
-    * @ORM\Column(name="sports", type="string", nullable=true)
+    * @ORM\Column(name="sports", type="text", nullable=true)
     */
     private $sports = array();
 
@@ -200,7 +200,7 @@ class Search
 
     public function hasLocation()
     {
-        if(isset($this->location)) return true;
+        if(isset($this->location) && $this->location->getId() != null) return true;
         return false;
     }
 
@@ -229,6 +229,11 @@ class Search
     public function getSports()
     {
         return $this->sports;
+    }
+
+    public function addSports($sport)
+    {
+        $this->sports[] = $sport;
     }
 
     public function hasSports()

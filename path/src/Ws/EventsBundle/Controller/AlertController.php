@@ -33,6 +33,7 @@ class AlertController extends Controller
 		$manager->prepareParams();
 		$search = $manager->getSearch();
 
+
 		//Create empty alert
 		$alert = new Alert();
 		//pre-filled with Search from URL
@@ -43,12 +44,25 @@ class AlertController extends Controller
 		$form->handleRequest($this->getRequest());
 
 		if($form->isValid()){
+		
+			if($alert->getSearch()->hasLocation()){
 
-			if($this->get('ws_events.alert.manager')->saveAlert($alert)){
-				$this->get('flashbag')->add("Voila ! On espère que vous allez recevoir plein d'annonces :)",'success');			
+				if($alert->getSearch()->hasSports()){
+
+					if($this->get('ws_events.alert.manager')->saveAlert($alert)){
+						$this->get('flashbag')->add("Voila ! On espère que vous allez recevoir plein d'annonces :)",'success');			
+					}
+
+					return $this->redirect($this->generateUrl('ws_alerts_index'));					
+				}
+				else {
+					$this->get('flashbag')->add('Veuillez choisir un ou plusieurs sports...','warning');
+				}
+				
 			}
-
-			return $this->redirect($this->generateUrl('ws_alerts_index'));
+			else {
+				$this->get('flashbag')->add('Veuillez choisir une ville...','warning');
+			}
 		}		
 
 		
@@ -84,6 +98,15 @@ class AlertController extends Controller
 		return $this->redirect($this->generateUrl('ws_alerts_index'));
 	}
 
+	public function extendAction(Alert $alert, $nbmonth){
+
+		if($this->get('ws_events.alert.manager')->extendAlert($alert,$nbmonth)){
+			$this->get('flashbag')->add("Votre alerte a été prolongé :)",'success');			
+		}
+
+		return $this->redirect($this->generateUrl('ws_alerts_index'));
+	}
+
 
 	public function sendAlertsAction($type)
 	{
@@ -93,27 +116,43 @@ class AlertController extends Controller
 		$manager = $this->get('ws_events.alert.manager');
 		$generator = $this->get('calendar.url.generator');
 
+		//find daily or monthly alerts
 		$alerts = $em->getRepository('WsEventsBundle:Alert')->findAlerts($type);
-		$repo = $em->getRepository('WsEventsBundle:Event');		
 
+		$repo = $em->getRepository('WsEventsBundle:Event');		
 		$sended = array();
+		$expired = array();
 		$nb_events = 0;
+		//for each alert		
 		foreach ($alerts as $k => $alert) {
-						
+			//find events matching the alert		
 			$events = $repo->findEvents($alert->getSearch());
 
 			if(!empty($events)){
+				//mail the user with the new events
 				$mailer->sendAlertMessage($alert,$generator,$events);
+				//save which events have been alerted
 				$manager->saveAlerted($alert,$events);			
 
 				$sended[] = array('alert'=>$alert,'events'=>$events);
 				$nb_events += count($events);
+			}
+
+			//disactive outdated alerts
+			$now = new \DateTime('now');
+			if($alert->getDateStop()->format('Ymd') == $now->format('Ymd')){
+				$manager->disactiveAlert($alert);
+				//inform the user this alert is outdated
+				$mailer->sendExpiredAlertmessage($alert);
+
+				$expired[] = $alert;
 			}
 		}
 
 		$manager->flush();
 	
 		return $this->render('WsEventsBundle:Alert:admin.html.twig',array(
+			'expired'=>$expired,
 			'sended'=>$sended,
 			'alerts'=>$alerts,
 			'nb_events'=>$nb_events,

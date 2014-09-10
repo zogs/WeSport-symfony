@@ -410,6 +410,7 @@ class CalendarManager extends AbstractManager
 
 	private function prepareTypeParams()
 	{
+
 		//return null
 		if(empty($this->params['type'])) return; //if not set
 		if(is_string($this->params['type']) && $this->params['type'] == $this->urlGenerator->defaults['type']) return; //if equal to URL default value
@@ -428,13 +429,12 @@ class CalendarManager extends AbstractManager
 				$r[array_search($type, Event::$valuesAvailable['type'])] = $type;
 			}			
 		}    	
-
+		
 		if(count(array_diff(Event::$valuesAvailable['type'],$r)) == 0) {
-			unset($this->params['type']);		
-			$r = null;
+
+			$r = Event::$valuesAvailable['type'];
 		}
 		
-		if(empty($r)) $r = null;
 		$this->search->setType($r);
 
 		return;
@@ -442,6 +442,7 @@ class CalendarManager extends AbstractManager
 
 	private function prepareLevelParams()
 	{
+		
 		if(empty($this->params['level'])) return ;		
 		if(is_string($this->params['level']) && $this->params['level'] == $this->urlGenerator->defaults['level']) return; //if equal to URL default value
 
@@ -460,11 +461,10 @@ class CalendarManager extends AbstractManager
 		}
 		
 		if(count(array_diff(Event::$valuesAvailable['level'],$a)) == 0) {
-			unset($this->params['level']);
-			$a = null;
+			
+			$a = $valuesAvailable['level'];
 		}
 
-		if(empty($a)) $a = null;
 		$this->search->setLevel($a);		
 
 		return;

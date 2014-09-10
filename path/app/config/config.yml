@@ -49,7 +49,7 @@ services:
             - { name: twig.extension }
 
     twig.extension.debug:
-        class: Twig_Extensions_Extension_Debug
+        class: Twig_Extension_Debug
         tags:
             - { name: twig.extension }
 

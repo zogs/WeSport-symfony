@@ -76,7 +76,7 @@ class CalendarController extends Controller
 		$manager->prepareParams();
 		$search = $manager->getSearch();
 		$params = $search->getShortUrlParams();
-
+		
 		return $this->redirect($this->generateUrl('ws_calendar',$params));
 
 	}

@@ -12,6 +12,7 @@
 
             <p>{{ alerts|length }} {{ type }} alertes</p>
             <p>{{ sended|length }} emails envoyés, {{ nb_events }} activités proposés</p>
+            <p>{{ expired|length }} expiration</p>
             
             <table>
             {% for send in sended %}

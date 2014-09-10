@@ -29,7 +29,6 @@ class AppKernel extends Kernel
             new FOS\RestBundle\FOSRestBundle(),
             new FOS\CommentBundle\FOSCommentBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle($this),
-            new Pinano\Select2Bundle\PinanoSelect2Bundle(),
 
             //created
             new My\BlogBundle\MyBlogBundle(),

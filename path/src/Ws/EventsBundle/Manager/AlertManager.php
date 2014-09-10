@@ -24,6 +24,16 @@ class AlertManager extends AbstractManager
 
 		$this->save($alert,true);
 		return true;	
+	}
+
+	public function extendAlert($alert,$nbmonth)
+	{
+		$stop = new \DateTime('+'.$nbmonth.' month');
+		$alert->setDateStop($stop);
+		$alert->setActive(true);
+
+		$this->save($alert,true);
+		return true;
 	}	
 
 	public function deleteAlert($alert)
@@ -56,6 +66,12 @@ class AlertManager extends AbstractManager
 
 			$this->save($alerted);
 		}
+	}
+
+	public function disactiveAlert(Alert $alert)
+	{
+		$alert->setActive(false);
+		$this->save($alert);
 	}
 
 }

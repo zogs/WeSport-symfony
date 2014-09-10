@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use My\WorldBundle\Entity\Location;
+
 use My\WorldBundle\Form\DataTransformer\CityIdToLocationTransformer;
 use My\WorldBundle\Form\DataTransformer\CityNameToLocationTransformer;
 use My\WorldBundle\Form\DataTransformer\CityToLocationTransformer;
@@ -48,7 +50,6 @@ class CityToLocationType extends AbstractType
                 ->add('city_name','text',array(
                 'required' => false,
                 ))
-            //->addModelTransformer(new CityToLocationTransformer($this->em))
             ;
 
        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
@@ -70,7 +71,7 @@ class CityToLocationType extends AbstractType
         $location = null;
         if(!empty($data['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
         elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);
-        
+
         $form->setData($location);
 
     }

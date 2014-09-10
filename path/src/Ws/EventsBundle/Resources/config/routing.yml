@@ -97,6 +97,13 @@ ws_alerts_delete:
     defaults: { _controller: WsEventsBundle:Alert:delete }
     requirements:
         _method: GET|POST
+ws_alerts_extend:
+    pattern: /alert/extend/{nbmonth}/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:extend }
+    requirements:
+        _method: GET
+        month: \d+
+        alert: \d+
 ws_alerts_mailing:
     pattern: /alert/send/{type}
     defaults: { _controller: WsEventsBundle:Alert:sendAlerts, type: daily }

@@ -49,7 +49,8 @@ class StatisticManager extends AbstractManager
 
 	private function saveGeneralStatistic($name,$i=1)
 	{
-		if(property_exists(new GeneralStat,'total_'.$name)){
+		$name = 'total_'.$name;
+		if(property_exists(new GeneralStat,$name)){
 			$this->setContext('general')->get();
 			$this->data->$name += $i;
 			$this->save($this->data,true);

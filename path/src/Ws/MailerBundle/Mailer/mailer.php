@@ -183,6 +183,24 @@ class Mailer
             return false;
     }
 
+    
+    public function sendExpiredAlertmessage(Alert $alert)
+    {
+        $email = $alert->getUser()->getEmail();
+
+        $subject = "Votre alerte expire aujourd'hui !";
+
+        $body = $this->templating->render('WsMailerBundle:Alerts:expired.html.twig',array(
+            'alert'=>$alert,
+            ));
+
+        if($this->sendMessage($this->expediteur,$email,$subject,$body))
+            return true;
+        else
+            return false;
+    }
+
+
     public function sendInvitationMessages(Invitation $invit)
     {
         //set expeditor

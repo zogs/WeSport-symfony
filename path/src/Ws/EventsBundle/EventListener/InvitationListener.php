@@ -40,7 +40,10 @@ class InvitationListener implements EventSubscriberInterface
 	public function onNewEvents(CreateEvents $event)
 	{
 		$wsevent = $event->getEvent();
-		$user = $event->getUser();		
+		$user = $event->getUser();	
+
+		\My\UtilsBundle\Utils\Debug::debug($wsevent);
+		exit();
 
 		if($invitations = $wsevent->getInvitations()){
 

@@ -76,10 +76,10 @@ class CalendarUrlGenerator {
 
 	public function getShortUrlParams()
 	{
-		$params = $this->getUrlParams(false);
+		$params = $this->getUrlParams(true);
 		$params = array_reverse($params);
-		foreach ($params as $param => $value) {			
-			if(empty($value) || $value == $this->defaults[$param]){
+		foreach ($params as $param => $value) {	
+			if(empty($value) || $value == $this->defaults[$param]){				
 				unset($params[$param]);
 			}
 			else break;

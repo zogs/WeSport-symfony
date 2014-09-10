@@ -31,7 +31,7 @@ services:
 
     ws_events.form.type.search:
         class: Ws\EventsBundle\Form\Type\CalendarSearchType 
-        arguments: [@calendar.manager,@security.context]
+        arguments: [@calendar.manager,@security.context,@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: calendar_search_type }
 
