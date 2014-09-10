@@ -42,9 +42,6 @@ class InvitationListener implements EventSubscriberInterface
 		$wsevent = $event->getEvent();
 		$user = $event->getUser();	
 
-		\My\UtilsBundle\Utils\Debug::debug($wsevent);
-		exit();
-
 		if($invitations = $wsevent->getInvitations()){
 
 			//first invitations is the one created with the event

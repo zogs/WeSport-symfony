@@ -1,0 +1,10 @@
+<li>
+	<a class="user-linklist" href="{{ user|link2user }}" rel="me nofollow">
+		<img src="{{ asset(user.avatar.getWebPath) }}" alt="" class="event-avatar event-participant-avatar tooltitop" data-toggle="tooltip" title="{{ user.username }} ({{ user.age }} )" />
+		<p>
+			<strong>{{ user.username }}</strong>
+			<br>
+			<small>{{ user.age }}</small>
+		</p>
+	</a>
+</li>

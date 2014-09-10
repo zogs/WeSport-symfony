@@ -44,9 +44,18 @@ class InvitationType extends AbstractType
 	        	'placeholder'=>'Entrer les adresses email de vos amis')
         ))
 
+        ->add('content','textarea',array(
+        	'label' => "Un petit mot pour vos amis",
+        	'required' => false,
+        	'attr' => array(
+        		'placeholder' => "Salut les copains, ..."
+        		)
+        	))
+
         
         ->add('name','text',array(
 	        'required' => false,
+	        'mapped' => false,
 	        'attr'=>array(
 	        	'placeholder'=>'Donner un nom pour enregistrez votre liste')
         ))
@@ -95,61 +104,60 @@ class InvitationType extends AbstractType
     	$form = $event->getForm();
     	$data = $event->getData();    	
 
-	//create the invitation object
-	$invit = new Invitation();    	
-	//set the inviter (user) object
-	if($this->user instanceof User){
-		$invit->setInviter($this->user);            
-	} 
-	else throw new \Exception('User is not an instance of User class');
+		//create the invitation object
+		$invit = new Invitation();    	
+		//set the inviter (user) object
+		if($this->user instanceof User){
+			$invit->setInviter($this->user);            
+		} 
+		else throw new \Exception('User is not an instance of User class');
 
-	//if the invitation is made from an alrerady existing event
-	//set the event object from hidden field of the form
-	if(!empty($data['event'])){
-		$event = $this->em->getRepository('WsEventsBundle:Event')->find($data['event']);
-		$invit->setEvent($event);        
-	} 
-	//else try to set the event from the parent form
-	elseif($form->getParent()->getData() instanceof Event){
-		//\My\UtilsBundle\Utils\Debug::debug($form->getParent());
+		//if the invitation is made from an alrerady existing event
+		//set the event object from hidden field of the form
+		if(!empty($data['event'])){
+			$event = $this->em->getRepository('WsEventsBundle:Event')->find($data['event']);
+			$invit->setEvent($event);        
+		} 
+		//else try to set the event from the parent form
+		elseif($form->getParent()->getData() instanceof Event){
+			
+			$invit->setEvent($form->getParent()->getData());
+		} 	
+
+		//set the name
+		if(!empty($data['name']))
+			$invit->setName($data['name']);
+		//set the emails
+		if(!empty($data['emails']))
+			$invit->setEmails($data['emails']);    	
+		//set the text content
+		if(!empty($data['content'])){
+			$invit->setContent($data['content']);
+		}
+
+		//create and set all the invited object
+		if(!empty($data['emails'])){
+
+		$emails = \My\UtilsBundle\Utils\String::findEmailsInString($data['emails']);
+		foreach ($emails as $key => $email) {	
+		    
+			if($key>=10) break;
+			$o = new Invited();
+			$o->setEmail($email);
+		    $o->setUser($this->em->getRepository('MyUserBundle:User')->findOneByEmail($email));
+			$o->setInvitation($invit);
+			$invit->addInvited($o);
+		}			
+		}
+
+		//get previously saved listing and set as Invitation 
+		if(!empty($data['saved_list']) && is_numeric($data['saved_list'])){
+
+			$invit = $this->em->getRepository('WsEventsBundle:Invitation')->find($data['saved_list']);           
+		}
 		
-		//$invit->setEvent($form->getParent()->getData());
-	} 	
-
-	//set the name
-	if(!empty($data['name']))
-		$invit->setName($data['name']);
-	//set the emails
-	if(!empty($data['emails']))
-		$invit->setEmails($data['emails']);    	
-	//set the text content
-	if(!empty($data['content'])){
-		$invit->setContent($data['content']);
-	}
-
-	//create and set all the invited object
-	if(!empty($data['emails'])){
-
-	$emails = \My\UtilsBundle\Utils\String::findEmailsInString($data['emails']);
-	foreach ($emails as $key => $email) {	
-	    
-		if($key>=10) break;
-		$o = new Invited();
-		$o->setEmail($email);
-	    $o->setUser($this->em->getRepository('MyUserBundle:User')->findOneByEmail($email));
-		$o->setInvitation($invit);
-		$invit->addInvited($o);
-	}			
-	}
-
-	//get previously saved listing and set as Invitation 
-	if(!empty($data['saved_list']) && is_numeric($data['saved_list'])){
-
-	$invit = $this->em->getRepository('WsEventsBundle:Invitation')->find($data['saved_list']);           
-	}
-	
-	$form->setData($invit);
-    	
+		$form->setData($invit);
+	    	
     }
 
     public function onPostSubmit(FormEvent $event)
@@ -168,6 +176,7 @@ class InvitationType extends AbstractType
 	        'data_class' => 'Ws\EventsBundle\Entity\Invitation',
 	    ));
 	}
+
 }
 
 ?>

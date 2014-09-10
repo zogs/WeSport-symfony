@@ -48,7 +48,6 @@ class CityToLocationType extends AbstractType
                 'required' => false,
                 ))
                 ->add('city_name','text',array(
-                'required' => false,
                 ))
             ;
 

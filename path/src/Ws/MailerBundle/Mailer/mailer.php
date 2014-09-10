@@ -206,11 +206,10 @@ class Mailer
         //set expeditor
         $from = $this->expediteur;
         //set subject
-        $subject = 'Invitation de '.$invit->getInviter()->getUsername();
+        $subject = "Invitation d'un ami (".ucfirst($invit->getInviter()->getUsername()).')';
 
         $emails = array();
         foreach ($invit->getInvited() as $key => $invited) {
-
             //templating
             $body = $this->templating->render('WsMailerBundle:Events:invitation.html.twig',array(
                 'invit' => $invit,

@@ -26,24 +26,34 @@ class InvitedRepository extends EntityRepository
 		return $invit;
 	}
 	
+	public function checkResponse($invited)
+	{
+		$invit = $this->_em->getRepository('WsEventsBundle:Invited')->find($invited);		
+		return $invit->getResponse();
+	}
+
 	public function confirmParticipation($invited)
 	{
+		if($this->checkResponse($invited) == true) return; //already confirmed
+
 		$participant = new Participation();
 		$participant->setEvent($invited->getInvitation()->getEvent());
-		$participant->setUser($invited->getUser()); //set to null is the invited user is not registered
+		$participant->setUser($invited->getUser()); //is null if the invited user is not registered
 		$participant->setInvited($invited);
 
-		$invited->setResponse(1);
+		$this->_em->getRepository('WsEventsBundle:Participation')->saveParticipation($participant);
+
+		$invited->setResponse(true);
 		$invited->setDateResponse('now');
-		
-		$this->_em->persist($participant);
 		$this->_em->persist($invited);
 		$this->_em->flush();
 	}
 
 	public function denyParticipation($invited)
 	{
-		$invited->setResponse(0);
+		if($this->checkResponse($invited) === false) return; //already denied
+
+		$invited->setResponse(false);
 		$invited->setDateResponse('now');		
 
 		$this->_em->persist($invited);

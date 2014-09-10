@@ -2089,7 +2089,7 @@ div.col_small{
 	background-color:#FFF;
 }
 
-.event-participants{
+.event-participants, .event-invitations{
 	.block-content{
 		@extend %clearfix;
 		padding:0;

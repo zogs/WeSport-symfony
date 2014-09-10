@@ -48,13 +48,8 @@ class EventController extends Controller
 
 		if($form->isValid()){
 
-			$fields = $request->request->get('event');
-			$location = $this->get('world.location_manager')->getLocationFromCityArray($fields['location']);        
-
 			$event = $form->getData();			
-			$event->setLocation($location);
 			$event->setOrganizer($this->getUser());						
-
 
 			if($this->get('ws_events.manager')->saveAll($event)){
 

@@ -1,0 +1,36 @@
+<li>
+	{% if invited.user is null %}
+		<a class="user-linklist" href="" rel="me nofollow">
+			<img src="{{ asset('bundles/myuser/images/avatars/defaults/default'~ random(10) ~'.gif')}}" alt="" class="tooltitop" data-toggle="tooltip" title="Invité (non-inscrit)">
+			<p>
+				<strong>Invité(e)</strong>
+				<br>
+				par {{ invited.invitation.inviter.username }}
+				<br>
+
+				{% if invited.response is sameas(true) %}
+					(à répondu oui)
+				{% endif %}
+
+				{% if invited.response is sameas(false) %}
+					(à répondu non)
+				{% endif %}
+
+				{% if invited.response is sameas(null) %}
+					(n'a pas répondu)
+				{% endif %}
+			</p>
+		</a>
+	{% else %}
+		<a class="user-linklist" href="{{ invited.user|link2user }}" rel="me nofollow">
+			<img src="{{ asset(invited.user.avatar.getWebPath) }}" alt="" class="event-avatar event-participant-avatar tooltitop" data-toggle="tooltip" title="{{ invited.user.username }} ({{ invited.user.age }} )" />
+			<p>
+				<strong>{{ invited.user.username }}</strong>
+				<br>
+				<small>invité par {{ invited.invitation.inviter.username }}</small>
+				<br>
+				<small>{{ invited.user.age }}</small>
+			</p>
+		</a>	
+	{% endif %}
+</li>

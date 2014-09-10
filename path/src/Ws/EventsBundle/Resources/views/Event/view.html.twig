@@ -192,27 +192,32 @@
 							<ul>
 								{% for p in event.participations %}
 
-									{% if p.user is not null %}									
-									<li>
-										<a class="user-linklist" href="{{ event.organizer|link2user }}" rel="me nofollow">
-											<img src="" alt="" class="event-avatar event-participant-avatar tooltitop" data-toggle="tooltip" title="{{ p.user.username }} ({{ p.user.age }} )" />
-											<p>
-												<strong>{{ p.user.username }}</strong>
-												<br>
-												<small>{{p.user.age}}</small>
-											</p>
-										</a>
-									</li>
+									{% if p.user is not null %}	
+
+										{% include 'WsEventsBundle:Templates:li_participant.html.twig' with {'user':p.user}  %} 
+
 									{% elseif p.invited is not null %}
-									<li>
-										<img src="" alt="" class="tooltitop" data-toggle="tooltip" title="Invité (non-inscrit)">
-										<p>
-											<strong>Invité(e)</strong>
-											<br>
-											<small>(non-inscrit)</small>
-										</p>
-									</li>
+									
+										{% include 'WsEventsBundle:Templates:li_invited.html.twig' with {'invited':p.invited}  %} 
+
 									{% endif %}
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+
+					<div class="block block-red event-invitations">					
+						<h3>Invitations</h3>
+						<div class="block-content">
+							<ul>
+								{% for invitation in event.invitations %}
+
+									{% for invited in invitation.invited %}
+									
+										{% include 'WsEventsBundle:Templates:li_invited.html.twig' with {'invited':invited}  %} 
+
+									{% endfor %}
+
 								{% endfor %}
 							</ul>
 						</div>

@@ -42,7 +42,7 @@ class Invited
     private $date;
 
     /**
-     * @ORM\Column(name="response", type="string", length=3, nullable=true)
+     * @ORM\Column(name="response", type="boolean", nullable=true)
      */
     private $response = null;
 

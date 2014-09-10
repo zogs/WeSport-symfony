@@ -39,6 +39,7 @@ class EventType extends AbstractType
 			'label'=>'Titre'
 			))
 		->add('location', 'city_to_location_type', array(
+			'required' => true,
 			))
 		->add('address',null)
 
@@ -70,8 +71,7 @@ class EventType extends AbstractType
 		->add('phone','text',array(
 			'label'=>'Téléphone','required'=>false
 			))
-		->add('invitations','invitation_type',array(
-			'mapped'=>false,
+		->add('invitations','invitation_type',array(			
 			))
 	;
 
@@ -92,8 +92,9 @@ class EventType extends AbstractType
 		$form = $event->getForm();
 		$this->post_event = $event->getData();
 
+
 		//Detect eventualy modification
-		//using php reflector class
+		//using php Reflector class
 		$reflector = new \ReflectionClass($this->post_event);
 		$properties = $reflector->getProperties();
 		$changes = array();
@@ -108,9 +109,7 @@ class EventType extends AbstractType
 		}
 		//set array of change to the event for future uses
 		$this->post_event->setChanges($changes);
-		
 
-		
 		$event->setData($this->post_event);
 		
 	}

@@ -3,6 +3,7 @@
 namespace Ws\EventsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Ws\EventsBundle\Entity\Participation;
 
 /**
  * EventParticipantsRepository
@@ -33,7 +34,15 @@ class ParticipationRepository extends EntityRepository
 		return false;
 	}
 
-	public function removeParticipation($particip)
+
+	public function saveParticipation(Participation $particip)
+	{
+		$this->_em->persist($particip);
+		$this->_em->flush();
+		return true;
+	}
+
+	public function removeParticipation(Participation $particip)
 	{
 		$this->_em->remove($particip);
 		$this->_em->flush();

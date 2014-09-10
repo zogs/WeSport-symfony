@@ -58,16 +58,22 @@ class InvitationController extends Controller
 	 */
 	public function confirmParticipationAction(Invited $invited)
 	{
-		$this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Invited')->confirmParticipation($invited);
+		$em = $this->getDoctrine()->getManager();
+
+		if(NULL == $em->getRepository('WsEventsBundle:participation')->findParticipation($invited->getInvitation()->getEvent(),$invited->getUser())){
+		
+			$em->getRepository('WsEventsBundle:Invited')->confirmParticipation($invited);
+
+		}
 
 		if($invited->isRegisteredUser())
-			$message = "Bravo, vous participerez en tant qu'invité ! N'hésitez pas <a href=".$this->generateUrl('fos_user_registration_register').">à vous inscrire</a> pour plus de facilité !";
+			$message = "Bravo ".$invited->getUser()->getUsername().", vous participerez à cet événement ! <a href=".$this->generateUrl('fos_user_security_login').">Connectez-vous</a> pour discuter.";
 		else 
-			$message = "Bravo, vous participerez à cet événement ! <a href=".$this->generateUrl('fos_user_security_login').">Connectez-vous</a> pour discuter.";
+			$message = "Bravo, vous participerez en tant qu'invité ! N'hésitez pas <a href=".$this->generateUrl('fos_user_registration_register').">à vous inscrire</a> pour plus de facilité !";
 		
 		$this->get('flashbag')->add($message);
 
-		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId())));
+		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId(),'slug'=>$invited->getInvitation()->getEvent()->getSlug())));
 	}
 
 	/**
@@ -86,7 +92,7 @@ class InvitationController extends Controller
 		
 		$this->get('flashbag')->add($message,'warning');
 
-		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId())));
+		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId(),'slug'=>$invited->getInvitation()->getEvent()->getSlug())));
 	}
 
 	/**
