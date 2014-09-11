@@ -64,6 +64,11 @@ ws_invit_new:
     defaults: { _controller: WsEventsBundle:Invitation:create}
     requirements:
         event: \d+
+ws_invit_resend:
+    pattern: /invited/resent/{invited}
+    defaults: { _controller: WsEventsBundle:Invitation:resend}
+    requirements:
+        invited: \d+
 ws_invit_blacklist_add:
     pattern: /invitation/addblacklist/{emails}
     defaults: { _controller: WsEventsBundle:Invitation:addBlacklist, emails: null }

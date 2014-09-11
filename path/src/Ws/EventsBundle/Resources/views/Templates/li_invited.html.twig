@@ -19,6 +19,8 @@
 				{% if invited.response is sameas(null) %}
 					(n'a pas répondu)
 				{% endif %}
+
+				<a href="{{ path('ws_invit_resend',{invited:invited.id}) }}" class="btn btn-link">Renvoyer l'invit</a>
 			</p>
 		</a>
 	{% else %}

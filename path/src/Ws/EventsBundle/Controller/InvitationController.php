@@ -25,31 +25,66 @@ class InvitationController extends Controller
 	public function createAction(Event $event)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$secu = $this->get('security.context');
 
-		$form = $this->createForm(new InvitationType($em,$secu,$event));
-	
-		$form->handleRequest($this->getRequest());
-
-		if($form->isValid()){
-
-			$invit = $form->getData();
-
-			if($this->get('ws_events.invit.manager')->saveInvit($invit)){
-				$this->get('flashbag')->add('invitation enregistrés','success');
-			}			
-
-			if($emails = $this->get('ws_mailer')->sendInvitationMessages($invit)){
-				$this->get('flashbag')->add('Vous avez envoyé '.count($emails).' invitations !','success');
-			}
+		//Only people who participate to the event can invite other
+		if($em->getRepository('WsEventsBundle:Participation')->isUserParticipating($this->getUser(),$event)){
 			
+			$secu = $this->get('security.context');		
+			$form = $this->createForm(new InvitationType($em,$secu,$event));
+		
+			$form->handleRequest($this->getRequest());
+
+			if($form->isValid()){
+
+				$invit = $form->getData();						
+				if($this->get('ws_events.invit.manager')->saveInvit($invit)){
+					$this->get('flashbag')->add('Invitation enregistrés','success');
+				}			
+
+				if($emails = $this->get('ws_mailer')->sendInvitationMessages($invit)){
+					$this->get('flashbag')->add('Vous avez envoyé '.count($emails).' invitations !','success');
+				}
+				
+			}
+
+			$invitations = $this->get('ws_events.invit.manager')->getUserInvitation($this->getUser(),$event);
+
+			return $this->render('WsEventsBundle:Invitation:new.html.twig',array(
+				'form' => $form->createView(),
+				'invitations'=>$invitations,
+				));
+		}
+		//else redirect to the event page
+		else {
+			$this->get('flashbag')->add('Vous ne pouvez inviter quand vous ne participez pas...','error');
+			return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
 		}
 
-		return $this->render('WsEventsBundle:Invitation:new.html.twig',array(
-			'form' => $form->createView(),
-			));
+	}
+
+	/**
+	 * Resend a email to the invited person
+	 * @param invited
+	 * @return   view
+	 */
+	public function resendAction(Invited $invited)
+	{
+		if($this->getUser() != $invited->getInvitation()->getInviter()) throw new AccessDeniedHttpException('You are not allowed to do that');
+
+
+		if($email = $this->get('ws_mailer')->sendInvitedMessage($invited)){
+
+			$invited->setNbSended($invited->getNbSended()+1);
+			$date = new \DateTime('now');
+			$invited->setDate($date);
+			$this->get('ws_events.invit.manager')->saveInvited($invited);
+
+			$this->get('flashbag')->add('Un email a été envoyé à '.$email,'info');
+			return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId(),'slug'=>$invited->getInvitation()->getEvent()->getSlug())));
+		}
 
 	}
+
 
 	/**
 	 * Confirm participation

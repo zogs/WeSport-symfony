@@ -2,38 +2,58 @@
 
 {% block page_content %}
 
-    <div class="createInvitation">
-        <div class="fresque"></div>
-        <div class="white-sheet">           
-            <div class="head-sheet">        
-                <h1 class="title-sheet">
-                    Inviter des amis
-                </h1>
-            </div>
+<div class="createInvitation">
+	<div class="fresque"></div>
+	<div class="white-sheet">           
+		<div class="head-sheet">        
+			<h1 class="title-sheet">
+				Inviter des amis
+			</h1>
+		</div>
 
-        <div class="col_large">
-            {{ form_start(form) }}
+		<div class="col_large">
+		{{ form_start(form) }}
 
-                {{form_row(form.emails) }}
-                {{form_row(form.name) }}
+		{{form_row(form.emails) }}
+		{{form_row(form.name) }}
+		{{form_row(form.content) }}
 
-                {% if form.saved_list is defined %}
-                {{ form_row(form.saved_list) }}
-                {% endif %}
+		{% if form.saved_list is defined %}
+		{{ form_row(form.saved_list) }}
+		{% endif %}
 
-                {% if form.event is defined %}
-                {{ form_row(form.event) }}
-                {% endif %}
+		{% if form.event is defined %}
+		{{ form_row(form.event) }}
+		{% endif %}
 
-                <button class="btn btn-large btn-primary">Envoyer les invitations</button>
+		<button class="btn btn-large btn-primary">Envoyer les invitations</button>
 
-            {{ form_end(form) }}
-        </div>
-        
-        <div class="clearfix"></div>
-        <div class="fresque"></div>
-    
-    </div>
-    
+		{{ form_end(form) }}
+		</div>
+
+
+
+
+
+		<div class="col_small">
+			<div class="block block-red block-invitations">
+				<h3>Récapitulatif des invitations</h3>
+			</div>
+			<div class="block_content">
+				<ul>
+				{% for invitation in invitations %}				
+				{% for invited in invitation.invited %}
+
+				{% include 'WsEventsBundle:Templates:li_invited.html.twig' with {'invited':invited}  %} 
+
+				{% endfor  %}
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+	<div class="clearfix"></div>
+	<div class="fresque"></div>  
+</div>
 {% endblock %}
 

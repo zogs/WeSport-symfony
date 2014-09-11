@@ -42,6 +42,11 @@ class Invited
     private $date;
 
     /**
+    * @ORM\Column(name="nb_sended", type="integer")
+    */
+    private $nb_sended = 1;
+
+    /**
      * @ORM\Column(name="response", type="boolean", nullable=true)
      */
     private $response = null;
@@ -211,5 +216,28 @@ class Invited
     public function isRegisteredUser()
     {
         return (isset($this->user)? true : false);
+    }
+
+    /**
+     * Set nb_sended
+     *
+     * @param integer $nbSended
+     * @return Invited
+     */
+    public function setNbSended($nbSended)
+    {
+        $this->nb_sended = $nbSended;
+
+        return $this;
+    }
+
+    /**
+     * Get nb_sended
+     *
+     * @return integer 
+     */
+    public function getNbSended()
+    {
+        return $this->nb_sended;
     }
 }

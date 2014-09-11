@@ -3,8 +3,11 @@
 namespace Ws\EventsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Ws\EventsBundle\Entity\Participation;
 
+use My\UserBundle\Entity\User;
+use Ws\EventsBundle\Entity\Participation;
+use Ws\EventsBundle\Entity\Invited;
+use Ws\EventsBundle\Entity\Event;
 /**
  * EventParticipantsRepository
  *
@@ -26,7 +29,12 @@ class ParticipationRepository extends EntityRepository
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
-	public function findParticipationAndRemove($event,$user=null,$invited=null)
+	public function isUserParticipating(User $user,Event $event)
+	{
+		return (null !== $this->findParticipation($event,$user))? true : false;
+	}
+
+	public function findParticipationAndRemove(Event $event,User $user=null,Invited $invited=null)
 	{
 		$particip = $this->findParticipation($event,$user,$invited);
 		if(isset($particip))

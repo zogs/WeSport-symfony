@@ -49,13 +49,16 @@
 														Vous participez !
 													</a>
 													<a class="btn btn-link" href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}" rel="nofollow"><i class="icon-remove"></i> Annuler</a>
+													<a href="{{ path('ws_invit_new',{event:event.id}) }}" class="btn btn-small">Invitez des gens</a>
 												{% else %}
 													<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('ws_participation_add',{event:event.id,token:token}) }}" rel="nofollow">											
 															<i class="icon-white icon-plus"></i> Participer !
 														</a>
 												{% endif %}
 											{% else %}
-												<a class="btn btn-small" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a>	
+												<a class="btn btn-small" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a
+												>	
+												<a href="{{ path('ws_invit_new',{event:event.id}) }}" class="btn btn-small">Invitez des gens</a>
 											{% endif %}	
 										{% else %}
 											<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('fos_user_security_login') }}">Connexion</a>

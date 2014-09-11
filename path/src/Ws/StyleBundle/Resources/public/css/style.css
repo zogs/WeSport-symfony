@@ -25,7 +25,7 @@
 /* SASS component */
 /* clearfix extends (works >IE7 )   ex: .float-container{ @extend %clearfix;}*/
 /* line 64, scss/style.scss */
-.calendar:after, .calendar .calendar-nav .calendar-content:after, .white-sheet:after, .event-action-bar:after, .event-participants .block-content:after, .block-action:after, .indexuser .col_large .userlist:after {
+.calendar:after, .calendar .calendar-nav .calendar-content:after, .white-sheet:after, .event-action-bar:after, .event-participants .block-content:after, .event-invitations .block-content:after, .block-action:after, .indexuser .col_large .userlist:after {
   content: '';
   display: table;
   clear: both;
@@ -2887,28 +2887,28 @@ div.col_small {
 }
 
 /* line 2093, scss/style.scss */
-.event-participants .block-content {
+.event-participants .block-content, .event-invitations .block-content {
   padding: 0;
 }
 /* line 2096, scss/style.scss */
-.event-participants .block-content ul {
+.event-participants .block-content ul, .event-invitations .block-content ul {
   margin: 0;
   padding: 0;
 }
 /* line 2099, scss/style.scss */
-.event-participants .block-content li {
+.event-participants .block-content li, .event-invitations .block-content li {
   float: left;
   display: block;
   width: 50%;
   margin-bottom: 4px;
 }
 /* line 2105, scss/style.scss */
-.event-participants .block-content li a {
+.event-participants .block-content li a, .event-invitations .block-content li a {
   padding: 0;
   word-wrap: break-word;
 }
 /* line 2109, scss/style.scss */
-.event-participants .block-content li p {
+.event-participants .block-content li p, .event-invitations .block-content li p {
   display: block;
   float: left;
   width: 70%;

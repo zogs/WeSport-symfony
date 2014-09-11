@@ -4,6 +4,7 @@ namespace Ws\MailerBundle\Mailer;
 
 use Symfony\Component\Templating\EngineInterface;
 
+use Ws\EventsBundle\Entity\Invited;
 use Ws\EventsBundle\Entity\Invitation;
 use Ws\EventsBundle\Entity\Alert;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
@@ -201,27 +202,30 @@ class Mailer
     }
 
 
-    public function sendInvitationMessages(Invitation $invit)
+    public function sendInvitationMessages(Invitation $invitation)
     {
-        //set expeditor
-        $from = $this->expediteur;
-        //set subject
-        $subject = "Invitation d'un ami (".ucfirst($invit->getInviter()->getUsername()).')';
 
         $emails = array();
-        foreach ($invit->getInvited() as $key => $invited) {
-            //templating
-            $body = $this->templating->render('WsMailerBundle:Events:invitation.html.twig',array(
-                'invit' => $invit,
-                'invited' => $invited
-                ));
-            //send message
-            $this->sendMessage($from,$invited->getEmail(),$subject,$body);
-            //stock sended email
-            $emails[] = $invited->getEmail();
+        foreach ($invitation->getInvited() as $key => $invited) {
+   
+            $email = $this->sendInvitedMessage($invited);
+            $emails[] = $email;
         }
 
         return $emails;
+    }
+
+    public function sendInvitedMessage(Invited $invited)
+    {
+        $from = $this->expediteur;
+        $subject = "Invitation d'un ami (".ucfirst($invited->getInvitation()->getInviter()->getUsername()).')';
+        $body = $this->templating->render('WsMailerBundle:Events:invitation.html.twig',array(
+            'invit' => $invited->getInvitation(),
+            'invited' => $invited
+            ));
+        $this->sendMessage($from,$invited->getEmail(),$subject,$body);
+
+        return $invited->getEmail();
     }
 
     
