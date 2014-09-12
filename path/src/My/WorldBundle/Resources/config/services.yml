@@ -27,3 +27,7 @@ services:
 
     world.gmap:
         class: My\WorldBundle\Geomapper\GoogleMapAPI        
+
+    world.locationip.service:
+        class: My\WorldBundle\Controller\LocationFromIpController
+        arguments: [@service_container]

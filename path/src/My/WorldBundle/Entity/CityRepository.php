@@ -100,6 +100,7 @@ class CityRepository extends EntityRepository
 			return $this->findCitiesByCode($parent->getCc1(),null,null,$parent->getADMPARENT(),$parent->getADMCODE());
 		
 	}
+
 	public function findCitiesByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
 		$sql = "
@@ -170,7 +171,8 @@ class CityRepository extends EntityRepository
 		if(isset($countryCode))
 			$sql .= 'AND cc1=:cc1 ';
 		$sql .= ' AND C.longitude BETWEEN '.$lon1.' AND '.$lon2.' AND C.latitude BETWEEN '.$lat1.' AND '.$lat2.' ';
-		$sql .= 'having distance < '.$radius;
+		$sql .= ' having distance < '.$radius;
+		$sql .= ' ORDER BY distance ASC';
 
 		
 		$rsm = $this->resultSetMappingCity();

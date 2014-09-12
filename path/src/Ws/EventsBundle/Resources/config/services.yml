@@ -82,3 +82,9 @@ services:
         scope: container
         tags:
             - { name: kernel.event_subscriber }
+
+    #Enable Init Method for all the controller that implements InitControllerInterface
+    symfony.controller.subscriber.init:
+        class: Yavin\Symfony\Controller\InitControllerSubscriber
+        tags: 
+            - { name: kernel.event_subscriber }

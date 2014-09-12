@@ -22,7 +22,6 @@ use Ws\EventsBundle\Event\CancelParticipant;
 use Ws\StatisticBundle\Entity\UserStat;
 
 
-
 class EventController extends Controller
 {
 	public function indexAction($name)

@@ -71,8 +71,9 @@ class InvitationController extends Controller
 	{
 		if($this->getUser() != $invited->getInvitation()->getInviter()) throw new AccessDeniedHttpException('You are not allowed to do that');
 
+		if($invited->getNbSended() < 3){
 
-		if($email = $this->get('ws_mailer')->sendInvitedMessage($invited)){
+			$email = $this->get('ws_mailer')->sendInvitedMessage($invited);
 
 			$invited->setNbSended($invited->getNbSended()+1);
 			$date = new \DateTime('now');
@@ -80,8 +81,13 @@ class InvitationController extends Controller
 			$this->get('ws_events.invit.manager')->saveInvited($invited);
 
 			$this->get('flashbag')->add('Un email a été envoyé à '.$email,'info');
-			return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId(),'slug'=>$invited->getInvitation()->getEvent()->getSlug())));
+			
 		}
+		else {
+			$this->get('flashbag')->add("Désolé mais l'invitation a déjà été envoyé 3 fois...",'warning');
+		}
+
+		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId(),'slug'=>$invited->getInvitation()->getEvent()->getSlug())));
 
 	}
 

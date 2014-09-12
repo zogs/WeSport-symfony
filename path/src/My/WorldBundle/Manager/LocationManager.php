@@ -35,5 +35,15 @@ class LocationManager
 
 		return $this->getLocationFromCityId($city->getId()); 
 	}
+
+	public function getLocationFromNearestCityLatLon($lat,$lon,$countryName = null)
+	{
+		$countryCode = (isset($countryName))? $this->em->getRepository('MyWorldBundle:Country')->findCodeByCountryName($countryName) : null;
+
+		$cities = $this->em->getRepository('MyWorldBundle:City')->findCitiesArround('10',$lat,$lon,$countryCode,'km');
+		$city = $cities[0]; //la ville la plus proche est en début de tableau
+		
+		return $this->getLocationFromCityId($city->getId());
+	}
 }
 ?>

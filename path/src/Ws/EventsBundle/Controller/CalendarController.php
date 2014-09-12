@@ -13,9 +13,19 @@ use Ws\EventsBundle\Event\AjaxCalendar;
 use Ws\EventsBundle\Event\ResetCalendar;
 
 
-class CalendarController extends Controller
+use Yavin\Symfony\Controller\InitControllerInterface;
+
+
+class CalendarController extends Controller implements InitControllerInterface
 {
 
+	public function init(Request $request)
+	{
+		$location = $this->get('world.locationip.service')->getLocationFromIp();
+
+		\My\UtilsBundle\Utils\Debug::debug($location);
+		exit();
+	}
 	/**
 	 * Get the calendar of events
 	 *
