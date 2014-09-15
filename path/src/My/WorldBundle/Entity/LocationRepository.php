@@ -307,6 +307,7 @@ class LocationRepository extends EntityRepository
 	{
 
 		if($location = $this->findOneByCity($id)){
+
 			return $location;
 		}
 		else {

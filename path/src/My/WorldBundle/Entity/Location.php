@@ -61,6 +61,13 @@ class Location
     public $city_id; //!\
     public $city_name;//!\
 
+
+    public function exist()
+    {
+        if(!empty($this->id)) return true;
+        return false;
+    }
+
     public function __toString()
     {
         return strval($this->id);
@@ -271,12 +278,12 @@ class Location
 
     public function setCityId()
     {
-        return null;
+        //return null;
     }
 
     public function setCityName()
     {
-        return null;
+        //return null;
     }
 
     /**

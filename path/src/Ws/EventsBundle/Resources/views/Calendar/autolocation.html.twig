@@ -1,0 +1,12 @@
+{% if search.autoLocation is defined and search.autoLocation is not null %}
+	<div class="flash">
+		<div class="ws-alert alert-info">
+			<span class="flash-icon"><span class="ws-icon-info }}"></span></span>
+            <p>
+	            Nous avons détecté  et affiché les événements autour de votre ville : {{ search.location.city.name }} ! 
+	            <a href="{{ path('ws_calendar_reset') }}">Annuler</a>
+            </p>
+            <button class="close" data-dismiss="alert"><span class="ws-icon-close"></span></button>
+		</div>
+	</div>			
+{% endif %}

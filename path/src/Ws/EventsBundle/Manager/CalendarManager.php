@@ -72,6 +72,7 @@ class CalendarManager extends AbstractManager
 		$this->urlGenerator = $container->get('calendar.url.generator');
 		$this->serializer = $container->get('jms_serializer');
 		$this->flashbag = $container->get('flashbag');
+		$this->response = new Response();		
 	}
 
 	public function findCalendar()
@@ -167,9 +168,19 @@ class CalendarManager extends AbstractManager
 	}
 
 
-	private function addParameters($params)
+	public function addParameters($params)
 	{
 		$this->params = array_merge($this->params,$params);
+	}
+
+	public function setAutoLocation($bool = null)
+	{
+		$this->search->autoLocation = $bool;
+	}
+
+	public function getAutoLocation()
+	{
+		return $this->search->autoLocation;
 	}
 
 	public function resetParams($resetCookie = true)
@@ -178,7 +189,7 @@ class CalendarManager extends AbstractManager
 		if($resetCookie == true) $this->resetCookie();
 	}
 
-	private function resetCookie()
+	public function resetCookie()
 	{
 		$response = new Response();
 		$allparams = array_merge((array)$this->search,$this->default);		
@@ -192,27 +203,32 @@ class CalendarManager extends AbstractManager
 		$response->send();	
 	}
 
-	private function saveSearchCookie()
+	public function saveSearchCookie()
 	{		
-		$response = new Response();		
-
-		foreach ($this->search as $key => $value) {			
-
+		
+		
+		foreach ($this->params as $key => $value) {			
+			
 			if(in_array($key,$this->params_cookie_ignored)) continue; //some params dont go in cookie	
 
 			if(isset($value)){
 				if(is_array($value)) $value = '[array]'.serialize($value);
 				if(is_object($value)) $value = '[obj]'.$value->getId();
-				$cookie = new Cookie('calendar_param_'.$key,$value,time() + 3600 * 24 * 7, '/');				
+				$cookie = new Cookie('calendar_param_'.$key,$value,time() + 3600 * 24 * 7, '/',null,false,false);				
 			} else {
 				$cookie = new Cookie('calendar_param_'.$key,'',time() - 3600, '/');				
-			}		
-			
-			$response->headers->setCookie($cookie);		
+			}						
+
+			$this->response->headers->setCookie($cookie);		
+	
 		}		
-		$response->send();		
+		$this->response->sendHeaders();
 	}
 
+	public function getResponse()
+	{
+		return $this->response;
+	}
 
 	public function getSearch()
 	{
@@ -282,7 +298,7 @@ class CalendarManager extends AbstractManager
 	}
 
 
-	private function prepareCountryParams()
+	public function prepareCountryParams()
 	{	
 		//replace country name by country code
 		if(isset($this->params['country']) && is_numeric($this->params['country']))
@@ -298,7 +314,7 @@ class CalendarManager extends AbstractManager
 		return;
 	}
 
-	private function prepareCityParams()
+	public function prepareCityParams()
 	{	
 		$city = null;
 		$findme = null;
@@ -322,7 +338,7 @@ class CalendarManager extends AbstractManager
 		elseif(is_string($findme)) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($findme,$this->search->getCountry()->getCode());
 			
 		if(isset($city) && $city->exist()){
-			$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());		
+			$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());	
 			$this->search->setLocation($location);
 			if(!empty($area)) $this->prepareAreaParams($area);
 		}

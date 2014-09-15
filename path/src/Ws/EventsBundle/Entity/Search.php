@@ -91,6 +91,7 @@ class Search
     */
     private $level = array();
 
+
     /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
     * @ORM\JoinColumn(name="organizer_id", nullable=true)
@@ -133,6 +134,24 @@ class Search
         $this->time = json_decode($this->time, JSON_FORCE_OBJECT);
         $this->level = json_decode($this->level, JSON_FORCE_OBJECT);
         $this->day_of_week = json_decode($this->day_of_week, JSON_FORCE_OBJECT);
+    }
+
+    public function getValues()
+    {
+        return array(
+            'location' => $this->getLocation(),
+            'area' => $this->getArea(),
+            'sports' => $this->getSport(),
+            'nb_days' => $this->getNbDays(),
+            'day_of_week' => $this->getDayOfWeek(),
+            'type' => $this->getType(),
+            'time' => $this->getTime(),
+            'price' => $this->getPrice(),
+            'level' => $this->getLevel(),
+            'country' => $this->getCountry(),
+            'timestart' => $this->getTimeStart(),
+            'timeend' => $this->getTimeEnd()
+            );
     }
 
     public function getDate()

@@ -4,6 +4,7 @@ namespace My\WorldBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 /**
  * CityRepository
  *
@@ -165,7 +166,7 @@ class CityRepository extends EntityRepository
 		//calculation of distance field
 		$distance_formula = " $earthradius * 2 * ASIN(SQRT( POWER(SIN(($lat - C.latitude) *  pi()/180 / 2), 2) +COS($lat * pi()/180) * COS(C.latitude * pi()/180) * POWER(SIN(($lon - C.longitude) * pi()/180 / 2), 2) )) as distance ";
 
-		$sql = 'SELECT *, '.$distance_formula;
+		$sql = 'SELECT C.*, '.$distance_formula;
 		$sql .= 'FROM world_cities as C ';
 		$sql .= 'WHERE 1=1 ';
 		if(isset($countryCode))
@@ -174,13 +175,16 @@ class CityRepository extends EntityRepository
 		$sql .= ' having distance < '.$radius;
 		$sql .= ' ORDER BY distance ASC';
 
-		
-		$rsm = $this->resultSetMappingCity();
-		
+		//Use the ResultSetMappingBuilder to map the results data to the City object data
+		$rsm = new ResultSetMappingBuilder($this->_em);
+		$rsm->addRootEntityFromClassMetadata('My\WorldBundle\Entity\City', 'C');
+			
 		$query = $this->_em->createNativeQuery($sql,$rsm);
 		$query->setParameter('cc1',$countryCode);
 
-		return $query->getResult();
+		$results = $query->getResult();
+
+		return $results;
 		//return $this->getQuery($sql)->getResult();
 
 	}

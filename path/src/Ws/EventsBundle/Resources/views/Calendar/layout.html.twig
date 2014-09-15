@@ -2,12 +2,19 @@
 
 {% block body %}
 
+	{% block autolocation %}
+		
+		{% include 'WsEventsBundle:Calendar:autolocation.html.twig' with {'search':search}  %}
+
+	{% endblock %}
+
+
 	{% block flash %}
 	    {{ flashbag_all() }}
 	{% endblock %}
 
 	{% block search_calendar %}
-				
+
 		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
 			<div class="wrapper left-wrapper">
 				<a href="{{ path('ws_calendar_reset') }}">Réinitialiser les critères de sélection</a>

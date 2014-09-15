@@ -40,9 +40,14 @@ class LocationManager
 	{
 		$countryCode = (isset($countryName))? $this->em->getRepository('MyWorldBundle:Country')->findCodeByCountryName($countryName) : null;
 
-		$cities = $this->em->getRepository('MyWorldBundle:City')->findCitiesArround('10',$lat,$lon,$countryCode,'km');
-		$city = $cities[0]; //la ville la plus proche est en début de tableau
-		
+		//look for cities in a radius of 1km, and multiply radius per 2 if no result, until result, within 100km maximum
+		for($i=1;$i<=100;$i*2){
+			$cities = $this->em->getRepository('MyWorldBundle:City')->findCitiesArround($i,$lat,$lon,$countryCode,'km');
+			if(!empty($cities)) break;
+		}
+		//la ville la plus proche est en début de tableau
+		$city = $cities[0]; 
+		//retourne la Location correspondant à la ville			
 		return $this->getLocationFromCityId($city->getId());
 	}
 }

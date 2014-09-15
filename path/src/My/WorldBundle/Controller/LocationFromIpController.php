@@ -12,13 +12,23 @@ class LocationFromIpController
 
     public $container;
 
+    /**
+     * Set directly the whole Service Container as this is a service Controller
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
 
     }
 
-    public function getLocationFromIp()
+    /**
+     * Find the nearest city from one IP and return the Location object
+     * Using the database ../GeoIpDatabase/GeoLiteCity.dat
+     * @param string IPv4
+     * @return Location object
+     */
+
+    public function getLocationFromIp($ip = '193.52.250.230')
     {
     
         include(getcwd()."/../src/My/WorldBundle/GeoIpDatabase/API/php-1.11/geoipcity.inc");
@@ -26,10 +36,7 @@ class LocationFromIpController
 
         $gi = geoip_open(getcwd()."/../src/My/WorldBundle/GeoIpDatabase/Database/GeoLiteCity.dat",GEOIP_STANDARD);
 
-        //$client_ip = $this->container->get('request')->getClientIp();
-        $client_ip = '193.52.250.230';
-
-        $record = geoip_record_by_addr($gi,$client_ip);
+        $record = geoip_record_by_addr($gi,$ip);
 
         //echo $record->country_name . "\n";
         //echo $GEOIP_REGION_NAME[$record->country_code][$record->region] . "\n";

@@ -47,7 +47,9 @@ class StateRepository extends EntityRepository
 			'level'=>$level)
 		);
 
-		return $q->getSingleResult();
+		$results = $q->getResult();
+		
+		return $results[0];
 	}
 
 	public function findStatesByParent($level, $cc1, $parent = '')
