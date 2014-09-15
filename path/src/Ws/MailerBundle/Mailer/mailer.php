@@ -168,7 +168,7 @@ class Mailer
 
     public function sendAlertMessage(Alert $alert, CalendarUrlGenerator $generator, $events)
     {
-        $email = $alert->getUser()->getEmail();
+        $email = $alert->getEmail();
 
         $subject = "Vos alertes coSporturage : ".count($events)." activités.";
 

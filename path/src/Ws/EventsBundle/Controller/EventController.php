@@ -64,6 +64,10 @@ class EventController extends Controller
 			else {
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
 			}
+
+			return $this->render('WsEventsBundle:Event:edit.html.twig', array(
+				'form' => $form->createView(),
+				));
 		}             
 
 		return $this->render('WsEventsBundle:Event:new.html.twig', array(

@@ -28,6 +28,10 @@ class AlertType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('email','text',array(
+                'required' => true,
+                'mapped' => true,
+                ))
             ->add('frequency','choice',array(
                 'choices'=>array('daily'=>'Tous les jours','weekly'=>'Une fois par semaine'),
                 'expanded'=> true,
@@ -49,10 +53,22 @@ class AlertType extends AbstractType
             ->add('submit','submit')
             ;
     		
-
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
             $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
     }
 
+    public function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+
+        if(!empty($this->user)){
+            $form->add('email','text',array(
+                'required' => true,
+                'mapped' => true,
+                'data' => $this->user->getEmail()
+                ));
+        }
+    }
 
      public function onPostSubmit(FormEvent $event)
     {

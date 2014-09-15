@@ -42,7 +42,9 @@ class InvitationListener implements EventSubscriberInterface
 		$wsevent = $event->getEvent();
 		$user = $event->getUser();	
 
-		if($invitations = $wsevent->getInvitations()){
+		$invitations = $wsevent->getInvitations();
+
+		if(empty($invitations)){
 
 			//first invitations is the one created with the event
 			$invitation = $invitations[0];

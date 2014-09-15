@@ -15,6 +15,7 @@
             {{ form_start(form) }}
                 {{ form_errors(form) }}
 
+                {{ form_row(form.email) }}
                 {{ form_row(form.frequency) }}
                 {{ form_row(form.duration) }}
                 {{ form_widget(form.search.location.city_id, {'id':'city_id','required':'required','attr':{'data-autocomplete-url':url('my_world_autocompletecity')}}) }}

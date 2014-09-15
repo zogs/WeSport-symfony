@@ -28,6 +28,11 @@ class Alert
     */
     private $user;
 
+     /**
+    * @ORM\Column(name="email", type="string")
+    */
+    private $email;
+
     /**
     * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"persist", "remove"}, fetch="EAGER")
     * @ORM\JoinColumn(name="search_id", referencedColumnName="id")
@@ -162,7 +167,8 @@ class Alert
      */
     public function getEmail()
     {
-        return $this->email;
+        if(null!= $this->email) return $this->email;
+        elseif(null!=$this->getUser()) return $this->getUser()->getEmail();
     }
 
     /**

@@ -109,7 +109,7 @@ doctrine:
                         asin: My\WorldBundle\DQL\Asin
                         sin: My\WorldBundle\DQL\Sin
                         pi : My\WorldBundle\DQL\Pi
-                        cos: My\WorldBUndle\DQL\Cos
+                        cos: My\WorldBundle\DQL\Cos
                     datetime_functions:
                         DAYNAME: My\UtilsBundle\DQL\Dayname
 
