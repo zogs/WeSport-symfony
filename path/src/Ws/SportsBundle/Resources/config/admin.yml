@@ -1,0 +1,23 @@
+services:
+    sonata.admin.sport:
+        class: Ws\SportsBundle\Admin\SportAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catégories et Sports disponibles", label: "Sport" }
+        arguments:
+            - ~
+            - Ws\SportsBundle\Entity\Sport
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.category:
+        class: Ws\SportsBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catégories et Sports disponibles", label: "Categories" }
+        arguments:
+            - ~
+            - Ws\SportsBundle\Entity\Category
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+            - [ addChild, [@sonata.admin.sport]]

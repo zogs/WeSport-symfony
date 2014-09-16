@@ -191,3 +191,42 @@ fos_comment:
             view: IS_AUTHENTICATED_ANONYMOUSLY
             edit: ROLE_ADMIN
             delete: ROLE_ADMIN
+
+#Sonata admin-bundle
+sonata_admin:
+    dashboard:
+        blocks:
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+            -
+                position: right
+                type: sonata.block.service.text
+                settings:
+                    content: >
+                        <h2>Salut !</h2>
+                        <p>Bienvenue sur le tableau de bord de coSporturage ! Ici y'a tout ce qui faut pour faire marcher le bouzin !</p>                       
+            -
+                position: right
+                type: sonata.block.service.rss
+                settings:
+                    title: Un example de flux RSS
+                    url: http://sonata-project.org/blog/archive.rss
+
+#Sonata block-bundle
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        #sonata.admin_doctrine_orm.block.audit:
+        #    contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.rss:
+
+        # Some specific block from the SonataMediaBundle
+        #sonata.media.block.media:
+        #sonata.media.block.gallery:
+        #sonata.media.block.feature_media:

@@ -34,7 +34,10 @@
         "knplabs/knp-menu-bundle": "dev-master",
         "friendsofsymfony/comment-bundle": "dev-master" ,
         "phpunit/phpunit": "3.7.*",
-        "yavin/symfony-init-controller": "dev-master"
+        "yavin/symfony-init-controller": "dev-master",
+        "sonata-project/admin-bundle": "dev-master",
+        "sonata-project/doctrine-orm-admin-bundle": "dev-master",
+        "sonata-project/jquery-bundle": "dev-master"
     },
     "repositories": [
         {
