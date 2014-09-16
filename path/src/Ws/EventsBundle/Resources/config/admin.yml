@@ -1,0 +1,11 @@
+services:
+    sonata.admin.ws.event:
+        class: Ws\EventsBundle\Admin\EventAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Event" }
+        arguments:
+            - ~
+            - Ws\EventsBundle\Entity\Event
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]

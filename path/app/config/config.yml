@@ -64,6 +64,7 @@ assetic:
         - "WsSportsBundle"
         - "WsEventsBundle"
         - "WsStyleBundle"
+        - "MyUtilsBundle"
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -194,6 +195,10 @@ fos_comment:
 
 #Sonata admin-bundle
 sonata_admin:
+    title: coSporturage
+    title_logo: /logo.png
+    templates:
+        layout: MyUtilsBundle:Administration:standard_layout.html.twig
     dashboard:
         blocks:
             -

@@ -37,7 +37,9 @@
         "yavin/symfony-init-controller": "dev-master",
         "sonata-project/admin-bundle": "dev-master",
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
-        "sonata-project/jquery-bundle": "dev-master"
+        "sonata-project/jquery-bundle": "dev-master",
+        "Sonata-project/easy-extends-bundle": "dev-master"
+
     },
     "repositories": [
         {
