@@ -196,9 +196,11 @@ fos_comment:
 #Sonata admin-bundle
 sonata_admin:
     title: coSporturage
-    title_logo: /logo.png
+    title_logo: /web/bundles/wsstyle/img/LOGO.gif
     templates:
         layout: MyUtilsBundle:Administration:standard_layout.html.twig
+        search:              SonataAdminBundle:Core:search.html.twig
+        search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
     dashboard:
         blocks:
             -
@@ -222,6 +224,8 @@ sonata_admin:
 sonata_block:
     default_contexts: [cms]
     blocks:
+        sonata.admin.block.search_result:
+           contexts: [admin]
         sonata.admin.block.admin_list:
             contexts:   [admin]
 

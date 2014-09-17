@@ -2,7 +2,7 @@ services:
     sonata.admin.sport:
         class: Ws\SportsBundle\Admin\SportAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Catégories et Sports disponibles", label: "Sport" }
+            - { name: sonata.admin, manager_type: orm, group: "Sports", label: "Sport" }
         arguments:
             - ~
             - Ws\SportsBundle\Entity\Sport
@@ -13,7 +13,7 @@ services:
     sonata.admin.category:
         class: Ws\SportsBundle\Admin\CategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Catégories et Sports disponibles", label: "Categories" }
+            - { name: sonata.admin, manager_type: orm, group: "Sports", label: "Categories" }
         arguments:
             - ~
             - Ws\SportsBundle\Entity\Category

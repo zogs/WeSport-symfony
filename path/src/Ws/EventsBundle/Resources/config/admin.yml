@@ -2,10 +2,65 @@ services:
     sonata.admin.ws.event:
         class: Ws\EventsBundle\Admin\EventAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Event" }
+            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Evénements" }
         arguments:
             - ~
             - Ws\EventsBundle\Entity\Event
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.ws.alert:
+        class: Ws\EventsBundle\Admin\AlertAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Alertes" }
+        arguments:
+            - ~
+            - Ws\EventsBundle\Entity\Alert
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.ws.search:
+        class: Ws\EventsBundle\Admin\SearchAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Search" }
+        arguments:
+            - ~
+            - Ws\EventsBundle\Entity\Search
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.ws.participation:
+        class: Ws\EventsBundle\Admin\ParticipationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Participants" }
+        arguments:
+            - ~
+            - Ws\EventsBundle\Entity\Participation
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.ws.invited:
+        class: Ws\EventsBundle\Admin\InvitedAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Invités" }
+        arguments:
+            - ~
+            - Ws\EventsBundle\Entity\Invited
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.ws.invitation:
+        class: Ws\EventsBundle\Admin\InvitationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Activités", label: "Invitation" }
+        arguments:
+            - ~
+            - Ws\EventsBundle\Entity\Invitation
             - ~
         calls:
             - [ setTranslationDomain, [AcmeDemoBundle]]

@@ -46,6 +46,15 @@ class Participation
         $this->date_inscription = new \DateTime();
     }
 
+    /**
+     * Get id
+     *
+     * @return id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set date_inscription
