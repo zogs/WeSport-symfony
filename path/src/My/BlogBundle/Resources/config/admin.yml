@@ -1,0 +1,11 @@
+services:
+    sonata.admin.my.blog_article:
+        class: My\BlogBundle\Admin\ArticleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Contenu", label: "Blogs" }
+        arguments:
+            - ~
+            - My\BlogBundle\Entity\Article
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]

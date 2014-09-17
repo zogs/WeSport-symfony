@@ -1,0 +1,11 @@
+services:
+    sonata.admin.my.page:
+        class: My\PageBundle\Admin\PageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Contenu", label: "Pages" }
+        arguments:
+            - ~
+            - My\PageBundle\Entity\Page
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]

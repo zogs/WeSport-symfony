@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use My\UserBundle\Entity\Avatar;
 use My\UserBundle\Entity\Settings;
-use Ws\StatisticBundle\Entity\UserStat;
+use Ws\StatisticBundle\Entity\UserStat as Statistic;
 
 /**
  * @ORM\Entity
@@ -99,7 +99,7 @@ class User extends BaseUser
         parent::__construct();
 
         $this->settings = new Settings();    
-        $this->statistic = new UserStat();
+        $this->statistic = new Statistic();
         $this->statistic->setUser($this); 
 
     }
@@ -461,6 +461,25 @@ class User extends BaseUser
     {        
         $this->settings = $settings;
     }
+
+    /**
+     * Get Statistic
+     *
+     * @return object statistic 
+     */
+    public function getStatistic()
+    {
+        return $this->statistic;
+    }
+
+    /**
+     * Set Statistic
+     */
+    public function setStatistic(Statistic $statistic)
+    {        
+        $this->statistic = $statistic;
+    }
+
 
 
 }

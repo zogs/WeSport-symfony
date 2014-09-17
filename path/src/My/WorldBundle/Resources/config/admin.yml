@@ -1,0 +1,44 @@
+services:
+    sonata.admin.my.world_location:
+        class: My\WorldBundle\Admin\LocationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "World", label: "Location" }
+        arguments:
+            - ~
+            - My\WorldBundle\Entity\Location
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.my.world_country:
+        class: My\WorldBundle\Admin\CountryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "World", label: "Country" }
+        arguments:
+            - ~
+            - My\WorldBundle\Entity\Country
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.my.world_state:
+        class: My\WorldBundle\Admin\StateAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "World", label: "States" }
+        arguments:
+            - ~
+            - My\WorldBundle\Entity\State
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.admin.my.world_city:
+        class: My\WorldBundle\Admin\CityAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "World", label: "Cities" }
+        arguments:
+            - ~
+            - My\WorldBundle\Entity\City
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]
