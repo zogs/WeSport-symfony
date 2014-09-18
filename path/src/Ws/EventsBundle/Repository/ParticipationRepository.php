@@ -29,6 +29,27 @@ class ParticipationRepository extends EntityRepository
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
+	public function findRecentlyPosted($nb = 10)
+	{
+		$qb = $this->createQueryBuilder('p');
+		$qb->select('p')
+			->orderBy('p.date_inscription','DESC')
+			->setMaxResults($nb);
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function findComingSoon($nb=10)
+	{
+		$qb = $this->createQueryBuilder('p');		
+
+		$qb->select('p')
+			->orderBy('p.date_inscription','ASC')->andWhere($qb->expr()->lte('p.date_inscription','CURRENT_DATE()'))			
+			->setMaxResults($nb)
+		;
+
+		return $qb->getQuery()->getResult();
+	}
 	public function isUserParticipating(User $user,Event $event)
 	{
 		return (null !== $this->findParticipation($event,$user))? true : false;
@@ -55,6 +76,14 @@ class ParticipationRepository extends EntityRepository
 		$this->_em->remove($particip);
 		$this->_em->flush();
 		return true;
+	}
+
+	public function countAll()
+	{
+		return $this->createQueryBuilder('e')
+				 ->select('COUNT(e)')
+				 ->getQuery()
+				 ->getSingleScalarResult();
 	}
 
 }

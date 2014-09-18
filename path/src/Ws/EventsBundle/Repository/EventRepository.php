@@ -226,8 +226,22 @@ class EventRepository extends EntityRepository
 
 		$qb->select('e')
 			->orderBy('e.date_depot', 'DESC')
-			->setMaxResults( $nb );
+			->setMaxResults($nb)
+		;
 			
+		return $qb->getQuery()->getResult();
+	}
+
+	public function findComingSoon($nb=10)
+	{
+		$qb = $this->createQueryBuilder('e');		
+
+		$qb->select('e')
+			->orderBy('e.date','ASC')->andWhere($qb->expr()->lte('e.date','CURRENT_DATE()'))
+			->addOrderBy('e.time','ASC')->andWhere($qb->expr()->lte('e.time','CURRENT_TIME()'))
+			->setMaxResults($nb)
+		;
+
 		return $qb->getQuery()->getResult();
 	}
 

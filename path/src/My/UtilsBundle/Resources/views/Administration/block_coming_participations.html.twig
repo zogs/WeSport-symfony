@@ -1,0 +1,46 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+<table class="table table-striped table-hover sonata-ba-list">
+    <thead>
+        <tr class="info">
+            <th colspan="5"><strong>Prochain participants</strong></th>
+        </tr>
+        <tr class="warning">
+            <th>User</th>
+            <th>Sport</th>
+            <th>Event</th>
+            <th>Ville</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for participant in participants %}
+
+        <tr>
+            <td>
+                <img src="{{ asset(participant.user.avatar.getWebPath) }}"  style="height:20px" alt="" class="nav-avatar">   
+               <a href="{{ path('admin_my_user_user_edit',{id:participant.id})}} ">{{ participant.user.username }}</a>               
+            </td>
+            <td>
+                <span class="ws-sport-icon">
+                    <span class="ws-icon ws-icon-{{ participant.event.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ participant.event.sport.name}}"></span>
+                </span>
+                {{ participant.event.sport.name }}
+            </td>
+            <td>
+                <a href="{{ path('admin_ws_events_event_edit',{id:participant.event.id}) }}">{{ participant.event.title }}</a>       
+            </td>
+            <td>
+                {{ participant.event.location.city.name }}
+            </td>
+            <td>
+                {{ participant.event.date|date('d/m/Y') }} à {{ participant.event.time|date('h:i')}}
+            </td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

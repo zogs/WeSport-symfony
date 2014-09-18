@@ -11,7 +11,7 @@ use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
-class RecentEventsBlockService extends BaseBlockService
+class ComingEventsBlockService extends BaseBlockService
 {
     private $em;
 
@@ -19,7 +19,7 @@ class RecentEventsBlockService extends BaseBlockService
 
     public function getName()
     {
-        return 'Recent events';
+        return 'Coming events';
     }
 
     public function getDefaultSettings()
@@ -45,9 +45,9 @@ class RecentEventsBlockService extends BaseBlockService
         // merge settings
         $settings = array_merge($this->getDefaultSettings(), $blockContext->getSettings());
 
-        $events = $this->em->getRepository('WsEventsBundle:Event')->findRecentlyPosted($this->nb_displayed);
+        $events = $this->em->getRepository('WsEventsBundle:Event')->findComingSoon($this->nb_displayed);
 
-        return $this->renderResponse('MyUtilsBundle:Administration:block_recent_events.html.twig', array(
+        return $this->renderResponse('MyUtilsBundle:Administration:block_coming_events.html.twig', array(
             'block'     => $blockContext->getBlock(),
             'block_context' => $blockContext,
             'settings'  => $settings,

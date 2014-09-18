@@ -11,15 +11,15 @@ use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
-class RecentEventsBlockService extends BaseBlockService
+class RecentParticipationsBlockService extends BaseBlockService
 {
     private $em;
 
-    private $nb_displayed = 5;
+    private $nb_displayed = 4;
 
     public function getName()
     {
-        return 'Recent events';
+        return 'Recent participations';
     }
 
     public function getDefaultSettings()
@@ -45,13 +45,13 @@ class RecentEventsBlockService extends BaseBlockService
         // merge settings
         $settings = array_merge($this->getDefaultSettings(), $blockContext->getSettings());
 
-        $events = $this->em->getRepository('WsEventsBundle:Event')->findRecentlyPosted($this->nb_displayed);
+        $participants = $this->em->getRepository('WsEventsBundle:Participation')->findRecentlyPosted($this->nb_displayed);
 
-        return $this->renderResponse('MyUtilsBundle:Administration:block_recent_events.html.twig', array(
+        return $this->renderResponse('MyUtilsBundle:Administration:block_recent_participations.html.twig', array(
             'block'     => $blockContext->getBlock(),
             'block_context' => $blockContext,
             'settings'  => $settings,
-            'events' => $events,
+            'participants' => $participants,
             ), $response);
     }
 }

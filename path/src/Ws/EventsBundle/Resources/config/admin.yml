@@ -65,9 +65,43 @@ services:
         calls:
             - [ setTranslationDomain, [AcmeDemoBundle]]
 
+    #BLOCKS
+
     sonata.block.service.recent_events:
         class: Ws\EventsBundle\Admin\Blocks\RecentEventsBlockService
         arguments: [ "sonata.block.service.recent_events", @templating ]
+        tags:
+            - { name: sonata.block }
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+
+    sonata.block.service.recent_participations:
+        class: Ws\EventsBundle\Admin\Blocks\RecentParticipationsBlockService
+        arguments: [ "sonata.block.service.recent_participations", @templating ]
+        tags:
+            - { name: sonata.block }
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+
+    sonata.block.service.coming_events:
+        class: Ws\EventsBundle\Admin\Blocks\ComingEventsBlockService
+        arguments: [ "sonata.block.service.coming_events", @templating ]
+        tags:
+            - { name: sonata.block }
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+
+    sonata.block.service.coming_participations:
+        class: Ws\EventsBundle\Admin\Blocks\ComingParticipationsBlockService
+        arguments: [ "sonata.block.service.coming_participations", @templating ]
+        tags:
+            - { name: sonata.block }
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+
+    sonata.block.service.welcome:
+        class: Ws\EventsBundle\Admin\Blocks\WelcomeBlockService
+        arguments: [ "sonata.block.service.welcome", @templating ]
         tags:
             - { name: sonata.block }
         calls:

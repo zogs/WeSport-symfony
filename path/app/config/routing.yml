@@ -54,7 +54,7 @@ user_bundle:
     resource: "@MyUserBundle/Resources/config/routing.yml"
     prefix:   /
 
-tuto_animaux:
+blog_bundle:
     resource: "@MyBlogBundle/Resources/config/routing.yml"
     prefix:   /blog
 

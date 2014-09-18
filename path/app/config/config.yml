@@ -208,20 +208,20 @@ sonata_admin:
                 type: sonata.block.service.recent_events
             -
                 position: left
-                type: sonata.admin.block.admin_list
+                type: sonata.block.service.recent_participations
+            #-
+            #    position: left
+            #    type: sonata.admin.block.admin_list
             -
                 position: right
-                type: sonata.block.service.text
-                settings:
-                    content: >
-                        <h2>Salut !</h2>
-                        <p>Bienvenue sur le tableau de bord de coSporturage ! Ici y'a tout ce qui faut pour faire marcher le bouzin !</p>                       
+                type: sonata.block.service.welcome           
             -
                 position: right
-                type: sonata.block.service.rss
-                settings:
-                    title: Un example de flux RSS
-                    url: http://sonata-project.org/blog/archive.rss
+                type: sonata.block.service.coming_events 
+            -
+                position: right
+                type: sonata.block.service.coming_participations                        
+
 
 sonata_doctrine_orm_admin:
     templates:
@@ -245,6 +245,10 @@ sonata_block:
         sonata.block.service.text:
         sonata.block.service.rss:
         sonata.block.service.recent_events: ~
+        sonata.block.service.recent_participations: ~
+        sonata.block.service.coming_events: ~
+        sonata.block.service.coming_participations: ~
+        sonata.block.service.welcome: ~
 
         # Some specific block from the SonataMediaBundle
         #sonata.media.block.media:

@@ -15,7 +15,8 @@ class DefaultController extends Controller
     {
     	$stats = $this->get('statistic.manager')->update($scope);
     	
-    	return $this->render('WsStatisticBundle:Default:print.html.twig', array('stats' => $stats));
+        return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
+    	//return $this->render('WsStatisticBundle:Default:print.html.twig', array('stats' => $stats));
     }
 
     public function showAction($scope,$id)

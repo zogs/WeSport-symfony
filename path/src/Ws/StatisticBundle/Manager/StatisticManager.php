@@ -77,11 +77,11 @@ class StatisticManager extends AbstractManager
 	private function updateGeneral()
 	{
 		$this->setContext('general')->get();
-			
-		$this->data->setEventTotalCount($this->em->getRepository('WsEventsBundle:Event')->countAll());
-		$this->data->setUserTotalCount($this->em->getRepository('MyUserBundle:User')->countAll());
 
-
+		$this->data->setTotalEventCreated($this->em->getRepository('WsEventsBundle:Event')->countAll());
+		$this->data->setTotalUserRegistered($this->em->getRepository('MyUserBundle:User')->countAll());
+		$this->data->setTotalEventParticipation($this->em->getRepository('WsEventsBundle:Participation')->countAll());
+				
 		$this->save($this->data,true);
 
 		return $this->data;

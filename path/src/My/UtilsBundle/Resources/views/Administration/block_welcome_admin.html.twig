@@ -1,0 +1,26 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+
+    <h3>Boueyy !</h3>
+    <p>
+    Bienvenue sur le tableau de bord de coSporturage ! Ici y'a tout ce qui faut pour faire marcher le bouzin !
+    </p>
+
+    <p>
+        Quelques petites statisques : <a href="{{ path('ws_statistic_update',{scope:'main'}) }}">Mettre à jour</a>
+         <ul>
+             <li>
+                 Nombre d'inscrit : <strong>{{ statistic.total_user_registered }}</strong>
+             </li>
+             <li>
+                 Nombre de participations :<strong> {{ statistic.total_event_participation }}</strong>
+             </li>
+             <li>
+                 Nombre d'activités :<strong> {{ statistic.total_event_created }}</strong>
+             </li>
+         </ul>
+    </p>
+
+
+{% endblock %}
