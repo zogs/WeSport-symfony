@@ -39,7 +39,7 @@ class InvitationAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->addIdentifier('event',null,array('associated_property'=>'title','label'=>"Invité à"))
-            ->addIdentifier('inviter',null,array('associated_property'=>'username','label'=>"Inviteur"))         
+            ->addIdentifier('inviter',null,array('associated_property'=>'username','label'=>"Inviteur",'template'=>'MyUtilsBundle:Administration:list_user_avatar.html.twig'))        
             ->add('name',null,array('label'=>"Nom de la liste d'invité"))
             ->add('date')
         ;

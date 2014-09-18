@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+
+	{% if object.avatar is defined %}
+		<img src="{{ asset(object.avatar.getWebPath) }}" style="height:40px" alt="" class="nav-avatar">{{ object.username }}
+	{% elseif object.user.avatar is defined %}
+		<img src="{{ asset(object.user.avatar.getWebPath) }}" style="height:40px" alt="" class="nav-avatar">{{ object.user.username }}
+	{% elseif object.organizer.avatar is defined %}
+		<img src="{{ asset(object.organizer.avatar.getWebPath) }}" style="height:40px" alt="" class="nav-avatar">{{ object.organizer.username }}
+	{% elseif object.inviter.avatar is defined %}
+		<img src="{{ asset(object.inviter.avatar.getWebPath) }}" style="height:40px" alt="" class="nav-avatar">{{ object.inviter.username }}
+	{% endif %}
+
+{% endblock %}

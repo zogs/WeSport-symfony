@@ -1,2 +1,33 @@
 
 {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+ 
+    {# Get parent property #}
+    {{ parent() }}
+ 
+    {# add CSS #}
+    {% stylesheets
+    	'bundles/wssports/css/font-icons/style.css'
+    %}
+    	<link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+ 
+{% endblock %}
+
+{% block javascripts %}
+ 
+    {{ parent() }}
+ 
+    {# add JS #}
+    {% javascripts
+	'../app/Resources/public/js/*.js'
+ 	'@WsSportsBundle/Resources/public/js/*.js'
+ 
+ %}
+ 
+       <script src="{{ asset_url }}" type="text/javascript"></script>
+ 
+    {% endjavascripts %}
+ 
+{% endblock %}

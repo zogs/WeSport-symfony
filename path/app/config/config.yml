@@ -205,6 +205,9 @@ sonata_admin:
         blocks:
             -
                 position: left
+                type: sonata.block.service.recent_events
+            -
+                position: left
                 type: sonata.admin.block.admin_list
             -
                 position: right
@@ -222,9 +225,9 @@ sonata_admin:
 
 sonata_doctrine_orm_admin:
     templates:
-      types:
-        list:
-          state: MyUtilsBundle:Administration:list_state.html.twig
+        types:
+            list:
+
 
 
 #Sonata block-bundle
@@ -241,6 +244,7 @@ sonata_block:
 
         sonata.block.service.text:
         sonata.block.service.rss:
+        sonata.block.service.recent_events: ~
 
         # Some specific block from the SonataMediaBundle
         #sonata.media.block.media:

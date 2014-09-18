@@ -39,9 +39,6 @@ class LocationAdmin extends Admin
             ->addIdentifier('id')
             ->add('country',null,array('associated_property'=>'name'))
             ->add('region',null,array('associated_property'=>'name'))
-            ->add('departement.name')
-            ->add('district.name')
-            ->add('division.name')
             ->add('city',null,array('associated_property'=>'name'))
         ;
     }

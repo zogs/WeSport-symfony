@@ -31,8 +31,8 @@ class CategoryAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-            ->add('icon')
+            ->addIdentifier('name',null,array('template'=>'MyUtilsBundle:Administration:list_sport_icon.html.twig'))
+          
         ;
     }
 }

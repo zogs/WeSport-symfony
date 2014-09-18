@@ -41,7 +41,7 @@ $(document).ready(function() {
 		
 	});
 
-alert('lol');
+
 	if($("select.iconSportSelect").length != 0){
 	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    		    	
 	}

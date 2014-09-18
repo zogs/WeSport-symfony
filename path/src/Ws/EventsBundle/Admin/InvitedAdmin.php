@@ -40,8 +40,9 @@ class InvitedAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->addIdentifier('invitation',null,array('associated_property'=>'event.title','label'=>"Invité à"))
-            ->addIdentifier('user',null,array('associated_property'=>'username','label'=>"Utilisateur enregistré"))         
+            ->add('invitation',null,array('associated_property'=>'event.title','label'=>"Invité à"))
+            ->add('invitation.event.sport',null,array("label"=>"Sport",'template'=>'MyUtilsBundle:Administration:list_sport_icon.html.twig'))
+            ->add('user',null,array('associated_property'=>'username','label'=>"Utilisateur enregistré",'template'=>'MyUtilsBundle:Administration:list_user_avatar.html.twig'))      
             ->add('email')
             ->add('date')
             ->add('nb_sended')

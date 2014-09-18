@@ -36,8 +36,9 @@ class ParticipationAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->addIdentifier('user',null,array('associated_property'=>'username'))
-            ->addIdentifier('event',null,array('associated_property'=>'title'))         
+            ->add('user',null,array('template'=>'MyUtilsBundle:Administration:list_user_avatar.html.twig'))
+            ->add('event',null,array('associated_property'=>'title'))    
+            ->add('event.sport',null,array("label"=>"Sport",'template'=>'MyUtilsBundle:Administration:list_sport_icon.html.twig'))
         ;
     }
 

@@ -220,7 +220,16 @@ class EventRepository extends EntityRepository
 	}
 
 
+	public function findRecentlyPosted($nb)
+	{
+		$qb = $qb = $this->createQueryBuilder('e');
 
+		$qb->select('e')
+			->orderBy('e.date_depot', 'DESC')
+			->setMaxResults( $nb );
+			
+		return $qb->getQuery()->getResult();
+	}
 
 	public function findRecentUniqueEventPosted()
 	{
@@ -236,10 +245,9 @@ class EventRepository extends EntityRepository
 
 	public function findFirstEventOfSerie($serie)
 	{
-		$qb = $this->_em->createQueryBuilder('e');
+		$qb = $this->createQueryBuilder('e');
 
 		$qb->select('e')
-			->from('Event','e')
 			->where('e.serie',$serie)
 			->setMaxResults(1);
 

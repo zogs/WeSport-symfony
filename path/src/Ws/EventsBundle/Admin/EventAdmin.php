@@ -56,10 +56,10 @@ class EventAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('date_depot',null,array('label'=>'Déposé le'))
-            ->add('organizer',null,array('label'=>'Par','associated_property'=>'username'))
+            ->add('sport',null,array('associated_property'=>'name','template'=>'MyUtilsBundle:Administration:list_sport_icon.html.twig'))
             ->addIdentifier('title',null,array('label'=>'Titre'))            
-            ->add('sport',null,array('associated_property'=>'name'))
+            ->add('date_depot',null,array('label'=>'Déposé le'))
+            ->add('organizer',null,array('label'=>'Par','template'=>'MyUtilsBundle:Administration:list_user_avatar.html.twig'))
             ->add('date',null,array('label'=>"A lieu le"))
             ->add('location',null,array('associated_property' => 'city.name','label'=>'Ville'))
         ;

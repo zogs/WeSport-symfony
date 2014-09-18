@@ -64,3 +64,11 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [AcmeDemoBundle]]
+
+    sonata.block.service.recent_events:
+        class: Ws\EventsBundle\Admin\Blocks\RecentEventsBlockService
+        arguments: [ "sonata.block.service.recent_events", @templating ]
+        tags:
+            - { name: sonata.block }
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]

@@ -34,9 +34,9 @@ class SportAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('name','string',array('template'=>'MyUtilsBundle:Administration:list_sport_icon.html.twig'))
             ->add('slug')
-            ->add('icon')
+            ->add('category',null,array('associatied_property'=>'name'))
         ;
     }
 
