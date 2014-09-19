@@ -181,7 +181,7 @@
 						<h3>Question & Discussion</h3>
 						<div class="event-comments">
 							
-							<< todo >>
+							{% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': 'event-'~event.id} %}
 						</div>
 					</div>
 				</div>

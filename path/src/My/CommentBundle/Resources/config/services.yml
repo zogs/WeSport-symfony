@@ -2,6 +2,9 @@ parameters:
 #    my_comment.example.class: My\CommentBundle\Example
 
 services:
-#    my_comment.example:
-#        class: %my_comment.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    comment_bundle.listener.comment:
+        class: My\CommentBundle\EventListener\CommentListener
+        arguments: [@doctrine.orm.entity_manager,@router,@ws_mailer]
+        scope: container
+        tags:
+            - { name: kernel.event_subscriber }

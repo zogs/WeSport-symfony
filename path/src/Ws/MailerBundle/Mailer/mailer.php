@@ -11,6 +11,7 @@ use Ws\EventsBundle\Manager\CalendarUrlGenerator;
 use My\UserBundle\Entity\User;
 use Ws\EventsBundle\Entity\Event;
 use Ws\MailerBundle\Entity\Settings;
+use My\CommentBundle\Entity\Comment;
 
 class Mailer
 {
@@ -226,6 +227,18 @@ class Mailer
         $this->sendMessage($from,$invited->getEmail(),$subject,$body);
 
         return $invited->getEmail();
+    }
+
+    public function sendEventCommentedMessage(Comment $comment)
+    {
+        $from = $this->expediteur;
+        $subject = ucfirst($comment->getAuthor()->getUsername())." à posé une question ";
+        $body = $this->templating->render('WsMailerBundle:Comments:event_commented.html.twig',array(
+            'comment' => $comment
+            ));
+        $this->sendMessage($from,$comment->getAuthor()->getEmail(),$subject,$body);
+
+        return $comment->getAuthor()->getEmail();
     }
 
     
