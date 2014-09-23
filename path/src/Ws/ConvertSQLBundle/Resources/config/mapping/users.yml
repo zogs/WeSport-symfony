@@ -6,6 +6,7 @@ relations:
     username_canonical: login
     email: email
     email_canonical: email
+    enabled: "valid"
     salt: salt
     password: hash
     last_login: ["date_lastlogin","datetime","Y-m-d h:i:s"]

@@ -1,0 +1,26 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+
+<h2>Nombre d'entité crées : {{ success|length }}</h2>
+<p>
+	<a href="{{ path('ws_convert_sql_index')}}">Revenir à l'index</a>
+</p>
+<h4>Errors:</h4>
+<table class="table table-stripped">
+	<thead>
+		<th>Type</th>
+		<th>Class</th>
+		<th>Id</th>
+	</thead>
+	<tbody>
+	{% for error in errors %}
+		<tr>
+			<td>{{ error.type }}</td>
+			<td>{{ error.class }}</td>
+			<td>{{ error.entity.id }}</td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

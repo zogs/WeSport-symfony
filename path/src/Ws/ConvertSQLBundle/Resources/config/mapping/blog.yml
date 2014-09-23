@@ -1,0 +1,7 @@
+class: My\BlogBundle\Entity\Article
+repository: MyBlogBundle:Article
+relations:
+    id: id
+    titre: name
+    description: content
+    date: ["created","datetime","Y-m-d h:i:s"]

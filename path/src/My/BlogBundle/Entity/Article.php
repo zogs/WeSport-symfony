@@ -40,7 +40,7 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255)
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
      * @Assert\Url
      */
     private $url;
@@ -56,6 +56,19 @@ class Article
     function __construct(){
 
         $this->date = new \DateTime();
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Article
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
 

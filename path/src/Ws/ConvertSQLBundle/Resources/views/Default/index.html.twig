@@ -1,1 +1,49 @@
-Hello {{ name }}!
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+<h2>Bienvenue dans l'outil de transfert de base de donnée</h2>
+<p>
+	Cet outil permet de transférer les données du base de données existante dans une autre <strong>sous forme d'entité Doctrine2</strong>
+</p>
+<p>
+	<form action="{{path('ws_convert_sql_convert_one')}}" style="display:inline;">
+	<a class="btn" href="{{ path('ws_convert_sql_convert_all')}}">Convertir toutes les tables</a>
+	<a class="btn" href="{{ path('ws_convert_sql_purge')}}">Purger la base</a>
+		<input type="submit" value="Convertir cette table" class="btn">
+		<input type="text" name="table">
+	</form>
+</p>
+<p>
+	<i>La connection à l'ancienne base de donnée est dans app/config/config.yml</i>
+	<pre>
+		doctrine:
+		    dbal:
+		        oldwesport:
+                    dbname: wesport
+                    user: root
+                    password: null
+                    host: 127.0.0.1
+	</pre>
+</p>
+<p>
+	<i>Les fichiers de configuration des tables sont dans /Resources/config/mapping/tables.yml</i>
+	<pre>
+		tables:
+		    nom_table_doctrine1: nom_ancienne_table1
+		    nom_table_doctrine2: nom_ancienne_table2
+		    ~~
+	</pre>
+</p>
+<p>
+	<i>Les fichiers de correspondance des propriétés sont dans /Resources/config/mapping/[nom_table_doctrine].yml</i>
+	<pre>
+		class: My\ExampleBundle\Entity\Example
+		repository: MyExampleBundle:Example
+		relations:
+		    name_field_id: name_old_field_id
+		    name_field_example: name_old_field_example
+		    ~~
+	</pre>
+</p>
+
+{% endblock %}

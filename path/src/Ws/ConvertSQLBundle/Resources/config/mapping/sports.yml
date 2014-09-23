@@ -1,0 +1,9 @@
+class: Ws\SportsBundle\Entity\Sport
+repository: WsSportsBundle:Sport
+relations:
+    id: id
+    name: name
+    slug: slug
+    keywords: name
+    icon: slug
+    action: action

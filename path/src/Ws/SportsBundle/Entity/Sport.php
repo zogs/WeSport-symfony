@@ -55,6 +55,19 @@ class Sport implements Translatable
     protected $category;
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Sport 
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer 
