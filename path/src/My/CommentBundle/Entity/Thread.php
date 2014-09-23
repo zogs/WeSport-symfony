@@ -18,6 +18,17 @@ class Thread extends BaseThread
      * @ORM\Column(type="string")
      */
     protected $id;
+
+    public function getContext()
+    {
+    	$r = explode('-',$this->id);
+    	return $r[0];
+    }
+
+    public function getUid(){
+    	$r = explode('-',$this->id);
+    	return $r[1];
+    }
 }
 
 ?>

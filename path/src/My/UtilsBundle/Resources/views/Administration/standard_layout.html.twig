@@ -8,7 +8,7 @@
  
     {# add CSS #}
     {% stylesheets
-    	'bundles/wssports/css/font-icons/style.css'
+    	'bundles/wssports/css/font-icons/style.css'        
     %}
     	<link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
@@ -23,10 +23,16 @@
     {% javascripts
 	'../app/Resources/public/js/*.js'
  	'@WsSportsBundle/Resources/public/js/*.js'
+    'bundles/myutils/ckeditor/ckeditor.js'
  
  %}
  
        <script src="{{ asset_url }}" type="text/javascript"></script>
+
+      {# set ckeditor directory #}
+      <script type="text/javascript">window.CKEDITOR_BASEPATH = '/web/bundles/myutils/ckeditor/';</script>
+          {# settings My\UtilsBundle\Resources\public\ckeditor\config.js #}
+          {# others settings of filemanager My\UtilsBundle\Resources\public\ckeditor_filemanager\scripts\filemanager.config.js  #}
  
     {% endjavascripts %}
  

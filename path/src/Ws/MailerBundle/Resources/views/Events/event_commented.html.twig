@@ -1,0 +1,41 @@
+{% extends 'WsMailerBundle:Template:personal.html.twig' %}
+
+{% block title %}
+    <strong>{% if comment.author is not null %} {{ comment.author.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
+    On vous a posé une question !
+
+{% endblock title %}
+
+{% block content %}
+    <table cellpadding="0" cellspacing="0" border="0" class="content" style="background-color:#FFF;  position: relative; width:100%; padding:0 10%;">
+        <tbody>           
+            <tr height="50" style="margin-top:10px;margin-bottom:10px;">
+                
+                <td>
+                {% if comment.author is defined %}
+                    <p>
+                        <strong>{{ comment.author.username|capitalize }} à écrit: </strong><br>
+                    </p>
+                    <p>
+                        <i>{{ comment.body }}</i>
+                    </p>               
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Concernant l'activité :</strong>
+
+                    {% include 'WsMailerBundle:Template:block_event.html.twig' with {'event':event}  %}  
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        <strong>Vous pouvez répondre</strong> depuis cette page : <a href="{{ event|link2event }}" title="{{ event|link2event }}">{{ event|link2event }}</a>
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock content %}

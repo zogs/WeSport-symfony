@@ -229,14 +229,15 @@ class Mailer
         return $invited->getEmail();
     }
 
-    public function sendEventCommentedMessage(Comment $comment)
+    public function sendEventCommentedMessage(Comment $comment, Event $event)
     {
         $from = $this->expediteur;
         $subject = ucfirst($comment->getAuthor()->getUsername())." à posé une question ";
-        $body = $this->templating->render('WsMailerBundle:Comments:event_commented.html.twig',array(
-            'comment' => $comment
+        $body = $this->templating->render('WsMailerBundle:Events:event_commented.html.twig',array(
+            'comment' => $comment,
+            'event' => $event
             ));
-        $this->sendMessage($from,$comment->getAuthor()->getEmail(),$subject,$body);
+        $this->sendMessage($from,$event->getOrganizer()->getEmail(),$subject,$body);
 
         return $comment->getAuthor()->getEmail();
     }

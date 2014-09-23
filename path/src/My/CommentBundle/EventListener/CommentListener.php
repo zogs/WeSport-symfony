@@ -14,30 +14,42 @@ use Ws\MailerBundle\Mailer\Mailer;
 class CommentListener implements EventSubscriberInterface
 {
 
-  private $em;
-  private $router;
-  private $mailer;
+	private $em;
+	private $router;
+	private $mailer;
 
-  public function __construct(EntityManager $em, UrlGeneratorInterface $router, Mailer $mailer)
-  {
-    $this->em = $em;
-    $this->router = $router;
-    $this->mailer = $mailer;
-  }
+	public function __construct(EntityManager $em, UrlGeneratorInterface $router, Mailer $mailer)
+	{
+		$this->em = $em;
+		$this->router = $router;
+		$this->mailer = $mailer;
+	}
 
-  public static function getSubscribedEvents()
-  {
-    return array(
-      Events::COMMENT_POST_PERSIST => 'onCommentPosted',      
-      );
-  }
+	public static function getSubscribedEvents()
+	{
+		return array(
+		  Events::COMMENT_POST_PERSIST => 'onCommentPosted',      
+		  );
+	}
 
-  public function onCommentPosted( CommentEvent $event )
-  {
-    $comment = $event->getComment();
-   
-    $this->mailer->sendEventCommentedMessage($comment);
+	public function onCommentPosted( CommentEvent $event )
+	{
+		$comment = $event->getComment();
 
-  }
+		//if its a event's comment
+		if($comment->getThread()->getContext()=='event'){
+
+			//get the related event
+		    $event = $this->em->getRepository('WsEventsBundle:Event')->findOneById($comment->getThread()->getUid());	
+
+		    //cancel if its a organizer comment
+		    if($event->getOrganizer() == $comment->getAuthor()) return;
+
+		    //send to organizer an email
+		    $this->mailer->sendEventCommentedMessage($comment,$event);
+		}
+
+
+	}
 
 }

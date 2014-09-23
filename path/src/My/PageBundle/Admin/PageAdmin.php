@@ -14,7 +14,7 @@ class PageAdmin extends Admin
     {
         $formMapper
             ->add('title')
-            ->add('content')
+            ->add('content','textarea',array('attr'=>array('class'=>'ckeditor')))
             ->add('menu')
             ->add('isOnline')
             ->add('position','number')
