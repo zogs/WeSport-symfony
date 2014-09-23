@@ -1,0 +1,3 @@
+ws_convert_sql_homepage:
+    path:     /test
+    defaults: { _controller: WsConvertSQLBundle:Default:index }

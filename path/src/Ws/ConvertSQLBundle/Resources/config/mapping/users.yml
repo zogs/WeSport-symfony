@@ -1,0 +1,20 @@
+class: My\UserBundle\Entity\User
+repository: MyUserBundle:User
+relations:
+    id: user_id
+    username: login
+    username_canonical: login
+    email: email
+    email_canonical: email
+    salt: salt
+    password: hash
+    last_login: ["date_lastlogin","datetime","Y-m-d h:i:s"]
+    confirmation_token: codeactiv
+    type: role
+    firstname: prenom
+    lastname: nom
+    birthday: ["birthdate","datetime","Y-m-d"]
+    gender: sexe
+    description: descr
+    register_since: ["date_signin","datetime","Y-m-d h:i:s"]
+    lang_prefered: lang

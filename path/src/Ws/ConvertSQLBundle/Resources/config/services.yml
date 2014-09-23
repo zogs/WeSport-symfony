@@ -1,0 +1,10 @@
+parameters:
+#    ws_convert_sql.example.class: Ws\ConvertSQLBundle\Example
+
+services:
+#    ws_convert_sql.example:
+#        class: %ws_convert_sql.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    ws_table_converter:
+        class: Ws\ConvertSQLBundle\Converter\Converter
+        arguments: [@doctrine.dbal.oldwesport_connection,@doctrine.orm.entity_manager]

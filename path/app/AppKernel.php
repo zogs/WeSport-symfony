@@ -52,6 +52,7 @@ class AppKernel extends Kernel
             new My\ContactBundle\MyContactBundle(),
             new My\UtilsBundle\MyUtilsBundle(),
             new Ws\StatisticBundle\WsStatisticBundle(),
+            new Ws\ConvertSQLBundle\WsConvertSQLBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

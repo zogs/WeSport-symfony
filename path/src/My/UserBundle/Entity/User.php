@@ -90,9 +90,9 @@ class User extends BaseUser
     private $updatedCount = '';
 
     /**
-     * @ORM\Column(type="text", length=6, nullable=true)
+     * @ORM\Column(type="text", length=6, nullable=true, name="lang")
      */
-    private $lang = '';
+    private $lang_prefered = '';
 
     public function __construct()
     {
@@ -480,6 +480,13 @@ class User extends BaseUser
         $this->statistic = $statistic;
     }
 
+    /**
+     * Set Salt
+     */
+    public function setSalt($salt)
+    {        
+        $this->salt = $salt;
+    }
 
 
 }
