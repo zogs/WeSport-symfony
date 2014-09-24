@@ -23,6 +23,27 @@ ws_event_edit:
         event: \d+
         _method: GET|POST
 
+#SPOT
+ws_spot_index:
+    pattern: /spot/index
+    defaults: { _controller: WsEventsBundle:Spot:index }
+ws_spot_new:
+    pattern: /spot/new
+    defaults: { _controller: WsEventsBundle:Spot:create }
+ws_spot_edit:
+    pattern: /spot/edit/{spot}
+    defaults: { _controller: WsEventsBundle:Spot:edit }
+    requirements:
+        spot: \d+
+ws_spot_delete:
+    pattern: /spot/delete
+    defaults: { _controller: WsEventsBundle:Spot:delete }
+ws_spot_autocomplete:
+    pattern: /spot/ajax/{country}/{prefix}
+    defaults: { _controller: WsEventsBundle:Spot:autoComplete, country: 'FR', prefix:'' }
+    requirements:
+        _method: GET
+
 #CALENDAR
 ws_calendar_ajax:
     pattern: /calendar/ajax/{date}

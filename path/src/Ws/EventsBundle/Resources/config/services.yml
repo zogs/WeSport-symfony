@@ -35,6 +35,12 @@ services:
         tags:
             - { name: form.type, alias: calendar_search_type }
 
+    ws_events.form.type.spot:
+        class: Ws\EventsBundle\Form\Type\SpotType   
+        arguments: [@doctrine.orm.entity_manager,@router]    
+        tags:
+            - { name: form.type, alias: spot_type }
+
     #Managers
     ws_events.manager:
         class: Ws\EventsBundle\Manager\EventManager
@@ -54,6 +60,10 @@ services:
 
     ws_events.alert.manager:
         class: Ws\EventsBundle\Manager\AlertManager
+        arguments: [@service_container]
+
+    ws_events.spot.manager:
+        class: Ws\EventsBundle\Manager\SpotManager
         arguments: [@service_container]
 
     #Twig

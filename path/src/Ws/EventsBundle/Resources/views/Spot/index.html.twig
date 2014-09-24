@@ -1,0 +1,47 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+
+    <div class="indexAlert">
+        <div class="fresque"></div>
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                   Les spots 
+                </h1>
+            </div>
+
+
+            <table width="100%">
+            <thead>
+              <th>Ville</th>
+              <th>Nom</th>
+              <th>Adresse</th>
+            </thead>
+            <tbody>
+           {% for spot in spots %}
+                       <tr>
+                            <td>
+                              {{ spot.location.city.name }}
+                            </td>
+                            <td>
+                              {{ spot.name }}
+                            </td>
+                            <td>
+                              {{ spot.address }}
+                            </td>
+                       </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+
+            
+              <p><a href="{{path('ws_spot_new')}}">En créer un nouveau spot !</a></p>
+          
+        <div class="clearfix"></div>
+        <div class="fresque"></div>
+    
+    </div>
+    
+{% endblock %}
+

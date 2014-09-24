@@ -1,0 +1,41 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+
+    <div class="createAlert">
+        <div class="fresque"></div>
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                   Créé un lieu de rencontre sportive
+                </h1>
+            </div>
+
+        <div class="col_large">
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
+
+                {{ form_row(form.spot_id)}}
+                {{ form_row(form.spot_slug)}}
+                {{ form_widget(form.location.city_id, {'id':'city_id','required':'required','attr':{'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
+                {{ form_row(form.location.city_name,{'id':'city_name'}) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.address) }}
+
+                <input type="submit" class="btn btn-primary btn-large">
+             {{ form_end(form) }}  
+
+
+        </div>
+
+        <div class="col_small">
+           
+        </div>
+        
+        <div class="clearfix"></div>
+        <div class="fresque"></div>
+    
+    </div>
+    
+{% endblock %}
+
