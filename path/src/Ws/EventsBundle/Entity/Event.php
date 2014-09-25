@@ -60,9 +60,9 @@ class Event
     private $type = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")     
+     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Spot", fetch="EAGER", cascade={"persist","remove"})     
      */
-    private $location;
+    private $spot;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", inversedBy="events", fetch="EAGER", cascade={"persist"})     
@@ -88,12 +88,6 @@ class Event
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\Column(name="address", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
-     */
-    private $address;
 
     /**
      * @ORM\Column(name="nbmin", type="smallint")
@@ -399,49 +393,6 @@ class Event
     }
 
     /**
-     * Set address
-     *
-     * @param string $address
-     * @return Event
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string 
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-        /**
-     * Get address
-     *
-     * @return string 
-     */
-    public function getFullAddress()
-    {
-        return $this->address.', '.$this->location->getCity()->getName().', '.$this->location->getCountry()->getName();;
-    }
-
-    /**
-     * Get short adress
-     *
-     * @return string
-     */
-    public function shortAddress()
-    {
-        return substr($this->address,0,8).'...';
-    }
-
-    /**
      * Set nbmin
      *
      * @param integer $nbmin
@@ -603,6 +554,30 @@ class Event
     }
 
     /**
+     * Set spot
+     *
+     * @param \Ws\EventsBundle\Entity\Spot $spot
+     * @return Event
+     */
+    public function setSpot(\Ws\EventsBundle\Entity\Spot $spot = null)
+    {
+        $this->spot = $spot;
+
+        return $this;
+    }
+
+    /**
+     * Get spot
+     *
+     * @return \Ws\EventsBundle\Entity\Spot 
+     */
+    public function getSpot()
+    {
+        return $this->spot;
+    }
+
+
+    /**
      * Set serie
      *
      * @param \Ws\EventsBundle\Entity\Serie $serie
@@ -671,29 +646,7 @@ class Event
         return $this->organizer;
     }
 
-    /**
-     * Set location
-     *
-     * @param \My\WorldBundle\Entity\Location $location
-     * @return Event
-     */
-    public function setLocation(\My\WorldBundle\Entity\Location $location = null)
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
-    /**
-     * Get location
-     *
-     * @return \My\WorldBundle\Entity\Location 
-     */
-    public function getLocation()
-    {
-        return $this->location;
-    }
-
+    
     /**
      * add participation
      */

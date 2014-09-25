@@ -248,7 +248,6 @@ class LocationRepository extends EntityRepository
 			$qb->andWhere($qb->expr()->eq('l.city',$states['city']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.city'));
-		
 
 		$location = $qb->getQuery()->getOneOrNullResult();
 

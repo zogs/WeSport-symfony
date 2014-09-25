@@ -84,7 +84,6 @@ class EventController extends Controller
 	 */
 	public function editAction(Event $event)
 	{
-
 		$form = $this->createForm('event',$event);
 
 		$form->handleRequest($this->getRequest());
@@ -92,7 +91,7 @@ class EventController extends Controller
 		if($form->isValid()){
 
 			$event = $form->getData();
-			
+
 			if($this->get('ws_events.manager')->saveEvent($event)){
 
 				//set flash message
@@ -215,8 +214,8 @@ class EventController extends Controller
 		$gmap->setSize('100%','100px');
 		$gmap->setLang($this->getRequest()->getLocale());
 		$gmap->setEnableWindowZoom(true);
-		$gmap->addMarkerByAddress($event->getFullAddress(),$event->getTitle());
-		$gmap->setCenter($event->getFullAddress());
+		$gmap->addMarkerByAddress($event->getSpot()->getFullAddress(),$event->getTitle());
+		$gmap->setCenter($event->getSpot()->getFullAddress());
 		$gmap->setZoom(12);
 		$gmap->generate();
 		$gmap = $gmap->getGoogleMap();

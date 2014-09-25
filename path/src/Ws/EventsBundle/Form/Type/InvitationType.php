@@ -70,6 +70,7 @@ class InvitationType extends AbstractType
     public function onPreSetData(FormEvent $event)
     {
     	$form = $event->getForm();
+        $data = $event->getData();
 
     	//add previously saved invitation's list
     	$invits = $this->em->getRepository('WsEventsBundle:Invitation')->findSavedInvitation($this->user);

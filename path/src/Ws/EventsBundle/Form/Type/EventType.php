@@ -38,11 +38,9 @@ class EventType extends AbstractType
 		->add('title',null,array(
 			'label'=>'Titre'
 			))
-		->add('location', 'city_to_location_type', array(
+		->add('spot', 'spot_type', array(
 			'required' => true,
 			))
-		->add('address',null)
-
 		->add('date', 'date', array(
 			'widget'=>'single_text',
 			'input'=>'datetime',
@@ -71,8 +69,9 @@ class EventType extends AbstractType
 		->add('phone','text',array(
 			'label'=>'Téléphone','required'=>false
 			))
-		->add('invitations','invitation_type',array(			
-			))
+		//debug todo
+		//->add('invitations','invitation_type',array(			
+		//	))
 	;
 
 

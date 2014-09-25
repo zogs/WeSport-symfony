@@ -10,6 +10,8 @@ use Symfony\Component\Routing\Router;
 
 use Doctrine\ORM\EntityManager;
 
+use Ws\EventsBundle\Entity\Spot;
+
 class SpotType extends AbstractType
 {
 
@@ -42,23 +44,67 @@ class SpotType extends AbstractType
                 ))
             ->add('location', 'city_to_location_type', array(
                 'required' => false,
+                'mapped' => false,
                 'label' => "Ville",
                 ))
             ->add('name','text',array(
-                'mapped' => true,
+                'mapped' => false,
                 'required' => false,
                 'label' => "Nom de l'endroit",
                 ))
             ->add('address','text',array(
-                'mapped' => true,
+                'mapped' => false,
                 'required' => false,
                 'label' => "Adresse exacte",
                 ))
             ;
     		
-            
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
             $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
-            $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
+    }
+
+    public function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $spot = $event->getData();        
+
+        $form->add('spot_id','hidden',array(
+                'data' => $spot->getId(),
+                'mapped' => false,
+                'required' => false,
+                'attr' => array(
+                    'class' => 'autocomplete-spot_id'
+                    )
+                ))
+            ->add('spot_slug','text',array(
+                'data' => $spot->getSlug(),
+                'mapped' => false,
+                'required' => false,
+                'attr' => array(
+                    'class' => 'autocomplete-spot',
+                    'data-autocomplete-url' => $this->router->generate('ws_spot_autocomplete'),
+                    )
+                ))
+            ->add('location', 'city_to_location_type', array(
+                'data' => $spot->getLocation(),
+                'required' => false,
+                'mapped' => false,
+                'label' => "Ville",
+                ))
+            ->add('name','text',array(
+                'data' => $spot->getName(),
+                'mapped' => false,
+                'required' => false,
+                'label' => "Nom de l'endroit",
+                ))
+            ->add('address','text',array(
+                'data' => $spot->getAddress(),
+                'mapped' => false,
+                'required' => false,
+                'label' => "Adresse exacte",
+                ))
+            ;
+
     }
 
     public function onPreSubmit(FormEvent $event)
@@ -68,26 +114,25 @@ class SpotType extends AbstractType
 
         if(!empty($data['spot_id'])) {
         
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findById($data['city_id']);
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']);
             $form->setData($spot);
         }
-        else if(!empty($data['spot_slug'])) {
+        elseif(!empty($data['spot_slug'])) {
 
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findBySlug($data['spot_slug']);
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug']);
             $form->setData($spot);
         }
-        
-    }
+        elseif(!empty($data['location']) && (!empty($data['name'] || !empty($data['address'])))){
 
-     public function onPostSubmit(FormEvent $event)
-    {
-        $form = $event->getForm();
-        $spot = $event->getData();
-
-        $spot->setSlug($spot->getLocation()->getCity()->getName().' '.$spot->getName().' '.$spot->getAddress());
-        $spot->setCountryCode($spot->getLocation()->getCountry()->getCode());        
+            $spot = new Spot();
+            $spot->setName($data['name']);
+            $spot->setAddress($data['address']);
+            $spot->setLocation($data['location']);
+            $form->setData($spot);
+        }
 
     }
+
     public function getName()
     {
         return 'spot_type';
@@ -98,7 +143,7 @@ class SpotType extends AbstractType
 	    $resolver->setDefaults(array(
             'invalid_message' => 'Spot form error',
 	        'data_class' => 'Ws\EventsBundle\Entity\Spot',
-            'cascade_validation' => true,
+            'cascade_validation' => false,
 	    ));
 	}
 }

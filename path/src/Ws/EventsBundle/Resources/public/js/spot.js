@@ -23,14 +23,13 @@ $(document).ready(function() {
 		//footer: 'footer',
 
 	}).on('typeahead:selected',function( evt, datum ){
-		$('input.autocomplete-spot:first').val(datum.slug);		
-		$('input.autocomplete-spot_id:first').val( datum.id );
-		$('input.autocomplete-spot:first').removeClass('empty');
-		$('input.autocomplete-spot:first').val(datum.name);
+		$(this).val(datum.slug);		
+		$('input.autocomplete-spot_id:first').val(datum.id);
+		
 	}).on('typeahead:opened',function(e){
-		$('input.autocomplete-spot:first').addClass('open');		
+				
 	}).on('typeahead:closed',function(e){
-		$('input.autocomplete-spot:first').removeClass('open');
+		
 		
 	});
 

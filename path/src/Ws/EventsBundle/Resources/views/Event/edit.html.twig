@@ -16,11 +16,18 @@
                 {{ form_errors(form) }}
 
                 {{ form_row(form.sport) }}
+                {{ form_row(form.level) }}
                 {{ form_row(form.title) }}
-                {{ form_widget(form.location.city_id, {'id':'city_id','attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
-                {{ form_row(form.location.city_name, {'id':'city_name'}) }}
-                {{ form_row(form.address) }}
+                {{ form_row(form.spot.spot_id) }}
+                {{ form_row(form.spot.spot_slug) }}
+                {{ form_widget(form.spot.location.city_id, {'id':'city_id','attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
+                {{ form_row(form.spot.location.city_name, {'id':'city_name'}) }}
+                {{ form_row(form.spot.name )}}
+                {{ form_row(form.spot.address) }}
                 {{ form_row(form.date) }}
+                {{ form_row(form.serie.startdate) }}
+                {{ form_row(form.serie.enddate) }}
+                {{ form_row(form.serie) }}
                 {{ form_row(form.time) }}
                 {{ form_row(form.nbmin) }}
                 {{ form_row(form.description) }}
@@ -29,6 +36,7 @@
                 <button type="submit" class="btn btn-large btn-primary fright">Save</button>
 
                 
+               
             {{ form_widget(form._token) }} 
             {{ form_end(form, {'render_rest': false}) }}
                    

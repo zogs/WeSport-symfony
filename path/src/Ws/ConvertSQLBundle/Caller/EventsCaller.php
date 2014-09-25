@@ -2,9 +2,9 @@
 
 namespace Ws\ConvertSQLBundle\Caller;
 
-use Ws\ConvertSQLBundle\Caller\AbstractCaller;
+use Ws\ConvertSQLBundle\Caller\LocationCaller;
 
-class EventsCaller extends AbstractCaller
+class EventsCaller extends LocationCaller
 {
 	
 	public function setType()
@@ -45,8 +45,8 @@ class EventsCaller extends AbstractCaller
 
 		if(!empty($old)){
 		
-			$serie->setStartDate($old['startdate']);
-			$serie->setEndDate($old['enddate']);
+			$serie->setStartDate($this->formatDate($old['startdate'],'Y-m-d'));
+			$serie->setEndDate($this->formatDate($old['enddate'],'Y-m-d'));
 			$serie->setOccurences($old['count']);
 			$serie->setType($this->entity->getType());
 			$serie->setDateDepot($this->entity->getDateDepot());
@@ -73,5 +73,15 @@ class EventsCaller extends AbstractCaller
 	public function setOccurence()
 	{
 		return $this->entity->getSerie()->getOccurences();
+	}
+
+	public function setSpot()
+	{
+		$spot = new \Ws\EventsBundle\Entity\Spot();
+
+		$spot->setAddress($this->entry['address']);
+		$spot->setLocation($this->findLocationFromData());
+
+		return $spot;
 	}
 }

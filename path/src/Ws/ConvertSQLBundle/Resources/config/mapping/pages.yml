@@ -1,0 +1,15 @@
+class: My\PageBundle\Entity\Page
+relations:
+    id: id_i18n
+    title: title
+    slug: slug
+    content: content
+    isOnline: valid
+    menu: 
+        type: string
+        value: top
+    position: 0    
+    date:
+        type: date
+        field: date
+        format: "Y-m-d h:i:s"

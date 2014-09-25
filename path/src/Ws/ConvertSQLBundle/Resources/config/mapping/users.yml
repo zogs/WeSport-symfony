@@ -2,30 +2,32 @@ type: entity
 class: My\UserBundle\Entity\User
 repository: MyUserBundle:User
 relations:
+    salt: salt
+    type: role
+    id: user_id
+    email: email
+    lastname: nom
+    password: hash
+    enabled: valid
+    username: login
+    firstname: prenom
+    description: descr
+    lang_prefered: lang
+    email_canonical: email
+    username_canonical: login
+    confirmation_token: codeactiv
     location:
         type: call
         class: Ws\ConvertSQLBundle\Caller\LocationCaller
         method: findLocationFromData
-    id: user_id
-    username: login
-    username_canonical: login
-    email: email
-    email_canonical: email
     roles:
         type: call
         class: Ws\ConvertSQLBundle\Caller\UsersCaller
         method: setRoles
-    enabled: valid
-    salt: salt
-    password: hash
     last_login:
         field: date_lastlogin
         type: datetime
         format: "Y-m-d h:i:s"
-    confirmation_token: codeactiv
-    type: role
-    firstname: prenom
-    lastname: nom
     birthday:
         field: birthdate
         type: datetime
@@ -34,12 +36,10 @@ relations:
         type: call
         class: Ws\ConvertSQLBundle\Caller\UsersCaller
         method: setGender
-    description: descr
     register_since: 
         field: date_signin
         type: datetime
         format: "Y-m-d h:i:s"
-    lang_prefered: lang
     avatar:
         type: entity
         class: My\UserBundle\Entity\Avatar

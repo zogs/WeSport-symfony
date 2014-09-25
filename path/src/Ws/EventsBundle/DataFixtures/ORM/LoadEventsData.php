@@ -22,9 +22,8 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$event1->setSerie($this->getReference('serie1'));
 		$event1->setSport($this->getReference('sport_football'));
 		$event1->setDescription("Venez faire un petit 4contre4 :)");
-		$event1->setAddress("10 rue Henry Dunant BEAUNE 21200");
 		$event1->setOrganizer($this->getReference('user1'));
-		$event1->setLocation($this->getReference('location_beaune'));
+		$event1->setSpot($this->getReference('spot_parc_beaune'));
 		$event1->setPrice(10);
 		$event1->setLevel(rand(0,4));
 
@@ -44,10 +43,9 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$event->setSerie($this->getReference('serie2'));
 			$event->setSport($this->getReference('sport_natation'));
 			$event->setDescription("Cherche un ami pour pas nager seul");
-			$event->setAddress("Piscine Olympic 21000 DIJON");
 			$event->setOrganizer($this->getReference('asso1'));
 			$event->setConfirmed(true);
-			$event->setLocation($this->getReference('location_dijon'));
+			$event->setSpot($this->getReference('spot_piscine_dijon'));
 			$event->setOccurence($i+1);
 			$event->setType(rand(0,3));
 			$event->setLevel(rand(0,4));
@@ -68,9 +66,8 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$event->setSerie($this->getReference('serie3'));
 			$event->setSport($this->getReference('sport_boxe'));
 			$event->setDescription("Cherche un Sparing pour entrainement");
-			$event->setAddress("Salle de boxe 21000 DIJON");
 			$event->setOrganizer($this->getReference('user1'));
-			$event->setLocation($this->getReference('location_dijon'));
+			$event->setSpot($this->getReference('spot_parc_dijon'));
 			$event->setOccurence($i+1);
 			$event->setType(rand(0,3));
 			$event->setLevel(rand(0,4));

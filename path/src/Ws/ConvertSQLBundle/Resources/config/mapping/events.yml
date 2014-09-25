@@ -8,7 +8,6 @@ relations:
     phone: phone
     nbmin: nbmin
     nbmax: nbmax
-    address: address
     confirmed: confirmed
     description: description
     price: 
@@ -37,10 +36,6 @@ relations:
         type: call
         class: Ws\ConvertSQLBundle\Caller\EventsCaller
         method: setOrganizer
-    location: 
-        type: call
-        class: Ws\ConvertSQLBundle\Caller\LocationCaller
-        method: findLocationFromData
     serie: 
         type: call
         class: Ws\ConvertSQLBundle\Caller\EventsCaller
@@ -53,3 +48,7 @@ relations:
         type: call
         class: Ws\ConvertSQLBundle\Caller\EventsCaller
         method: setOccurence
+    spot:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\EventsCaller
+        method: setSpot

@@ -28,4 +28,11 @@ class AbstractCaller {
 	{
 		$this->entry = $entry;
 	}
+
+	protected function formatDate($date,$format)
+	{
+		$r = new \DateTime();
+		$r->createFromFormat($format,$date);
+		return $r;
+	}
 }

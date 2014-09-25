@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Spot
  *
  * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\SpotRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="events_spots", indexes={
  *                                          @ORM\Index(name="country_index", columns={"countryCode"}),
  *                                          @ORM\Index(name="slug_index", columns={"slug"}),
@@ -32,7 +33,6 @@ class Spot
 
     /**
      * @ORM\Column(name="address", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $address = '';
 
@@ -52,6 +52,21 @@ class Spot
      */
     private $countryCode = '';
 
+    /**
+     * @ORM\PrePersist
+     */
+    public function createSlug()
+    {
+        $this->slug = $this->getLocation()->getCity()->getName().' '.$this->getName().' '.$this->getAddress();        
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function createCountryCode()
+    {
+        $this->countryCode = $this->getLocation()->getCountry()->getCode();
+    }
 
     /**
      * Get id
@@ -144,6 +159,28 @@ class Spot
     {
         return $this->address;
     }
+
+
+    /**
+     * Get address
+     *
+     * @return string 
+     */
+    public function getFullAddress()
+    {
+        return $this->address.', '.$this->location->getCity()->getName().', '.$this->location->getCountry()->getName();;
+    }
+
+    /**
+     * Get short adress
+     *
+     * @return string
+     */
+    public function shortAddress()
+    {
+        return substr($this->address,0,8).'...';
+    }
+
 
     /**
      * Set slug

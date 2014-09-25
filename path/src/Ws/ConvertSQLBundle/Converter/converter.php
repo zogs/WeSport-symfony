@@ -105,6 +105,15 @@ class Converter
 
 					$method = $field['method'];
 					$value = $caller->$method();
+
+					if('continue'==$value) {
+						$errors[] = array(
+				    	'type'=>'Avoided',
+				    	'msg' => 'Caller return an instruction to jump this record',
+				    	'class'=>get_class($entity),
+				    	'entity'=>$entity);
+				    	continue;
+					}
 				}
 
 				elseif($field['type'] == 'entity') {
@@ -120,10 +129,9 @@ class Converter
 			}
 			else{
 				$value = $entry[$field];
-			}
+			}			
 
 			$setter = $this->formatSetter($property);
-
 			$entity->$setter($value);
 		}
 

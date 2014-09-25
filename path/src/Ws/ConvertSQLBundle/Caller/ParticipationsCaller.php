@@ -11,7 +11,7 @@ class ParticipationsCaller extends AbstractCaller
 	{
 		$event = $this->em->getRepository('WsEventsBundle:Event')->findOneById($this->entry['event_id']);
 
-		if(empty($event)) return null;
+		if(empty($event)) return 'continue';
 
 		return $event;
 	}
@@ -21,7 +21,7 @@ class ParticipationsCaller extends AbstractCaller
 
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneById($this->entry['user_id']);
 
-		if(empty($user)) return null;
+		if(empty($user)) return 'continue';
 
 		return $user;
 	}

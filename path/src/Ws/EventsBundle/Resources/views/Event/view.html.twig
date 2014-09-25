@@ -36,7 +36,7 @@
 								<span class="event-metadata1">{{ event.sport.name|capitalize }}</span>
 							</td>
 							<td class="header-cell">
-								<span class="event-metadata1">{{ event.location.city.name|capitalize }}</span>								
+								<span class="event-metadata1">{{ event.spot.location.city.name|capitalize }}</span>								
 							</td>
 							<td class="header-cell">
 								<div class="event-action">
@@ -112,11 +112,11 @@
 						<td><span class="metadata-icon city-icon ws-icon ws-icon-location" title="Ville"></span></td>
 						<td>
 							<h2 class="event-info">						
-								{{ event.location.city.name }}
-								<small>{{ event.location.lastState().name|lower }}</small>
+								{{ event.spot.location.city.name }}
+								<small>{{ event.spot.location.lastState().name|lower }}</small>
 								<br>
 								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-									<small>{{ event.address }}</small>
+									<small>{{ event.spot.address }}</small>
 								{% else %}
 									<small><a href="{{ path('fos_user_security_login') }}">Connectez-vous</a> pour voir l'adresse exacte</small>
 								{% endif %}					
