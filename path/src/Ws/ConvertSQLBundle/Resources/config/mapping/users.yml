@@ -13,7 +13,7 @@ relations:
     email_canonical: email
     roles:
         type: call
-        class: Ws\ConvertSQLBundle\Caller\RoleCaller
+        class: Ws\ConvertSQLBundle\Caller\UsersCaller
         method: setRoles
     enabled: valid
     salt: salt
@@ -30,7 +30,10 @@ relations:
         field: birthdate
         type: datetime
         format: "Y-m-d"
-    gender: sexe
+    gender: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\UsersCaller
+        method: setGender
     description: descr
     register_since: 
         field: date_signin
@@ -43,4 +46,8 @@ relations:
         repository: MyUserBundle:Avatar
         relations:
             path: avatar
+    settings:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\UsersCaller
+        method: setSettings
 

@@ -22,7 +22,7 @@ class DefaultController extends Controller
 		$results = $converter->convertOne($doctrineEntityName);
 
               if(!empty($results['success'])) $this->get('flashbag')->add("Bravo, ".count($results['success'])." entités créés! ",'success');              
-              if(!empty($results['errors'])) $this->get('flashbag')->add("Il y a eu quelques erreurs...",'warning');
+              if(!empty($results['errors'])) $this->get('flashbag')->add("Il y a eu ".count($results['errors'])." erreurs...",'warning');
 
 		return $this->render('WsConvertSQLBundle:Default:results.html.twig', array('success' => $results['success'],'errors'=> $results['errors']));
 	}
@@ -37,7 +37,7 @@ class DefaultController extends Controller
        $results = $converter->purge()->convertAll();
 
         if(!empty($results['success'])) $this->get('flashbag')->add("Bravo, ".count($results['success'])." entités créés! ",'success');              
-        if(!empty($results['errors'])) $this->get('flashbag')->add("Il y a eu quelques erreurs...",'warning');
+        if(!empty($results['errors'])) $this->get('flashbag')->add("Il y a eu ".count($results['errors'])." erreurs...",'warning');
 
        return $this->render('WsConvertSQLBundle:Default:results.html.twig', array('success' => $results['success'],'errors'=> $results['errors']));
 

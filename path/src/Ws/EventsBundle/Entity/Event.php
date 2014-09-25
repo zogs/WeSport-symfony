@@ -195,6 +195,16 @@ class Event
     }
 
     /**
+     * Set id
+     *
+     * @param integer 
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * Get id
      *
      * @return integer 

@@ -1,0 +1,16 @@
+class: Ws\EventsBundle\Entity\Participation
+repository: WsEventsBundle:Participation
+relations:
+    id: id
+    event: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\ParticipationsCaller
+        method: setEvent
+    user: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\ParticipationsCaller
+        method: setUser
+    date_inscription: 
+        type: date
+        field: date
+        format: "Y-m-d h:i:s"

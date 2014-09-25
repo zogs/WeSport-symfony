@@ -57,6 +57,18 @@ class Participation
     }
 
     /**
+     * Set id
+     *
+     * @param id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Set date_inscription
      *
      * @param \DateTime $dateInscription

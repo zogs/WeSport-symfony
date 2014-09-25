@@ -1,0 +1,55 @@
+type: entity
+class: Ws\EventsBundle\Entity\Event
+relations:
+    id: id
+    title: title
+    slug: slug
+    online: online
+    phone: phone
+    nbmin: nbmin
+    nbmax: nbmax
+    address: address
+    confirmed: confirmed
+    description: description
+    price: 
+        type: integer
+        value: 0
+    level:
+        type: integer
+        value: 0
+    time: 
+        type: datetime
+        field: time
+        format: "h:i:s"
+    date:
+        type: date
+        field: date
+        format: "Y-m-d"
+    date_depot: 
+        type: date
+        field: date_depot
+        format: "Y-m-d h:i:s"
+    type: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\EventsCaller
+        method: setType
+    organizer:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\EventsCaller
+        method: setOrganizer
+    location: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\LocationCaller
+        method: findLocationFromData
+    serie: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\EventsCaller
+        method: setSerie
+    sport: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\EventsCaller
+        method: setSport
+    occurence:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\EventsCaller
+        method: setOccurence

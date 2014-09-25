@@ -94,14 +94,14 @@ class Converter
 
 				if(empty($field['type'])) {
 
-					throw new \Exception('The type need to be define for the '.ucfirst($property).' property of '.$class);
+					throw new \Exception('The type need to be define for the '.ucfirst($property).' property of '.$class.' in '.get_class($class).'.yml');
 
 				}
 
 				elseif($field['type'] == 'call'){
 
 					$class = $field['class'];
-					$caller = new $class($this->container,$entry);
+					$caller = new $class($this->container,$entry,$entity);
 
 					$method = $field['method'];
 					$value = $caller->$method();
@@ -175,7 +175,8 @@ class Converter
 				//If the error is about a forbidden duplicate content, dont save it and continue the loop
 				if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
 				    $errors[] = array(
-				    	'type'=>$errorMsg,
+				    	'type'=>'Duplicate',
+				    	'msg' => $errorMsg,
 				    	'class'=>get_class($entity),
 				    	'entity'=>$entity);
 				    continue;
@@ -197,13 +198,11 @@ class Converter
 	private function mapField($entry,$config)
 	{
 		$type = $config['type'];
-		$field = $config['field'];
-		$value = $entry[$field];
 
-		if($type == 'datetime'){
+		if($type == 'datetime' || $type == 'date'){
 
 			$date = new \DateTime();
-			$date->createFromFormat($config['format'],$value);
+			$date->createFromFormat($config['format'],$entry[$config['field']]);
 			return $date;
 		}
 

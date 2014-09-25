@@ -3,3 +3,5 @@ tables:
     users: users
     sports: sports_i18n
     blog: posts
+    events: events
+    participations: sporters

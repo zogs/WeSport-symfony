@@ -65,7 +65,7 @@ class LocationRepository extends EntityRepository
 		if(isset($obj->cc1) && !empty($obj->cc1) && trim($obj->cc1) != '')
 			$location['country'] = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($obj->cc1);
 
-		if(isset($obj->ADM1) && !empty($obj->ADM1) && trim($obj->AMD1) != '')
+		if(isset($obj->ADM1) && !empty($obj->ADM1) && trim($obj->ADM1) != '')
 			$location['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM1);
 
 		if(isset($obj->ADM2) && !empty($obj->ADM2) && trim($obj->ADM2) != '')

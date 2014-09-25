@@ -13,6 +13,7 @@
 	<thead>
 		<th>Type</th>
 		<th>Class</th>
+		<th>Error</th>		
 		<th>Id</th>
 	</thead>
 	<tbody>
@@ -20,6 +21,7 @@
 		<tr>
 			<td>{{ error.type }}</td>
 			<td>{{ error.class }}</td>
+			<td>{{ error.msg }}</td>
 			<td>{{ error.entity.id }}</td>
 		</tr>
 	{% endfor %}
