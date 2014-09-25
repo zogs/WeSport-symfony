@@ -4,6 +4,10 @@ imports:
 
 security:
     role_hierarchy:
+        ROLE_ASSO:
+            - ROLE_USER
+        ROLE_BIZNESS:
+            - ROLE_USER
         ROLE_ADMIN:       
             - ROLE_USER
             - ROLE_AUTHOR

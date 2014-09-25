@@ -16,13 +16,13 @@ class StateRepository extends EntityRepository
 	public function findStateByCodes($cc1,$adm1,$adm2 = null,$adm3 = null,$adm4 = null)
 	{
 		if(!empty($adm4))
-			return $this->findStateByCode($cc1,$adm4,'adm4');
+			return $this->findStateByCode($cc1,$adm4,'ADM4');
 		if(!empty($adm3))
-			return $this->findStateByCode($cc1,$adm3,'adm3');
+			return $this->findStateByCode($cc1,$adm3,'ADM3');
 		if(!empty($adm2))
-			return $this->findStateByCode($cc1,$adm2,'adm2');
+			return $this->findStateByCode($cc1,$adm2,'ADM2');
 		if(!empty($adm1))
-			return $this->findStateByCode($cc1,$adm1,'adm1');
+			return $this->findStateByCode($cc1,$adm1,'ADM1');
 	}
 
 	public function findStateByCode($cc1, $code, $level)

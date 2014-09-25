@@ -1,21 +1,46 @@
+type: entity
 class: My\UserBundle\Entity\User
 repository: MyUserBundle:User
 relations:
+    location:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\LocationCaller
+        method: findLocationFromData
     id: user_id
     username: login
     username_canonical: login
     email: email
     email_canonical: email
-    enabled: "valid"
+    roles:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\RoleCaller
+        method: setRoles
+    enabled: valid
     salt: salt
     password: hash
-    last_login: ["date_lastlogin","datetime","Y-m-d h:i:s"]
+    last_login:
+        field: date_lastlogin
+        type: datetime
+        format: "Y-m-d h:i:s"
     confirmation_token: codeactiv
     type: role
     firstname: prenom
     lastname: nom
-    birthday: ["birthdate","datetime","Y-m-d"]
+    birthday:
+        field: birthdate
+        type: datetime
+        format: "Y-m-d"
     gender: sexe
     description: descr
-    register_since: ["date_signin","datetime","Y-m-d h:i:s"]
+    register_since: 
+        field: date_signin
+        type: datetime
+        format: "Y-m-d h:i:s"
     lang_prefered: lang
+    avatar:
+        type: entity
+        class: My\UserBundle\Entity\Avatar
+        repository: MyUserBundle:Avatar
+        relations:
+            path: avatar
+

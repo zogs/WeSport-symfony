@@ -52,24 +52,32 @@ class LocationRepository extends EntityRepository
 
 	public function findAllDataFromCode($obj){
 
+		if(is_array($obj)) {
+			$obj = (object) $obj;
+		}
+		//important// make CC1 as cc1
+		if(!empty($obj->CC1)) $obj->cc1 = $obj->CC1;
+		
 		$location = array();
 
-		if(!empty($obj->cc1))
+		if(empty($obj->cc1) || trim($obj->cc1) == '') return null;
+
+		if(isset($obj->cc1) && !empty($obj->cc1) && trim($obj->cc1) != '')
 			$location['country'] = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($obj->cc1);
 
-		if(!empty($obj->ADM1))
-			$location['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM1,'ADM1');
+		if(isset($obj->ADM1) && !empty($obj->ADM1) && trim($obj->AMD1) != '')
+			$location['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM1);
 
-		if(!empty($obj->ADM2))
-			$location['departement'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM2,'ADM2');
+		if(isset($obj->ADM2) && !empty($obj->ADM2) && trim($obj->ADM2) != '')
+			$location['departement'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM1,$obj->ADM2);
 
-		if(!empty($obj->ADM3))
-			$location['district'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM3,'ADM3');
+		if(isset($obj->ADM3) && !empty($obj->ADM3) && trim($obj->ADM3) != '')
+			$location['district'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM1,$obj->ADM2,$obj->ADM3);
 
-		if(!empty($obj->ADM4))
-			$location['division'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM4,'ADM4');
+		if(isset($obj->ADM4) && !empty($obj->ADM4) && trim($obj->ADM4) != '')
+			$location['division'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCodes($obj->cc1,$obj->ADM1,$obj->ADM2,$obj->ADM3,$obj->ADM4);
 
-		if(!empty($obj->city))
+		if(isset($obj->city) && !empty($obj->city) && trim($obj->city) != '')
 			$location['city'] = $this->_em->getRepository('MyWorldBundle:City')->findCityByUNI($obj->city);
 
 		return $location;

@@ -31,9 +31,9 @@ class Converter
 
 		$config = $this->yaml->parse(file_get_contents($path));
 
-		foreach ($config['tables'] as $doctrinename => $dbname) {
+		foreach ($config['tables'] as $entityName => $fieldName) {
 			
-			$config['params'][$doctrinename] = $this->yaml->parse(file_get_contents(__DIR__.'/../Resources/config/mapping/'.$doctrinename.'.yml'));
+			$config['entities'][$entityName] = $this->yaml->parse(file_get_contents(__DIR__.'/../Resources/config/mapping/'.$entityName.'.yml'));
 		}
 
 		$this->config = $config;
@@ -46,14 +46,19 @@ class Converter
 		return $this;
 	}
 
+	public function getPurger()
+	{
+		return $this->purger;
+	}
+
 	public function convertAll()
 	{
 		$errors = array();
 		$success = array();
 
-		foreach ($this->config['tables'] as $doctrinename => $dbname)
+		foreach ($this->config['tables'] as $entityName => $fieldName)
 		{
-			$results = $this->convert($doctrinename,$dbname);
+			$results = $this->convert($entityName,$fieldName);
 
 			$errors = array_merge($errors,$results['errors']);
 			$success = array_merge($success,$results['success']);
@@ -62,115 +67,153 @@ class Converter
 		return array('success'=>$success,'errors'=>$errors);		
 	}
 
-	public function convertOne($doctrinename)
+	public function convertOne($entityName)
 	{
 		$errors = array();
 		$success = array();
 
-		$dbname = $this->config['tables'][$doctrinename];
+		$fieldName = $this->config['tables'][$entityName];
 
-		$results = $this->convert($doctrinename,$dbname);
+		$results = $this->convert($entityName,$fieldName);
 
 		$errors = array_merge($errors,$results['errors']);
 		$success = array_merge($success,$results['success']);
 		return array('success'=>$success,'errors'=>$errors);	
 	}
 
-	public function convert($doctrinename,$dbname)
+	private function mapEntity($config,$entry)
+	{
+		$class = $config['class'];
+		$relations =  $config['relations'];
+
+		$entity = new $class;
+
+		foreach ($relations as $property => $field) {
+			
+			if(is_array($field)) {
+
+				if(empty($field['type'])) {
+
+					throw new \Exception('The type need to be define for the '.ucfirst($property).' property of '.$class);
+
+				}
+
+				elseif($field['type'] == 'call'){
+
+					$class = $field['class'];
+					$caller = new $class($this->container,$entry);
+
+					$method = $field['method'];
+					$value = $caller->$method();
+				}
+
+				elseif($field['type'] == 'entity') {
+
+					$conf = $relations[$property];
+					$value = $this->mapEntity($conf,$entry);
+				}
+				
+				else {
+
+					$value = $this->mapField($entry,$field);
+				}
+			}
+			else{
+				$value = $entry[$field];
+			}
+
+			$setter = $this->formatSetter($property);
+
+			$entity->$setter($value);
+		}
+
+		return $entity;
+	}
+
+	public function convert($entityName,$fieldName)
 	{
 		$errors = array();
 		$success = array();
 			
 		//get ancien results from the previous database
-		$stmt = $this->db->prepare("SELECT * FROM ".$dbname);
+		$stmt = $this->db->prepare("SELECT * FROM ".$fieldName);
 		$stmt->execute();
 		$old_entries = $stmt->fetchAll();
 
 
+		$config = $this->config['entities'][$entityName];
+
 		//loop for each entry
-		foreach ($old_entries as $key => $entry) {
+		foreach ($old_entries as $entry) {
 			
-			$class = $this->config['params'][$doctrinename]['class'];
-
-			$new = new $class;
-
-			$relations = $this->config['params'][$doctrinename]['relations'];
-			foreach ($relations as $key => $value) {
-					
-				if(is_array($value)) $value = $this->formatValue($entry,$value);
-				else $value = $entry[$value];
-
-				$setter = $this->formatSetter($key);
-				$new->$setter($value);
-				
-			}
+			$entity = $this->mapEntity($config,$entry);
 
 			try
-				{
-					//presist new entity
-					$this->em->persist($new);
-					//set IdGeneratorType to null in order to keep id from previous database
-					$metadata = $this->em->getClassMetaData(get_class($new));
-					$metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
-					//flush
-					$this->em->flush();		
+			{
+				//presist new entity
+				$this->em->persist($entity);
+				//set IdGeneratorType to null in order to keep id from previous database
+				$metadata = $this->em->getClassMetaData(get_class($entity));
+				$metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+				//flush
+				$this->em->flush();		
 
-								
+							
+			}
+			catch(\Doctrine\DBAL\DBALException $e)
+			{
+				$errorMsg = $e->getMessage();
+				
+				//because the EntityManager close when there is a Exception, we need to reopen it
+				// reset the EM and all aias
+				$this->container->set('doctrine.orm.entity_manager', null);
+				$this->container->set('doctrine.orm.default_entity_manager', null);
+				// get a fresh EM
+				$this->em = $this->container->get('doctrine.orm.entity_manager');
+
+
+				//If the error is about a forbidden duplicate content, dont save it and continue the loop
+				if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
+				    $errors[] = array(
+				    	'type'=>$errorMsg,
+				    	'class'=>get_class($entity),
+				    	'entity'=>$entity);
+				    continue;
 				}
-				catch(\Doctrine\DBAL\DBALException $e)
-				{
-					$errorMsg = $e->getMessage();
-					
-					//because the EntityManager close when there is a Exception, we need to reopen it
-					// reset the EM and all aias
-					$this->container->set('doctrine.orm.entity_manager', null);
-					$this->container->set('doctrine.orm.default_entity_manager', null);
-					// get a fresh EM
-					$this->em = $this->container->get('doctrine.orm.entity_manager');
 
+				//throw error if no condition continues the loop
+				throw($e);
 
-					//If the error is about a forbidden duplicate content, dont save it and continue the loop
-					if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
-					    $errors[] = array(
-					    	'type'=>$errorMsg,
-					    	'class'=>$class,
-					    	'entity'=>$new);
-					    continue;
-					}
-
-					//throw error if no condition continues the loop
-					throw($e);
-
-				}
+			}
 
 			//implement success
-			$success[] = $class;
+			$success[] = get_class($entity);
 		}
 
 		return array('success'=>$success,'errors'=>$errors);			
 		
 	}
 
-	private function formatValue($entry,$array)
+	private function mapField($entry,$config)
 	{
-		$value = $entry[$array[0]];
-		$type = $array[1];
-		$attr = $array[2];
+		$type = $config['type'];
+		$field = $config['field'];
+		$value = $entry[$field];
 
 		if($type == 'datetime'){
 
 			$date = new \DateTime();
-			$date->createFromFormat($attr,$value);
+			$date->createFromFormat($config['format'],$value);
 			return $date;
 		}
 
 		if($type == 'integer'){
-			if(is_integer($attr)) return $attr;
+			if(is_integer($config['value'])) return $config['value'];
 			else return null;			
 		}
 
 		if($type == 'string'){
-			if(is_string($attr)) return $attr;
+			if(is_string($config['value'])) return $config['value'];
 			else return null;
 		}
 

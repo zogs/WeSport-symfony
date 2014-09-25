@@ -21,6 +21,9 @@ class DefaultController extends Controller
 
 		$results = $converter->convertOne($doctrineEntityName);
 
+              if(!empty($results['success'])) $this->get('flashbag')->add("Bravo, ".count($results['success'])." entités créés! ",'success');              
+              if(!empty($results['errors'])) $this->get('flashbag')->add("Il y a eu quelques erreurs...",'warning');
+
 		return $this->render('WsConvertSQLBundle:Default:results.html.twig', array('success' => $results['success'],'errors'=> $results['errors']));
 	}
 
@@ -33,6 +36,9 @@ class DefaultController extends Controller
 
        $results = $converter->purge()->convertAll();
 
+        if(!empty($results['success'])) $this->get('flashbag')->add("Bravo, ".count($results['success'])." entités créés! ",'success');              
+        if(!empty($results['errors'])) $this->get('flashbag')->add("Il y a eu quelques erreurs...",'warning');
+
        return $this->render('WsConvertSQLBundle:Default:results.html.twig', array('success' => $results['success'],'errors'=> $results['errors']));
 
     }
@@ -43,6 +49,10 @@ class DefaultController extends Controller
 
     	$converter->purge();
 
-    	$this->redirect($this->generateUrl('ws_convert_sql_index'));
+      $database = $converter->getPurger()->getObjectManager()->getConnection()->getDatabase();
+
+      $this->get('flashbag')->add('La base de donnée <strong><i>'.$database.'</i></strong> à été purgé','info');
+
+    	return $this->redirect($this->generateUrl('ws_convert_sql_index'));
     }
 }

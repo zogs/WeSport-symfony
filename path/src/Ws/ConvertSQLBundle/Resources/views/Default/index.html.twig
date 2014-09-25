@@ -8,7 +8,7 @@
 <p>
 	<form action="{{path('ws_convert_sql_convert_one')}}" style="display:inline;">
 	<a class="btn" href="{{ path('ws_convert_sql_convert_all')}}">Convertir toutes les tables</a>
-	<a class="btn" href="{{ path('ws_convert_sql_purge')}}">Purger la base</a>
+	<a class="btn" href="{{ path('ws_convert_sql_purge')}}" onclick="return confirm('Warning : This will completly delete the database - Are you sure ?');">Purger la base</a>
 		<input type="submit" value="Convertir cette table" class="btn">
 		<input type="text" name="table">
 	</form>
