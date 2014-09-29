@@ -23,7 +23,7 @@ $(document).ready(function() {
 		//footer: 'footer',
 
 	}).on('typeahead:selected',function( evt, datum ){
-		$(this).val(datum.slug);		
+		$('input.autocomplete-spot:first').val(datum.slug);		
 		$('input.autocomplete-spot_id:first').val(datum.id);
 		
 	}).on('typeahead:opened',function(e){

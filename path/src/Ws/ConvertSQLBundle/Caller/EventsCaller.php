@@ -27,7 +27,7 @@ class EventsCaller extends LocationCaller
 
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneById($this->entry['user_id']);
 
-		if(empty($user)) return null;
+		if(NULL==$user) return 'continue';
 
 		return $user;
 	}

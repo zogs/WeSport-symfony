@@ -60,7 +60,7 @@ class Event
     private $type = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Spot", fetch="EAGER", cascade={"persist","remove"})     
+     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Spot", fetch="EAGER", cascade={"persist","remove","merge","detach","refresh"})     
      */
     private $spot;
 
@@ -181,7 +181,7 @@ class Event
 
     public function setChanges($changes)
     {
-        $this->change_made = $changes;
+        $this->changes_made = $changes;
     }
     public function getChanges()
     {

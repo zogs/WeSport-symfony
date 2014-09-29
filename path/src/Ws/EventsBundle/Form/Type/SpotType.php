@@ -68,42 +68,46 @@ class SpotType extends AbstractType
         $form = $event->getForm();
         $spot = $event->getData();        
 
-        $form->add('spot_id','hidden',array(
-                'data' => $spot->getId(),
-                'mapped' => false,
-                'required' => false,
-                'attr' => array(
-                    'class' => 'autocomplete-spot_id'
-                    )
-                ))
-            ->add('spot_slug','text',array(
-                'data' => $spot->getSlug(),
-                'mapped' => false,
-                'required' => false,
-                'attr' => array(
-                    'class' => 'autocomplete-spot',
-                    'data-autocomplete-url' => $this->router->generate('ws_spot_autocomplete'),
-                    )
-                ))
-            ->add('location', 'city_to_location_type', array(
-                'data' => $spot->getLocation(),
-                'required' => false,
-                'mapped' => false,
-                'label' => "Ville",
-                ))
-            ->add('name','text',array(
-                'data' => $spot->getName(),
-                'mapped' => false,
-                'required' => false,
-                'label' => "Nom de l'endroit",
-                ))
-            ->add('address','text',array(
-                'data' => $spot->getAddress(),
-                'mapped' => false,
-                'required' => false,
-                'label' => "Adresse exacte",
-                ))
-            ;
+        if(NULL != $spot) {
+
+            $form->add('spot_id','hidden',array(
+                    'data' => $spot->getId(),
+                    'mapped' => false,
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'autocomplete-spot_id'
+                        )
+                    ))
+                ->add('spot_slug','text',array(
+                    'data' => $spot->getSlug(),
+                    'mapped' => false,
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'autocomplete-spot',
+                        'data-autocomplete-url' => $this->router->generate('ws_spot_autocomplete'),
+                        )
+                    ))
+                ->add('location', 'city_to_location_type', array(
+                    'data' => $spot->getLocation(),
+                    'required' => false,
+                    'mapped' => false,
+                    'label' => "Ville",
+                    ))
+                ->add('name','text',array(
+                    'data' => $spot->getName(),
+                    'mapped' => false,
+                    'required' => false,
+                    'label' => "Nom de l'endroit",
+                    ))
+                ->add('address','text',array(
+                    'data' => $spot->getAddress(),
+                    'mapped' => false,
+                    'required' => false,
+                    'label' => "Adresse exacte",
+                    ))
+                ;
+            
+        }
 
     }
 
@@ -111,25 +115,33 @@ class SpotType extends AbstractType
     {
         $form = $event->getForm();
         $data = $event->getData();
-
-        if(!empty($data['spot_id'])) {
         
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']);
-            $form->setData($spot);
-        }
-        elseif(!empty($data['spot_slug'])) {
+        $spot = NULL;
 
+        if(!empty($data['spot_id']))     
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']);
+        
+        if(NULL!=$spot) return $form->setData($spot);
+        
+        if(!empty($data['spot_slug']))
             $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug']);
-            $form->setData($spot);
-        }
-        elseif(!empty($data['location']) && (!empty($data['name'] || !empty($data['address'])))){
+            
+        if(NULL!=$spot) return $form->setData($spot);
+
+        if(!empty($data['location']) && (!empty($data['name'] || !empty($data['address'])))){
 
             $spot = new Spot();
             $spot->setName($data['name']);
             $spot->setAddress($data['address']);
-            $spot->setLocation($data['location']);
+
+            if(!empty($data['location']['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['location']['city_id']);
+            elseif(!empty($data['location']['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['location']['city_name']);
+            
+            $spot->setLocation($location);
             $form->setData($spot);
         }
+
+        if(NULL==$spot) throw new Exception('Spot entity can not be instanciate in SpotType');
 
     }
 

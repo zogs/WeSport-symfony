@@ -49,11 +49,11 @@ class SpotController extends Controller
 				));
 		}
 
-		public function autoCompleteAction($country,$prefix)
+		public function autoCompleteAction($country,$search)
 		{
 			$em = $this->getDoctrine()->getManager();
 
-			$spots = $em->getRepository('WsEventsBundle:Spot')->findSuggestions(20,$prefix,$country);
+			$spots = $em->getRepository('WsEventsBundle:Spot')->findSuggestions(20,$search,$country);
 
 			
 			foreach($spots as $k => $spot){

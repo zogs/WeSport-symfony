@@ -12,9 +12,9 @@
                 <td>
                     L'organisateur de <strong>{{ event.title }}</strong> a fait quelques changements:
                     <ul>
-                    {% for key,change in event.change %}
+                    {% for key,changes in event.changes %}
                         <li>
-                            {% include 'WsMailerBundle:Template:block_event_change.html.twig' with {'key':key,'change':change}  %}   
+                            {% include 'WsMailerBundle:Template:block_event_change.html.twig' with {'key':key,'change':changes}  %}   
                         </li>
                     {% endfor %}
                     </ul>

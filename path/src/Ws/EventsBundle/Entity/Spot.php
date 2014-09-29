@@ -5,13 +5,14 @@ namespace Ws\EventsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Spot
  *
  * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\SpotRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity("slug")
  * @ORM\Table(name="events_spots", indexes={
  *                                          @ORM\Index(name="country_index", columns={"countryCode"}),
  *                                          @ORM\Index(name="slug_index", columns={"slug"}),
@@ -56,7 +57,7 @@ class Spot
      * @ORM\PrePersist
      */
     public function createSlug()
-    {
+    {        
         $this->slug = $this->getLocation()->getCity()->getName().' '.$this->getName().' '.$this->getAddress();        
     }
 

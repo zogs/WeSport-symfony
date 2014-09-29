@@ -13,14 +13,21 @@ use Doctrine\ORM\EntityRepository;
 class SpotRepository extends EntityRepository
 {
 
-	public function findSuggestions($limit = 10,$prefix = '',$countryCode = null)
+	public function findSuggestions($limit = 10,$search = '',$countryCode = null)
 	{
 		$qb = $this->createQueryBuilder('s');
 
 		if(isset($countryCode))
 			$qb->andWhere($qb->expr()->eq('s.countryCode',$qb->expr()->literal($countryCode)));
 
-		$qb->andWhere($qb->expr()->like('s.slug',$qb->expr()->literal('%'.$prefix.'%')));
+		if($terms = preg_split("/(,| |\.)/",$search)){
+			foreach ($terms as $term) {
+				if(!empty($term) && strlen($term)>2){
+
+					$qb->andWhere($qb->expr()->like('s.slug',$qb->expr()->literal('%'.$term.'%')));
+				}
+			}
+		}
 
 		$qb->setMaxResults($limit);
 		$qb->orderBy('s.slug','DESC');

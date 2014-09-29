@@ -60,7 +60,7 @@ class CalendarManager extends AbstractManager
 	private $flashbag;
 	private $serializer;
 	private $urlGenerator;
-	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time','level','price');
+	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time','level','price','date');
 
 
 	public function __construct(Container $container)

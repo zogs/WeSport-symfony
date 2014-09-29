@@ -24,7 +24,13 @@ class StatisticManager extends AbstractManager
 	public function get()
 	{
 		if($this->ctx == 'general'){			
-			$this->data = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findOneByName('main');
+			$stat = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findOneByName('main');
+
+			if(NULL==$stat){
+				$stat = $this->em->getRepository('WsStatisticBundle:GeneralStat')->initStat('main');
+			}
+
+			$this->data = $stat;
 		}
 		if($this->ctx == 'user'){		
 			$this->data = $this->em->getRepository('WsStatisticBundle:UserStat')->findOneByUser($this->ctx_id);

@@ -92,13 +92,16 @@ class EventController extends Controller
 
 			$event = $form->getData();
 
-			if($this->get('ws_events.manager')->saveEvent($event)){
+			if($this->get('ws_events.manager')->saveEvent($event,true)){
 
 				//set flash message
 				$this->get('flashbag')->add('Votre activité a été modifié !','success');
 				
 				//throw CREATE_EVENTS
-				$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CHANGE, new ChangeEvent($event,$this->getUser()));  
+				$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CHANGE, new ChangeEvent($event,$this->getUser()));
+
+				//redirect to update the event's displayed
+				return $this->redirect($this->generateUrl('ws_event_edit',array('event'=>$event->getId())));  
 			}
 			else {
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');

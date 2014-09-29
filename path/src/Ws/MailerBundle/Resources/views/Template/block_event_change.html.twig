@@ -2,8 +2,8 @@
 	Le titre a changé: <strong>{{ change.post }}</strong>
 {% endif  %}
 
-{% if key=='location' %}
-	La ville a changé: <strong> {{ change.post.city.name }}</strong>
+{% if key=='spot' %}
+	La ville a changé: <strong> {{ change.post.location.city.name }}</strong>
 {% endif  %}
 
 {% if key=='sport' %}

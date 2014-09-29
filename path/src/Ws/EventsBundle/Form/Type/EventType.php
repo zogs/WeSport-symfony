@@ -98,7 +98,7 @@ class EventType extends AbstractType
 		$properties = $reflector->getProperties();
 		$changes = array();
 		foreach ($properties as $property) {			
-			$property->setAccessible(true);
+			$property->setAccessible(true);			
 			if($property->getValue($this->pre_event) != $property->getValue($this->post_event)){				
 				$changes[$property->getName()] = array(
 					'pre' => $property->getValue($this->pre_event),

@@ -12,5 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class GeneralStatRepository extends EntityRepository
 {
-	
+	public function initStat($name = 'main')
+	{
+		$stat = new GeneralStat();
+		$stat->name = $name;
+
+		$this->_em->persist($stat);
+		$this->_em->flush();
+	}
 }
