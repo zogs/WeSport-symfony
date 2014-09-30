@@ -70,8 +70,9 @@ class EventType extends AbstractType
 			'label'=>'Téléphone','required'=>false
 			))
 		//debug todo
-		//->add('invitations','invitation_type',array(			
-		//	))
+		->add('invitations','invitations_type',array(
+				'mapped' => false,			
+			))
 	;
 
 

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Entity\Invited;
 use Ws\EventsBundle\Entity\Invitation;
-use Ws\EventsBundle\Form\Type\InvitationType;
+use Ws\EventsBundle\Form\Type\InvitationsType;
 
 use My\UtilsBundle\Utils\String;
 
@@ -30,7 +30,7 @@ class InvitationController extends Controller
 		if($em->getRepository('WsEventsBundle:Participation')->isUserParticipating($this->getUser(),$event)){
 			
 			$secu = $this->get('security.context');		
-			$form = $this->createForm(new InvitationType($em,$secu,$event));
+			$form = $this->createForm(new InvitationsType($em,$secu,$event));
 		
 			$form->handleRequest($this->getRequest());
 

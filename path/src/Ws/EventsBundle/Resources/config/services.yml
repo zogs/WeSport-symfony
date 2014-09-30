@@ -23,6 +23,12 @@ services:
         tags:
             - { name: form.type, alias: invitation_type }
 
+    ws_events.form.type.invitations:
+        class: Ws\EventsBundle\Form\Type\InvitationsType
+        arguments: [@doctrine.orm.entity_manager,@security.context]
+        tags:
+            - { name: form.type, alias: invitations_type }
+
     ws_events.form.type.alert:
         class: Ws\EventsBundle\Form\Type\AlertType     
         arguments: [@security.context]
@@ -37,7 +43,7 @@ services:
 
     ws_events.form.type.spot:
         class: Ws\EventsBundle\Form\Type\SpotType   
-        arguments: [@doctrine.orm.entity_manager,@router]    
+        arguments: [@doctrine.orm.entity_manager,@router]
         tags:
             - { name: form.type, alias: spot_type }
 

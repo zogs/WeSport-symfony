@@ -1,0 +1,36 @@
+{# src/Acme/DemoBundle/Resources/views/Form/fields.html.twig #}
+{% extends 'form_div_layout.html.twig' %}
+
+{% block textarea_widget %}
+    
+
+    {{ block('form_widget') }}
+	
+
+    <script type="text/javascript">
+
+	    (function ($) {
+
+		    $('#{{ id }}')
+		        .textext({
+		            plugins : 'tags autocomplete'
+		        })
+		        .bind('getSuggestions', function(e, data)
+		        {
+		            var list = {{ suggestions|raw }},
+		                textext = $(e.target).textext()[0],
+		                query = (data ? data.query : '') || ''
+		                ;
+
+		            $(this).trigger(
+		                'setSuggestions',
+		                { result : textext.itemManager().filter(list, query) }
+		            );
+		        })
+		        ;
+		});
+	</script>
+
+{% endblock %}
+
+

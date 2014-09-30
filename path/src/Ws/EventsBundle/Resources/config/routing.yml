@@ -2,7 +2,6 @@
 ws_events_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: WsEventsBundle:Event:index }
-
 ws_event_view:
     pattern: /view/{event}/{slug}
     defaults: { _controller: WsEventsBundle:Event:view }
@@ -39,8 +38,8 @@ ws_spot_delete:
     pattern: /spot/delete
     defaults: { _controller: WsEventsBundle:Spot:delete }
 ws_spot_autocomplete:
-    pattern: /spot/ajax/{country}/{prefix}
-    defaults: { _controller: WsEventsBundle:Spot:autoComplete, country: 'FR', prefix:'' }
+    pattern: /spot/ajax/{country}/{search}
+    defaults: { _controller: WsEventsBundle:Spot:autoComplete, country: 'FR', search:'' }
     requirements:
         _method: GET
 

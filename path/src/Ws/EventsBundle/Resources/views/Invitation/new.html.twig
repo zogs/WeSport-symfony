@@ -15,12 +15,8 @@
 		{{ form_start(form) }}
 
 		{{form_row(form.emails) }}
-		{{form_row(form.name) }}
 		{{form_row(form.content) }}
 
-		{% if form.saved_list is defined %}
-		{{ form_row(form.saved_list) }}
-		{% endif %}
 
 		{% if form.event is defined %}
 		{{ form_row(form.event) }}
