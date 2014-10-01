@@ -61,4 +61,20 @@ class InvitedRepository extends EntityRepository
 
 		$this->_em->getRepository('WsEventsBundle:Participation')->findParticipationAndRemove($invited->getInvitation()->getEvent(),null,$invited);
 	}
+
+	public function findByUserAndIsLikeEmail($user,$search)
+	{
+		$qb = $this->createQueryBuilder('i');
+
+		if(null==$user) return null;
+
+		$qb->andWhere($qb->expr()->eq('i.user',':user'))->setParameter('user',$user);
+
+		if(is_string($search) && !empty($search))
+			$qb->andWhere($qb->expr()->like('i.email',$qb->expr()->literal('%'.$search.'%')));
+
+		return $qb->getQuery()->getResult();
+
+
+	}
 }

@@ -10,7 +10,7 @@ use My\FlashBundle\Controller\FlashController as Flashbag;
 use Ws\MailerBundle\Mailer\Mailer;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\CreateEvents;
-use Ws\EventsBundle\Event\ViewEvent;
+use Ws\EventsBundle\Event\CreateInvitation;
 
 
 class InvitationListener implements EventSubscriberInterface
@@ -32,24 +32,47 @@ class InvitationListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			WsEvents::SERIE_CREATE => 'onNewEvents',
+			WsEvents::SERIE_CREATE => 'sendMultipleInvitations',
+			WsEvents::INVITATION_CREATE => 'sendOneInvitation'
 
 		);
 	}
 
-	public function onNewEvents(CreateEvents $event)
+	public function sendMultipleInvitations(CreateEvents $event)
 	{
 		$wsevent = $event->getEvent();
 		$user = $event->getUser();	
 
 		$invitations = $wsevent->getInvitations();
 
+		$total = array();
 		if(!empty($invitations)){
 
-			//first invitations is the one created with the event
-			$invitation = $invitations[0];
+			foreach ($invitations as $invitation) {
+				
+				if($invitation->hasInvited()){
+
+					//send the invitations
+					$emails = $this->mailer->sendInvitationMessages($invitation);
+					$total = array_merge($total,$emails);					
+				}
+			}
+			//add flash message
+			$this->flashbag->add(count($total).' invitations ont été envoyées !');
+			
+		}
+
+	}
+
+	public function sendOneInvitation(CreateInvitation $event)
+	{
+		$user = $event->getUser();	
+		$invitation = $event->getInvitation();
+
+		if($invitation->hasInvited()){
+
 			//send the invitations
-			$emails = $this->mailer->sendInvitationMessages($invitation);
+			$emails = $this->mailer->sendInvitationMessages($invitation);					
 			//add flash message
 			$this->flashbag->add(count($emails).' invitations ont été envoyées !');
 		}

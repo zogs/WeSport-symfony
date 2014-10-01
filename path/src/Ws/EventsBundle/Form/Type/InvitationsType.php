@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -40,12 +41,12 @@ class InvitationsType extends AbstractType
 	        'label'=>'Créer une liste',
             'required'=> false,
 	        'attr'=>array(
-	        	'placeholder'=>'Entrer les adresses email de vos amis',
-                            'class'=>'textext')
+	        	'placeholder'=>'Adresses email d\'amis',
+                    )
         ))
 
         ->add('content','textarea',array(
-        	'label' => "Un petit mot pour vos amis",
+        	'label' => "Un truc à leurs dire ?",
         	'required' => false,
         	'attr' => array(
         		'placeholder' => "Salut les copains, ..."
@@ -85,7 +86,7 @@ class InvitationsType extends AbstractType
         if($this->user instanceof User)
             $invit->setInviter($this->user);            
         else 
-            throw new \Exception('User is not an instance of User class');        
+            throw new \Exception('User is not an instance of User class');     
 
         if(!empty($data['event']))
             $event = $this->em->getRepository('WsEventsBundle:Event')->find($data['event']);             

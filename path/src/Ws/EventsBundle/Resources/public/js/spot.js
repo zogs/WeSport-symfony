@@ -3,7 +3,7 @@ $(document).ready(function() {
 /*===========================================================
 	// Autocomplete Spot Selection
 ============================================================*/
-	
+	/*	
     $('input.autocomplete-spot').typeahead({
     	name:'spot',
     	valueKey:'slug',
@@ -32,7 +32,7 @@ $(document).ready(function() {
 		
 		
 	});
-
+	*/
 
 
 });

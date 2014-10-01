@@ -5,11 +5,15 @@ namespace Ws\EventsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
+use My\UserBundle\Entity\User;
 use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Entity\Invited;
 use Ws\EventsBundle\Entity\Invitation;
 use Ws\EventsBundle\Form\Type\InvitationsType;
+use Ws\EventsBundle\Event\WsEvents;
+use Ws\EventsBundle\Event\CreateInvitation;
 
 use My\UtilsBundle\Utils\String;
 
@@ -36,14 +40,12 @@ class InvitationController extends Controller
 
 			if($form->isValid()){
 
-				$invit = $form->getData();						
-				if($this->get('ws_events.invit.manager')->saveInvit($invit)){
+				$invitation = $form->getData();						
+				if($this->get('ws_events.invit.manager')->saveInvit($invitation)){
 					$this->get('flashbag')->add('Invitation enregistrés','success');
-				}			
 
-				if($emails = $this->get('ws_mailer')->sendInvitationMessages($invit)){
-					$this->get('flashbag')->add('Vous avez envoyé '.count($emails).' invitations !','success');
-				}
+					$this->get('event_dispatcher')->dispatch(WsEvents::INVITATION_CREATE, new CreateInvitation($invitation,$this->getUser())); 
+				}							
 				
 			}
 
@@ -59,6 +61,24 @@ class InvitationController extends Controller
 			$this->get('flashbag')->add('Vous ne pouvez inviter quand vous ne participez pas...','error');
 			return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
 		}
+
+	}
+
+	public function getInviterEmailsAction(User $user)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$emails = $em->getRepository('WsEventsBundle:Invited')->findByUserAndIsLikeEmail($user,$this->getRequest()->query->get('email_is_like'));
+		
+		foreach ($emails as $k => $invited) {
+			
+			$emails[$k] = array();
+            $emails[$k]['token'] = preg_split('/[ -]/',$invited->getId().' '.$invited->getEmail());
+            $emails[$k]['id'] = $invited->getId();
+            $emails[$k]['email'] = $invited->getEmail();
+		}
+		
+		return new JsonResponse($emails);
 
 	}
 

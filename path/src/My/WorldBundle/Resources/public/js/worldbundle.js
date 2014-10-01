@@ -3,6 +3,7 @@ $(document).ready(function() {
 /*===========================================================
 	// Autocomplete cityName input
 ============================================================*/
+/*
  	$('input#city_name').click(function(e){ 		
 		$(this).val('');
 		$('input#city_id').val('');		
@@ -46,7 +47,7 @@ $(document).ready(function() {
 		$('.geo-select:not(.geo-select-country,.hide)').select2();
 	}
 
-
+	*/
 	/*===========================================================
 	// Location FORM
 	============================================================*/	

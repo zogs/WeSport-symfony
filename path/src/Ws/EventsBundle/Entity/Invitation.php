@@ -193,6 +193,18 @@ class Invitation
     }
 
     /**
+     * Has Invited
+     *
+     * @return boolean
+     */
+    public function hasInvited()
+    {
+        if(empty($this->invited)) return false;
+        else return !$this->invited->isEmpty();
+        return false;
+    }
+
+    /**
      * Set invited
      *
      * @return \Doctrine\Common\Collections\Collection 

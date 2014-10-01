@@ -27,4 +27,6 @@ final class WsEvents {
 	const CALENDAR_AJAX = 'ws.calendar.ajax';
 
 	const CALENDAR_RESET = 'ws.calendar.reset';
+
+	const INVITATION_CREATE = 'ws.invitation.create';
 }

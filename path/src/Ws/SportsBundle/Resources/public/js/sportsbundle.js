@@ -5,7 +5,8 @@ $(document).ready(function() {
 
 	/*===========================================================
 	// Autocomplete cityName input
-============================================================*/	
+============================================================*/
+/*	
  	$('input#sport_name').click(function(e){ 		
 		$(this).val('');
 		$('input#sport_id').val('');		
@@ -45,7 +46,7 @@ $(document).ready(function() {
 	if($("select.iconSportSelect").length != 0){
 	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    		    	
 	}
-
+*/
 });
 
 
