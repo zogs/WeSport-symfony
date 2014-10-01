@@ -5,7 +5,7 @@ services:
 #    my_utils.example:
 #        class: %my_utils.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
-    my_utils_bundle.textarea_tagged_type_extension:
-        class: My\UtilsBundle\Form\Extension\TextareaTaggedTypeExtension
+    my_utils_bundle.tags_type:
+        class: My\UtilsBundle\Form\Type\TagsType
         tags:
-            - { name: form.type_extension, alias: textarea }
+            - { name: form.type, alias: tags }

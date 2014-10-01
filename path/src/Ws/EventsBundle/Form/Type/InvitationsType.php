@@ -36,11 +36,12 @@ class InvitationsType extends AbstractType
         $user = $this->user;
 
         $builder
-        ->add('emails','textarea',array(                                    
+        ->add('emails','tags',array(                                    
 	        'label'=>'Créer une liste',
             'required'=> false,
 	        'attr'=>array(
-	        	'placeholder'=>'Entrer les adresses email de vos amis')
+	        	'placeholder'=>'Entrer les adresses email de vos amis',
+                            'class'=>'textext')
         ))
 
         ->add('content','textarea',array(

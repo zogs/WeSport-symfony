@@ -35,7 +35,7 @@ twig:
             - ':Form:fields.html.twig'
             - ':Form:buttons.html.twig' 
             - 'MyWorldBundle:Form:location_selectboxs.html.twig' 
-            - 'MyUtilsBundle:Form:field_textarea_tagged.html.twig'
+            - 'MyUtilsBundle:Form:field_tags.html.twig'
 
 # Activate Twig Extension
 services:
