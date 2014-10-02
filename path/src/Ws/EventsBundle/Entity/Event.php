@@ -144,13 +144,12 @@ class Event
         'type' => array('person','asso','pro'),
         );
 
-    function __construct(){
+    public function __construct(){
 
         $this->date_depot = new \DateTime();
         $this->participations = new ArrayCollection();
     }
 
-    
     /**
     * @Assert\True(message = "La date doit être dans le futur")
     */

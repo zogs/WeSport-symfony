@@ -106,10 +106,9 @@ ws_invited_deny:
     requirements:
         invited: \d+
 ws_inviter_emails_ajax:
-    pattern: /invitation/getinvitedemails/{user}
+    pattern: /invitation/getinvitedemails
     defaults: { _controller: WsEventsBundle:Invitation:getInviterEmails }
     requirements:
-        user: \d+
         _method: GET
 
 #ALERTS

@@ -1,6 +1,6 @@
 {# src/Acme/DemoBundle/Resources/views/Form/fields.html.twig #}
 
 {% block tags_widget %}
-    <input {{ block('widget_attributes') }} class="tagsinput" value="salut,cest,cool" data-url-autocomplete="http://local.wesportsf.fr/web/app_dev.php/fr/event/invitation/getinvitedemails/214" />
+    <input {{ block('widget_attributes') }} class="tagsinput" value="{{ tags }}" data-url-autocomplete="http://local.wesportsf.fr/web/app_dev.php/fr/event/invitation/getinvitedemails" data-prefech="{{ prefetch }}" />
     {# {% if value is not empty %}>{{ value }} {% endif %} </textarea> #}
 {% endblock %}

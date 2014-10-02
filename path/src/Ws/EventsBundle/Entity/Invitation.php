@@ -55,7 +55,11 @@ class Invitation
     }
 
 
-   
+    public function isEmpty()
+    {
+        if(empty($this->invited)) return true;
+        return false;
+    }
 
     /**
      * Get id
@@ -199,10 +203,10 @@ class Invitation
      */
     public function hasInvited()
     {
-        if(empty($this->invited)) return false;
-        else return !$this->invited->isEmpty();
-        return false;
+        return !$this->isEmpty();
     }
+
+
 
     /**
      * Set invited

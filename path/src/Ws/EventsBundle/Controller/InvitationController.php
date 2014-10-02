@@ -40,12 +40,17 @@ class InvitationController extends Controller
 
 			if($form->isValid()){
 
-				$invitation = $form->getData();						
-				if($this->get('ws_events.invit.manager')->saveInvit($invitation)){
-					$this->get('flashbag')->add('Invitation enregistrés','success');
+				$invitation = $form->getData();	
 
-					$this->get('event_dispatcher')->dispatch(WsEvents::INVITATION_CREATE, new CreateInvitation($invitation,$this->getUser())); 
-				}							
+				if(!$invitation->isEmpty()){
+
+					$this->get('ws_events.invit.manager')->saveInvit($invitation);
+					$this->get('flashbag')->add('Invitation enregistrés','success');
+					$this->get('event_dispatcher')->dispatch(WsEvents::INVITATION_CREATE, new CreateInvitation($invitation,$this->getUser())); 												
+				}	
+				else {
+					$this->get('flashbag')->add('Hum... le formulaire est plutôt vide...','error');
+				}				
 				
 			}
 
@@ -64,18 +69,19 @@ class InvitationController extends Controller
 
 	}
 
-	public function getInviterEmailsAction(User $user)
+	public function getInviterEmailsAction()
 	{
-		$em = $this->getDoctrine()->getManager();
+		if(null==$this->getUser()) return new JsonResponse(array());
 
-		$emails = $em->getRepository('WsEventsBundle:Invited')->findByUserAndIsLikeEmail($user,$this->getRequest()->query->get('email_is_like'));
-		
+		$em = $this->getDoctrine()->getManager();		
+		$emails = $em->getRepository('WsEventsBundle:Invited')->findByUserAndIsLikeEmail($this->getUser(),$this->getRequest()->query->get('email_is_like'));
+
 		foreach ($emails as $k => $invited) {
 			
 			$emails[$k] = array();
-            $emails[$k]['token'] = preg_split('/[ -]/',$invited->getId().' '.$invited->getEmail());
-            $emails[$k]['id'] = $invited->getId();
-            $emails[$k]['email'] = $invited->getEmail();
+		            $emails[$k]['token'] = preg_split('/[ -]/',$invited->getId().' '.$invited->getEmail());
+		            $emails[$k]['id'] = $invited->getId();
+		            $emails[$k]['email'] = $invited->getEmail();
 		}
 		
 		return new JsonResponse($emails);

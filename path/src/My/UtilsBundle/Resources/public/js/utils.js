@@ -8,6 +8,7 @@ $(document).ready(function() {
 	    remote: {
 	        url: $('.tagsinput').attr('data-url-autocomplete')+'?email_is_like=%QUERY',
 	        filter: function (inviteds) {
+	        	console.log(inviteds);
 	            // Map the remote source JSON array to a JavaScript array
 	            return $.map(inviteds, function (invited) {
 	                return {
