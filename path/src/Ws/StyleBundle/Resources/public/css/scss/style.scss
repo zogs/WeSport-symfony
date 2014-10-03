@@ -582,7 +582,7 @@ div.mm-is-menu * {
 }
 
 /* inputs font style */
-input#city_name,input#sport_name,input#area {
+input.city-autocomplete,input#sport_name,input#area {
 	width:80%;
 	height:100%;
 	color:$lightblue;	
@@ -630,8 +630,8 @@ TYPEAHEAD CUSTOM STYLE
 .tt-name {  @include rem(18);  font-weight:bold;  color:#EDEEF0; }
 .tt-sub {  @include rem(14);; font-style:italic;  color:#999;}
 .tt-id{ display: none;}
-.tt-suggestion.tt-is-under-cursor{  background-color:#0097cf;}
-.tt-suggestion.tt-is-under-cursor p{  color:white;}
+.tt-suggestion.tt-cursor{  background-color:#0097cf;}
+.tt-suggestion.tt-cursor p{  color:white;}
 
 /* ==============
 =====*/

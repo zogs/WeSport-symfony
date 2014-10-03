@@ -662,7 +662,7 @@ div.mm-is-menu * {
 
 /* inputs font style */
 /* line 585, scss/style.scss */
-input#city_name, input#sport_name, input#area {
+input.city-autocomplete, input#sport_name, input#area {
   width: 80%;
   height: 100%;
   color: #a3caea;
@@ -678,28 +678,28 @@ input#city_name, input#sport_name, input#area {
   /* placeholder font style */
 }
 /* line 115, scss/style.scss */
-input#city_name::-webkit-input-placeholder, input#sport_name::-webkit-input-placeholder, input#area::-webkit-input-placeholder {
+input.city-autocomplete::-webkit-input-placeholder, input#sport_name::-webkit-input-placeholder, input#area::-webkit-input-placeholder {
   color: #a3caea;
   text-shadow: 0px 0px 0 #2b5459,1px 1px 0 #2b5459,2px 2px 0 #2b5459,3px 3px 0 #2b5459,4px 4px 0 #2b5459,5px 5px 0 #2b5459,6px 6px 0 #2b5459,7px 7px 0 #2b5459,8px 8px 0 #2b5459,9px 9px 0 #2b5459,10px 10px 0 #2b5459,11px 11px 0 #2b5459,12px 12px 0 #2b5459,13px 13px 0 #2b5459,14px 14px 0 #2b5459,15px 15px 0 #2b5459,16px 16px 0 #2b5459,17px 17px 0 #2b5459,18px 18px 0 #2b5459,19px 19px 0 #2b5459,20px 20px 0 #2b5459,21px 21px 0 #2b5459,22px 22px 0 #2b5459,23px 23px 0 #2b5459,24px 24px 0 #2b5459,25px 25px 0 #2b5459,26px 26px 0 #2b5459,27px 27px 0 #2b5459,28px 28px 0 #2b5459,29px 29px 0 #2b5459,30px 30px 0 #2b5459,31px 31px 0 #2b5459,32px 32px 0 #2b5459,33px 33px 0 #2b5459,34px 34px 0 #2b5459,35px 35px 0 #2b5459,36px 36px 0 #2b5459,37px 37px 0 #2b5459,38px 38px 0 #2b5459,39px 39px 0 #2b5459,40px 40px 0 #2b5459,41px 41px 0 #2b5459,42px 42px 0 #2b5459,43px 43px 0 #2b5459,44px 44px 0 #2b5459,45px 45px 0 #2b5459,46px 46px 0 #2b5459,47px 47px 0 #2b5459,48px 48px 0 #2b5459,50px 50px 0 rgba(0, 0, 0, 0);
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 /* line 116, scss/style.scss */
-input#city_name:-moz-placeholder, input#sport_name:-moz-placeholder, input#area:-moz-placeholder {
+input.city-autocomplete:-moz-placeholder, input#sport_name:-moz-placeholder, input#area:-moz-placeholder {
   color: #a3caea;
   text-shadow: 0px 0px 0 #2b5459,1px 1px 0 #2b5459,2px 2px 0 #2b5459,3px 3px 0 #2b5459,4px 4px 0 #2b5459,5px 5px 0 #2b5459,6px 6px 0 #2b5459,7px 7px 0 #2b5459,8px 8px 0 #2b5459,9px 9px 0 #2b5459,10px 10px 0 #2b5459,11px 11px 0 #2b5459,12px 12px 0 #2b5459,13px 13px 0 #2b5459,14px 14px 0 #2b5459,15px 15px 0 #2b5459,16px 16px 0 #2b5459,17px 17px 0 #2b5459,18px 18px 0 #2b5459,19px 19px 0 #2b5459,20px 20px 0 #2b5459,21px 21px 0 #2b5459,22px 22px 0 #2b5459,23px 23px 0 #2b5459,24px 24px 0 #2b5459,25px 25px 0 #2b5459,26px 26px 0 #2b5459,27px 27px 0 #2b5459,28px 28px 0 #2b5459,29px 29px 0 #2b5459,30px 30px 0 #2b5459,31px 31px 0 #2b5459,32px 32px 0 #2b5459,33px 33px 0 #2b5459,34px 34px 0 #2b5459,35px 35px 0 #2b5459,36px 36px 0 #2b5459,37px 37px 0 #2b5459,38px 38px 0 #2b5459,39px 39px 0 #2b5459,40px 40px 0 #2b5459,41px 41px 0 #2b5459,42px 42px 0 #2b5459,43px 43px 0 #2b5459,44px 44px 0 #2b5459,45px 45px 0 #2b5459,46px 46px 0 #2b5459,47px 47px 0 #2b5459,48px 48px 0 #2b5459,50px 50px 0 rgba(0, 0, 0, 0);
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 /* line 117, scss/style.scss */
-input#city_name::-moz-placeholder, input#sport_name::-moz-placeholder, input#area::-moz-placeholder {
+input.city-autocomplete::-moz-placeholder, input#sport_name::-moz-placeholder, input#area::-moz-placeholder {
   color: #a3caea;
   text-shadow: 0px 0px 0 #2b5459,1px 1px 0 #2b5459,2px 2px 0 #2b5459,3px 3px 0 #2b5459,4px 4px 0 #2b5459,5px 5px 0 #2b5459,6px 6px 0 #2b5459,7px 7px 0 #2b5459,8px 8px 0 #2b5459,9px 9px 0 #2b5459,10px 10px 0 #2b5459,11px 11px 0 #2b5459,12px 12px 0 #2b5459,13px 13px 0 #2b5459,14px 14px 0 #2b5459,15px 15px 0 #2b5459,16px 16px 0 #2b5459,17px 17px 0 #2b5459,18px 18px 0 #2b5459,19px 19px 0 #2b5459,20px 20px 0 #2b5459,21px 21px 0 #2b5459,22px 22px 0 #2b5459,23px 23px 0 #2b5459,24px 24px 0 #2b5459,25px 25px 0 #2b5459,26px 26px 0 #2b5459,27px 27px 0 #2b5459,28px 28px 0 #2b5459,29px 29px 0 #2b5459,30px 30px 0 #2b5459,31px 31px 0 #2b5459,32px 32px 0 #2b5459,33px 33px 0 #2b5459,34px 34px 0 #2b5459,35px 35px 0 #2b5459,36px 36px 0 #2b5459,37px 37px 0 #2b5459,38px 38px 0 #2b5459,39px 39px 0 #2b5459,40px 40px 0 #2b5459,41px 41px 0 #2b5459,42px 42px 0 #2b5459,43px 43px 0 #2b5459,44px 44px 0 #2b5459,45px 45px 0 #2b5459,46px 46px 0 #2b5459,47px 47px 0 #2b5459,48px 48px 0 #2b5459,50px 50px 0 rgba(0, 0, 0, 0);
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 /* line 118, scss/style.scss */
-input#city_name:-ms-input-placeholder, input#sport_name:-ms-input-placeholder, input#area:-ms-input-placeholder {
+input.city-autocomplete:-ms-input-placeholder, input#sport_name:-ms-input-placeholder, input#area:-ms-input-placeholder {
   color: #a3caea;
   text-shadow: 0px 0px 0 #2b5459,1px 1px 0 #2b5459,2px 2px 0 #2b5459,3px 3px 0 #2b5459,4px 4px 0 #2b5459,5px 5px 0 #2b5459,6px 6px 0 #2b5459,7px 7px 0 #2b5459,8px 8px 0 #2b5459,9px 9px 0 #2b5459,10px 10px 0 #2b5459,11px 11px 0 #2b5459,12px 12px 0 #2b5459,13px 13px 0 #2b5459,14px 14px 0 #2b5459,15px 15px 0 #2b5459,16px 16px 0 #2b5459,17px 17px 0 #2b5459,18px 18px 0 #2b5459,19px 19px 0 #2b5459,20px 20px 0 #2b5459,21px 21px 0 #2b5459,22px 22px 0 #2b5459,23px 23px 0 #2b5459,24px 24px 0 #2b5459,25px 25px 0 #2b5459,26px 26px 0 #2b5459,27px 27px 0 #2b5459,28px 28px 0 #2b5459,29px 29px 0 #2b5459,30px 30px 0 #2b5459,31px 31px 0 #2b5459,32px 32px 0 #2b5459,33px 33px 0 #2b5459,34px 34px 0 #2b5459,35px 35px 0 #2b5459,36px 36px 0 #2b5459,37px 37px 0 #2b5459,38px 38px 0 #2b5459,39px 39px 0 #2b5459,40px 40px 0 #2b5459,41px 41px 0 #2b5459,42px 42px 0 #2b5459,43px 43px 0 #2b5459,44px 44px 0 #2b5459,45px 45px 0 #2b5459,46px 46px 0 #2b5459,47px 47px 0 #2b5459,48px 48px 0 #2b5459,50px 50px 0 rgba(0, 0, 0, 0);
   opacity: 0.5;
@@ -759,12 +759,12 @@ TYPEAHEAD CUSTOM STYLE
 }
 
 /* line 633, scss/style.scss */
-.tt-suggestion.tt-is-under-cursor {
+.tt-suggestion.tt-cursor {
   background-color: #0097cf;
 }
 
 /* line 634, scss/style.scss */
-.tt-suggestion.tt-is-under-cursor p {
+.tt-suggestion.tt-cursor p {
   color: white;
 }
 
