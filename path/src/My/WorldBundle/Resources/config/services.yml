@@ -7,7 +7,7 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
     world.form.type.autocompletecity:
         class: My\WorldBundle\Form\Type\CityToLocationType 
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager,@router]
         tags:
             - { name: form.type, alias: city_to_location_type }
 

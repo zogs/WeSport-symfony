@@ -20,8 +20,8 @@
                 {{ form_row(form.title) }}
                 {{ form_row(form.spot.spot_id) }}
                 {{ form_row(form.spot.spot_slug) }}
-                {{ form_widget(form.spot.location.city_id, {'id':'city_id','attr': {'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
-                {{ form_row(form.spot.location.city_name, {'id':'city_name'}) }}
+                {{ form_widget(form.spot.location.city_id) }}
+                {{ form_row(form.spot.location.city_name) }}
                 {{ form_row(form.spot.name )}}
                 {{ form_row(form.spot.address) }}
                 {{ form_row(form.date) }}

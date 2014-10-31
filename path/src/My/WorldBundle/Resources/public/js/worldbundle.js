@@ -1,46 +1,59 @@
 $(document).ready(function() {
 
-/*===========================================================
-	// Autocomplete cityName input
-============================================================*/
-/*
- 	$('input#city_name').click(function(e){ 		
-		$(this).val('');
-		$('input#city_id').val('');		
+	/*===========================================================
+		// Autocomplete City Name
+	============================================================*/
+
+	//create the data loader with the URL
+	var cities_loader = new Bloodhound({
+	    datumTokenizer: function (datum) {
+	        return Bloodhound.tokenizers.whitespace(datum.token);
+	    },
+	    queryTokenizer: Bloodhound.tokenizers.whitespace,
+	    remote: {
+	        url: $(".city-autocomplete:first").attr('data-autocomplete-url')+'/FR/%QUERY',
+	        
+	    }
 	});
-	
-    $('input#city_name').typeahead({
-    	name:'city',
-    	valueKey:'name',
-		limit: 6,
-		minLength: 3,
-		allowDuplicates: true,	
-		//local: array of datums,
-		//prefetch: link to a json file with array of datums,
-		remote: $("#city_id").attr('data-autocomplete-url')+'/FR/%QUERY',			
-		template: [ '<p class="tt-name">{{name}}</p>',
-					'<p class="tt-sub">{{state}}</p>',
-					'<p class="tt-id">{{id}} (à cacher)</p>',
-					].join(''),
-		engine: Hogan ,
+	// Initialize data loader (Bloodhound suggestion engine)
+	cities_loader.initialize();
 
-		header: 'Sélectionner une ville',
-		//footer: 'footer',
+	//find all input who need the autocompletion's feature
+	$('.city-autocomplete').each(function(index){
 
-	}).on('typeahead:selected',function( evt, datum ){
-		$(this).val(datum.name);		
-		$('#city_id').val( datum.id );
-		$('#city_name').removeClass('empty');
-		$('#city_name').val(datum.name);
-	}).on('typeahead:opened',function(e){
-		$("#city_name").addClass('open');		
-	}).on('typeahead:closed',function(e){
-		$("#city_name").removeClass('open');
+		var input = $(this);
+		var template_empty = input.attr('data-template-empty');
+		var template_header = input.attr('data-template-header');
+		var template_footer = input.attr('data-template-footer');
+		var template_suggestion = Handlebars.compile( '<p class="tt-name">{{name}}</p><p class="tt-sub">{{state}}</p><p class="tt-id">{{id}} (à cacher)</p>');
+		var trigger_length = input.attr('data-trigger-length');
 		
-	});
+		input.typeahead(
+			{		
+			minLength: trigger_length
+			},
+			{
+			name: 'city'+index,
+			displayKey: 'name',
+			source: cities_loader.ttAdapter(),
+			templates: {
+				empty : template_empty,
+				footer : template_footer,
+				header : template_header,
+				suggestion: template_suggestion
+				},
+			}
+		)
+		.on('typeahead:selected',function(evt,suggestion){
+			$('.city-id-autocompleted').get(index).value = suggestion.id;
+		})
+		;
+	})
 
 
-
+	/*===========================================================
+	// Display States Select Box with Select2
+	============================================================*/
 	if($('.geo-select').length != 0){
 
 		$('.geo-select-country').select2({ formatResult: countryFlag, formatSelection: countryFlag});				
@@ -49,7 +62,7 @@ $(document).ready(function() {
 
 	*/
 	/*===========================================================
-	// Location FORM
+	// Ajax States Select Box on Change
 	============================================================*/	
 	$('.geo-select-ajax').change(function(){
 
