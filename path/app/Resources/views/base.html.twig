@@ -62,15 +62,17 @@
                     <ul class="nav">
                         <li>
                             <a href="/" class="weSport" id="wsSportBrand" title="Accueil">
-                                <img src="{{ asset('bundles/wsstyle/img/LOGO.gif') }}" alt="WeSport logo" class="logo">        
-                                <img src="{{ asset('bundles/wsstyle/img/BRAND.png') }}" alt="WeSport.fr" class="wesport">
+                                <img src="{{ asset('bundles/wsstyle/img/LOGOBRAND.png') }}" alt="Cosporturage">        
                             </a>
                         </li>
 
                         <li><a href="{{ path('ws_calendar') }}">Calendrier</a></li>
 
-                        <li id="menu-createevent">
-                            <a class="mainbutton" href="{{ path('ws_event_new') }} ">Poster un sport</a>
+                        <li class="mainbutton">
+                            <a href="{{ path('ws_event_new') }} ">
+                                <span class="ws-icon ws-icon-plus-alt"></span>
+                                Ajouter
+                            </a>
                         </li>
 
                          {{ render(controller('MyPageBundle:Menu:TopMenu', {
@@ -79,7 +81,7 @@
                         
                         <li><a href="{{ path('blog_homepage')}}">Blog</a></li>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{path('page_new', {}) }}">New</a></li>
+                            <li><a href="{{path('sonata_admin_dashboard', {}) }}">-Admin.-</a></li>
                         {% endif %}
                     </ul>
 

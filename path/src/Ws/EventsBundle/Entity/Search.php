@@ -153,6 +153,21 @@ class Search
             'timeend' => $this->getTimeEnd()
             );
     }
+
+    public function getHtmlLocationString()
+    {
+        $html = '';
+        if($this->hasLocation()){
+            $html = '<strong>'.$this->location->getCity()->getName();
+            if($this->area != null) $html .= ' (+'.$this->area.'km)';
+            $html .= ' -</strong> ';
+            $html .= '<span>'.$this->location->getLastState()->getName().' - </span>';
+            $html .= '<span>'.$this->location->getCountry()->getName().'</span>';
+        }
+
+        return $html;
+    }
+
     public function getId()
     {
         return $this->id;

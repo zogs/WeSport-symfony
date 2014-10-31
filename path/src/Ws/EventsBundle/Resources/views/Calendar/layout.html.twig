@@ -16,41 +16,53 @@
 	{% block search_calendar %}
 
 		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
-			<div class="wrapper left-wrapper">
-				<a href="{{ path('ws_calendar_reset') }}">Réinitialiser les critères de sélection</a>
-			</div>
 
-			<div class="wrapper city-wrapper">
-				<label for="city_name">
-					<span class="city-icon ws-icon ws-icon-office"></span>
-				</label>
-				<input type="text" id="city_name" name="city_name" value="{% if search.location is not null %}{{ search.location.city.name }}{% endif %}" placeholder='taper votre ville ici'>
-				<input type="hidden" id="city_id" name="city_id" value="{% if search.location is not null %}{{ search.location.city.id }}{% endif %}" data-autocomplete-url="{{ path('my_world_autocompletecity')}}">
-			</div>
+			<div class="calendar-form-row">
 
-			<div class="wrapper area-wrapper">						
-				<label for="area">
-					<span class="area-icon ws-icon ws-icon-arrow-up-right"></span>					
-				</label>
-				<input type="text" id="area" name="area" value="{{ search.area }}" placeholder="+0km">							
-			</div>
-			
-			<div class="wrapper sport-wrapper">
-				<label for="sport_name">
-					<span class="sport-icon ws-icon ws-icon-running"></span>
-				</label>
-				<input type="text" id="sport_name" name="sport_name" value="" placeholder='taper un sport ici' data-autocomplete-url="{{ path('ws_sports_autocomplete') }}">
-				<input type="hidden" id="sport_id" name="sport_id" value="" >				
-			</div>
+				<div class="calendar-form-left"></div>
+				<div class="calendar-form-rounded">
 
-			<div class="wrapper submit-wrapper">
-				<button type="submit" class="mainbutton">Go</button>
-				<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}">Créer une alerte pour cette recherche</button>				
+					<div class="form-wrapper city-wrapper">
+						<label for="city_name"><span class="city-icon ws-icon ws-icon-office"></span></label>
+						<input type="text" id="city_name" name="city_name" value="{% if search.location is not null %}{{ search.location.city.name }}{% endif %}" placeholder='Votre ville...'>
+						<input type="hidden" id="city_id" name="city_id" value="{% if search.location is not null %}{{ search.location.city.id }}{% endif %}" data-autocomplete-url="{{ path('my_world_autocompletecity')}}">
+					</div>
+
+					<div class="form-wrapper sport-wrapper">
+						<label for="sport_name"><span class="sport-icon ws-icon ws-icon-running"></span></label>
+						<input type="text" id="sport_name" name="sport_name" value="" placeholder='Un sport...' data-autocomplete-url="{{ path('ws_sports_autocomplete') }}">
+						<input type="hidden" id="sport_id" name="sport_id" value="" >
+						<input type="hidden" name="sports" value=""><!-- important -->						
+					</div>
+
+					<div class="form-wrapper area-wrapper">						
+						<label for="area"><span class="area-icon ws-icon ws-icon-expand"></span></label>
+						<input type="text" id="area" name="area" value="{{ search.area }}" placeholder="+0km">							
+					</div>
+					
+					<div class="form-wrapper submit-wrapper">
+						<button type="submit"><span class="ws-icon ws-icon-loupe"></span></button>									
+					</div>
+					
+				</div>
+
+				<div class="calendar-form-right">
+					<table>
+						<tr>
+							<td>
+								<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong> la recherche</a><br>
+								<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a><br>								
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			
 	{% endblock %}
+
 	
-	<div class="calendar" id="calendar">
+	<div class="calendar" id="calendar">		
+
 		<div class="calendar-header">
 			<div class="header-part week-nav previousWeek">
 				<a class="calendar-nav-prev calendar-nav-link" id="colomn-prev-arrow" title="Semaine précédante" href="" draggable="false">AVANT</a>
@@ -58,22 +70,21 @@
 			
 
 			<div class="header-part calendar-arianne">
-				<span class="ws-icon ws-icon-location" style="color:white"></span>
-				Toute la France
+				<table>
+					<tr>
+						<td>
+							<span class="ws-icon ws-icon-location" style="color:white"></span>
+							{{ search.getHtmlLocationString()|raw }}
+							<br>
+						</td>
+					</tr>
+				</table>
 			</div>
 
-			<div class="header-part calendar-sports">
-				<div class="calendar-loader" id="calendar-loader" ><img class="loading-bar" src="{{ asset('bundles/wsstyle/img/ajax-loader-bar.gif') }}" title="Chargement..." /></div>
-				<input type="hidden" name="sports" value=""><!-- important -->
-
-				{% for sport in search.sports %}
-				<div class="sportChoice tooltipbottom" data-toggle="tooltip" title="Supprimer {{ sport.name }}">
-					<input type="checkbox" name="sports[]" id="sport-{{ sport.slug }}" class="ajax-refresh" value="{{ sport.id }}" checked="checked">
-					<label for="sport-{{ sport.slug }}" class="sportLabel">
-						<span class="ws-icon ws-icon-{{ sport.icon }}"></span>
-					</label>
-				</div>
-				{% endfor %}
+			<div class="header-part calendar-loading">
+				<div class="calendar-loader" id="calendar-loader">
+					<img class="loading-bar" src="{{ asset('bundles/wsstyle/img/ajax-loader-bar.gif') }}" title="Chargement..." /><					
+				</div>					
 			</div>
 
 			<div class="header-part calendar-event-type">
@@ -141,6 +152,18 @@
 			<div class="header-part week-nav nextWeek">
 				<a class="calendar-nav-next calendar-nav-link" id="colomn-next-arrow" title="Semaine suivante" href="" draggable='false' >APRES</a>
 			</div>			
+		</div>
+
+		<div class="calender-sports-choices">			
+			{% for sport in search.sports %}
+				<div class="sport-choice tooltipbottom" data-toggle="tooltip" title="Supprimer {{ sport.name }}">
+					<input type="checkbox" name="sports[]" id="sport-{{ sport.slug }}" class="ajax-refresh" value="{{ sport.id }}" checked="checked">
+					<label for="sport-{{ sport.slug }}" class="sport-label">
+						<span class="ws-icon ws-icon-{{ sport.icon }}"></span>						
+					</label>
+					<span class="ws-icon icon-delete ws-icon-close"></span>
+				</div>
+			{% endfor %}			
 		</div>
 
 		<table class="calendar-nav" >

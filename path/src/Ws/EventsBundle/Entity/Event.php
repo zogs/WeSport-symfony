@@ -65,6 +65,11 @@ class Event
     private $spot;
 
     /**
+     * @ORM\ManyToOne(targetEntity="My\WorldBundle\Entity\Location", fetch="EAGER")     
+     */
+    private $location;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", inversedBy="events", fetch="EAGER", cascade={"persist"})     
      */
     private $serie;
@@ -573,6 +578,29 @@ class Event
     public function getSpot()
     {
         return $this->spot;
+    }
+
+    /**
+     * Set location
+     *
+     * @param \My\WorldBundle\Entity\Location $location
+     * @return Event
+     */
+    public function setLocation(\My\WorldBundle\Entity\Location $location = null)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get location
+     *
+     * @return \My\WorldBundle\Entity\Location
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 
 

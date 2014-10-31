@@ -36,20 +36,20 @@
 
 @import "compass/css3";
 
-$lightblue:#a3caea;
-$deepblue:#427b8b;
-$darkblue:#1b3a43;
-$backblue:#315964;
+$lightblue:#95b9c4;
+$deepblue:#296272;
+$darkblue:#2b4b54;
+$backblue:#578c9c;
 
-$darkred:#a50026;
+$darkred:#ad251d;
 $deepred:#bf4e48;
-$red:#f46d43;
-$softred:#fdae61;
-$lightred:#fee08b;
-$softyellow:#ffffbf;
-$lightgreen:#d9ef8b;
-$softgreen:#a6d96a;
-$green:#66bd63;
+$red:#e77450;
+$softred:#f1ad6c;
+$lightred:#f5db93;
+$softyellow:#ebebbe;
+$lightgreen:#d4e792;
+$softgreen:#a5d172;
+$green:#6cb669;
 $deepgreen:#1a9850;
 $darkgreen:#006837;
 
@@ -219,8 +219,8 @@ body{
 	//font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif; 
 }
 .mainContainer {
-	background-color:$deepblue;
-	margin-top:70px;
+	background: $backblue url('../img/lines/Lines5.png'); background-size: 7px;
+	margin-top:40px;
 	padding-top:0;
 	padding-bottom:200px;
 	@include box-shadow(0 0 30px 0 rgba(0,0,0,0.4));
@@ -296,32 +296,38 @@ div.mm-is-menu * {
 	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
 	
 	.nav{
-		height:70px;
+
+		height:40px;
 		li{
 			display: table-cell;
 			border-spacing:0px;
 			vertical-align: middle;
 			float: none;
-			padding:0 10px;
+			padding:0 20px;
 			height:inherit;
 		}
 		li a{
 			font-family: 'Hobo';			
-			@include rem(20);
-			text-shadow:0 0 0 rgba(0,0,0,0);
-			padding-left:5px;
-			padding-right:5px;
+			@include rem(16);
+			padding:0px;
+			text-shadow: 0 0 0 rgba(255, 255, 255, 0.15);
 		}
-		li a:link, li a:visited{ color:$deepblue;}
-		li a:hover,li a:active{ color:$darkblue;}		
-		li a.mainbutton{
-			color:$lightblue;
+		li a:link, li a:visited{ color:$backblue;}
+		li a:hover,li a:active{ color:$deepblue;}	
+
+		li.mainbutton{
 			background-color:$deepred;
-			padding:6px 25px;
-			@include border-radius(7px);
-			text-shadow:0 0 0 rgba(0,0,0,0);
-			line-height: 150%;
-			box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+			padding-left: 35px; padding-right: 50px;			
+			a {
+				color:rgba(255,255,255,0.7);
+				text-shadow:0 0 0 rgba(0,0,0,0);
+				span.ws-icon {
+					margin-right:5px;
+					color: rgba(255,255,255,0.4);
+					@include rem(22);
+				}						
+			}			
+
 		}
 		li a.mainbutton:hover, li a.mainbutton:active{ color:$lightblue; background-color:darken($deepred,5%);}		
 
@@ -545,46 +551,75 @@ div.mm-is-menu * {
 }
 
 
-/* Calendar Search Form */
-#calendar-search { 
+/* Calendar Form */
+
+.calendar-form-row {
+	
 	width:100%;
-	margin-top:50px;
-	margin-bottom:0;
+	height:80px;	
+	margin: 100px auto 30px auto;
 }
-.wrapper {
+
+.calendar-form-left { width:20%; float:left; height:inherit; }
+.calendar-form-right { width:20%; float:left; height:inherit; }
+.calendar-form-rounded { width:60%; float:left; height:inherit; 
+
+	background-color:$deepblue;
+	border-radius:100px;
+	border:1px solid rgba(255,255,255,0.3);
+	@include box-shadow(inset 0 0 40px 0px rgba(0, 0, 0, 0.1));
+	padding-left:50px;
+}
+
+
+.form-wrapper {
 	display:inline-block;
-	height:70px; // height of inputs
-	margin-bottom:-10px; //vertical align
-	vertical-align: top;
+	height:inherit;
 
 	label {
 		display: inline;
 		cursor: pointer;
 		.ws-icon {
 			color:$darkblue;
-			@include rem(55);
-		}
-		.ws-icon-office {
-			margin-top:8px;
+			@include rem(40);
 		}
 	}
 }
-.left-wrapper { width:10%;}
-.city-wrapper { width:25%;}
-.area-wrapper { width:10%;}
-.sport-wrapper { width:20%;}
-.submit-wrapper { width:20%;}
 
-.area-wrapper {
-	padding-top:15px;
-	input#area { @include rem(28);}
-	span.area-icon { @include rem(18); @include opacity(0.4);}
+.city-wrapper { width:35%; float:left;}
+.sport-wrapper { width:35%; float:left; }
+.area-wrapper { width:18%; float:left; 
+	input#area { @include rem(26);}
+	span.area-icon { @include rem(30); @include rotate(45deg); }
+}
+.submit-wrapper { width:10%; float:right; 
+	button[type=submit] {
+		height:inherit; width:100%; border-radius:100px; background-color: $deepred; border:0;
+		span.ws-icon {
+			@include rem(34); color:rgba(255,255,255,0.7);
+			@include transition(0.2s ease);	
+		}
+		&:hover span.ws-icon { @include rotate(360deg); @include rem(60); }
+	}
+}
+
+.calendar-form-right {
+	padding-left:10px;
+	table { height:inherit; }
+	a:link,a:visited {
+		color:white;
+	}
+	a:active, a:hover {
+		color:white;
+		text-decoration:underline;
+	}
 }
 
 /* inputs font style */
 input#city_name,input#sport_name,input#area {
 	width:80%;
 	height:100%;
+	margin:10px 0 0 0;
 	color:$lightblue;	
 	font-family:'Harlow';
 	line-height: 100%;							
@@ -592,13 +627,13 @@ input#city_name,input#sport_name,input#area {
 	background: transparent;
 	border:0;
 	box-shadow:0 0 0 #000;			
-	@include rem(40);
-	@include long-shadow(text,#152e35,50,false,false,right);	
+	@include rem(32);
+	@include long-shadow(text,$darkblue,50,false,false,right);	
 
 	/* placeholder font style */
 	@include placeholder{
 		color: $lightblue;
-		@include long-shadow(text,#2b5459,50,false,false,right);
+		@include long-shadow(text,$darkblue,50,false,false,right);
 		@include opacity(0.5);
 	}
 }
@@ -638,9 +673,9 @@ TYPEAHEAD CUSTOM STYLE
 
 
 .calendar {	
-	background-image:url(../img/fresque.jpg);
-	background-repeat: repeat-y;
-	background-size:100% 100%;
+	//background-image:url(../img/fresque.jpg);
+	//background-repeat: repeat-y;
+	//background-size:100% 100%;
 	position:relative;
 	@extend %clearfix;
 }
@@ -651,6 +686,7 @@ TYPEAHEAD CUSTOM STYLE
 	width:100%;
 	height:80px;
 	position:relative;	
+	z-index:1;
 	border-top:1px solid rgba(255,255,255,0.4);	
 }
 
@@ -660,21 +696,89 @@ TYPEAHEAD CUSTOM STYLE
 	vertical-align: top;
 }
 
+.calender-sports-choices {
+	width:100%;
+	position: relative;	
+	top:-111px;	
+	height:0px;
+	text-align:center;
+
+	.sport-choice {
+		display:inline-block;
+		position:relative;
+
+		input[type=checkbox] {
+			position: absolute;
+			top:0;
+			left:0;
+			visibility: hidden;
+		}
+		input:checked ~ label.sport-label {
+				
+			@include opacity(1);
+
+		}
+		label.sport-label {
+			display:inline-block;
+			top:0;
+			left:0;
+			position: relative;
+			background-color: #FFF;
+			border:5px solid #FFF; 
+			@include rem(60);
+			@include opacity(0.5);
+			@include border-radius(100px);
+			@include transition(0.2s ease);				
+			@include rotate3d(0, 0, 0, 0deg); /* activation de l'AM */
+
+			
+		}
+		
+		span.icon-delete { 
+			display:none;
+			position:relative;
+			top:-60px;
+			left:-55px;
+			color:red;
+			width:0px;
+			@include opacity(0.7);
+			@include rem(30);
+			pointer-events:none;
+		}
+
+		&:hover {
+
+			label.sport-label {
+				top:-20px;		
+				@include rotate(360deg);		
+				
+			}	
+			span.icon-delete {
+				display:inline-block;
+			}			
+		}
+	}
+	
+}
+
 .previousWeek{
 	width: 10%;
-	border-spacing:0px;	
+	border-spacing:0px;
+	padding-top:15px;	
 	text-align: center;
 	background-color:$deepred;
 	position: relative;
 
 	a.calendar-nav-prev{
-		display: none;
 		position: relative;
-		padding:10px 50px;
+		left:-20px;
+		padding:15px 20px 15px 40px;
 		color:$darkred;
+		background-color:rgba(255,255,255,0.2);
+		border-radius: 30px;
 		font-weight:bold;
 		text-transform: uppercase;
-		line-height: 220%;
+		line-height: 260%;
 		@include rem(18);
 
 		&:before{
@@ -697,11 +801,11 @@ TYPEAHEAD CUSTOM STYLE
 }
 
 .calendar-arianne{
-	width: 20%;
+	width: 34%;
 	padding:0 0 0 30px;
 	line-height: 260%;
 	color:#999;
-	@include long-shadow(text,#152e35,50,false,false,right);
+	//@include long-shadow(text,#152e35,50,false,false,right);
 	strong{ @include rem(18); color:#FFF;}
 	i{ @include rem(12)}
 }
@@ -719,50 +823,10 @@ TYPEAHEAD CUSTOM STYLE
 		}
 	}
 
-.calendar-sports {
-	width: 35%;
+.calendar-loading {
+	width: 20%;
 	position: relative;
 	text-align:center;
-
-	.sportChoice {
-		display: inline-block;
-		vertical-align: middle;
-		position: relative;		
-		margin:15px 5px 0 5px;
-
-		input[type=checkbox] {
-			position: absolute;
-			top:0;
-			left:0;
-			visibility: hidden;
-		}
-		input:checked ~ label {
-				@include rotate(360deg);
-				span.ws-icon{
-					@include opacity(1);
-					@include rem(40);
-
-				}
-		}
-	}
-	label.sportLabel {
-		position: relative;
-		background-color: #FFF;
-		border:5px solid #FFF; 
-		@include border-radius(100px);
-		@include transition(0.2s ease);				
-		@include rotate3d(0, 0, 0, 0deg); /* activation de l'AM */
-
-	}
-
-	label.sportLabel:hover {
-			margin-top:-20px;				
-			//@include rotate(360deg);
-			span.ws-icon{
-				@include rem(60);
-			}
-	}
-
 }
 
 .calendar-event-type {
@@ -810,7 +874,7 @@ TYPEAHEAD CUSTOM STYLE
 }
 
 .nextWeek{
-	width: 9%;
+	width: 10%;
 	float:right;
 	border-spacing:0px;
 	text-align: center;
@@ -820,15 +884,18 @@ TYPEAHEAD CUSTOM STYLE
 	
 	a.calendar-nav-next{
 		position: relative;
-		padding:7px 50px;
+		left: 15px;
+		padding:15px 40px 15px 20px;
 		color:$darkgreen;
+		background-color:rgba(255,255,255,0.2);
+		border-radius: 30px;
 		font-weight:bold;
 		text-transform: uppercase;
-		line-height: 220%;
+		line-height: 260%;
 		@include rem(18);
 
 		&:before{
-			content:''; display: block; position:absolute; top:50%; margin-top:-10px; right:30px;
+			content:''; display: block; position:absolute; top:50%; margin-top:-10px; right:20px;
 			border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left:10px solid $darkgreen; 
 		}
 		&:hover:before{ 
@@ -990,26 +1057,23 @@ TYPEAHEAD CUSTOM STYLE
 				}
 
 			 	.colomn-past{
-			 		background-color:#CCC;
-			 		@include box-shadow(inset 0 0 0 30px #AAA);
+			 		background-color:#DDD;			 		
 			 		color:#888;
 
-					.events, .addEvent{ display:none;}
+					.events { @include opacity(0.3); }
+					.addEvent{ display:none;}
 
 			 		.colomn-date{
 			 			position:relative;
-			 			background-color: #AAA;
 
 			 			&:after{
 			 				content:'PAST';
-			 				color:#C0C0C0;
+			 				color:#CDCDCD;
 			 				font-family: 'Arial black',Arial;
 			 				@include rem(60);
-			 				position:absolute;
-			 				top:120%;
 			 				width:100%;
-			 				height:100%;
-			 				padding-top:30px;
+			 				height:50px;
+			 				margin-top:30px;
 			 				display: block;
 			 				font-weight: bold;
 			 				text-shadow: none;
@@ -1101,7 +1165,7 @@ TYPEAHEAD CUSTOM STYLE
 	 		}
  		}
  		&:hover a span{
- 			@include rem(100);
+
  		}
  	}
 
@@ -1126,9 +1190,9 @@ TYPEAHEAD CUSTOM STYLE
 			text-transform: uppercase;
 			@include rem(23);
 		}
-		i {
-			font-style:normal;
-			@include rem(12);
+		span {
+			font-weight:bold;
+			@include rem(15);
 		}
 
 	}
@@ -1145,35 +1209,35 @@ TYPEAHEAD CUSTOM STYLE
 		tr.events-week { text-align:center;/*height:100%; min-height:1000px;*/}
 
 		td { vertical-align: top;/*height:1000px; min-height:1000px;*/ }
-		td.colomn-1 { background-color: $red; @include box-shadow(inset 0 0 0 30px darken($red,$ratioShadow));}
-		td.colomn-2 { background-color: $softred; @include box-shadow(inset 0 0 0 30px darken($softred,$ratioShadow));}
-		td.colomn-3 { background-color: $lightred; @include box-shadow(inset 0 0 0 30px darken($lightred,$ratioShadow));}
-		td.colomn-4 { background-color: $softyellow; @include box-shadow(inset 0 0 0 30px darken($softyellow,$ratioShadow));}
-		td.colomn-5 { background-color: $lightgreen; @include box-shadow(inset 0 0 0 30px darken($lightgreen,$ratioShadow));}
-		td.colomn-6 { background-color: $softgreen; @include box-shadow(inset 0 0 0 30px darken($softgreen,$ratioShadow));}
-		td.colomn-7 { background-color: $green; @include box-shadow(inset 0 0 0 30px darken($green,$ratioShadow));}	
-		td.colomn-8 { background-color: $red; @include box-shadow(inset 0 0 0 30px darken($red,$ratioShadow));}
-		td.colomn-9 { background-color: $softred; @include box-shadow(inset 0 0 0 30px darken($softred,$ratioShadow));}
-		td.colomn-10 { background-color: $lightred; @include box-shadow(inset 0 0 0 30px darken($lightred,$ratioShadow));}
-		td.colomn-11 { background-color: $softyellow; @include box-shadow(inset 0 0 0 30px darken($softyellow,$ratioShadow));}
-		td.colomn-12 { background-color: $lightgreen; @include box-shadow(inset 0 0 0 30px darken($lightgreen,$ratioShadow));}
-		td.colomn-13 { background-color: $softgreen; @include box-shadow(inset 0 0 0 30px darken($softgreen,$ratioShadow));}
-		td.colomn-14 { background-color: $green; @include box-shadow(inset 0 0 0 30px darken($green,$ratioShadow));}			
+		td.colomn-1 { background-color: $red; }
+		td.colomn-2 { background-color: $softred; }
+		td.colomn-3 { background-color: $lightred; }
+		td.colomn-4 { background-color: $softyellow; }
+		td.colomn-5 { background-color: $lightgreen; }
+		td.colomn-6 { background-color: $softgreen; }
+		td.colomn-7 { background-color: $green; }
+		td.colomn-8 { background-color: $red; }
+		td.colomn-9 { background-color: $softred; }
+		td.colomn-10 { background-color: $lightred; }
+		td.colomn-11 { background-color: $softyellow; }
+		td.colomn-12 { background-color: $lightgreen; }
+		td.colomn-13 { background-color: $softgreen; }
+		td.colomn-14 { background-color: $green; }		
 
-		td.colomn-1 .colomn-date { background-color: darken($red,$ratioShadow);}
-		td.colomn-2 .colomn-date { background-color: darken($softred,$ratioShadow);}
-		td.colomn-3 .colomn-date { background-color: darken($lightred,$ratioShadow);}
-		td.colomn-4 .colomn-date { background-color: darken($softyellow,$ratioShadow);}
-		td.colomn-5 .colomn-date { background-color: darken($lightgreen,$ratioShadow);}
-		td.colomn-6 .colomn-date { background-color: darken($softgreen,$ratioShadow);}
-		td.colomn-7 .colomn-date { background-color: darken($green,$ratioShadow);}
-		td.colomn-8 .colomn-date { background-color: darken($red,$ratioShadow);}
-		td.colomn-9 .colomn-date { background-color: darken($softred,$ratioShadow);}
-		td.colomn-10 .colomn-date { background-color: darken($lightred,$ratioShadow);}
-		td.colomn-11 .colomn-date { background-color: darken($softyellow,$ratioShadow);}
-		td.colomn-12 .colomn-date { background-color: darken($lightgreen,$ratioShadow);}
-		td.colomn-13 .colomn-date { background-color: darken($softgreen,$ratioShadow);}
-		td.colomn-14 .colomn-date { background-color: darken($green,$ratioShadow);}
+		td.colomn-1 .colomn-date { }
+		td.colomn-2 .colomn-date { }
+		td.colomn-3 .colomn-date { }
+		td.colomn-4 .colomn-date { }
+		td.colomn-5 .colomn-date { }
+		td.colomn-6 .colomn-date { }
+		td.colomn-7 .colomn-date { }
+		td.colomn-8 .colomn-date { }
+		td.colomn-9 .colomn-date { }
+		td.colomn-10 .colomn-date { }
+		td.colomn-11 .colomn-date { }
+		td.colomn-12 .colomn-date { }
+		td.colomn-13 .colomn-date { }
+		td.colomn-14 .colomn-date { }
 
 		td.colomn-1 .addEvent a{ color: darken($red,$ratioShadow*2);}
 		td.colomn-2 .addEvent a{ color: darken($softred,$ratioShadow*2);}
@@ -1220,13 +1284,13 @@ TYPEAHEAD CUSTOM STYLE
 		width:96%;
 		max-width:300px;
 		display: inline-block;
-		margin:0 auto 15px 0;
+		margin:0 auto 8px 0;
 		text-align:left;
 		padding:10px 8px 8px 8px;
 		background-color:#FFF;
 		border:1px solid rgba(0,0,0,0.1);
-		border-bottom:4px solid rgba(0,0,0,0.4);
-		@include border-radius(10px);
+		@include border-radius(6px);
+		border-bottom:4px solid rgba(0,0,0,0.2);
 		//@include transition(all 0.2s ease-in-out);
 
 		&:before {
@@ -1339,14 +1403,13 @@ TYPEAHEAD CUSTOM STYLE
 
 		.events-logo{
 			position:absolute;
-			top:-20px;
 			left:-44px;
 
 			z-index:10;
 
 			.ws-sport-icon { 					
 				span {
-					@include rem(38); color:#111; 
+					@include rem(38); color:#414141; 
 				}
 			}			
 		}
@@ -1367,7 +1430,7 @@ TYPEAHEAD CUSTOM STYLE
 
 	.events-confirmed {
 		border-bottom-width: 5px;
-		border-color:rgba($darkgreen,0.7);
+		border-color:rgba($darkgreen,0.4);
 	}
 
 }
