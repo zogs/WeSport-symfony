@@ -160,7 +160,7 @@ class Search
         if($this->hasLocation()){
             $html = '<strong>'.$this->location->getCity()->getName();
             if($this->area != null) $html .= ' (+'.$this->area.'km)';
-            $html .= ' -</strong> ';
+            $html .= '</strong> ';
             $html .= '<span>'.$this->location->getLastState()->getName().' - </span>';
             $html .= '<span>'.$this->location->getCountry()->getName().'</span>';
         }

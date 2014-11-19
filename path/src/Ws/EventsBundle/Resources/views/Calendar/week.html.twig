@@ -17,7 +17,11 @@
 			{% endfor %}
 
 			<div class="addEvent" id="addPoint{{ date }}">
-				<a class="tooltipbottom" data-toggle="tooltip" title="Ajouter un sport" href="{{ path("ws_event_new") }}" draggable='false' ondragstart="return false;"><span class="ws-icon ws-icon-plus-alt"></span></a>
+				<a title="Ajouter un sport" href="{{ path("ws_event_new") }}" draggable='false' ondragstart="return false;">
+				<span class="ws-icon ws-icon-plus-alt"></span>
+				<br><br>
+				<strong>Ajouter un sport</strong>
+				</a>
 			</div>
 		</td>
 

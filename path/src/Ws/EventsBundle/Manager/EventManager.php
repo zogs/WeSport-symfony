@@ -42,7 +42,7 @@ class EventManager extends AbstractManager
 	public function saveEvent($event, $flush = false)
 	{
 		//set the location from the spot
-		$event->setLocation($event->getSpot()->getLocation();
+		$event->setLocation($event->getSpot()->getLocation());
 
 		$this->save($event,$flush);	
 		return $event;

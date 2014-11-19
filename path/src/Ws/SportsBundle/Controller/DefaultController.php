@@ -24,6 +24,7 @@ class DefaultController extends Controller
 			$sports[$k]['name'] = $sport->getName();
 			$sports[$k]['id'] = $sport->getId();
 			$sports[$k]['value'] = $sport->getId();
+            $sports[$k]['icon'] = $sport->getIcon();
 			$sports[$k]['category'] = $sport->getCategory()->getName();
     	}
 

@@ -6,47 +6,56 @@ $(document).ready(function() {
 	/*===========================================================
 	// Autocomplete cityName input
 ============================================================*/
-/*	
- 	$('input#sport_name').click(function(e){ 		
-		$(this).val('');
-		$('input#sport_id').val('');		
+	//create the data loader with the URL
+	var sports_loader = new Bloodhound({
+	    datumTokenizer: function (datum) {
+	        return Bloodhound.tokenizers.whitespace(datum.token);
+	    },
+	    queryTokenizer: Bloodhound.tokenizers.whitespace,
+	    remote: {
+	        url: $(".sport-autocomplete:first").attr('data-autocomplete-url')+'/%QUERY',
+	        
+	    }
 	});
-	
-    $('input#sport_name').typeahead({
-    	name:'sport',
-    	valueKey:'name',
-		limit: 6,
-		minLength: 3,
-		allowDuplicates: true,	
-		//local: array of datums,
-		//prefetch: link to a json file with array of datums,
-		remote: $("#sport_name").attr('data-autocomplete-url')+'/%QUERY',			
-		template: [ '<p class="tt-name">{{name}}</p>',
-					'<p class="tt-sub">{{category}}</p>',
-					'<p class="tt-id">{{id}} (à cacher)</p>',
-					].join(''),
-		engine: Hogan ,
+	// Initialize data loader (Bloodhound suggestion engine)
+	sports_loader.initialize();
 
-		//header: 'header',
-		//footer: 'footer',
+	//find all input who need the autocompletion's feature
+	$('.sport-autocomplete').each(function(index){
 
-	}).on('typeahead:selected',function( evt, datum ){
-		$(this).val(datum.name);		
-		$('#sport_id').val( datum.id );
-		$('#sport_name').removeClass('empty');
-		$('#sport_name').val(datum.name);
-	}).on('typeahead:opened',function(e){
-		$("#sport_name").addClass('open');		
-	}).on('typeahead:closed',function(e){
-		$("#sport_name").removeClass('open');
+		var input = $(this);
+		var template_empty = input.attr('data-template-empty');
+		var template_header = input.attr('data-template-header');
+		var template_footer = input.attr('data-template-footer');
+		var template_suggestion = Handlebars.compile( '<p class="tt-name"><span class="tt-icon ws-icon ws-icon-{{ icon }}"></span> {{name}}<span class="tt-sub">{{category}}</span><p class="tt-id">{{id}} (à cacher)</p></p>');
+		var trigger_length = input.attr('data-trigger-length');
 		
-	});
-
+		input.typeahead(
+			{		
+			minLength: trigger_length
+			},
+			{
+			name: 'sport'+index,
+			displayKey: 'name',
+			source: sports_loader.ttAdapter(),
+			templates: {
+				empty : template_empty,
+				footer : template_footer,
+				header : template_header,
+				suggestion: template_suggestion
+				},
+			}
+		)
+		.on('typeahead:selected',function(evt,suggestion){
+			$('.sport-id-autocompleted').get(index).value = suggestion.id;
+		})
+		;
+	})
 
 	if($("select.iconSportSelect").length != 0){
 	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    		    	
 	}
-*/
+
 });
 
 

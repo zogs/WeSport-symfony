@@ -214,7 +214,7 @@ class EventController extends Controller
 	{
 		
 		$gmap = $this->get('world.gmap');
-		$gmap->setSize('100%','100px');
+		$gmap->setSize('100%','100%');
 		$gmap->setLang($this->getRequest()->getLocale());
 		$gmap->setEnableWindowZoom(true);
 		$gmap->addMarkerByAddress($event->getSpot()->getFullAddress(),$event->getTitle());

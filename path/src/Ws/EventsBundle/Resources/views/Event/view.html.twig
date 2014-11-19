@@ -3,232 +3,177 @@
 {% block page_content %}
 	
 	<div class="viewevent">
+
 		<div class="fresque"></div>
 		<div class="white-sheet">
-			<section>
-				<div class="content-header">
-					<table class="event-header">
-						<tr class="row1">
-							<td class="header-cell">
-								<img  class="event-organizer-avatar"src="{{ asset(event.organizer.avatar.getWebPath) }}" alt="avatar">
-							</td>
-							<td class="header-cell">
-								<span class="event-sport-icon ws-icon ws-icon-large ws-icon-halo event-sport-logo ws-icon-{{ event.sport.icon }}"></span>
-							</td>
-							<td class="header-cell">
-								<img class="event-city-icon" src="{{ asset('bundles/wsstyle/img/city_location_icon.png') }}" alt="">
-							</td>
-							<td class="header-cell cell-title">
-								<h1 class="event-title {% if event.title|length < 30 %}title-big{% endif %}">
-									{{ event.title }}									
-								</h1>
-							</td>
-						</tr>
-						<tr class="row2">
-							<td class="header-cell">
-								<span class="event-metadata1"><a href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></span><br>
-								{% if event.organizer.age is not empty %}
-								<span class="event-metadata2">{{ event.organizer.age }}</span>
-								{% endif %}
-								<span class="event-metadata2"><a href="{{ event.organizer|link2user }}" rel="me author nofollow">Voir son profil</a></span>
-							</td>
-							<td class="header-cell">
-								<span class="event-metadata1">{{ event.sport.name|capitalize }}</span>
-							</td>
-							<td class="header-cell">
-								<span class="event-metadata1">{{ event.spot.location.city.name|capitalize }}</span>								
-							</td>
-							<td class="header-cell">
-								<div class="event-action">
-									{% if event.timing == 'tocome' %}
-										{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-											{% if event.isAdmin(app.user) == false %}
-												{% if event.userParticipate(app.user) %}
-													<a class="btn-ws btn-ws-small" rel="nofollow"> 
-														<i class="icon icon-ok-sign icon-white"></i>
-														Vous participez !
-													</a>
-													<a class="btn btn-link" href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}" rel="nofollow"><i class="icon-remove"></i> Annuler</a>
-													<a href="{{ path('ws_invit_new',{event:event.id}) }}" class="btn btn-small">Invitez des gens</a>
-												{% else %}
-													<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('ws_participation_add',{event:event.id,token:token}) }}" rel="nofollow">											
-															<i class="icon-white icon-plus"></i> Participer !
-														</a>
-												{% endif %}
-											{% else %}
-												<a class="btn btn-small" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a
-												>	
-												<a href="{{ path('ws_invit_new',{event:event.id}) }}" class="btn btn-small">Invitez des gens</a>
-											{% endif %}	
-										{% else %}
-											<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('fos_user_security_login') }}">Connexion</a>
-											<a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('fos_user_registration_register') }}">Inscription</a>
-										{% endif %}
-									{% endif %}
-								</div>							
-								<div class="fb-like" data-width="450" data-layout="button_count" data-show-faces="true" data-send="false"> </div>
-							</td>
-						</tr>
-					</table>	
-				</div>
-			</section>
-
-			{# event actions #}
-			<div class="event-action-bar {% if event.confirmed == true %}event-confirmed{% else %}event-pending{% endif %} {% if event.timing == 'past' %}event-finished{% endif %}">
-				<div class="event-status">
-					{% if event.timing == 'tocome' %}
-						{% if event.confirmed %}
-							<span>Evénement confirmé <input type="checkbox" id="checkbox-confirmed" checked disable /><label for="checkbox-confirmed"></label></span>
-							{{ event.participations|length }} participants
-						{% else %}
-							<span>En attente<input type="checkbox" id="checkbox-confirmed" disabled/><label for="checkbox-confirmed"></label></span>
-							<span class="nb-participant">de {% set nb = event.nbmin - event.participations|length %}{{ nb }}</span>
-						{% endif %}
-					{% endif %}
-					{% if event.timing == 'past' %}
-						<span class="label">Cette activité est terminé</span> <span class="nb-partipant"><abbr title="{{ event.time|date('Y-m-d h:i:s') }}" class="date timeago">{{ event.time|date('Y-m-d h:i:s') }}</abbr></span>
-					{% endif %}
-				</div>
-							
+			
+			<div class="content-header">
+				<table class="event-header">
+					<tr>
+						<td class="cell-meta">
+							<table>
+								<tr>
+									<td class="cell-meta">
+										<table>
+											<tr>
+												<td class="cell-day">{{ event.date|date('j') }}</td>
+												<td class="cell-date">{{ event.date|date('l') }} <br> {{ event.date|date('F') }}</td>				
+											</tr>
+										</table>
+									</td>										
+								</tr>
+								<tr>
+									<td class="cell-time"><span>{{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</span></td>
+								</tr>
+								<tr>
+									<td class="cell-city">à {{ event.spot.location.city.name|capitalize }}</td>
+								</tr>
+							</table>
+						</td>
+						<td class="cell-title">
+							<table>
+								<tr>
+									<td class="cell-title-icon">
+										<span class="ws-icon event-sport-icon ws-icon-large ws-icon-{{ event.sport.icon }}"></span>
+									</td>
+									<td class="cell-title-name">
+										<h1 class="event-title {% if event.title|length < 30 %}big{% endif %}">{{ event.title }}</h1>							
+									</td>
+								</tr>
+							</table>														
+						</td>
+						<td class="cell-organizer">
+							<img src="{{ asset(event.organizer.avatar.getWebPath) }}" alt="" class="event-organizer-avatar"><br>
+							<strong><a href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></strong><br>
+							{% if event.organizer.age is not empty %}<small>{{ event.organizer.age}}</small>{% endif %}
+							{% if event.organizer.type != 'person' %}<small>{{ event.organizer.type}}</small>{% endif %}
+							<small><a href="{{ event.organizer|link2user }}" rel="me author nofollow">- Voir la fiche -</a></small>
+						</td>
+					</tr>
+				</table>	
 			</div>
-			{# end event actions #}
-
-			{# event data #}
-			<article>
-				<div class="col_large">
-				<table>
-
-					<tr>
-						<td><span class="metadata-icon date-icon ws-icon ws-icon-calendar" title="Date"></span></td>
-						<td><h2 class="event-info">{{ event.date|date('l d m') }}{# localizeddate('full','none') #}</h2></td>
-					</tr>
-
-					<tr>
-						<td><span class="metadata-icon hour-icon ws-icon ws-icon-alarm" title="Heure"></span></td>
-						<td><h2 class="event-info">{{ event.time|date('h:i',"Europe/Paris") }}</h2></td>
-					</tr>
-
-					<tr>
-						<td><span class="metadata-icon city-icon ws-icon ws-icon-location" title="Ville"></span></td>
-						<td>
-							<h2 class="event-info">						
-								{{ event.spot.location.city.name }}
-								<small>{{ event.spot.location.lastState().name|lower }}</small>
-								<br>
-								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-									<small>{{ event.spot.address }}</small>
-								{% else %}
-									<small><a href="{{ path('fos_user_security_login') }}">Connectez-vous</a> pour voir l'adresse exacte</small>
-								{% endif %}					
-							</h2>
-						</td>
-					</tr>
-					
-					{% if event.phone %}
-					<tr>
-						<td><span class="metadata-icon phone-icon ws-icon ws-icon-phone" title="Téléphone"></span></td>
-						<td>
-							<h2 class="event-info">							
-								{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-									{{ event.phone }}
-								{% else %}
-									<small><a href="{{ path('fos_user_security_login') }}">Connectez-vous</a> pour voir le numéro de téléphone</small>
-								{% endif %}
-							</h2>
-						</td>
-					</tr>
-					{% endif %}
-
-				</table>
-
-
-				
-				{% if event.description %}
-					<div class="event-description block block-yellow">
-						<h3>Description de l'activité</h3>
-						<div class="block-content">
-							<span>{{ event.description }}</span>
-						</div>
-					</div>
-				{% endif %}
-
-				{% if event.timing == 'tocome' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-					<div class="block block-action">
-						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-							<a class="btn btn-small" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a>
-						{% else %}
-							{% if event.userParticipate(app.user) %}
-								<a class="btn-ws btn-ws-success" rel="nofollow"> 
-									<i class="icon icon-ok-sign icon-white"></i>
-									Vous participez !
-								</a>
-								<a class="btn btn-link" href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}" rel="nofollow"><i class="icon-remove"></i> Annuler</a>								
-							{% else %}
-								<a class="btn-ws btn-ws-submit" href="{{ path('ws_participation_add',{event:event.id,token:token}) }}" rel="nofollow">
-									<i class="icon-white icon-plus"></i>
-									Je veux participer!
-								</a>
-							{% endif %}
-						{% endif %}
-					</div>
-				{% endif %}
-
-				<div class="block">
-					{{ gmap|raw }}
-				</div>
-
-					<div class="event-discussion">
-						<h3>Question & Discussion</h3>
-						<div class="event-comments">
-							
-							{% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': 'event-'~event.id} %}
-						</div>
-					</div>
-				</div>
-			</article>
-
-			<aside>
-				<div class="col_small">
-					<div class="block block-red event-participants">
-						<h3>{{ event.participations|length }} Participants</h3>
-						<div class="block-content">
-							<ul>
-								{% for p in event.participations %}
-
-									{% if p.user is not null %}	
-
-										{% include 'WsEventsBundle:Templates:li_participant.html.twig' with {'user':p.user}  %} 
-
-									{% elseif p.invited is not null %}
-									
-										{% include 'WsEventsBundle:Templates:li_invited.html.twig' with {'invited':p.invited}  %} 
-
-									{% endif %}
-								{% endfor %}
-							</ul>
-						</div>
-					</div>
-
-					<div class="block block-red event-invitations">					
-						<h3>Invitations</h3>
-						<div class="block-content">
-							<ul>
-								{% for invitation in event.invitations %}
-
-									{% for invited in invitation.invited %}
-									
-										{% include 'WsEventsBundle:Templates:li_invited.html.twig' with {'invited':invited}  %} 
-
+			
+			<div class="section section-participation">
+				<h2>{{ event.participations|length }} participants</h2>
+				<div class="section-content {% if event.confirmed == true %}event-confirmed{% endif %}">
+					<table>
+						<tr>
+							<td>
+								<ul class="participants">
+									{% for i in 1..5 %}
+										<li class="event-participant">
+											<a href=""><img src="{{ asset(event.organizer.avatar.getWebPath) }}" alt=""></a>
+										</li>
 									{% endfor %}
 
-								{% endfor %}
-							</ul>
-						</div>
-					</div>
+									{% for p in event.participations %}
 
-					
+										{% if p.user is not null %}	
+											<li class="event-participant" class="tooltitop" data-toggle="tooltip" title="{{ p.user.username }} ({{ p.user.age }} )">
+												<a href="{{ p.user|link2user }}" rel="me nofollow"><img src="{{ asset(p.user.avatar.getWebPath) }}" alt="">
+												</a>
+											</li>
+										{% elseif p.invited is not null %}
+											<li class="event-participant" class="tooltitop" data-toggle="tooltip" title="invité(e) non-enregistré">
+												<img src="{{ asset('bundles/myuser/images/avatars/defaults/default'~random(10)~'.gif') }}" alt="">
+											</li>											
+										{% endif %}
+									{% endfor %}
+
+
+
+									{% if event.confirmed == true %}
+										<li class='event-confirmed'>
+											<span class="ws-icon ws-icon-checkmark-circle"></span> L'activité aura lieu
+										</li>
+									{% else %}
+										<li class="event-pending">
+											<span class="ws-icon ws-icon-info"></span> En attente de {% set nb = event.nbmin - event.participations|length %}{{ nb }} participants...
+										</li>
+									{% endif %}
+
+									{% if event.timing == 'past' %}
+										<li class="event-finished">
+											<span class="ws-icon ws-icon-blocked"></span> L'évenement est terminé... <span class="nb-partipant"><abbr title="{{ event.time|date('Y-m-d h:i:s') }}" class="date timeago">{{ event.time|date('Y-m-d h:i:s') }}</abbr></span>
+										</li> 
+									{% endif %}
+								</ul>
+								<p class="actions">		
+
+									{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+										<a class="btn btn-mini" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a>
+									{% endif %}	
+
+									{% if event.invitations is empty %}
+										<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
+									{% else %}
+										{# calcul nb responses #}
+										{% for invitation in event.invitations %}
+											{% set nb_no_response = 0 %}
+											{% for invited in invitation %}
+												{% if invited.response == null %}
+													{% set nb_no_response = nb_no_response + 1 %}
+												{% endif %}
+											{% endfor %}
+										{% endfor %}
+										<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Voir les {{ nb_no_response }} invitations sans réponses...</a>
+									{% endif %}
+								</p>								
+							</td>
+							<td class="join-event">
+								{% if event.isUserParticipate(app.user) == true %}
+								<label for="checkbox-confirmed">J'y vais <input type="checkbox" id="checkbox-joined" checked /><span></span></label> 
+								<br><br><a href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}"><small>Je ne veux plus- </small></a>
+								{% else %}
+								<a href="{{ path('ws_participation_add',{event:event.id,token:token}) }}">J'y vais <input type="checkbox" id="checkbox-joined" onclick="return false;"><span></span></a>
+								{% endif %}
+							</td>
+						</tr>
+					</table>
 				</div>
-			</aside>
+			</div>
+
+			<div class="section section-info">
+				<h2>Informations</h2>
+				<div class="section-content">
+					<table>
+						<tr>
+							{% if event.description is not null %}
+							<td>{{ event.description }}</td>
+							{% endif %}
+
+							<td>
+								<ul>
+								<li><span class="ws-icon ws-icon-calendar"></span> {{ event.date|date('l j F Y') }}</li>
+								<li><span class="ws-icon ws-icon-alarm"></span> {{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</li>
+								<li><span class="ws-icon ws-icon-{{ event.sport.icon }}"></span> {{ event.sport.name }}</li>
+								<li><span class="ws-icon ws-icon-star2"></span> {{ event.level }}</li>
+								<li><span class="ws-icon ws-icon-location2"></span> {{ event.spot.location.city.name }}, {{ event.spot.address }} <small>({{ event.spot.location.lastState().name|capitalize }})</small></li>
+								</ul>
+							</td>
+
+							<td>
+								
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="section section-map">
+				<h2>Lieu</h2>
+				<div class="section-content">
+					{{ gmap|raw }}
+				</div>
+			</div>
+
+			<div class="section section-comment">
+				<h2>Discussion</h2>
+				<div class="section-content">
+					{% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': 'event-'~event.id} %}
+				</div>
+			</div>
+
 		</div>
 	</div>
 
