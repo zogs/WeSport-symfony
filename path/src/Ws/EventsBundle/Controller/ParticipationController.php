@@ -32,7 +32,12 @@ class ParticipationController extends Controller
 		if($this->get('ws_events.manager')->isNotParticipating($event,$this->getUser())){
 
 			$this->get('ws_events.manager')->saveParticipation($event,$this->getUser(),true);
-			$this->get('flashbag')->add("C'est parti! Amusez-vous bien.");		
+			$this->get('flashbag')->add("C'est parti! Amusez-vous bien.");	
+
+			//confirm event if nb min is reached
+			if($event->countParticipation() == $event->getNbMin()){
+				$this->get('ws_events.manager')->confirmEvent($event);
+			}	
 
 			//throw event
 			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));
@@ -72,6 +77,11 @@ class ParticipationController extends Controller
 
 			$this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
 			$this->get('flashbag')->add("Ok... une prochaine fois peut être !",'info');
+
+			//confirm event if nb min is reached
+			if($event->countParticipation() < $event->getNbMin()){
+				$this->get('ws_events.manager')->unconfirmEvent($event);
+			}
 
 			//throw event
 			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));  

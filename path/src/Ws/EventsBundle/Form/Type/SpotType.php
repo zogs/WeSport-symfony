@@ -31,7 +31,7 @@ class SpotType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'attr' => array(
-                    'class' => 'autocomplete-spot_id'
+                    'class' => 'autocompleted-spot_id'
                     )
                 ))
             ->add('spot_slug','text',array(
@@ -63,6 +63,10 @@ class SpotType extends AbstractType
                 ))
             ;
     		
+            //set options array for listeners uses
+            $this->options = $options;
+
+            //listeners
             $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
             $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }
@@ -79,7 +83,7 @@ class SpotType extends AbstractType
                     'mapped' => false,
                     'required' => false,
                     'attr' => array(
-                        'class' => 'autocomplete-spot_id'
+                        'class' => 'autocompleted-spot_id'
                         )
                     ))
                 ->add('spot_slug','text',array(
@@ -88,10 +92,10 @@ class SpotType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'class' => 'autocomplete-spot',
-                        'data-autocomplete-url' => $options['ajax_url'],
-                        'data-template-empty' => $options['empty_html'],
-                        'data-template-footer' => $options['footer_html'],
-                        'data-template-header' => $options['header_html'],
+                        'data-autocomplete-url' => $this->options['ajax_url'],
+                        'data-template-empty' => $this->options['empty_html'],
+                        'data-template-footer' => $this->options['footer_html'],
+                        'data-template-header' => $this->options['header_html'],
                         'data-trigger-length' =>2
                         )
                     ))
@@ -149,7 +153,8 @@ class SpotType extends AbstractType
             $form->setData($spot);
         }
 
-        if(NULL==$spot) throw new Exception('Spot entity can not be instanciate in SpotType');
+
+        if(NULL==$spot) throw new \Exception('Can not be instanciate spot entity');
 
     }
 

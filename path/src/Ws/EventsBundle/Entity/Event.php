@@ -691,6 +691,14 @@ class Event
         $this->participations->removeElement($participation);
     }
 
+    /**
+     * count participation
+     */
+    public function countParticipation()
+    {
+        return count($this->participations);
+    }
+
     public function removeOrganizerParticipation()
     {
         foreach($this->getParticipations() as $p){

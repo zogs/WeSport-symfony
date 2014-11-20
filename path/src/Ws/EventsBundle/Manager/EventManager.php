@@ -138,12 +138,14 @@ class EventManager extends AbstractManager
      */
 	public function saveParticipation($event,$user,$flush = false)
 	{
-		$attempt = new Participation();
-		$attempt->setEvent($event);
-		$attempt->setUser($user);
+		$participation = new Participation();
+		$participation->setEvent($event);
+		$participation->setUser($user);
 
-		$this->save($attempt,$flush);		
-		return $attempt;
+		$this->save($participation,$flush);	
+
+
+		return $participation;
 	}
 
 	/**
@@ -183,10 +185,13 @@ class EventManager extends AbstractManager
      */
 	public function deleteParticipation($event,$user,$flush = false)
 	{
-		$part = $this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user);
+		$participation = $this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user);
 
-		if($part)
-			$this->delete($part,$flush);
+		if($participation){
+
+			$this->delete($participation,$flush);
+
+		}
 	}
 
 	/**

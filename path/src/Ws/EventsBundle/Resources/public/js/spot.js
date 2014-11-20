@@ -45,7 +45,7 @@ $(document).ready(function() {
 			}
 		)
 		.on('typeahead:selected',function(evt,suggestion){
-			$('input.-autocompleted-spot_id').get(index).value = suggestion.id;
+			$('.autocompleted-spot_id').get(index).value = suggestion.id;
 		})
 		;
 

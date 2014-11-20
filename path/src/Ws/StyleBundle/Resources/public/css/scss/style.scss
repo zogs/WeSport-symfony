@@ -340,6 +340,7 @@ div.mm-is-menu * {
 			float: none;
 			padding:0 20px;
 			height:inherit;
+			@include rem(16);
 		}
 		li a{
 			font-family: 'Hobo';			
@@ -718,7 +719,6 @@ TYPEAHEAD CUSTOM STYLE
 =====================*/
 .tt-dropdown-menu { 
 	width:100%;
-	margin-top:23px; 
 	text-align: left; 
 	background-color: $darkblue; 
 	border-bottom-radius: 8px; 
@@ -727,7 +727,7 @@ TYPEAHEAD CUSTOM STYLE
 }
 
 .tt-suggestion {  padding:10px 33px;}
-.tt-name {  @include rem(18);  font-weight:bold;  color:#EDEEF0; }
+.tt-name {  @include rem(18);  font-weight:bold;  color:#FFF; }
 .tt-sub {  @include rem(14);; font-style:italic;  color:#999;}
 .tt-id{ display: none;}
 .tt-suggestion.tt-cursor{  background-color:#0097cf;}
@@ -1972,7 +1972,7 @@ h1.title-sheet {
 
 				li { display:inline-block; margin:0 1px; }
 				li.event-participant {
-					img { width:40px; height: 40px;}
+					img { width:40px; height: 40px; background-color:#FFF; }
 				}
 				li.event-confirmed {
 					background-color: #538942;
@@ -2008,9 +2008,10 @@ h1.title-sheet {
 			td.join-event {
 
 				label,a {
-					display:inline;
+					display:block;					
+					float:right;					
 					font-weight: bold;
-					color:$deepgrey;					
+					color:$deepgrey;
 					small { font-weight: normal; @include rem(11); }
 				}
 
@@ -2178,6 +2179,10 @@ h1.title-sheet {
 				color:$deepgrey;
 				@include rem(12);
 
+			}
+
+			div.fos_comment_comment_reply {
+				display:inline;
 			}
 
 

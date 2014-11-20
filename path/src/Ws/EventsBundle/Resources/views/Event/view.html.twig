@@ -59,17 +59,12 @@
 					<table>
 						<tr>
 							<td>
-								<ul class="participants">
-									{% for i in 1..5 %}
-										<li class="event-participant">
-											<a href=""><img src="{{ asset(event.organizer.avatar.getWebPath) }}" alt=""></a>
-										</li>
-									{% endfor %}
+								<ul class="participants">									
 
 									{% for p in event.participations %}
 
 										{% if p.user is not null %}	
-											<li class="event-participant" class="tooltitop" data-toggle="tooltip" title="{{ p.user.username }} ({{ p.user.age }} )">
+											<li class="event-participant" class="tooltitop" data-toggle="tooltip" title="{{ p.user.username }} {% if p.user.hasAge %}({{ p.user.age }} ans){% endif %}">
 												<a href="{{ p.user|link2user }}" rel="me nofollow"><img src="{{ asset(p.user.avatar.getWebPath) }}" alt="">
 												</a>
 											</li>
@@ -137,10 +132,13 @@
 				<div class="section-content">
 					<table>
 						<tr>
-							{% if event.description is not null %}
-							<td>{{ event.description }}</td>
-							{% endif %}
-
+							<td>
+								{% if event.description is not null %}
+									{{ event.description }}
+								{% else %}
+									<i>Pas de description</i>
+								{% endif %}
+							</td>							
 							<td>
 								<ul>
 								<li><span class="ws-icon ws-icon-calendar"></span> {{ event.date|date('l j F Y') }}</li>

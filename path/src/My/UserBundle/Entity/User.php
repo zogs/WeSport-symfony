@@ -131,15 +131,16 @@ class User extends BaseUser
         return false;
     }
 
-    public function getAge()
+    public function hasAge()
     {
-        if(!empty($this->type)){
-            if($this->type=='asso') return 'Association';
-            if($this->type=='pro') return 'Professionnel';
-        }
-        if(!empty($this->birthday))
-            return date('Y-m-d') - date($this->birthday). ' ans';
+        if(!empty($this->birthday)) return true;
+        return false;
+    }
 
+    public function getAge()
+    {        
+        if(!empty($this->birthday))
+            return date('Y-m-d') - date($this->birthday);
         return '';
     }
 
