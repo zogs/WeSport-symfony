@@ -39,7 +39,11 @@ class SpotType extends AbstractType
                 'required' => false,
                 'attr' => array(
                     'class' => 'autocomplete-spot',
-                    'data-autocomplete-url' => $this->router->generate('ws_spot_autocomplete'),
+                    'data-autocomplete-url' => $options['ajax_url'],
+                        'data-template-empty' => $options['empty_html'],
+                        'data-template-footer' => $options['footer_html'],
+                        'data-template-header' => $options['header_html'],
+                        'data-trigger-length' =>2
                     )
                 ))
             ->add('location', 'city_to_location_type', array(
@@ -84,7 +88,11 @@ class SpotType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'class' => 'autocomplete-spot',
-                        'data-autocomplete-url' => $this->router->generate('ws_spot_autocomplete'),
+                        'data-autocomplete-url' => $options['ajax_url'],
+                        'data-template-empty' => $options['empty_html'],
+                        'data-template-footer' => $options['footer_html'],
+                        'data-template-header' => $options['header_html'],
+                        'data-trigger-length' =>2
                         )
                     ))
                 ->add('location', 'city_to_location_type', array(
@@ -156,6 +164,11 @@ class SpotType extends AbstractType
             'invalid_message' => 'Spot form error',
 	        'data_class' => 'Ws\EventsBundle\Entity\Spot',
             'cascade_validation' => false,
+            'ajax_url' => $this->router->generate('ws_spot_autocomplete'),
+            'empty_html' => 'Pas de résultats',
+            'footer_html' => '',
+            'header_html' => '',
+            'trigger-length' =>3
 	    ));
 	}
 }

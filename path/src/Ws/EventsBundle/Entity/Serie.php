@@ -103,7 +103,8 @@ class Serie
 
     public function isWeekdayInSerie($weekday)
     {
-        if(call_user_method('get'.ucfirst($weekday),$this)) return true;
+        //if(call_user_method('get'.ucfirst($weekday),$this)) return true;
+        if($this->$weekday == 1) return true;
         return false;
     }
 
