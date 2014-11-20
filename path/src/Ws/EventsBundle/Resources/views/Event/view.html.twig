@@ -55,7 +55,7 @@
 			
 			<div class="section section-participation">
 				<h2>{{ event.participations|length }} participants</h2>
-				<div class="section-content {% if event.confirmed == true %}event-confirmed{% endif %}">
+				<div class="section-content {% if event.isUserParticipate(app.user) == true %}section-green{% endif %}">
 					<table>
 						<tr>
 							<td>
@@ -122,10 +122,9 @@
 							</td>
 							<td class="join-event">
 								{% if event.isUserParticipate(app.user) == true %}
-								<label for="checkbox-confirmed">J'y vais <input type="checkbox" id="checkbox-joined" checked /><span></span></label> 
-								<br><br><a href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}"><small>Je ne veux plus- </small></a>
+									<a href="{{ path('ws_participation_cancel',{event:event.id,token:token}) }}">J'y vais <input type="checkbox" id="checkbox-joined" checked="checked"><span></span></a>								
 								{% else %}
-								<a href="{{ path('ws_participation_add',{event:event.id,token:token}) }}">J'y vais <input type="checkbox" id="checkbox-joined" onclick="return false;"><span></span></a>
+									<a href="{{ path('ws_participation_add',{event:event.id,token:token}) }}">J'y vais <input type="checkbox" id="checkbox-joined"><span></span></a>
 								{% endif %}
 							</td>
 						</tr>

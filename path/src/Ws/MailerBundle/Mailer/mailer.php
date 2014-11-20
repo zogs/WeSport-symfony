@@ -75,7 +75,7 @@ class Mailer
 
         foreach($event->getParticipations(false) as $participant){
 
-            if($participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
+            if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
 
             $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
         }
@@ -91,7 +91,7 @@ class Mailer
 
         foreach($event->getParticipations(false) as $participant){
 
-            if($participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
+            if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
 
             $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
         }
@@ -107,7 +107,7 @@ class Mailer
 
         foreach($event->getParticipations(false) as $participant){
 
-            if($participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CONFIRM) === false ) continue;
+            if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CONFIRM) === false ) continue;
 
             $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
         }
@@ -121,12 +121,13 @@ class Mailer
             'event' => $event,
             ));
 
-         foreach ($event->getParticipations(false) as $participant) {
-             
-                if($participant->getuser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CHANGED) === false) continue;
+         foreach ($event->getParticipations(false) as $participant) {            
+
+                if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CHANGED) === false) continue;
 
                 $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
          }
+
     }
 
     public function sendParticipationAddedToAdmin(Event $event, User $participant)
