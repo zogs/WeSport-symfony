@@ -41,7 +41,8 @@ class InvitationController extends Controller
 			if($form->isValid()){
 
 				$invitation = $form->getData();	
-
+				\My\UtilsBundle\Utils\Debug::debug($invitation);
+				exit();
 				if(!$invitation->isEmpty()){
 
 					$this->get('ws_events.invit.manager')->saveInvit($invitation);

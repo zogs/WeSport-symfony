@@ -11,7 +11,7 @@ class Debug
 		ini_set('html_errors', 'On');
 
         if (extension_loaded('xdebug')) {
-            ini_set('xdebug.var_display_max_depth', $maxDepth);
+           // ini_set('xdebug.var_display_max_depth', $maxDepth);
         }
 
         $debug = debug_backtrace();

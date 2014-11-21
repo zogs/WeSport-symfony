@@ -34,9 +34,12 @@ $(document).ready(function() {
             	displayKey: 'email',
             	valueKey: 'email',
             	source: invit_emails.ttAdapter()
-            }
-            
-        })        
-        ;
+            }            
+        });
+        //on focus out, the text is converted in a tag
+        $('.tagsinput').tagsinput().blur(function() {
+        	$('.tagsinput').tagsinput('add', $(this).val());
+        	$(this).val('');
+        });
        
 });
