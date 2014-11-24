@@ -23,7 +23,7 @@
 		{% endif %}
 
 		<button class="btn btn-large btn-primary">Envoyer les invitations</button>
-
+		<a href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}" class="btn btn-small">Retourner à l'activité</a>
 		{{ form_end(form) }}
 		</div>
 

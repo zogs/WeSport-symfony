@@ -37,8 +37,8 @@ $(document).ready(function() {
             }            
         });
         //on focus out, the text is converted in a tag
-        $('.tagsinput').tagsinput().blur(function() {
-        	$('.tagsinput').tagsinput('add', $(this).val());
+        $('.bootstrap-tagsinput input').blur(function() {
+        	$('input.tagsinput').tagsinput('add', $(this).val());
         	$(this).val('');
         });
        

@@ -103,15 +103,25 @@
 										<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
 									{% else %}
 										{# calcul nb responses #}
+										{% set nb_invit = 0 %}
+										{% set nb_response = 0 %}
+										{% set nb_no_response = 0 %}										
 										{% for invitation in event.invitations %}
-											{% set nb_no_response = 0 %}
-											{% for invited in invitation %}
+											{% for invited in invitation.invited %}
+												{% set nb_invit = nb_invit + 1 %}
 												{% if invited.response == null %}
 													{% set nb_no_response = nb_no_response + 1 %}
+												{% else %}
+													{% set nb_response = nb_response + 1 %}
 												{% endif %}
 											{% endfor %}
 										{% endfor %}
-										<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Voir les {{ nb_no_response }} invitations sans réponses...</a>
+										{#{{ nb_invit }} invités, {{ nb_response }} réponses, {{ nb_no_response }} en attente#}
+										{% if nb_no_response > 0 %}
+											<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Voir les {{ nb_no_response }} invitations sans réponses...</a>
+										{% else %}
+											<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
+										{% endif %}
 									{% endif %}
 								</p>								
 							</td>

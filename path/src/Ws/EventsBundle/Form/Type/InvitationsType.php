@@ -96,11 +96,11 @@ class InvitationsType extends AbstractType
 		$invit->setContent($data['content']);
 		$invit->setEmails($data['emails']);
 
-			\My\UtilsBundle\Utils\Debug::debug($data);
+			
 		if(!empty($data['emails'])){
 
 			$emails = \My\UtilsBundle\Utils\String::findEmailsInString($data['emails']);
-			\My\UtilsBundle\Utils\Debug::debug($emails);
+			
 			foreach ($emails as $key => $email) {   
 				if($key>=10) break;
 				$o = new Invited();

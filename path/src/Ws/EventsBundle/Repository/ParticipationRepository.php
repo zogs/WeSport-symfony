@@ -25,7 +25,7 @@ class ParticipationRepository extends EntityRepository
 			$qb->andWhere('p.user = :user')->setParameter('user',$user);
 		if(isset($invited))
 			$qb->andWhere('p.invited = :invited')->setParameter('invited',$invited);			
-
+		
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 

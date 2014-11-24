@@ -32,6 +32,12 @@ class InvitedRepository extends EntityRepository
 		return $invit->getResponse();
 	}
 
+	public function removeInvited($invited)
+	{
+		$this->_em->remove($invited);
+		$this->_em->flush();
+	}
+
 	public function confirmParticipation($invited)
 	{
 		if($this->checkResponse($invited) == true) return; //already confirmed

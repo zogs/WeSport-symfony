@@ -41,8 +41,7 @@ class InvitationController extends Controller
 			if($form->isValid()){
 
 				$invitation = $form->getData();	
-				\My\UtilsBundle\Utils\Debug::debug($invitation);
-				exit();
+				
 				if(!$invitation->isEmpty()){
 
 					$this->get('ws_events.invit.manager')->saveInvit($invitation);
@@ -59,6 +58,7 @@ class InvitationController extends Controller
 
 			return $this->render('WsEventsBundle:Invitation:new.html.twig',array(
 				'form' => $form->createView(),
+				'event' => $event,
 				'invitations'=>$invitations,
 				));
 		}
@@ -128,17 +128,26 @@ class InvitationController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		if(NULL == $em->getRepository('WsEventsBundle:participation')->findParticipation($invited->getInvitation()->getEvent(),$invited->getUser())){
-		
+		//check if the invited person is already participating
+		if(NULL != $em->getRepository('WsEventsBundle:Participation')->findParticipation($invited->getInvitation()->getEvent(),$invited->getUser(),$invited)){		
+			//delete invited
+			//in order to avoid double participation
+			$em->getRepository('WsEventsBundle:Invited')->removeInvited($invited);
+			//display message
+			$message = "Bravo ".$invited->getUser()->getUsername().", vous participerez à cet événement ! <a href=".$this->generateUrl('fos_user_security_login').">Connectez-vous</a> pour discuter.";
+		}
+		//if not
+		else {
+			//confirm participaiton
 			$em->getRepository('WsEventsBundle:Invited')->confirmParticipation($invited);
 
-		}
+			//display message
+			if($invited->isRegisteredUser())
+				$message = "Bravo ".$invited->getUser()->getUsername().", vous participerez à cet événement ! <a href=".$this->generateUrl('fos_user_security_login').">Connectez-vous</a> pour discuter.";
+			else 
+				$message = "Bravo, vous participerez en tant qu'invité ! N'hésitez pas <a href=".$this->generateUrl('fos_user_registration_register').">à vous inscrire</a> pour plus de facilité !";	
+		}		
 
-		if($invited->isRegisteredUser())
-			$message = "Bravo ".$invited->getUser()->getUsername().", vous participerez à cet événement ! <a href=".$this->generateUrl('fos_user_security_login').">Connectez-vous</a> pour discuter.";
-		else 
-			$message = "Bravo, vous participerez en tant qu'invité ! N'hésitez pas <a href=".$this->generateUrl('fos_user_registration_register').">à vous inscrire</a> pour plus de facilité !";
-		
 		$this->get('flashbag')->add($message);
 
 		return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$invited->getInvitation()->getEvent()->getId(),'slug'=>$invited->getInvitation()->getEvent()->getSlug())));
