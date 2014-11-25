@@ -96,19 +96,62 @@ class InvitationsType extends AbstractType
 		$invit->setContent($data['content']);
 		$invit->setEmails($data['emails']);
 
-			
+		
 		if(!empty($data['emails'])){
 
-			$emails = \My\UtilsBundle\Utils\String::findEmailsInString($data['emails']);
-			
-			foreach ($emails as $key => $email) {   
-				if($key>=10) break;
-				$o = new Invited();
-				$o->setEmail($email);
-				$o->setUser($this->em->getRepository('MyUserBundle:User')->findOneByEmail($email));
-				$o->setInvitation($invit);
-				$invit->addInvited($o);
-			}           
+			//get array of email that have been already invited for that particular event
+			$emails_already_invited = $this->em->getRepository('WsEventsBundle:Invitation')->findEmailsByEvent($event);
+
+			//get submitted tags
+			$tags = explode(',', $data['emails']);
+
+			foreach ($tags as $k => $tag) {
+				
+				//no more than 10 invited at once
+				if($k>=10) break;
+
+				//set invited
+				$invited = null;
+
+				//check if tag is a email
+				if(\My\UtilsBundle\Utils\String::isEmail($tag)){
+
+					//check if the email is registered					
+					//if yes, set invited as registered user
+					if($user = $this->em->getRepository('MyUserBundle:User')->findOneByEmail($tag)){
+						$invited = new Invited();
+						$invited->setEmail($user->getEmail());
+						$invited->setUser($user);
+					}
+					//else, set invited as simple email
+					else {
+						$invited = new Invited();
+						$invited->setEmail($tag);
+						$invited->setUser(null);
+					}
+				}
+				//if tag is not an email
+				else {
+					// check if it is a username
+					if($user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername($tag)){
+						$invited = new Invited();
+						$invited->setEmail($user->getEmail());
+						$invited->setUser($user);					
+					}
+
+				}
+
+				//if invited exist
+				if($invited != null ){
+					//check if not already invited
+					if(!in_array($invited->getEmail(),$emails_already_invited)){
+						
+						$invited->setInvitation($invit);
+						$invit->addInvited($invited);						
+					}
+				}
+			}
+          
 		}
 		else {
 			return $form->setData(null);

@@ -328,6 +328,17 @@ class Event
     }
 
     /**
+     * Get level
+     *
+     * @return \string 
+     */
+    public function getLevelString()
+    {        
+        return $this::$valuesAvailable['level'][$this->level];
+    }
+
+
+    /**
      * Set city_id
      *
      * @param integer $cityId

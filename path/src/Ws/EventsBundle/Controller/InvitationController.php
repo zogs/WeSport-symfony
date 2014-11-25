@@ -45,7 +45,6 @@ class InvitationController extends Controller
 				if(!$invitation->isEmpty()){
 
 					$this->get('ws_events.invit.manager')->saveInvit($invitation);
-					$this->get('flashbag')->add('Invitation enregistrés','success');
 					$this->get('event_dispatcher')->dispatch(WsEvents::INVITATION_CREATE, new CreateInvitation($invitation,$this->getUser())); 												
 				}	
 				else {

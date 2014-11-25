@@ -4,6 +4,7 @@ namespace My\UtilsBundle\Utils;
 
 class String {
 
+	static public $email_pattern = '/[a-zA-Z0-9\._%+-]+@[a-zA-Z0-9\.-]+\.[a-zA-Z]{2,4}/';
 
 	static function random($length = 10){
 
@@ -96,10 +97,14 @@ class String {
 	}
 
 	static function findEmailsInString($str){
-
-		$pattern = '/[a-zA-Z0-9\._%+-]+@[a-zA-Z0-9\.-]+\.[a-zA-Z]{2,4}/';
-	 	$mail = preg_match_all($pattern, $str,$matches);
+		
+	 	$mail = preg_match_all($this::$email_pattern, $str,$matches);
 	 	return $matches[0];
+	}
+
+	static function isEmail($str){
+
+		return preg_match(self::$email_pattern,$str);
 	}
 
 	static function isSerialized($string){

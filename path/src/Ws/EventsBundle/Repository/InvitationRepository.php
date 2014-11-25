@@ -42,6 +42,22 @@ class InvitationRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	public function findEmailsByEvent($event)
+	{
+		$qb = $this->createQueryBuilder('i');
+		$qb->andWhere('i.event = :event')->setParameter('event',$event);
+
+		$a = array();
+		$invits = $qb->getQuery()->getResult();
+		foreach ($invits as $invit) {
+			foreach ($invit->getInvited() as $invited) {
+				$a[] = $invited->getEmail();
+			}			
+		}
+		return $a;	
+
+	}
+
 	
 
 }

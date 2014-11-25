@@ -80,7 +80,7 @@ class InvitedRepository extends EntityRepository
 			$qb->andWhere($qb->expr()->like('i.email',$qb->expr()->literal('%'.$search.'%')));
 
 		return $qb->getQuery()->getResult();
-
-
 	}
+	
+		
 }

@@ -19,7 +19,7 @@ security:
                 check_path: fos_user_security_check
                 login_path:  fos_user_security_login
                 use_referer: true
-                always_use_default_target_path : true
+                always_use_default_target_path : false
                 default_target_path: ws_calendar
                 remember_me: true
             remember_me:
