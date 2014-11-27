@@ -506,58 +506,57 @@ div.mm-is-menu * {
 ======= ALERTS
 */
 .flash {	
-	background:$backblue url('../img/lines/Lines1.png') repeat; background-size: 50px; 
-	box-shadow:inset 0 2px 0 0 rgba(0,0,0,0.2), inset 0 -1px 0 0 rgba(255,255,255,0.5);	
-	text-align:center;
-	padding:5px 0;
+	position:absolute;
+	width: 100%;
+	z-index:10;
+	// animation: name duration function delay count direction 
+	-webkit-animation: alertHide 1s linear 8s 1 forwards;
+
 }
 .ws-alert {	
+	display: block;
 	position:relative;
-	display: inline-block;
-	margin:10px 5px;
-	padding:20px 100px;
-	@include rem(18);
+	width:100%;
+	padding:20px 0 25px 0;
 	background-color: $lightgrey;
+	background-image: url('../img/lines/Lines2.png');
+	background-repeat: repeat; 
+	background-size: 50px; 
 	@include box-shadow(0 5px 0 rgba(0,0,0,0.1));
-	color:darken($softgrey,10%);
 	text-align: center;					
 
-	p { 
-		font-weight: bold;
-		margin:0;		
+	color:darken($softgrey,10%);
+
+	span.alert-message {
+		display: inline;
+		position: relative;
+		@include rem(16);
+	}
+	span.alert-icon{
+		position:absolute;
+		left:-50px;
+		top:-8px;
+		@include rem(36);
+	}
+	div.alert-progress {
+		position: absolute;
+		bottom:0;
+		left:0;
+		height:5px;
+		width:0%;
+		background-color:rgba(0,0,0,0.1);
+		@include box-shadow(0 0 0 rgba(0,0,0,0));
+		-webkit-animation: alertTimer 8s linear 0 1 forwards;
 	}
 	button.close {
-			position:absolute;
-			top:50%;
-			margin-top:-10px;
-			right:50px;
-			display: inline;
-			@include rem(12);	
-	}
-	span.flash-icon{
-			position:absolute;
-			top:50%;
-			margin-top:-13px;
-			left:50px;
-			display: inline;
-			@include rem(26);
-	}
-	&:before{
-		content:'';
 		position:absolute;
-		top:50%; margin-top:-10px;
-		left:0;
-		border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left:10px solid $backblue; 
-		z-index:3;
+		top:50%;
+		margin-top:-10px;
+		right:50px;
+		display: inline;
+		@include rem(12);	
 	}
-	&:after{
-		content:'';
-		position:absolute;
-		top:50%; margin-top:-10px;
-		right:0;
-		border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right:10px solid $backblue; 
-		z-index:3;
-	}
+	
 }
 .alert-success {
 	background-color: $green;
@@ -575,6 +574,16 @@ div.mm-is-menu * {
 	background-color: $softred;
 	color:$deepred;
 }
+
+@-webkit-keyframes alertHide {
+  0% { margin-top:0; }
+  100% {  margin-top:-100px; }
+}
+@-webkit-keyframes alertTimer {
+  0% { width:0; }
+  100% {  width:100%; }
+}
+
 
 /* Tooltip */
 .tooltip{

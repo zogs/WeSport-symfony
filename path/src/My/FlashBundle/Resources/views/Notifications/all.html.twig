@@ -2,13 +2,16 @@
 {% set icons = {'success':'checkmark','info':'info','warning':'spam','error':'blocked','danger':'blocked'} %}
 
 <div class="flash">
-	{% for type,messages in notifications %}
-	    {% for message in messages %}
-	        <div class="ws-alert alert-{{ type }}">
-	        	<span class="flash-icon"><span class="ws-icon-{{ icons[type] }}"></span></span>
-	            <p>{{ message|raw }}</p>
-	            <button class="close" data-dismiss="alert"><span class="ws-icon-close"></span></button>
-	        </div>
-	    {% endfor %}
-	{% endfor %}	
+{% for type,messages in notifications %}
+	{% for message in messages %}
+		<div class="ws-alert alert-{{ type }} " id="ws-main-alert-{{ loop.index }}">	
+			<span class="alert-message">
+				<span class="alert-icon ws-icon-{{ icons[type] }} "></span>
+				{{ message|raw }}
+			</span>        	
+			<button class="close" onclick="javascript: $('#ws-main-alert-{{ loop.index }}').slideUp(1000);"><span class="ws-icon-close"></span></button>
+			<div class="alert-progress"></div>
+		</div>
+	{% endfor %}
+{% endfor %}	
 </div>
