@@ -33,7 +33,7 @@ class LoginEntryPoint implements AuthenticationEntryPointInterface{
         //I am choosing to set a FlashBag message with my own custom message.
         //Alternatively, you could use AuthenticaionException's generic message 
         //by calling $authException->getMessage()
-        $session->getFlashBag()->add('warning', 'Veuillez vous connecter pour accéder à cette page');
+         $session->getFlashBag()->add('warning', 'Veuillez vous connecter pour accéder à cette page');
 
         return new RedirectResponse($this->router->generate('fos_user_security_login'));
     }
