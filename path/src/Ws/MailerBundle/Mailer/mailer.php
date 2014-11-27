@@ -210,8 +210,12 @@ class Mailer
         $emails = array();
         foreach ($invitation->getInvited() as $key => $invited) {
    
-            $email = $this->sendInvitedMessage($invited);
-            $emails[] = $email;
+            //send only not-sended message
+            if($invited->getNbSended() == 0){
+
+                $email = $this->sendInvitedMessage($invited);
+                $emails[] = $email;
+            }
         }
 
         return $emails;

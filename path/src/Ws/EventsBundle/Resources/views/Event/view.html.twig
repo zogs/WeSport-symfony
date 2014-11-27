@@ -95,34 +95,42 @@
 								</ul>
 								<p class="actions">		
 
-									{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+									{% if is_granted('IS_AUTHENTICATED_REMEMBERED') and event.isAdmin(app.user) %}
 										<a class="btn btn-mini" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier mon annonce</a>
 									{% endif %}	
 
-									{% if event.invitations is empty %}
+									{# grant the possibility for a visitor to see the invitation button #}
+									{% if is_granted('IS_AUTHENTICATED_ANONYMOUSLY') %}
 										<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
 									{% else %}
-										{# calcul nb responses #}
-										{% set nb_invit = 0 %}
-										{% set nb_response = 0 %}
-										{% set nb_no_response = 0 %}										
-										{% for invitation in event.invitations %}
-											{% for invited in invitation.invited %}
-												{% set nb_invit = nb_invit + 1 %}
-												{% if invited.response == null %}
-													{% set nb_no_response = nb_no_response + 1 %}
-												{% else %}
-													{% set nb_response = nb_response + 1 %}
-												{% endif %}
-											{% endfor %}
-										{% endfor %}
-										{#{{ nb_invit }} invités, {{ nb_response }} réponses, {{ nb_no_response }} en attente#}
-										{% if nb_no_response > 0 %}
-											<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Voir les {{ nb_no_response }} invitations sans réponses...</a>
-										{% else %}
+										{# show Invite button if not invitations yet#}
+										{% if event.invitations is empty %}
 											<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
+										{# else show the number of invitation pending remaining #}
+										{% else %}
+											{# calcul nb responses #}
+											{% set nb_invit = 0 %}
+											{% set nb_response = 0 %}
+											{% set nb_no_response = 0 %}										
+											{% for invitation in event.invitations %}
+												{% for invited in invitation.invited %}
+													{% set nb_invit = nb_invit + 1 %}
+													{% if invited.response == null %}
+														{% set nb_no_response = nb_no_response + 1 %}
+													{% else %}
+														{% set nb_response = nb_response + 1 %}
+													{% endif %}
+												{% endfor %}
+											{% endfor %}
+											{#{{ nb_invit }} invités, {{ nb_response }} réponses, {{ nb_no_response }} en attente#}
+											{% if nb_no_response > 0 %}
+												<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Voir les {{ nb_no_response }} invitations sans réponses...</a>
+											{% else %}
+												<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
+											{% endif %}
 										{% endif %}
 									{% endif %}
+
 								</p>								
 							</td>
 							<td class="join-event">

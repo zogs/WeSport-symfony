@@ -78,31 +78,50 @@ class InvitationsType extends AbstractType
 		$form = $event->getForm();
 		$data = $event->getData(); 
 
-		$invit = new Invitation();
-
-		if($this->user instanceof User)
-			$invit->setInviter($this->user);            
-		else 
-			throw new \Exception('User is not an instance of User class');     
-
-		if(!empty($data['event']))
-			$event = $this->em->getRepository('WsEventsBundle:Event')->find($data['event']);             
-		elseif(NULL != $form->getParent() && $form->getParent()->getData() instanceof Event)          
+		//get the event concerned from the submitted data
+		if(!empty($data['event'])){ 
+			$event = $this->em->getRepository('WsEventsBundle:Event')->findOneById($data['event']);             
+		}
+		//or from the embedded formular
+		elseif(NULL != $form->getParent() && $form->getParent()->getData() instanceof Event){
 			$event = $form->getParent()->getData();
-		elseif($this->event instanceof Event)
+		}
+		//or from the __construct method
+		elseif($this->event instanceof Event){
 			$event = $this->event;
+		}
 
+		//create invitation
+		if($this->user instanceof User){
+
+			//if user have already invited somebody to this event, get the Invitation object
+			if($invit = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByUserAndEvent($this->user,$event)){
+				$invit->setInviter($this->user);            
+			}
+			//else create a new Invitation
+			else {
+				$invit = new Invitation();
+				$invit->setInviter($this->user);
+			}
+		}
+		else 
+			throw new \Exception('User must be an instance of My\UserBundle\Entity\User');     
+
+		
+		//set persisted data
 		$invit->setEvent($event);
+		$invit->setName('invitation à '.$event->getTitle().' le '.$event->getDate()->format('d/m/Y'));
+		//set unpersisted data
 		$invit->setContent($data['content']);
 		$invit->setEmails($data['emails']);
 
 		
 		if(!empty($data['emails'])){
 
-			//get array of email that have been already invited for that particular event
+			//get array of all emails that have been already invited for that particular event
 			$emails_already_invited = $this->em->getRepository('WsEventsBundle:Invitation')->findEmailsByEvent($event);
 
-			//get submitted tags
+			//get submitted email tags
 			$tags = explode(',', $data['emails']);
 
 			foreach ($tags as $k => $tag) {

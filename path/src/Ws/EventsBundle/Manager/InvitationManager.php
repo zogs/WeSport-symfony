@@ -24,6 +24,22 @@ class InvitationManager extends AbstractManager
 
 	}
 
+	/**
+	 * Save all Invited as been sended at least once
+	 */
+	public function saveAsSended($invit)
+	{
+		foreach ($invit->getInvited() as $key => $invited) {
+			if($invited->getNbSended() == 0){
+				$invited->setNbSended(1);
+				$this->save($invited);
+			}
+		}
+		$this->flush();
+
+		return $this;
+	}
+
 	public function saveInvited($invited)
 	{		
 
@@ -34,7 +50,12 @@ class InvitationManager extends AbstractManager
 
 	public function getUserInvitation(User $user,Event $event)
 	{
-		return $this->em->getRepository('WsEventsBundle:Invitation')->findUserInvitation($user,$event);
+		return $this->em->getRepository('WsEventsBundle:Invitation')->findOneByUserAndEvent($user,$event);
+	}
+
+	public function getEventInvitations(Event $event)
+	{
+		return $this->em->getRepository('WsEventsBundle:Invitation')->findByEvent($event);
 	}
 
 }

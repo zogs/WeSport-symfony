@@ -2124,7 +2124,7 @@ h1.title-sheet {
 }
 
 .section-invitations {
-	h2 { background-color: $deepred;}
+	h2 { background-color: #cccbcb;}
 	div.section-content {
 
 		table {
@@ -2134,7 +2134,7 @@ h1.title-sheet {
 		}
 
 		img.user-avatar {
-			width: 30px; height: 30px;
+			width: 30px; height: 30px; border-radius:50px;
 		}
 	}
 }

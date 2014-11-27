@@ -44,7 +44,7 @@ class Invited
     /**
     * @ORM\Column(name="nb_sended", type="integer")
     */
-    private $nb_sended = 1;
+    private $nb_sended = 0;
 
     /**
      * @ORM\Column(name="response", type="boolean", nullable=true)

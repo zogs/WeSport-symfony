@@ -11,13 +11,29 @@
 			</h1>
 		</div>
 
+		<div>
+		{{ form_start(form) }}
+
+		{{form_row(form.emails) }}
+		{{form_row(form.content) }}
+
+
+		{% if form.event is defined %}
+		{{ form_row(form.event) }}
+		{% endif %}
+
+		<button class="btn-ws btn-small">Envoyer les invitations</button>
+		<a href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}" class="btn btn-small">Retourner à l'activité</a>
+		{{ form_end(form) }}
+		</div>
+
 		{% if invitations|length > 0 %}
 
 		<div class="section section-invitations">
-			<h2>Récapitulatif des invitations</h2>
+			<h2>Récapitulatif</h2>
 
 			<div class="section-content">
-				<table class="table table-stripped">
+				<table class="table table-striped">
 
 					{% for invitation in invitations %}
 						<thead>
@@ -33,26 +49,35 @@
 								<td></td>
 								<td>
 									{% if invited.user == null %}
-										<img src="{{ asset('bundles/myuser/images/avatars/defaults/default'~ random(10) ~'.gif') }}" class="user-avatar" alt=""> {{ invited.email }}
+										<img src="{{ asset('bundles/myuser/images/avatars/defaults/default10.gif') }}" class="user-avatar" alt=""> {{ invited.email }}
 									{% else %}
 										<a href="{{ invited.user|link2user }}"><img src="{{ asset(invited.user.avatar.getWebPath) }}" class="user-avatar" alt=""> <strong>{{ invited.user.username|capitalize }}</strong></a>
 									{% endif %}
 								</td>
 
 								
-								<td>envoyé le {{ invited.date|date('d-m-Y') }}</td>
+								<td>
+									{% if invited.dateResponse is sameas(null) %}
+										<small>envoyé le {{ invited.date|date('d/m/Y h:i') }}</small>										
+									{% else %}
+										<small>répondu le {{ invited.dateResponse|date('d/m/Y h:i') }}</small>
+									{% endif %}
+								</td>
 
-								{% if invited.response is sameas(true) %}
-								<td><span class="label label-success">Oui</span></td>
-								{% endif %}
+								<td>
+									{% if invited.response is sameas(true) %}
+										<span class="label label-success"> Oui </span>
+									{% endif %}
 
-								{% if invited.response is sameas(false) %}
-								<td><span class="label label-error">Non</span></td>
-								{% endif %}
+									{% if invited.response is sameas(false) %}
+										<span class="label label-important"> Non </span>
+									{% endif %}
 
-								{% if invited.response is sameas(null) %}
-								<td><a href="{{ path('ws_invit_resend',{invited:invited.id}) }}">Renvoyer l'invit.</a></td>
-								{% endif %}
+									{% if invited.response is sameas(null) %}
+										<span class="label"> En attente </span> - <a class="btn btn-mini" href="{{ path('ws_invit_resend',{invited:invited.id}) }}" title="Renvoyer l'invitation">Renvoyer</a>
+									{% endif %}
+								</td>
+
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -63,21 +88,7 @@
 
 		{% endif %}
 
-		<div class="col_large">
-		{{ form_start(form) }}
 
-		{{form_row(form.emails) }}
-		{{form_row(form.content) }}
-
-
-		{% if form.event is defined %}
-		{{ form_row(form.event) }}
-		{% endif %}
-
-		<button class="btn btn-large btn-primary">Envoyer les invitations</button>
-		<a href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}" class="btn btn-small">Retourner à l'activité</a>
-		{{ form_end(form) }}
-		</div>
 
 	<div class="clearfix"></div>
 	<div class="fresque"></div>  

@@ -30,6 +30,7 @@ security:
         - { path: ^/\w\w/event/cancel/me/, role: ROLE_USER }
         - { path: ^/\w\w/event/create, role: ROLE_USER }
         - { path: ^/\w\w/event/invite/, role: ROLE_USER }
+        - { path: ^/\w\w/event/invitation, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w\w/event/alert/, role: ROLE_USER }
         - { path: ^/\w\w/event/alert/send, role: ROLE_ADMIN }
         - { path: ^/\w\w/admin/, role: ROLE_ADMIN }

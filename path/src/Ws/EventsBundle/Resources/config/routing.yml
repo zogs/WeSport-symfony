@@ -96,17 +96,17 @@ ws_invit_blacklist_remove:
     pattern: /invitation/removeblacklist/{emails}
     defaults: { _controller: WsEventsBundle:Invitation:removeBlacklist, emails: null}
 ws_invited_confirm:
-    pattern: /invite/confirm/{invited}
+    pattern: /invitation/confirm/{invited}
     defaults: { _controller: WsEventsBundle:Invitation:confirmParticipation }
     requirements:
         invited: \d+
 ws_invited_deny:
-    pattern: /invite/deny/{invited}
+    pattern: /invitation/deny/{invited}
     defaults: { _controller: WsEventsBundle:Invitation:denyParticipation }
     requirements:
         invited: \d+
 ws_inviter_emails_ajax:
-    pattern: /invitation/getinvitedemails
+    pattern: /invited/getinvitedemails
     defaults: { _controller: WsEventsBundle:Invitation:getInviterEmails }
     requirements:
         _method: GET

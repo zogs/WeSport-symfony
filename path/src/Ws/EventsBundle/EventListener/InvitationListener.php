@@ -58,7 +58,7 @@ class InvitationListener implements EventSubscriberInterface
 				}
 			}
 			//add flash message
-			$this->flashbag->add(count($total).' invitations ont été envoyées !');
+			$this->flashbag->add(count($total).' invitations ont été envoyées');
 			
 		}
 
@@ -74,7 +74,7 @@ class InvitationListener implements EventSubscriberInterface
 			//send the invitations
 			$emails = $this->mailer->sendInvitationMessages($invitation);					
 			//add flash message
-			$this->flashbag->add(count($emails).' invitations ont été envoyées !');
+			$this->flashbag->add(count($emails).' invitations ont été envoyées');
 		}
 
 	}
