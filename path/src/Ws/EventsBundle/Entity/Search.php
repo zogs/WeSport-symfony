@@ -274,6 +274,15 @@ class Search
         return $this->sports;
     }
 
+    public function getSportsArrayIds()
+    {
+        $a = array();
+        foreach ($this->sports as $k => $sport) {
+            $a[] = $sport->getId();
+        }
+        return $a;
+    }
+
     public function addSports($sport)
     {
         $this->sports[] = $sport;

@@ -58,10 +58,11 @@ class CalendarSearchType extends AbstractType
                     'property'=>'name',
                     'expanded'=>false,
                     'multiple' => true,
-                    'mapped'=>false,
+                    'mapped' => true,
                     'group_by' => 'category',
                     'required' => false,
-                    'attr'=>array('class'=>'iconSportSelect','multiple'=>true,'data-placeholder'=>'Choississez un ou plusieurs sport'))
+                    'attr'=>array('class'=>'iconSportSelect','multiple'=>true,'data-placeholder'=>'Choississez un ou plusieurs sports')
+                    )
             )       
             ->add('level','choice',array(
                 'multiple' => true,
@@ -118,9 +119,9 @@ class CalendarSearchType extends AbstractType
         $form = $event->getForm();
         $search = $event->getData(); 
 
-        //set key values as array
+        //for Type field, set key values as array
         if(is_array($search->getType()))  $search->setType(array_keys($search->getType()));
-
+        
     }
 
     public function onPreSubmit(FormEvent $event)

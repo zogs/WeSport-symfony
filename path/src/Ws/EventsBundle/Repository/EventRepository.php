@@ -136,7 +136,7 @@ class EventRepository extends EntityRepository
 	{
 		if($this->search->hasSports() === false) return $qb;		
 
-		$qb->setParameter(':sports',$this->search->getSports()); // ex :sports = array(67,68,98);
+		$qb->setParameter(':sports',$this->search->getSportsArrayIds()); // ex :sports = array(67,68,98);
 		return $qb->andWhere('e.sport IN (:sports)');		
 	}
 

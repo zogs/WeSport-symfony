@@ -51,11 +51,16 @@ $(document).ready(function() {
 		})
 		;
 	})
+/*
+	if($("select.iconSportSelect").length != 0) {
+	    	$("select.iconSportSelect").select2({ 
+	    		formatResult: addSportIcon, 
+	    		formatSelection: addSportIcon,	    		
+	    	});	
 
-	if($("select.iconSportSelect").length != 0){
-	    	$("select.iconSportSelect").select2({ formatResult: addSportIcon, formatSelection: addSportIcon});	    		    	
+	    	$("select.iconSportSelect").select2().select2('val',[9,11]);	    	
 	}
-
+*/
 });
 
 

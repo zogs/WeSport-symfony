@@ -33,7 +33,6 @@ class AlertController extends Controller
 		$manager->prepareParams();
 		$search = $manager->getSearch();
 
-
 		//Create empty alert
 		$alert = new Alert();
 		//pre-filled with Search from URL

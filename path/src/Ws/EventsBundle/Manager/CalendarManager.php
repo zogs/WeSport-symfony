@@ -131,6 +131,7 @@ class CalendarManager extends AbstractManager
 		foreach ($params as $key => $value) {
 			if( NULL === $params[$key]) unset($params[$key]);
 		}
+
 		$this->addParameters($params);
 	}
 
@@ -294,6 +295,7 @@ class CalendarManager extends AbstractManager
 
 		$this->search->setDate($day);
 		$this->params['date'] = $day;
+
 		return;
 	}
 
@@ -340,11 +342,11 @@ class CalendarManager extends AbstractManager
 		if(isset($city) && $city->exist()){
 			$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());	
 			$this->search->setLocation($location);
-			if(!empty($area)) $this->prepareAreaParams($area);
+			if(!empty($area)) $this->params['area'] = $area;
 		}
 		elseif(isset($findme)){
 
-			if($this->isFlashbagActive()) $this->flashbag->add("Cette ville n'a pas été trouvé... Et vous sûr que ça s'écrit comme ça ?",'warning');
+			if($this->isFlashbagActive()) $this->flashbag->add("Cette ville n'a pas été trouvé... Peut être une erreur d'orthographe ?",'warning');
 		}				
 		return;
 	}
@@ -353,16 +355,15 @@ class CalendarManager extends AbstractManager
     {    	
     	//return null if no city or no location
     	if($this->search->hasLocation() == false || ($this->search->hasLocation() === true && $this->search->getLocation()->hasCity() === false)) return null;
-		//remove "+" and "km"
-		if(!empty($this->params['area'])) $area = (int) trim(str_replace('km','',str_replace('+','',$this->params['area'])));
-		//set to null if not numeric
-		if(!is_numeric($area) || $area == 0) return null;
-		//set a maximum
-		if($area > 200) $area = 200;
+	//remove "+" and "km"
+	if(!empty($this->params['area'])) $area = (int) trim(str_replace('km','',str_replace('+','',$this->params['area'])));
+	//set to null if not numeric
+	if(!is_numeric($area) || $area == 0) return null;
+	//set a maximum
+	if($area > 200) $area = 200;
 
-
-		$this->search->setArea($area);
-		return;
+	$this->search->setArea($area);
+	return;
     }
 
 
@@ -396,25 +397,25 @@ class CalendarManager extends AbstractManager
 
     	//find sports in database   
     	$repo = $this->em->getRepository('WsSportsBundle:Sport');
-       	foreach ($sports as $k => $slug) {
+       	foreach ($sports as $i => $key) {
     		
-    		if(is_numeric($slug))
-    			$sport = $repo->findRawById($slug);
-    		elseif(is_string($slug))
-    			$sport = $repo->findRawBySlug($slug);  
-    		elseif(is_array($slug))
-    			$sport = $slug;
+    		if(is_numeric($key))
+    			$sport = $repo->findOneById($key);
+    		elseif(is_string($key))
+    			$sport = $repo->findOneBySlug($key);  
+    		elseif(is_array($key))
+    			$sport = $key;
 
-    		if(empty($sport) && $this->isFlashbagActive() ) $this->flashbag->add('Pardon mais ce sport ne nous dit rien... '.$slug.'??','error');
+    		if(empty($sport) && $this->isFlashbagActive() ) $this->flashbag->add('Ce sport est inconnu au bataillon... '.$key.'??','error');
 
-    		$sports[$k] = $sport;  		      		
+    		$sports[$i] = $sport;  		      		
     	}    
 
     	//avoid doublon
     	$ids = array();
     	foreach ($sports as $k => $sport) {
-			if(in_array($sport['id'], $ids)) unset($sports[$k]);
-			$ids[] = $sport['id'];
+			if(in_array($sport->getId(), $ids)) unset($sports[$k]);
+			$ids[] = $sport->getId();
     	}
 
     	$sports = array_values($sports); //reset keys value for futur use

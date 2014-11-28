@@ -149,7 +149,7 @@ class CalendarUrlGenerator {
 		if($this->search->hasSports()){			
 			$str = '';
 			foreach ($this->search->getSports() as $k => $sport) {
-				$str .= $sport['slug'].'-';
+				$str .= $sport->getSlug().'-';
 			}	
 			$str = trim($str,'-');
 			return $str;				
