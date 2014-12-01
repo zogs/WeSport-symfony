@@ -47,7 +47,7 @@ class AlertController extends Controller
 			if($alert->getSearch()->hasLocation()){
 
 				if($alert->getSearch()->hasSports()){
-
+					
 					if($this->get('ws_events.alert.manager')->saveAlert($alert)){
 						$this->get('flashbag')->add("Voila ! Vous allez recevoir plein d'annonces inchallah :)",'success');			
 					}

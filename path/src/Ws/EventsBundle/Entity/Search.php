@@ -57,9 +57,10 @@ class Search
     private $area = null;
 
     /**
-    * @ORM\Column(name="sports", type="text", nullable=true)
+    * @ORM\ManyToMany(targetEntity="Ws\SportsBundle\Entity\Sport", fetch="EAGER")
+    * @ORM\JoinTable(name="events_search_sports")
     */
-    private $sports = array();
+    private $sports = null;
 
     /**
     * @ORM\Column(name="nb_days", type="integer", nullable=true)
@@ -110,13 +111,17 @@ class Search
         'day_of_week' => array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'),
         );
 
+    public function __construct()
+    {
+        $this->sports = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
     public function onPrePersist()
     {
-        if(is_array($this->sports)) $this->sports = json_encode($this->sports, JSON_FORCE_OBJECT);
         if(is_array($this->type)) $this->type = json_encode($this->type, JSON_FORCE_OBJECT);
         if(is_array($this->time)) $this->time = json_encode($this->time, JSON_FORCE_OBJECT);
         if(is_array($this->level)) $this->level = json_encode($this->level, JSON_FORCE_OBJECT);
@@ -128,8 +133,7 @@ class Search
      * @ORM\PostLoad
      */
     public function onPostLoad()
-    {
-        $this->sports = json_decode($this->sports, JSON_FORCE_OBJECT);
+    {;
         $this->type = json_decode($this->type, JSON_FORCE_OBJECT);
         $this->time = json_decode($this->time, JSON_FORCE_OBJECT);
         $this->level = json_decode($this->level, JSON_FORCE_OBJECT);
@@ -283,20 +287,30 @@ class Search
         return $a;
     }
 
-    public function addSports($sport)
+    public function addSport($sport)
     {
-        $this->sports[] = $sport;
+        $this->sports->add($sport);
     }
 
     public function hasSports()
     {
-        if(!empty($this->sports)) return true;
-        return false;
+        return !$this->sports->isEmpty();
     }    
 
     public function setSports($sports)
     {
-        $this->sports = $sports;
+        if(is_array($sports)){
+            foreach ($sports as $i => $sport) {
+                $this->sports->add($sport);
+            }
+        }
+        elseif(is_a($sports,'\Doctrine\Common\Collections\ArrayCollection')){
+            $this->sports = $sports;            
+        }
+        else{
+            throw new \Exception("Sports must be an array or a Doctrine Collection", 1);
+            
+        }
     }
 
     public function getNbDays()

@@ -67,6 +67,7 @@ class EventController extends Controller
 
 			return $this->render('WsEventsBundle:Event:edit.html.twig', array(
 				'form' => $form->createView(),
+				'event' => $event
 				));
 		}             
 

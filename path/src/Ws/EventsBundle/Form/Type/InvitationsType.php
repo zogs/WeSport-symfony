@@ -78,6 +78,8 @@ class InvitationsType extends AbstractType
 		$form = $event->getForm();
 		$data = $event->getData(); 
 
+		if(empty($data['emails'])) return $form->setData(null);
+
 		//get the event concerned from the submitted data
 		if(!empty($data['event'])){ 
 			$event = $this->em->getRepository('WsEventsBundle:Event')->findOneById($data['event']);             

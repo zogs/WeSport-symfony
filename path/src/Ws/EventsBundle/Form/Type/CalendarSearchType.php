@@ -61,7 +61,7 @@ class CalendarSearchType extends AbstractType
                     'mapped' => true,
                     'group_by' => 'category',
                     'required' => false,
-                    'attr'=>array('class'=>'iconSportSelect','multiple'=>true,'data-placeholder'=>'Choississez un ou plusieurs sports')
+                    'attr'=>array('class'=>'sportSelection','multiple'=>true,'data-placeholder'=>'Choississez un ou plusieurs sports')
                     )
             )       
             ->add('level','choice',array(

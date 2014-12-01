@@ -683,9 +683,9 @@ div.mm-is-menu * {
 /* line 623, scss/style.scss */
 .ws-alert div.alert-progress {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
-  height: 100%;
+  height: 5px;
   width: 0%;
   background-color: rgba(0, 0, 0, 0.05);
   -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
