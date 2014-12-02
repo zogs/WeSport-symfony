@@ -22,53 +22,34 @@ class EventType extends AbstractType
 	{
 	$builder
 		->add('sport','entity',array(                                    
-			'class'=>'WsSportsBundle:Sport',
-			'label'=>'Sport',
+			'class'=>'WsSportsBundle:Sport',			
 			'property'=>'name',
-			'empty_value'=>'Sport',
+			'empty_value'=>'Activité ?',
 			'expanded'=>false,
-			'attr'=>array('class'=>'iconSportSelect','placeholder'=>"Sport"))
+			'attr'=>array('class'=>'__sportSelection'))
 		)
 		->add('level','choice',array(
 			'multiple'=> false,
 			'expanded' => false,
 			'required' => true,
 			'choices' => Event::$valuesAvailable['level'],
-			'attr' => array('placeholder' => "Niveau de jeu")
 			))
-		->add('title',null,array(
-			'label'=>'Titre',
-			'attr' => array('placeholder' => "Titre de l'activité")
+		->add('title',null,array(		
 			))
 		->add('spot', 'spot_type', array(
 			'required' => true,
 			))
-		->add('date', 'date', array(
-			'widget'=>'single_text',
-			'input'=>'datetime',
-			'required'=>false))
-
-		->add('serie', new SerieType(), array(
-			'label'=>'Jour de la semaine'
+		->add('date', 'text', array(
+			'required'=>false,
 			))
-
-		->add('time','time',array(
-			'widget'=>'choice',
-			'input'=>'datetime',
-			'model_timezone'=>'Europe/Paris',
-			'view_timezone'=>'Europe/Paris',
-			'with_seconds'=>false,
-			'hours'=>array(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0),
-			'minutes'=>array(0,10,20,30,40,50)
+		->add('serie', new SerieType(), array(			
 			))
-
+		->add('time','text',array(
+			))
 		->add('nbmin','integer',array(
-			'label'=>'Nombre minimum',
-			'attr' => array('placeholder' => "Nombre minimum"),
 			))
 		->add('description','textarea',array(
 			'required'=>false,
-			'attr' => array('placeholder' => "Description"),
 			))
 		//debug todo
 		->add('invitations','invitations_type',array(

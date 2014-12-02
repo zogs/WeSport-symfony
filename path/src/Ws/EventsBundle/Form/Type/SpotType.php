@@ -35,10 +35,10 @@ class SpotType extends AbstractType
                     )
                 ))
             ->add('spot_slug','text',array(
+                'label' => "Lieu ?",
                 'mapped' => false,
                 'required' => false,
                 'attr' => array(
-                    'placeholder' => 'Nom, rue, salle, ville ...',
                     'class' => 'autocomplete-spot',
                     'data-autocomplete-url' => $options['ajax_url'],
                         'data-template-empty' => $options['empty_html'],
@@ -48,21 +48,19 @@ class SpotType extends AbstractType
                     )
                 ))
             ->add('location', 'city_to_location_type', array(
+                'label' => "Entrer la ville",
                 'required' => false,
-                'mapped' => false,
-                'label' => "Ville",               
+                'mapped' => false,              
                 ))
             ->add('name','text',array(
+                'label' => "Entrer le nom de l'endroit",
                 'mapped' => false,
                 'required' => false,
-                'label' => "Nom de l'endroit",
-                'attr' => array('placeholder' => "Entrer le nom du lieu")
                 ))
             ->add('address','text',array(
+                'label' => "Entrer l'adresse exacte",
                 'mapped' => false,
                 'required' => false,
-                'label' => "Adresse exacte",
-                'attr' => array('placeholder' => "Entrer l'adresse exacte"),
                 ))
             ;
     		

@@ -20,104 +20,138 @@
                 <table class="form-fields">
                     <tr>
                         <td>
-                            {{ form_row(form.sport) }}
+                            {{ form_row(form.sport,{ 
+                                'attr': { 'placeholder':"Activité ?"},
+                                'icon':"ws-icon-heart2" }
+                             ) }}
                         </td>
                         <td class="cell-title">
-                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un titre ?</a>
+                            <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un titre ?</a>
                             <div class="hidden">
-                                {{ form_row(form.title)}}    
-                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                               
+                                {{ form_row(form.title,{ attr:{ placeholder:"Titre" }} ) }}    
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                               
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             {{ form_row(form.spot.spot_id) }}
-                            {{ form_row(form.spot.spot_slug, {attr:{style:"width:100%"}}) }}
+                            {{ form_row(form.spot.spot_slug, {
+                                'attr':{
+                                    'style':"width:100%",
+                                    'placeholder':"Lieu ?" 
+                                    },
+                                'icon': "ws-icon-location2"
+                                }
+                             ) }}
                         </td>
                         <td>
-                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un lieu ?</a>
+                            <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Créer un nouveau lieu ?</a>
                             <div class="hidden">
                                 {{ form_widget(form.spot.location.city_id) }}
-                                {{ form_row(form.spot.location.city_name) }}
-                                {{ form_row(form.spot.name )}}
-                                {{ form_row(form.spot.address) }}       
-                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                 
+                                {{ form_row(form.spot.location.city_name,{ attr:{ placeholder:"Entrer une ville" }} ) }}
+                                {{ form_row(form.spot.name,{ attr:{ placeholder:"Entrer le nom de l'endroit" }} ) }}
+                                {{ form_row(form.spot.address,{ attr:{ placeholder:"Entrer l'adresse exacte" }} ) }}       
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                 
                             </div>
                            
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            {{ form_row(form.date) }}
+                            {{ form_row(form.date,{ 
+                                'attr':{ 
+                                    'placeholder':"Date ?" 
+                                    },
+                                'icon':"ws-icon-calendar2"}
+                            ) }}
                         </td>
                         <td>
-                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Date récurrente ?</a>
+                            <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Date récurrente ?</a>
                             <div class="hidden">
-                                {{ form_row(form.serie.startdate) }}
-                                {{ form_row(form.serie.enddate) }}
+                                {{ form_row(form.serie.startdate,{ attr:{ placeholder:"Date de début ?" }} ) }}
+                                {{ form_row(form.serie.enddate,{ attr:{ placeholder:"Date de fin ?" }} ) }}
                                 {{ form_row(form.serie) }}    
-                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                            
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                            
                             </div>
                             
                         </td>
                     </tr>
                     <tr>
                         <td>
-                                {{ form_row(form.time) }}                                                 
+                                {{ form_row(form.time,{ 
+                                    'attr':{ 'placeholder':"Heure ?" },
+                                    'icon':"ws-icon-alarm" 
+                                    })
+                                }}                                                 
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
-                             <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter une description ?</a>
+                             <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter une description ?</a>
                             <div class="hidden">
-                                {{ form_row(form.description) }}   
-                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                        
+                                {{ form_row(form.description,{ 
+                                    'attr':{ 'placeholder':"Description ?" },
+                                    'icon': 'ws-icon-book'
+                                    })
+                                }}   
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                        
                             </div>
                             
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
-                             <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un nombre minimum ?</a>
+                             <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un nombre minimum ?</a>
                             <div class="hidden">
-                                {{ form_row(form.nbmin) }}    
-                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                
+                                {{ form_row(form.nbmin,{ 
+                                    'attr':{ 'placeholder':"Nombre minimum ?" },
+                                    'icon': 'ws-icon-users'
+                                    })
+                                }}    
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                
                             </div>
                             
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un niveau de jeu ?</a>
+                            <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un niveau de jeu ?</a>
                             <div class="hidden">
-                                {{ form_row(form.level) }}  
-                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>            
+                                {{ form_row(form.level,{ 
+                                    'attr':{ 'placeholder':"Niveau de jeu ?" },
+                                    'icon': 'ws-icon-star'
+                                    })
+                                }}  
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>            
                             </div>                            
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                           <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Invitez des amis ?</a>
+                            <div class="hidden">
+                                {{ form_row(form.invitations.emails,{ 
+                                    'attr':{ 'placeholder':"Emails d'amis ?" },
+                                    'icon': 'ws-icon-envelop' 
+                                    })
+                                }}
+                                {{ form_row(form.invitations.content,{ 'attr':{ 'placeholder':"Ecrire un pti mot ?" }} ) }}
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>            
+                            </div>   
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <button type="submit" class="btn-ws btn-small">Sauvegarder</button>
                         </td>
+                        <td></td>
                     </tr>
-                    <tr>
-                        <td>
-                            {{ form_row(form.invitations.emails) }}
-                        </td>
-                        <td>
-                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un petit mot ?</a>
-                            <div class="hidden">
-                                {{ form_row(form.invitations.content) }}
-                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>            
-                            </div>       
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button type="submit" class="btn-ws btn-small">Sauvegarder et Envoyer les invitations</button>
-                        </td>
-                    </tr>
+                                
                 </table>    
                 
             {{ form_end(form) }}

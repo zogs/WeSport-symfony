@@ -100,7 +100,7 @@ class Event
      *                  value = "2"
      * )
      */
-    private $nbmin = 2;
+    private $nbmin = null;
 
     /**
      * @ORM\Column(name="nbmax", type="smallint", nullable=true)
@@ -145,7 +145,7 @@ class Event
     public $changes_made;
 
     static public $valuesAvailable = array(
-        'level' => array('all','beginner','average','confirmed','expert'),
+        'level' => array('','beginner','average','confirmed','expert'),
         'type' => array('person','asso','pro'),
         );
 

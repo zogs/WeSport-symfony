@@ -1,6 +1,10 @@
 {% block form_row %}
-<div class="field_row field_{{ form.vars.name }}">	
-    {{ form_label(form) }}
+<div class="field_row field_{{ name }}">
+	
+        {% if icon is defined %}
+        	   <i class="icon {{ icon }}"></i>
+        {% endif %}    
+
     {{ form_widget(form) }}
     {{ form_errors(form) }}
 </div>
