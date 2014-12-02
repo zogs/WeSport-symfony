@@ -11,15 +11,9 @@ class SerieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startdate','date',array(
-                'widget'=>'single_text',
-                'input'=>'datetime',
-                'label'=>'Date de début',
+            ->add('startdate','text',array(
                 'required'=>false))
-            ->add('enddate','date',array(                
-                'widget'=>'single_text',
-                'input'=>'datetime',
-                'label'=>'Date de fin',
+            ->add('enddate','text',array(                
                 'required'=>false))    		
             ->add('monday','checkbox',array(
                     'label'=>'Lun',
