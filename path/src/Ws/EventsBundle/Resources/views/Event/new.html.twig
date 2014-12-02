@@ -1,8 +1,10 @@
 {% extends '::layout_centered.html.twig' %}
+{% form_theme form 'WsEventsBundle:Form:fields_creation.html.twig' %}
+
 
 {% block page_content %}
 
-    <div class="createEvent">
+    <div class="create-event">
         <div class="fresque"></div>
         <div class="white-sheet">           
             <div class="head-sheet">        
@@ -11,44 +13,118 @@
                 </h1>
             </div>
 
-        <div class="col_large">
+        <div class="form">
             {{ form_start(form) }}
                 {{ form_errors(form) }}
 
-                {{ form_row(form.sport) }}
-                {{ form_row(form.level) }}
-                {{ form_row(form.title) }}
-                {{ form_row(form.spot.spot_id) }}
-                {{ form_row(form.spot.spot_slug) }}
-                {{ form_widget(form.spot.location.city_id) }}
-                {{ form_row(form.spot.location.city_name) }}
-                {{ form_row(form.spot.name )}}
-                {{ form_row(form.spot.address) }}
-                {{ form_row(form.date) }}
-                {{ form_row(form.serie.startdate) }}
-                {{ form_row(form.serie.enddate) }}
-                {{ form_row(form.serie) }}
-                {{ form_row(form.time) }}
-                {{ form_row(form.nbmin) }}
-                {{ form_row(form.description) }}
-                {{ form_row(form.phone) }}
-
-                <button type="submit" class="btn btn-large btn-primary fright">Save</button>
-                <div class="clearfix">
-                    <h5>Inviter des amis</h5>
-                    {{ form_row(form.invitations) }}
-                </div>
-                <button type="submit" class="btn btn-large btn-primary fright">Send and Save</button>
+                <table class="form-fields">
+                    <tr>
+                        <td>
+                            {{ form_row(form.sport) }}
+                        </td>
+                        <td class="cell-title">
+                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un titre ?</a>
+                            <div class="hidden">
+                                {{ form_row(form.title)}}    
+                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                               
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ form_row(form.spot.spot_id) }}
+                            {{ form_row(form.spot.spot_slug, {attr:{style:"width:100%"}}) }}
+                        </td>
+                        <td>
+                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un lieu ?</a>
+                            <div class="hidden">
+                                {{ form_widget(form.spot.location.city_id) }}
+                                {{ form_row(form.spot.location.city_name) }}
+                                {{ form_row(form.spot.name )}}
+                                {{ form_row(form.spot.address) }}       
+                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                 
+                            </div>
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ form_row(form.date) }}
+                        </td>
+                        <td>
+                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Date récurrente ?</a>
+                            <div class="hidden">
+                                {{ form_row(form.serie.startdate) }}
+                                {{ form_row(form.serie.enddate) }}
+                                {{ form_row(form.serie) }}    
+                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                            
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                                {{ form_row(form.time) }}                                                 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                             <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter une description ?</a>
+                            <div class="hidden">
+                                {{ form_row(form.description) }}   
+                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                        
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                             <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un nombre minimum ?</a>
+                            <div class="hidden">
+                                {{ form_row(form.nbmin) }}    
+                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>                
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un niveau de jeu ?</a>
+                            <div class="hidden">
+                                {{ form_row(form.level) }}  
+                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>            
+                            </div>                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="submit" class="btn-ws btn-small">Sauvegarder</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ form_row(form.invitations.emails) }}
+                        </td>
+                        <td>
+                            <a href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un petit mot ?</a>
+                            <div class="hidden">
+                                {{ form_row(form.invitations.content) }}
+                                <a href="javascript:return false;" onclick="$(this).parent().hide().prev().show()">x</a>            
+                            </div>       
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="submit" class="btn-ws btn-small">Sauvegarder et Envoyer les invitations</button>
+                        </td>
+                    </tr>
+                </table>    
                 
             {{ form_end(form) }}
                    
         </div>
 
         <div class="col_small">
-            <div class="block form-submit">
-               
-            </div>
-             
 
              <div class="block block-yellow ">
                 <h3>Comment ça marche?</h3>

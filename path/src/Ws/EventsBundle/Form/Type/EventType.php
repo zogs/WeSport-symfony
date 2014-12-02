@@ -25,18 +25,20 @@ class EventType extends AbstractType
 			'class'=>'WsSportsBundle:Sport',
 			'label'=>'Sport',
 			'property'=>'name',
-			'empty_value'=>'Choississez un sport',
+			'empty_value'=>'Sport',
 			'expanded'=>false,
-			'attr'=>array('class'=>'iconSportSelect'))
+			'attr'=>array('class'=>'iconSportSelect','placeholder'=>"Sport"))
 		)
 		->add('level','choice',array(
 			'multiple'=> false,
 			'expanded' => false,
 			'required' => true,
 			'choices' => Event::$valuesAvailable['level'],
+			'attr' => array('placeholder' => "Niveau de jeu")
 			))
 		->add('title',null,array(
-			'label'=>'Titre'
+			'label'=>'Titre',
+			'attr' => array('placeholder' => "Titre de l'activité")
 			))
 		->add('spot', 'spot_type', array(
 			'required' => true,
@@ -61,13 +63,12 @@ class EventType extends AbstractType
 			))
 
 		->add('nbmin','integer',array(
-			'label'=>'Nombre minimum'
+			'label'=>'Nombre minimum',
+			'attr' => array('placeholder' => "Nombre minimum"),
 			))
 		->add('description','textarea',array(
-			'required'=>false
-			))
-		->add('phone','text',array(
-			'label'=>'Téléphone','required'=>false
+			'required'=>false,
+			'attr' => array('placeholder' => "Description"),
 			))
 		//debug todo
 		->add('invitations','invitations_type',array(
