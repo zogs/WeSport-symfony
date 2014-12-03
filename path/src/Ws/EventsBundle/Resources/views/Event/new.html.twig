@@ -25,11 +25,12 @@
                                 'icon':"ws-icon-heart2" }
                              ) }}
                         </td>
-                        <td class="cell-title">
+                        <td class="cell-title {% if form.title.vars.errors|length %}cell-error{% endif %} {% if form.title.vars.value %}cell-filled{% endif %}">
+                            
                             <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un titre ?</a>
                             <div class="hidden">
                                 {{ form_row(form.title,{ attr:{ placeholder:"Titre" }} ) }}    
-                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                               
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                               
                             </div>
                         </td>
                     </tr>
@@ -52,7 +53,7 @@
                                 {{ form_row(form.spot.location.city_name,{ attr:{ placeholder:"Entrer une ville" }} ) }}
                                 {{ form_row(form.spot.name,{ attr:{ placeholder:"Entrer le nom de l'endroit" }} ) }}
                                 {{ form_row(form.spot.address,{ attr:{ placeholder:"Entrer l'adresse exacte" }} ) }}       
-                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                 
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                 
                             </div>
                            
                         </td>
@@ -71,8 +72,8 @@
                             <div class="hidden">
                                 {{ form_row(form.serie.startdate,{ attr:{ placeholder:"Date de début ?" }} ) }}
                                 {{ form_row(form.serie.enddate,{ attr:{ placeholder:"Date de fin ?" }} ) }}
-                                {{ form_row(form.serie) }}    
-                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                            
+                                {{ form_row(form.serie,{ 'label': "Jour de la semaine ?"}) }}    
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                            
                             </div>
                             
                         </td>
@@ -96,7 +97,7 @@
                                     'icon': 'ws-icon-book'
                                     })
                                 }}   
-                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                        
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                        
                             </div>
                             
                         </td>
@@ -111,7 +112,7 @@
                                     'icon': 'ws-icon-users'
                                     })
                                 }}    
-                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>                
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                
                             </div>
                             
                         </td>
@@ -122,11 +123,11 @@
                             <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un niveau de jeu ?</a>
                             <div class="hidden">
                                 {{ form_row(form.level,{ 
-                                    'attr':{ 'placeholder':"Niveau de jeu ?" },
+                                    'empty_value': 'Niveau de jeu ?',
                                     'icon': 'ws-icon-star'
                                     })
                                 }}  
-                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>            
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
                             </div>                            
                         </td>
                         <td></td>
@@ -141,7 +142,7 @@
                                     })
                                 }}
                                 {{ form_row(form.invitations.content,{ 'attr':{ 'placeholder':"Ecrire un pti mot ?" }} ) }}
-                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-close"></span></a>            
+                                <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
                             </div>   
                         </td>
                     </tr>

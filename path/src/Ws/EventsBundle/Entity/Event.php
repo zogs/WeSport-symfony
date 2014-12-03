@@ -9,10 +9,11 @@ use Symfony\Component\Validator\ExecutionContext;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Category
+ * Event
  *
  * @ORM\Table(name="events_event")
  * @ORM\Entity(repositoryClass="Ws\EventsBundle\Repository\EventRepository")
+* @ORM\HasLifecycleCallbacks()
  */
 class Event 
 {
@@ -145,7 +146,7 @@ class Event
     public $changes_made;
 
     static public $valuesAvailable = array(
-        'level' => array('','beginner','average','confirmed','expert'),
+        'level' => array('all','beginner','average','confirmed','expert'),
         'type' => array('person','asso','pro'),
         );
 
@@ -165,6 +166,17 @@ class Event
         return false;
     }
     
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+
+        if($this->nbmin == null) $this->setNbmin(2);
+
+    }
+
+
     /**
      * Get Timing
      */

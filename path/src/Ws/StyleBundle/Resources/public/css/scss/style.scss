@@ -1701,11 +1701,23 @@ h1.title-sheet {
 			td { text-align:left; }
 			td:nth-child(1) { width:50%; padding:10px 0 10px 10%; vertical-align: top;}
 			td:nth-child(2) { width:50%; padding:10px 10% 10px 10px; vertical-align: middle;}
+
+			td.cell-error,td.cell-filled {
+				a.open-field { display:none; }
+				div.hidden { display:block; }
+			}
 		}
 
 		.field_row {
 			position:relative;			
 			
+			label { 
+				display:none;
+				font-weight: bold;
+				font-style: italic;
+				color: $deepgrey;
+				@include rem(16);
+			}
 			input,select,textarea {
 				width: 100%;
 				height:50px;
@@ -1729,26 +1741,41 @@ h1.title-sheet {
 					@include rem(16);
 				}
 			}
-
-			
-
+		
 			&.field_time {
 				select { width: 33%; }
 			}
-			&.field_serie {				
-				input[type=checkbox] { width:auto; margin:0; }
+			&.field_serie {	
+				label { display:inline; @include rem(14); }			
+				input[type=checkbox] { width:auto; margin:0; margin-right:10px; }
 				.field_row { display:inline; }
+			}
+
+			&.field_error {
+				input,select,textarea {
+					background-color: rgba(191, 78, 72, 0.21);
+					@include diagonal-stripes(-45deg,rgba(0, 0, 0, 0.02), 100);	
+
+					&:focus {
+						background-color:#FFF;
+					}		
+				}
+				ul {
+					list-style: none;
+					color:$darkred;
+					margin-left:5px;
+				}
 			}
 
 			.twitter-typeahead{ width:100%; }
 
 			.icon {
 				position:absolute;
-				left:-40px;
+				left:-35px;
 				@include rem(30);
 				color:$deepgrey;
-				top:50%;
-				margin-top:-18px;
+				top:12px;
+				@include opacity(0.8);
 			}
 		}
 
@@ -1756,16 +1783,20 @@ h1.title-sheet {
 		a.open-field {
 			font-weight: bold;
 			font-style: italic;
-			color: $deepgrey;
+			color: $backblue;
 			@include rem(14);
 		}
 		a.close-field { 
 			position: absolute;
-			top:10px;
-			right:-20px;
+			top:5px;
+			right:-25px;
 			span {
 				color:$deepgrey;
-				@include rem(14);
+				@include rem(18);
+				@include opacity(0.3);
+			}
+			&:hover span {
+				@include opacity(0.9);
 			}
 		}
 

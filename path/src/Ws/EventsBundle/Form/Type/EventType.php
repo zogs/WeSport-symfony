@@ -12,6 +12,8 @@ use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Form\Type\SerieType;
 use Ws\EventsBundle\Form\Type\InvitationType;
 use My\WorldBundle\Form\Type\CityToLocationType;
+use My\UtilsBundle\Form\DataTransformer\DateToDatetimeTransformer;
+use My\UtilsBundle\Form\DataTransformer\TimeToDatetimeTransformer;
 
 class EventType extends AbstractType
 {
@@ -28,28 +30,36 @@ class EventType extends AbstractType
 			'expanded'=>false,
 			'attr'=>array('class'=>'__sportSelection'))
 		)
-		->add('level','choice',array(
-			'multiple'=> false,
-			'expanded' => false,
-			'required' => true,
-			'choices' => Event::$valuesAvailable['level'],
-			))
-		->add('title',null,array(		
+		->add('title',null,array(	
+			'required' => false,	
 			))
 		->add('spot', 'spot_type', array(
 			'required' => true,
 			))
-		->add('date', 'text', array(
-			'required'=>false,
-			))
+		->add(
+			$builder->create('date', 'text', array(
+				'required'=>false,
+				))
+			->addModelTransformer(new DateToDatetimeTransformer('d/m/Y'))
+		)
 		->add('serie', new SerieType(), array(			
 			))
-		->add('time','text',array(
+		->add(
+			$builder->create('time','text',array(
 			))
-		->add('nbmin','integer',array(
-			))
+			->addModelTransformer(new TimeToDatetimeTransformer('h:i'))
+		)
 		->add('description','textarea',array(
 			'required'=>false,
+			))
+		->add('nbmin','integer',array(
+			'required' => false,
+			))
+		->add('level','choice',array(
+			'multiple'=> false,
+			'expanded' => false,
+			'required' => false,
+			'choices' => Event::$valuesAvailable['level'],
 			))
 		//debug todo
 		->add('invitations','invitations_type',array(
@@ -58,22 +68,22 @@ class EventType extends AbstractType
 	;
 
 
-		$builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSubmit'));
+		$builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 		$builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
 	}
 
-	public function onPreSubmit(FormEvent $event)
+	public function onPreSetData(FormEvent $event)
 	{
 		$form = $event->getForm();
 		$data = $event->getData();
-		$this->pre_event = clone($data);
+		$this->pre_event = clone($data);		
+		
 	}
 
 	public function onPostSubmit(FormEvent $event)
 	{
 		$form = $event->getForm();
 		$this->post_event = $event->getData();
-
 
 		//Detect eventualy modification
 		//using php Reflector class

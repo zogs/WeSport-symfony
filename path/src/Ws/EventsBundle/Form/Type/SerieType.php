@@ -4,17 +4,23 @@ namespace Ws\EventsBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
+use My\UtilsBundle\Form\DataTransformer\DateToDatetimeTransformer;
 
 class SerieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startdate','text',array(
-                'required'=>false))
-            ->add('enddate','text',array(                
-                'required'=>false))    		
+            ->add(
+                    $builder->create('startdate','text',array(
+                        'required'=>false))
+                    ->addModelTransformer(new DateToDatetimeTransformer('d/m/Y'))
+            )
+            ->add(
+                    $builder->create('enddate','text',array(                
+                        'required'=>false))    
+                    ->addModelTransformer(new DateToDatetimeTransformer('d/m/Y'))
+            )		
             ->add('monday','checkbox',array(
                     'label'=>'Lun',
                     'required'=>false))
