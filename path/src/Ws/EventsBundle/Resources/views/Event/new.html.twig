@@ -40,7 +40,10 @@
                             {{ form_row(form.spot.spot_slug, {
                                 'attr':{
                                     'style':"width:100%",
-                                    'placeholder':"Lieu ?" 
+                                    'placeholder':"Lieu ?",
+                                    'data-template-header':'<div class="info info-header">Veuillez choisir un lieu ci-dessous :</div>',
+                                    'data-template-footer':'<div class="info info-footer">ou vous pouvez créer un nouveau lieu !</div>',
+                                    'data-template-empty':'<div class="info info-empty">Pas de résultats ... Merci de créer un nouveau lieu via le formulaire d\'à côté !</div>'
                                     },
                                 'icon': "ws-icon-location2"
                                 }
@@ -62,7 +65,8 @@
                         <td>
                             {{ form_row(form.date,{ 
                                 'attr':{ 
-                                    'placeholder':"Date ?" 
+                                    'placeholder':"Date ?",
+                                    'class':"with_date_picker"
                                     },
                                 'icon':"ws-icon-calendar2"}
                             ) }}
@@ -70,8 +74,8 @@
                         <td>
                             <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Date récurrente ?</a>
                             <div class="hidden">
-                                {{ form_row(form.serie.startdate,{ attr:{ placeholder:"Date de début ?" }} ) }}
-                                {{ form_row(form.serie.enddate,{ attr:{ placeholder:"Date de fin ?" }} ) }}
+                                {{ form_row(form.serie.startdate,{ attr:{ placeholder:"Date de début ?", 'class':"with_date_picker" }} ) }}
+                                {{ form_row(form.serie.enddate,{ attr:{ placeholder:"Date de fin ?", 'class':"with_date_picker" }} ) }}
                                 {{ form_row(form.serie,{ 'label': "Jour de la semaine ?"}) }}    
                                 <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                            
                             </div>
@@ -81,7 +85,7 @@
                     <tr>
                         <td>
                                 {{ form_row(form.time,{ 
-                                    'attr':{ 'placeholder':"Heure ?" },
+                                    'attr':{ 'placeholder':"Heure ?", 'class':"with_time_picker" },
                                     'icon':"ws-icon-alarm" 
                                     })
                                 }}                                                 
@@ -133,15 +137,15 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                           <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Invitez des amis ?</a>
+                        <td colspan="2" class="cell-invitations">
+                           <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Inviter des amis ?</a>
                             <div class="hidden">
                                 {{ form_row(form.invitations.emails,{ 
-                                    'attr':{ 'placeholder':"Emails d'amis ?" },
+                                    'attr':{ 'placeholder':"Emails d'amis ?", 'style':"width:100% !important;" },
                                     'icon': 'ws-icon-envelop' 
                                     })
                                 }}
-                                {{ form_row(form.invitations.content,{ 'attr':{ 'placeholder':"Ecrire un pti mot ?" }} ) }}
+                                {{ form_row(form.invitations.content,{ 'attr':{ 'placeholder':"Ecrire un pti mot ?", 'rows':"5"}} ) }}
                                 <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
                             </div>   
                         </td>

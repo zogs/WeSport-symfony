@@ -583,7 +583,7 @@ div.mm-is-menu * {
 	.tt-sub {  @include rem(12);; font-style:italic;  color:#999;}
 	.tt-id{ display: none;}
 	.tt-suggestion.tt-cursor{  background-color:#0097cf;}
-	.tt-suggestion.tt-cursor p{  color:white;}
+	
 	.twitter-typeahead {
 		height:100%; // vertical ajustment
 	}
@@ -593,29 +593,6 @@ div.mm-is-menu * {
 	}
 	
 }
-
-/*
-======================
-TYPEAHEAD CUSTOM STYLE
-=====================*/
-.tt-dropdown-menu { 
-	width:100%;
-	text-align: left; 
-	background-color: $darkblue; 
-	border-bottom-radius: 8px; 
-	box-shadow:0 5px 10px rgba(0,0,0,0.2);
-	z-index:2000;
-}
-
-.tt-suggestion {  padding:10px 33px;}
-.tt-name {  @include rem(18);  font-weight:bold;  color:#FFF; }
-.tt-sub {  @include rem(14);; font-style:italic;  color:#999;}
-.tt-id{ display: none;}
-.tt-suggestion.tt-cursor{  background-color:#0097cf;}
-.tt-suggestion.tt-cursor p{  color:white;}
-
-/* ==============
-=====*/
 
 
 .calendar {	
@@ -1706,6 +1683,8 @@ h1.title-sheet {
 				a.open-field { display:none; }
 				div.hidden { display:block; }
 			}
+
+			td.cell-invitations .hidden { width:90%; }
 		}
 
 		.field_row {
@@ -1723,7 +1702,7 @@ h1.title-sheet {
 				height:50px;
 				padding: 3px 3px 2px 10px;
 				border-radius: 0px;
-				border: 1px solid rgba(0,0,0,0.02);
+				border: 1px solid #D8D7D7;
 				
 				font-weight: bold;
 				font-style: italic;
@@ -1741,14 +1720,40 @@ h1.title-sheet {
 					@include rem(16);
 				}
 			}
+			textarea {
+				padding-top:12px;
+				height:70px;
+			}
 		
 			&.field_time {
 				select { width: 33%; }
 			}
 			&.field_serie {	
 				label { display:inline; @include rem(14); }			
-				input[type=checkbox] { width:auto; margin:0; margin-right:10px; }
+				input[type=checkbox] { width:auto; height:auto; margin:0; margin-right:10px; }
 				.field_row { display:inline; }
+				#event_serie { margin-top:10px; }
+			}
+			&.field_description {
+				textarea { 
+					height:100px; 
+					@include rem(12);
+				}
+			}
+			&.field_emails,&.field_content {
+				
+				.bootstrap-tagsinput {
+					display:block; 
+					width:100% !important;
+					border-radius: 0px;
+					.ws-tag {
+						background-color: #EF9793;
+						padding:5px 10px;
+					}
+					.twitter-typeahead {
+						input.tt-input { width:100%; border:0px solid #FFF; }
+					}
+				}
 			}
 
 			&.field_error {
@@ -1767,7 +1772,28 @@ h1.title-sheet {
 				}
 			}
 
-			.twitter-typeahead{ width:100%; }
+			.twitter-typeahead{ 
+				width:100%;
+				input[type=text] { width:100% }
+				.tt-dropdown-menu {
+					width:100%;
+					margin:0;
+					margin-top:-10px;
+					background-color:#FFF;
+					color:$deepgrey;
+					
+					.info { padding:3px 10px; color:inherit; margin:0; @include rem(10); background-color:#FEFEFE; }
+					.info-footer { text-align:right; }
+					.info-empty { padding:20px 10px; @include rem(14); font-weight:bold; background-color: #F0F0F0; @include diagonal-stripes(-45deg,rgba(0, 0, 0, 0.02), 100); }
+					.tt-suggestion { width:100%; padding:2px 3px 0px 30px; position:relative; &:before {content:''; position:absolute; left:10px; top:10px; border-top:5px solid transparent; border-bottom:5px solid transparent;  border-left:5px solid $deepgrey; }}
+					.tt-suggestion p { margin:5px 0 0 0;}
+					.tt-name {  @include rem(16);  color:inherit; font-weight:bold; padding-bottom:0; margin-bottom:0; }
+					.tt-icon { @include rem(30); color:inherit; background-color:#FFF; padding:3px; border-radius:100px; }
+					.tt-sub {  @include rem(12); color:inherit; font-style:italic; }
+					.tt-id { display: none;}
+					.tt-suggestion.tt-cursor{  background-color:#FAFAFA;}
+				}
+			}
 
 			.icon {
 				position:absolute;

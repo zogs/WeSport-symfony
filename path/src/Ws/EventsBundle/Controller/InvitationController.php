@@ -70,7 +70,7 @@ class InvitationController extends Controller
 
 	}
 
-	public function getInviterEmailsAction()
+	public function getInviterEmailsSuggestionAction()
 	{
 		if(null==$this->getUser()) return new JsonResponse(array());
 

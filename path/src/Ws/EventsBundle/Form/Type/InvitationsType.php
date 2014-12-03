@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Routing\Router;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
@@ -21,13 +22,15 @@ class InvitationsType extends AbstractType
 	private $em;
 	private $secu;
 	private $user;
+	private $router;
 
-	public function __construct(EntityManager $em, SecurityContext $secu, Event $event = null)
+	public function __construct(EntityManager $em, SecurityContext $secu, Router $router, Event $event = null)
 	{
 		$this->em = $em;
 		$this->secu = $secu;
 		$this->user = $secu->getToken()->getUser();
 		$this->event = $event;
+		$this->router = $router;
 	}
 
 
@@ -36,20 +39,14 @@ class InvitationsType extends AbstractType
 	{
 		$builder
 			->add('emails','tags',array(                                    
-				'label'=>'Créer une liste',
 				'tags' => '',
 				'required'=> false,
-				'attr'=>array(
-					'placeholder'=>'Adresses email d\'amis',
-				    )
+				'ajax_url' => $this->router->generate('ws_inviter_emails_ajax'),
+				'trigger_length' => 2,
 			))
 
 			->add('content','textarea',array(
-				'label' => "Un truc à leurs dire ?",
 				'required' => false,
-				'attr' => array(
-					'placeholder' => "Salut les copains, ..."
-				)
 			))
 			;
 

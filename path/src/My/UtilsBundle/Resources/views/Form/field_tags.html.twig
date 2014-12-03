@@ -1,6 +1,6 @@
 {# src/Acme/DemoBundle/Resources/views/Form/fields.html.twig #}
 
 {% block tags_widget %}
-    <input {{ block('widget_attributes') }} class="tagsinput" value="{{ tags }}" data-url-autocomplete="http://local.wesportsf.fr/web/app_dev.php/fr/event/invitation/getinvitedemails" data-prefech="{{ prefetch }}" />
+    <input {{ block('widget_attributes') }} class="{{ class }}" value="{{ tags }}" data-url-autocomplete="{{ ajax_url }}" data-prefech="{{ prefetch }}" data-template-empty="{{ empty_html }}" data-template-header="{{ header_html }}" data-template-footer="{{ footer_html }}" data-trigger-length="{{ trigger_length }}"/>
     {# {% if value is not empty %}>{{ value }} {% endif %} </textarea> #}
 {% endblock %}

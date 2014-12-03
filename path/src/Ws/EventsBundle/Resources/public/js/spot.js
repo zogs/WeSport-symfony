@@ -25,7 +25,7 @@ $(document).ready(function() {
 		var template_empty = input.attr('data-template-empty');
 		var template_header = input.attr('data-template-header');
 		var template_footer = input.attr('data-template-footer');
-		var template_suggestion = Handlebars.compile( '<p class="tt-name"<img class="flag flag-{{country}}" /> {{city}} <small>{{name}}</small></p><p class="tt-sub">{{address}}</p><p class="tt-id">{{id}}</p>');
+		var template_suggestion = Handlebars.compile( '<p class="tt-name"><strong>{{city}}</strong> <small>{{name}}</small></p><p class="tt-sub">{{address}}</p><p class="tt-id">{{id}}</p>');
 		var trigger_length = input.attr('data-trigger-length');
 		
 		input.typeahead(

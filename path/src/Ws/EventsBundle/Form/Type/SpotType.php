@@ -41,10 +41,11 @@ class SpotType extends AbstractType
                 'attr' => array(
                     'class' => 'autocomplete-spot',
                     'data-autocomplete-url' => $options['ajax_url'],
-                        'data-template-empty' => $options['empty_html'],
-                        'data-template-footer' => $options['footer_html'],
-                        'data-template-header' => $options['header_html'],
-                        'data-trigger-length' =>2
+                    'data-template-empty' => $options['empty_html'],
+                    'data-template-footer' => $options['footer_html'],
+                    'data-template-header' => $options['header_html'],
+                    'data-trigger-length' =>2,
+                    'autocomplete' => "off",
                     )
                 ))
             ->add('location', 'city_to_location_type', array(

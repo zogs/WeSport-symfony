@@ -42,4 +42,26 @@ $(document).ready(function() {
         	$(this).val('');
         });
        
+
+    /*
+    	Datetime Picker
+    */
+    $('input.with_date_picker').datetimepicker({
+    	lang:'fr',    	
+		 timepicker:false,
+		 format:'d/m/Y',
+		 minDate: 0,
+		 mask:true,
+		 lazyInit: true,
+		 dayOfWeekStart: 1,
+	});
+
+	$('input.with_time_picker').datetimepicker({
+		lang:'fr',
+		datepicker: false,
+		format: 'H:i',
+		step:30,
+		defaultTime:'13:00'
+	})
+
 });

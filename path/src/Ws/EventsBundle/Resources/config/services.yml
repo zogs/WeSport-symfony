@@ -17,15 +17,9 @@ services:
         tags:
             - { name: form.type, alias: serie }
 
-    ws_events.form.type.invitation:
-        class: Ws\EventsBundle\Form\Type\InvitationType
-        arguments: [@doctrine.orm.entity_manager,@security.context]
-        tags:
-            - { name: form.type, alias: invitation_type }
-
     ws_events.form.type.invitations:
         class: Ws\EventsBundle\Form\Type\InvitationsType
-        arguments: [@doctrine.orm.entity_manager,@security.context]
+        arguments: [@doctrine.orm.entity_manager,@security.context,@router]
         tags:
             - { name: form.type, alias: invitations_type }
 

@@ -52,7 +52,8 @@ class CityToLocationType extends AbstractType
                         'data-template-empty' => '<div class="tt-city-noresult">'.$options['empty_html'].'</div>',
                         'data-template-footer' => '<div class="tt-city-footer">'.$options['footer_html'].'</div>',
                         'data-template-header' => '<div class="tt-city-header">'.$options['header_html'].'</div>',
-                        'data-trigger-length' =>2
+                        'data-trigger-length' =>2,
+                        'autocomplete' => "off"
                         )
                 ))
             ;

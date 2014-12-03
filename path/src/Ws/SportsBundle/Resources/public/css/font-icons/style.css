@@ -2,6 +2,7 @@
 	font-family: 'SportIcons';
 	src:url('fonts/SportIcons.eot?-5t6u9y');
 	src:url('fonts/SportIcons.eot?#iefix-5t6u9y') format('embedded-opentype'),
+		url('fonts/SportIcons.woff2?-5t6u9y') format('woff2'),
 		url('fonts/SportIcons.woff?-5t6u9y') format('woff'),
 		url('fonts/SportIcons.ttf?-5t6u9y') format('truetype'),
 		url('fonts/SportIcons.svg?-5t6u9y#SportIcons') format('svg');
