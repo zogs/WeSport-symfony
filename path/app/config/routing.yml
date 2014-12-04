@@ -40,7 +40,7 @@ ws_events:
 
 ws_sports:
     resource: "@WsSportsBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /sports
 
 my_comment:
     resource: "@MyCommentBundle/Resources/config/routing.yml"

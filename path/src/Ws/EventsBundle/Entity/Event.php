@@ -29,13 +29,9 @@ class Event
     private $organizer;
 
     /**
-     * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(
-     *              min = "5",
-     *              max = "150")
+     * @ORM\Column(name="title", type="string", length=255, nullable=true)
      */
-    private $title;
+    private $title = null;
 
     /**
      * @Gedmo\Slug(fields={"title"})

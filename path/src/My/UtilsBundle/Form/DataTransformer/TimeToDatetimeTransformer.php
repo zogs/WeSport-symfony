@@ -18,7 +18,7 @@ class TimeToDatetimeTransformer implements DataTransformerInterface
     /**
      * @param string $format
      */
-    public function __construct($format = 'h:i')
+    public function __construct($format = 'H:i:s')
     {
         $this->format = $format;
     }
@@ -49,7 +49,7 @@ class TimeToDatetimeTransformer implements DataTransformerInterface
         if (!$time) {
             return null;
         }
-        
+
         return \Datetime::createFromFormat($this->format,$time);
 
     }

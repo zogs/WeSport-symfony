@@ -1676,15 +1676,17 @@ h1.title-sheet {
 
 		tr {
 			td { text-align:left; }
-			td:nth-child(1) { width:50%; padding:10px 0 10px 10%; vertical-align: top;}
-			td:nth-child(2) { width:50%; padding:10px 10% 10px 10px; vertical-align: middle;}
+			td:nth-child(1) { width:50%; padding:10px 0 2px 10%; vertical-align: top;}
+			td:nth-child(2) { width:50%; padding:10px 10% 2px 10px; vertical-align: middle;}
 
 			td.cell-error,td.cell-filled {
 				a.open-field { display:none; }
 				div.hidden { display:block; }
 			}
-
-			td.cell-invitations .hidden { width:90%; }
+			td.cell-optional {
+				text-align:right;
+			}
+			td.cell-invitations { padding-bottom:50px; }
 		}
 
 		.field_row {
@@ -1725,6 +1727,35 @@ h1.title-sheet {
 				height:70px;
 			}
 		
+			&.field_sport {
+				.select2-container {
+					width: 100%;
+					margin-bottom:10px;
+
+					.select2-choice {
+						height:50px; 
+						padding: 3px 3px 2px 10px;
+						border: 1px solid #D8D7D7;
+						background-color:#FFF;
+						background-image: none;
+						border-radius: 0px;
+						line-height: 40px;
+						font-weight: bold;
+						font-style: italic;
+						color: $deepgrey;
+						@include rem(16);
+
+						.select2-arrow { display:  none;}
+						.select2-chosen {
+							.ws-icon { color: $deepblue;}
+						}
+					}
+					
+				}
+				.select2-results {
+						background-color: red;
+					}
+			}		
 			&.field_time {
 				select { width: 33%; }
 			}
@@ -1746,13 +1777,14 @@ h1.title-sheet {
 					display:block; 
 					width:100% !important;
 					border-radius: 0px;
+					text-align:left;
 					.ws-tag {
 						background-color: #EF9793;
 						padding:5px 10px;
 					}
-					.twitter-typeahead {
-						input.tt-input { width:100%; border:0px solid #FFF; }
-					}
+					
+					input { width:100% !important; border:0px solid #FFF; }
+					
 				}
 			}
 

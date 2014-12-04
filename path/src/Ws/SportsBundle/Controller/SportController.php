@@ -4,6 +4,7 @@ namespace Ws\SportsBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Ws\SportsBundle\Entity\Sport;
 use Ws\SportsBundle\Form\Type\SportType;
@@ -29,7 +30,29 @@ class SportController extends Controller
             'entities' => $entities,
         ));
     }
+
     /**
+    * Return Json list of sports
+    */
+    public function jsonAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $sports = $em->getRepository('WsSportsBundle:Sport')->findAll();
+
+        foreach ($sports as $k => $sport) {
+            $sports[$k] = array();
+            $sports[$k]['id'] = $sport->getId();
+            $sports[$k]['name'] = $sport->getName();
+            $sports[$k]['slug'] = $sport->getSlug();
+            $sports[$k]['keywords'] = $sport->getKeywords();
+            $sports[$k]['category'] = $sport->getCategory();
+            $sports[$k]['icon'] = $sport->getIcon();
+        }
+        return new JsonResponse($sports);
+    }
+
+    /*
      * Creates a new Sport entity.
      *
      */

@@ -21,7 +21,7 @@
                     <tr>
                         <td>
                             {{ form_row(form.sport,{ 
-                                'attr': { 'placeholder':"Activité ?"},
+                                'attr': { 'placeholder':"Activité ?", "class":"sportSelection"},
                                 'icon':"ws-icon-heart2" }
                              ) }}
                         </td>
@@ -93,7 +93,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>
+                        <td class="cell-optional">
                              <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter une description ?</a>
                             <div class="hidden">
                                 {{ form_row(form.description,{ 
@@ -108,7 +108,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>
+                        <td class="cell-optional">
                              <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un nombre minimum ?</a>
                             <div class="hidden">
                                 {{ form_row(form.nbmin,{ 
@@ -123,7 +123,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>
+                        <td class="cell-optional">
                             <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un niveau de jeu ?</a>
                             <div class="hidden">
                                 {{ form_row(form.level,{ 
@@ -137,7 +137,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="cell-invitations">
+                        <td class="cell-invitations cell-optional">
                            <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Inviter des amis ?</a>
                             <div class="hidden">
                                 {{ form_row(form.invitations.emails,{ 
@@ -145,10 +145,11 @@
                                     'icon': 'ws-icon-envelop' 
                                     })
                                 }}
-                                {{ form_row(form.invitations.content,{ 'attr':{ 'placeholder':"Ecrire un pti mot ?", 'rows':"5"}} ) }}
+                                {{ form_row(form.invitations.content,{ 'attr':{ 'placeholder':"Leurs écrire un pti mot ?", 'rows':"5"}} ) }}
                                 <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
                             </div>   
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>

@@ -28,26 +28,21 @@ class EventType extends AbstractType
 			'property'=>'name',
 			'empty_value'=>'Activité ?',
 			'expanded'=>false,
-			'attr'=>array('class'=>'__sportSelection'))
-		)
-		->add('title',null,array(	
+		))
+		->add('title','text',array(	
 			'required' => false,	
 			))
 		->add('spot', 'spot_type', array(
 			'required' => true,
 			))
-		->add(
-			$builder->create('date', 'text', array(
+		->add($builder->create('date', 'text', array(
 				'required'=>false,
-				))
-			->addModelTransformer(new DateToDatetimeTransformer('d/m/Y'))
+				))->addModelTransformer(new DateToDatetimeTransformer('d/m/Y'))
 		)
 		->add('serie', new SerieType(), array(			
 			))
-		->add(
-			$builder->create('time','text',array(
-			))
-			->addModelTransformer(new TimeToDatetimeTransformer('h:i'))
+		->add($builder->create('time','text',array(
+			))->addModelTransformer(new TimeToDatetimeTransformer('H:i'))
 		)
 		->add('description','textarea',array(
 			'required'=>false,
