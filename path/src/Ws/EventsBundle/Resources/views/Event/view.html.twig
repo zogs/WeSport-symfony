@@ -163,6 +163,9 @@
 								<li><span class="ws-icon ws-icon-alarm"></span> {{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</li>
 								<li><span class="ws-icon ws-icon-{{ event.sport.icon }}"></span> {{ event.sport.name|capitalize }}</li>
 								<li><span class="ws-icon ws-icon-star2"></span> {{ event.levelString|capitalize }}</li>
+								{% if event.price > 0 %}
+								<li><span class="ws-icon ws-icon-info"></span>{{ event.price }}€</li>
+								{% endif %}
 								<li><span class="ws-icon ws-icon-location2"></span> {{ event.spot.location.city.name }}, {{ event.spot.address }} <small>({{ event.spot.location.lastState().name|capitalize }})</small></li>
 								</ul>
 							</td>

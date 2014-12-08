@@ -73,7 +73,7 @@ class CityToLocationType extends AbstractType
     {
         $form = $event->getForm();
         $data = $event->getData();
-
+        
         $location = null;
         if(!empty($data['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
         elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);

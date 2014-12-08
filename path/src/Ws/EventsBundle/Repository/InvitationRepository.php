@@ -4,6 +4,9 @@ namespace Ws\EventsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+use My\UserBundle\Entity\User;
+use Ws\EventsBundle\Entity\Event;
+
 /**
  * InvitationRepository
  *
@@ -24,7 +27,7 @@ class InvitationRepository extends EntityRepository
 		return $invit;
 	}
 
-	public function findSavedInvitation($user)
+	public function findSavedInvitation(User $user)
 	{
 		$qb = $this->createQueryBuilder('i');
 		$qb->andWhere($qb->expr()->eq('i.inviter',':user'));
@@ -33,16 +36,16 @@ class InvitationRepository extends EntityRepository
 		return $qb->getQuery()->getResult();	
 	}
 
-	public function findOneByUserAndEvent($user,$event)
+	public function findOneByUserAndEvent(User $user,Event $event)
 	{
 		$qb = $this->createQueryBuilder('i');
 		$qb->andWhere('i.event = :event')->setParameter('event',$event);
 		$qb->andWhere('i.inviter = :user')->setParameter('user',$user);	
-
+		
 		return $qb->getQuery()->getSingleResult();
 	}
 
-	public function findEmailsByEvent($event)
+	public function findEmailsByEvent(Event $event)
 	{
 		$qb = $this->createQueryBuilder('i');
 		$qb->andWhere('i.event = :event')->setParameter('event',$event);

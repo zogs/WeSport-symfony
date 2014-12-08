@@ -2996,7 +2996,7 @@ h1.title-sheet {
   filter: alpha(opacity=80);
 }
 /* line 1870, scss/style.scss */
-.create-event table.form-table span.form-info {
+.create-event table.form-table div.form-info {
   color: #888888;
   font-size: 12px;
   font-size: 1.2rem;

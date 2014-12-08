@@ -18,11 +18,13 @@ class SpotType extends AbstractType
 
     public $em;
     public $router;
+    public $errors;
 
     public function __construct(EntityManager $em,Router $router)
     {
         $this->em = $em;
         $this->router = $router;
+        $this->errors = array();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -73,6 +75,7 @@ class SpotType extends AbstractType
             $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
             $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
             $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
+            
     }
 
     public function onPreSetData(FormEvent $event)
@@ -134,50 +137,69 @@ class SpotType extends AbstractType
         
         $spot = NULL;
 
-        //if spot_id
+        //get spot from spot_id
         if(!empty($data['spot_id'])){
-            if($spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id'])) {}
-            else $spot = 'not_find';
-            return $form->setData($spot);
-        }    
-        
-        //if spot_slug
-        if(!empty($data['spot_slug'])){
-            if($spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug'])) {}
-            else $spot = 'not_find';
-            return $form->setData($spot);        
-        }        
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']); 
 
-        //else try create
-        if(!empty($data['location']) && (!empty($data['name'] || !empty($data['address'])))){
+            //show error on spot_slug field
+            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas...");        
+        }    
+        //else from spot_slug
+        elseif(!empty($data['spot_slug'])){
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug']);    
+
+            //show error on spot_slug field
+            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas...");
+        }        
+        //else try creating new spot
+        elseif(!empty($data['location']) && (!empty($data['name'] || !empty($data['address'])))){
 
             $spot = new Spot();
             $spot->setName($data['name']);
             $spot->setAddress($data['address']);
 
-            if(!empty($data['location']['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['location']['city_id']);
-            elseif(!empty($data['location']['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['location']['city_name']);
-            
+            //get location from city_id or city_name
+            if(!empty($data['location']['city_id'])){                
+                $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['location']['city_id']);
+            }
+            elseif(!empty($data['location']['city_name'])){                
+                $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['location']['city_name']);
+            }
+            //else trigger an error
+            if(NULL == $location) $this->errors[] = array('location.city_name',"Cette ville n'existe pas...");
+
             $spot->setLocation($location);
-            $form->setData($spot);
+            
         }
+        else {
+            $this->errors[] = array('spot_slug',"Un lieu est nécessaire...");
+        }        
+        
+        return $form->setData($spot);   
 
     }
 
     public function onSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        $spot = $form->getData();
-
-        //if we can guess the spot from the input data, we trigger an error on the spot_slug field
-        if(NULL==$spot) {
-            $form->get('spot_slug')->addError(new FormError('Un lieu doit être défini...'));
-        }
-
-         if('not_find'==$spot) {
-            $form->get('spot_slug')->addError(new FormError("Ce lieu n'existe pas dans notre base de donnée..."));
-        }
-
+        $spot = $form->getData();        
+                
+        //set errors if exist
+        if(!empty($this->errors)){
+            //for each errors
+            foreach ($this->errors as $k => $error) {                                
+                $error_field = $error[0];                
+                $error_txt = $error[1];
+                //find children fields 
+                $r = explode('.',$error_field);
+                $field = $form;
+                foreach ($r as $f) {
+                    $field = $field->get($f);
+                }
+                //add error
+                $field->addError(new FormError($error_txt));
+            }
+        }      
     }
 
     public function getName()

@@ -83,18 +83,18 @@ class InvitationsType extends AbstractType
 		}
 		//or from the embedded formular
 		elseif(NULL != $form->getParent() && $form->getParent()->getData() instanceof Event){
-			$event = $form->getParent()->getData();
+			$event = $form->getParent()->getData();			
 		}
 		//or from the __construct method
 		elseif($this->event instanceof Event){
 			$event = $this->event;
 		}
-
+		
 		//create invitation
 		if($this->user instanceof User){
 
 			//if user have already invited somebody to this event, get the Invitation object
-			if($invit = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByUserAndEvent($this->user,$event)){
+			if($event->getId() && $invit = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByUserAndEvent($this->user,$event)){
 				$invit->setInviter($this->user);            
 			}
 			//else create a new Invitation
@@ -106,7 +106,6 @@ class InvitationsType extends AbstractType
 		else 
 			throw new \Exception('User must be an instance of My\UserBundle\Entity\User');     
 
-		
 		//set persisted data
 		$invit->setEvent($event);
 		$invit->setName('invitation à '.$event->getTitle().' le '.$event->getDate()->format('d/m/Y'));

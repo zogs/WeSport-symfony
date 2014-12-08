@@ -294,15 +294,19 @@ class LocationRepository extends EntityRepository
 
 
 	/**
-	 * find location from city name 
+	 * find Location from city name 
 	 * @param string $name
 	 * @param string $countryCode
+	 * @return Location
 	 */
 	public function findLocationByCityName($name,$countryCode = null)
 	{
 		$city = $this->_em->getRepository('MyWorldBundle:City')->findCityByName($name,$countryCode);
 
-		return $this->findLocationByCityId($city->getId());
+		if(NULL != $city)
+			return $this->findLocationByCityId($city->getId());
+		else
+			return NULL;
 	}
 
 	/**

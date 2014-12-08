@@ -163,6 +163,7 @@ class Event
     public function isFutur()
     {        
         if(empty($this->date)) return true;
+        if($this->date == new \DateTime()) return true;
         if($this->date > new \DateTime()) return true;
         return false;
     }
@@ -427,8 +428,9 @@ class Event
      * @return Event
      */
     public function setNbmin($nbmin)
-    {
-        $this->nbmin = $nbmin;
+    {  
+
+        $this->nbmin = ($nbmin >= 0)? $nbmin : 0;
 
         return $this;
     }

@@ -5,12 +5,12 @@
         	   <i class="icon {{ icon }}"></i>
         {% endif %}    
 
-       {{ form_label(form) }}
-    {{ form_widget(form) }}
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
 
-    {% if info is defined %}
-    	<span class="form-info">{{ info }}</span>
-    {% endif  %}
-    {{ form_errors(form) }}
+        {% if info is defined %}
+            <div class="form-info">{{ info }}</div>
+        {% endif  %}
 </div>
 {% endblock form_row %}

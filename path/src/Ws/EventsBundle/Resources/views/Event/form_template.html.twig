@@ -36,7 +36,7 @@
                         }
                      ) }}
                 </td>
-                <td class="cell-new-spot">
+                <td class="cell-new-spot {% if form.spot.location.city_name.vars.errors|length %}cell-error{%endif %} {% if form.spot.location.city_name.vars.value %}cell-filled{% endif %}">
                     <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Créer un nouveau lieu ?</a>
                     <div class="hidden">
                         {{ form_widget(form.spot.location.city_id) }}
@@ -58,7 +58,7 @@
                         'icon':"ws-icon-calendar2"}
                     ) }}
                 </td>
-                <td class="cell-recur-date">
+                <td class="cell-recur-date {% if form.serie.startdate.vars.errors|length or form.serie.enddate.vars.errors|length or form.serie.vars.errors|length %}cell-error{% endif %} {% if form.serie.startdate.vars.value or form.serie.startdate.vars.value or form.serie %}cell-filled{% endif %}">
                     <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Date récurrente ?</a>
                     <div class="hidden">
                         {{ form_row(form.serie.startdate,{ attr:{ placeholder:"Date de début ?", 'class':"with_date_picker" }} ) }}

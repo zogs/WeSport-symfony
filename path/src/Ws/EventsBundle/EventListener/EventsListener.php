@@ -57,7 +57,7 @@ class EventsListener implements EventSubscriberInterface
 		$ev = $event->getEvent();
 
 		$changes = $ev->getChanges();
-
+		
 		if(!empty($changes)){
 			$this->mailer->sendEventModificationToParticipants($ev);			
 		}
