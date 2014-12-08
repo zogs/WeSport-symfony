@@ -7,6 +7,10 @@
 
        {{ form_label(form) }}
     {{ form_widget(form) }}
+
+    {% if info is defined %}
+    	<span class="form-info">{{ info }}</span>
+    {% endif  %}
     {{ form_errors(form) }}
 </div>
 {% endblock form_row %}

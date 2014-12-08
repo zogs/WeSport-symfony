@@ -56,6 +56,9 @@ class EventType extends AbstractType
 			'required' => false,
 			'choices' => Event::$valuesAvailable['level'],
 			))
+		->add('price','integer',array(
+			'required' => false,
+		))
 		//debug todo
 		->add('invitations','invitations_type',array(
 				'mapped' => false,			
@@ -68,13 +71,19 @@ class EventType extends AbstractType
 
 		$builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 		$builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
+		$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this,'onPreSubmit'));
 	}
 
 	public function onPreSetData(FormEvent $event)
 	{
 		$form = $event->getForm();
 		$data = $event->getData();
-		$this->pre_event = clone($data);		
+		$this->pre_event = clone($data);	
+
+	}
+
+	public function onPreSubmit(FormEvent $event)
+	{
 		
 	}
 

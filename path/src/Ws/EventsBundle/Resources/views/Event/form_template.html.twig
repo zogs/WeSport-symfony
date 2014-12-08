@@ -28,9 +28,9 @@
                         'attr':{
                             'style':"width:100%",
                             'placeholder':"Lieu ?",
-                            'data-template-header':'<div class="info info-header">Veuillez choisir un lieu ci-dessous :</div>',
-                            'data-template-footer':'<div class="info info-footer">ou vous pouvez créer un nouveau lieu !</div>',
-                            'data-template-empty':'<div class="info info-empty">Pas de résultats ... Merci de créer un nouveau lieu via le formulaire d\'à côté !</div>'
+                            'data-template-header':'<div class="tt-info tt-info-header">Veuillez choisir un lieu ci-dessous :</div>',
+                            'data-template-footer':'<div class="tt-info tt-info-footer">ou vous pouvez créer un nouveau lieu !</div>',
+                            'data-template-empty':'<div class="tt-info tt-info-empty">Pas de résultats ... Merci de créer un nouveau lieu via le formulaire d\'à côté !</div>'
                             },
                         'icon': "ws-icon-location2"
                         }
@@ -100,7 +100,8 @@
                     <div class="hidden">
                         {{ form_row(form.nbmin,{ 
                             'attr':{ 'placeholder':"Nombre minimum ?" },
-                            'icon': 'ws-icon-users'
+                            'icon': 'ws-icon-users',
+                            'info' : "L'activité sera confirmé uniquement si le nombre minimum de participants est atteint."
                             })
                         }}    
                         <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                
@@ -116,6 +117,20 @@
                         {{ form_row(form.level,{ 
                             'empty_value': 'Niveau de jeu ?',
                             'icon': 'ws-icon-star'
+                            })
+                        }}  
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
+                    </div>                            
+                </td>
+                <td></td>
+            </tr>
+            <tr class="form-row">
+                <td class="cell-price cell-optional {% if form.price.vars.errors|length %}cell-error{% endif %} {% if form.price.vars.value %}cell-filled{% endif %}">
+                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un prix ?</a>
+                    <div class="hidden">
+                        {{ form_row(form.price,{ 
+                            'icon': 'ws-icon-info',
+                            'info': "Frais de location de salle, de terrain, frais divers... (en €)"
                             })
                         }}  
                         <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
@@ -146,7 +161,7 @@
                             {{ form_widget(form.public) }}
                             <label for=""><i></i></label>                        
                         </div>
-                        <br><span class="info">En mode privé, l'activité n'apparait pas dans le calendrier.</span> 
+                       <div class="form-info">En mode privé, l'activité n'apparait pas dans le calendrier.</div> 
                         <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span>                      
                     </div>  
                 </td> 

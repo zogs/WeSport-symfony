@@ -1686,6 +1686,7 @@ h1.title-sheet {
 			}
 			td.cell-optional {
 				text-align:right;
+				padding-top:5px;
 			}
 			td.cell-invitations { }
 
@@ -1843,8 +1844,8 @@ h1.title-sheet {
 					background-color:#FFF;
 					color:$deepgrey;
 					
-					.info { padding:3px 10px; color:inherit; margin:0; @include rem(10); background-color:#FEFEFE; }
-					.info-footer { text-align:right; }
+					.tt-info { padding:3px 10px; color:inherit; margin:0; @include rem(10); background-color:#FEFEFE; }
+					.tt-info-footer { text-align:right; }
 					.info-empty { padding:20px 10px; @include rem(14); font-weight:bold; background-color: #F0F0F0; @include diagonal-stripes(-45deg,rgba(0, 0, 0, 0.02), 100); }
 					.tt-suggestion { width:100%; padding:2px 3px 0px 30px; position:relative; &:before {content:''; position:absolute; left:10px; top:10px; border-top:5px solid transparent; border-bottom:5px solid transparent;  border-left:5px solid $deepgrey; }}
 					.tt-suggestion p { margin:5px 0 0 0;}
@@ -1866,9 +1867,7 @@ h1.title-sheet {
 			}
 		}
 
-		span.info { 
-			font-weight: bold;
-			font-style: italic;
+		span.form-info { 
 			color: $deepgrey;
 			@include rem(12);
 			}
@@ -1877,7 +1876,7 @@ h1.title-sheet {
 			font-weight: bold;
 			font-style: italic;
 			color: $backblue;
-			@include rem(14);
+			@include rem(12);
 		}
 		a.close-field { 
 			position: absolute;

@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Routing\Router;
 
 use Doctrine\ORM\EntityManager;
@@ -71,6 +72,7 @@ class SpotType extends AbstractType
             //listeners
             $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
             $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+            $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
     }
 
     public function onPreSetData(FormEvent $event)
@@ -132,16 +134,21 @@ class SpotType extends AbstractType
         
         $spot = NULL;
 
-        if(!empty($data['spot_id']))     
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']);
+        //if spot_id
+        if(!empty($data['spot_id'])){
+            if($spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id'])) {}
+            else $spot = 'not_find';
+            return $form->setData($spot);
+        }    
         
-        if(NULL!=$spot) return $form->setData($spot);
-        
-        if(!empty($data['spot_slug']))
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug']);
-            
-        if(NULL!=$spot) return $form->setData($spot);
+        //if spot_slug
+        if(!empty($data['spot_slug'])){
+            if($spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug'])) {}
+            else $spot = 'not_find';
+            return $form->setData($spot);        
+        }        
 
+        //else try create
         if(!empty($data['location']) && (!empty($data['name'] || !empty($data['address'])))){
 
             $spot = new Spot();
@@ -155,8 +162,21 @@ class SpotType extends AbstractType
             $form->setData($spot);
         }
 
+    }
 
-        if(NULL==$spot) throw new \Exception('Can not be instanciate spot entity');
+    public function onSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $spot = $form->getData();
+
+        //if we can guess the spot from the input data, we trigger an error on the spot_slug field
+        if(NULL==$spot) {
+            $form->get('spot_slug')->addError(new FormError('Un lieu doit être défini...'));
+        }
+
+         if('not_find'==$spot) {
+            $form->get('spot_slug')->addError(new FormError("Ce lieu n'existe pas dans notre base de donnée..."));
+        }
 
     }
 
