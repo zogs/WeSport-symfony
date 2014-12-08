@@ -52,6 +52,11 @@ class Event
     private $time;
 
     /**
+    * @ORM\Column(name="public", type="boolean")
+    */
+    private $public = true;
+
+    /**
      * @ORM\Column(name="type", type="integer")
      */
     private $type = 0;
@@ -833,5 +838,38 @@ class Event
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set public
+     *
+     * @param boolean $public
+     * @return Event
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    /**
+     * Get public
+     *
+     * @return boolean 
+     */
+    public function getPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * Is public
+     *
+     * @return boolean 
+     */
+    public function isPublic()
+    {
+        return ($this->public == 1)? true: false;
     }
 }

@@ -1,0 +1,165 @@
+{% form_theme form 'WsEventsBundle:Form:fields_creation.html.twig' %}
+
+<div class="form">
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <table class="form-table">
+            <tr class="form-row">
+                <td>
+                    {{ form_row(form.sport,{ 
+                        'attr': { 'placeholder':"Activité ?", "class":"sportSelection"},
+                        'icon':"ws-icon-heart2" }
+                     ) }}
+                </td>
+                <td class="cell-title {% if form.title.vars.errors|length %}cell-error{% endif %} {% if form.title.vars.value %}cell-filled{% endif %}">
+                    
+                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un titre ?</a>
+                    <div class="hidden">
+                        {{ form_row(form.title,{ attr:{ placeholder:"Titre" }} ) }}    
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                               
+                    </div>
+                </td>
+            </tr>
+            <tr class="form-row">
+                <td>
+                    {{ form_row(form.spot.spot_id) }}
+                    {{ form_row(form.spot.spot_slug, {
+                        'attr':{
+                            'style':"width:100%",
+                            'placeholder':"Lieu ?",
+                            'data-template-header':'<div class="info info-header">Veuillez choisir un lieu ci-dessous :</div>',
+                            'data-template-footer':'<div class="info info-footer">ou vous pouvez créer un nouveau lieu !</div>',
+                            'data-template-empty':'<div class="info info-empty">Pas de résultats ... Merci de créer un nouveau lieu via le formulaire d\'à côté !</div>'
+                            },
+                        'icon': "ws-icon-location2"
+                        }
+                     ) }}
+                </td>
+                <td class="cell-new-spot">
+                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Créer un nouveau lieu ?</a>
+                    <div class="hidden">
+                        {{ form_widget(form.spot.location.city_id) }}
+                        {{ form_row(form.spot.location.city_name,{ attr:{ placeholder:"Entrer une ville" }} ) }}
+                        {{ form_row(form.spot.name,{ attr:{ placeholder:"Entrer le nom de l'endroit" }} ) }}
+                        {{ form_row(form.spot.address,{ attr:{ placeholder:"Entrer l'adresse exacte" }} ) }}       
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                 
+                    </div>
+                   
+                </td>
+            </tr>
+            <tr class="form-row">
+                <td class='cell-date'>
+                    {{ form_row(form.date,{ 
+                        'attr':{ 
+                            'placeholder':"Date ?",
+                            'class':"with_date_picker"
+                            },
+                        'icon':"ws-icon-calendar2"}
+                    ) }}
+                </td>
+                <td class="cell-recur-date">
+                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Date récurrente ?</a>
+                    <div class="hidden">
+                        {{ form_row(form.serie.startdate,{ attr:{ placeholder:"Date de début ?", 'class':"with_date_picker" }} ) }}
+                        {{ form_row(form.serie.enddate,{ attr:{ placeholder:"Date de fin ?", 'class':"with_date_picker" }} ) }}
+                        {{ form_row(form.serie,{ 'label': "Jour de la semaine ?"}) }}    
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                            
+                    </div>
+                    
+                </td>
+            </tr>
+            <tr class="form-row">
+                <td class="cell-time">
+                        {{ form_row(form.time,{ 
+                            'attr':{ 'placeholder':"Heure ?", 'class':"with_time_picker" },
+                            'icon':"ws-icon-alarm" 
+                            })
+                        }}                                                 
+                </td>
+                <td></td>
+            </tr>
+            <tr class="form-row">
+                <td class="cell-description cell-optional {% if form.description.vars.errors|length %}cell-error{% endif %} {% if form.description.vars.value %}cell-filled{% endif %}">
+                     <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter une description ?</a>
+                    <div class="hidden">
+                        {{ form_row(form.description,{ 
+                            'attr':{ 'placeholder':"Description ?" },
+                            'icon': 'ws-icon-book'
+                            })
+                        }}   
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                        
+                    </div>
+                    
+                </td>
+                <td></td>
+            </tr>
+            <tr class="form-row">
+                <td class="cell-nbmin cell-optional {% if form.nbmin.vars.errors|length %}cell-error{% endif %} {% if form.nbmin.vars.value %}cell-filled{% endif %}">
+                     <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un nombre minimum ?</a>
+                    <div class="hidden">
+                        {{ form_row(form.nbmin,{ 
+                            'attr':{ 'placeholder':"Nombre minimum ?" },
+                            'icon': 'ws-icon-users'
+                            })
+                        }}    
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>                
+                    </div>
+                    
+                </td>
+                <td></td>
+            </tr>
+            <tr class="form-row">
+                <td class="cell-level cell-optional {% if form.level.vars.errors|length %}cell-error{% endif %} {% if form.level.vars.value %}cell-filled{% endif %}">
+                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Ajouter un niveau de jeu ?</a>
+                    <div class="hidden">
+                        {{ form_row(form.level,{ 
+                            'empty_value': 'Niveau de jeu ?',
+                            'icon': 'ws-icon-star'
+                            })
+                        }}  
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
+                    </div>                            
+                </td>
+                <td></td>
+            </tr>
+            <tr class="form-row">
+                <td class="cell-invitations cell-optional">
+                   <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Inviter des amis ?</a>
+                    <div class="hidden">
+                        {{ form_row(form.invitations.emails,{ 
+                            'attr':{ 'placeholder':"Emails d'amis ?", 'style':"width:100% !important;" },
+                            'icon': 'ws-icon-envelop' 
+                            })
+                        }}
+                        {{ form_row(form.invitations.content,{ 'attr':{ 'placeholder':"Leurs dire un pti mot ?", 'rows':"5"}} ) }}
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
+                    </div>   
+                </td>
+                <td></td>
+            </tr>
+            <tr class="form-row">
+                <td class="cell-public cell-optional">
+                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Rendre privé ?</a>
+                    <div class="hidden">
+                        <div class="switchButton">
+                            {{ form_widget(form.public) }}
+                            <label for=""><i></i></label>                        
+                        </div>
+                        <br><span class="info">En mode privé, l'activité n'apparait pas dans le calendrier.</span> 
+                        <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span>                      
+                    </div>  
+                </td> 
+                <td></td>             
+            </tr>
+            <tr class="form-row">
+                <td class="cell-submit" colspan="2">
+                    <button type="submit" class="btn-ws btn-small">Sauvegarder</button>
+                </td>
+            </tr>
+                        
+        </table>    
+        
+    {{ form_end(form) }}
+           
+</div>

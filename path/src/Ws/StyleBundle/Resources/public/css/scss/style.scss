@@ -7,6 +7,9 @@
 //Fonts
 @import "fonts";
 
+//Fields
+@import "fields";
+
 $lightblue:#95b9c4;
 $deepblue:#296272;
 $darkblue:#2b4b54;
@@ -1661,20 +1664,18 @@ h1.title-sheet {
 ======*/
 .create-event {
 
-	table.form-fields {
+	table.form-table {
 		width:100%;
 
-		tr:nth-child(1) { background-color: #f8edec }
-		tr:nth-child(2) { background-color: #fffcf3 }
-		tr:nth-child(3) { background-color: #ececec }
-		tr:nth-child(4) { background-color: #eff8ef }
-		tr:nth-child(5) { background-color: #e8f4ed }
-		tr:nth-child(6) { background-color: #e8f4ed }
-		tr:nth-child(7) { background-color: #e8f4ed }
-		tr:nth-child(8) { background-color: #e8f4ed }
-		tr:nth-child(9) { background-color: #fff }
+		tr.form-row:nth-child(1) { background-color: #f8edec }
+		tr.form-row:nth-child(2) { background-color: #fffcf3 }
+		tr.form-row:nth-child(3) { background-color: #ececec }
+		tr.form-row:nth-child(4) { background-color: #eff8ef }
+		tr.form-row:nth-child(5) { background-color: #e8f4ed }
+		tr.form-row:nth-child(n+5) { background-color: #e8f4ed }
 
-		tr {
+		tr.form-row {
+
 			td { text-align:left; }
 			td:nth-child(1) { width:50%; padding:10px 0 2px 10%; vertical-align: top;}
 			td:nth-child(2) { width:50%; padding:10px 10% 2px 10px; vertical-align: middle;}
@@ -1686,7 +1687,33 @@ h1.title-sheet {
 			td.cell-optional {
 				text-align:right;
 			}
-			td.cell-invitations { padding-bottom:50px; }
+			td.cell-invitations { }
+
+			td.cell-submit { text-align:center; padding:30px 0 100px 0;}
+
+			td.cell-public {
+				padding-left:0;
+				    table { 
+				    	width:100%;
+						
+						td { padding:0; vertical-align:middle}
+				    	td:nth-child(1){ width:40%; text-align:right; padding-right:5px; }
+				    	td:nth-child(2){ width:20%; text-align:center;}
+				    	td:nth-child(3){ width:40%; text-align:left; padding-left:5px; }
+				    }
+
+				    .switchButton {
+						width:200px;
+
+						label { background: $lightblue; }
+						label i { background:#ECECEC; border:1px solid #D0D0D0; }
+						label i:before { content:'Privé'; color:#FFF; }
+						label i:after { display: none;}
+						input:checked ~ label {background-color: $softgreen;}
+						input:checked ~ label i:before { content:'Public'; left:-80%; color:#FFF; }
+				    }
+
+				}
 		}
 
 		.field_row {
@@ -1788,6 +1815,8 @@ h1.title-sheet {
 				}
 			}
 
+			
+
 			&.field_error {
 				input,select,textarea {
 					background-color: rgba(191, 78, 72, 0.21);
@@ -1837,7 +1866,13 @@ h1.title-sheet {
 			}
 		}
 
-		.hidden { display:none; visibility: visible; position: relative; }
+		span.info { 
+			font-weight: bold;
+			font-style: italic;
+			color: $deepgrey;
+			@include rem(12);
+			}
+		div.hidden { display:none; visibility: visible; position: relative; }
 		a.open-field {
 			font-weight: bold;
 			font-style: italic;

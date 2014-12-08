@@ -60,6 +60,9 @@ class EventType extends AbstractType
 		->add('invitations','invitations_type',array(
 				'mapped' => false,			
 			))
+		->add('public','checkbox',array(
+			'required' => false,
+			))
 	;
 
 
