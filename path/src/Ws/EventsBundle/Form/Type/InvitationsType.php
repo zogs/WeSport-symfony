@@ -16,6 +16,7 @@ use My\UserBundle\Entity\User;
 use Ws\EventsBundle\Entity\Invitation;
 use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Entity\Invited;
+use My\UtilsBundle\Utils\String;
 
 class InvitationsType extends AbstractType
 {
@@ -29,8 +30,8 @@ class InvitationsType extends AbstractType
 		$this->em = $em;
 		$this->secu = $secu;
 		$this->user = $secu->getToken()->getUser();
-		$this->event = $event;
 		$this->router = $router;
+		$this->event = $event;
 	}
 
 
@@ -52,6 +53,7 @@ class InvitationsType extends AbstractType
 
 		$builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 		$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+		$builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
 		$builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
 	}
 
@@ -79,22 +81,22 @@ class InvitationsType extends AbstractType
 
 		//get the event concerned from the submitted data
 		if(!empty($data['event'])){ 
-			$event = $this->em->getRepository('WsEventsBundle:Event')->findOneById($data['event']);             
+			$this->event = $this->em->getRepository('WsEventsBundle:Event')->findOneById($data['event']);             
 		}
 		//or from the embedded formular
 		elseif(NULL != $form->getParent() && $form->getParent()->getData() instanceof Event){
-			$event = $form->getParent()->getData();			
+			$this->event = $form->getParent()->getData();			
 		}
 		//or from the __construct method
 		elseif($this->event instanceof Event){
-			$event = $this->event;
+			$this->event = $this->event;
 		}
 		
 		//create invitation
 		if($this->user instanceof User){
-
+			
 			//if user have already invited somebody to this event, get the Invitation object
-			if($event->getId() && $invit = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByUserAndEvent($this->user,$event)){
+			if($this->event->getId() != null && $invit = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByUserAndEvent($this->user,$this->event)){
 				$invit->setInviter($this->user);            
 			}
 			//else create a new Invitation
@@ -107,8 +109,7 @@ class InvitationsType extends AbstractType
 			throw new \Exception('User must be an instance of My\UserBundle\Entity\User');     
 
 		//set persisted data
-		$invit->setEvent($event);
-		$invit->setName('invitation à '.$event->getTitle().' le '.$event->getDate()->format('d/m/Y'));
+		$invit->setEvent($this->event);
 		//set unpersisted data
 		$invit->setContent($data['content']);
 		$invit->setEmails($data['emails']);
@@ -116,12 +117,14 @@ class InvitationsType extends AbstractType
 		
 		if(!empty($data['emails'])){
 
-			//get array of all emails that have been already invited for that particular event
-			$emails_already_invited = $this->em->getRepository('WsEventsBundle:Invitation')->findEmailsByEvent($event);
+			//find emails already invited
+			$emails_already_invited = array();
+			//if Event is defined, get array of all emails that have been already invited for that particular event
+			if($this->event->getId() != null) $emails_already_invited = $this->em->getRepository('WsEventsBundle:Invitation')->findEmailsByEvent($this->event);
+			
 
-			//get submitted email tags
+			//split tags from email fields
 			$tags = explode(',', $data['emails']);
-
 			foreach ($tags as $k => $tag) {
 				
 				//no more than 10 invited at once
@@ -129,9 +132,8 @@ class InvitationsType extends AbstractType
 
 				//set invited
 				$invited = null;
-
 				//check if tag is a email
-				if(\My\UtilsBundle\Utils\String::isEmail($tag)){
+				if(String::isEmail($tag)){
 
 					//check if the email is registered					
 					//if yes, set invited as registered user
@@ -155,7 +157,6 @@ class InvitationsType extends AbstractType
 						$invited->setEmail($user->getEmail());
 						$invited->setUser($user);					
 					}
-
 				}
 
 				//if invited exist
@@ -178,16 +179,22 @@ class InvitationsType extends AbstractType
 			$form->setData(null);
 		} 
 		else {
-			$event->addInvitation($invit);
+			$this->event->addInvitation($invit);
 			$form->setData($invit);   	
 		}
 
 	}
 
+	public function onSubmit(FormEvent $event)
+	{
+		$form = $event->getForm();
+		$data = $event->getData();
+	}
+
 	public function onPostSubmit(FormEvent $event)
 	{
 		$form = $event->getForm();
-		$invit = $event->getData(); 
+		$data = $event->getData(); 
 	}
 
 	public function getName()

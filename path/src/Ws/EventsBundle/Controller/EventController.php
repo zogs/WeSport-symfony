@@ -48,8 +48,7 @@ class EventController extends Controller
 		if($form->isValid()){
 
 			$event = $form->getData();			
-			$event->setOrganizer($this->getUser());						
-
+									
 			if($this->get('ws_events.manager')->saveAll($event)){
 
 				//set flash message
@@ -65,7 +64,7 @@ class EventController extends Controller
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
 			}
 
-			return $this->redirect($this->generateUrl('ws_event_edit',array('event'=>$event->getId())));
+			return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
 		}             
 
 		return $this->render('WsEventsBundle:Event:new.html.twig', array(

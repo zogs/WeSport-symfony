@@ -84,7 +84,8 @@ class EventType extends AbstractType
 
 	public function onPreSubmit(FormEvent $event)
 	{
-		
+		$form = $event->getForm();
+		$data = $event->getData();
 	}
 
 	public function onPostSubmit(FormEvent $event)

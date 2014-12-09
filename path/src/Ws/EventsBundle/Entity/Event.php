@@ -97,7 +97,7 @@ class Event
     private $description;
 
     /**
-     * @ORM\Column(name="nbmin", type="smallint")
+     * @ORM\Column(name="nbmin", type="smallint", nullable=true)
      * @Assert\GreaterThanOrEqual(
      *                  value = "2"
      * )
@@ -161,23 +161,13 @@ class Event
     * @Assert\True(message = "La date doit être dans le futur")
     */
     public function isFutur()
-    {        
+    {       
         if(empty($this->date)) return true;
         if($this->date == new \DateTime()) return true;
         if($this->date > new \DateTime()) return true;
         return false;
     }
     
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-
-        if($this->nbmin == null) $this->setNbmin(2);
-
-    }
-
 
     /**
      * Get Timing

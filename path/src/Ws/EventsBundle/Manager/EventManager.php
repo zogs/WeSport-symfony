@@ -43,6 +43,10 @@ class EventManager extends AbstractManager
 	{
 		//set the location from the spot
 		$event->setLocation($event->getSpot()->getLocation());
+		//set the organizer
+		$event->setOrganizer($this->context->getToken()->getUser());
+		//auto comfirm if nbmin <=1
+		if($event->getNbmin()<=1) $event->setConfirmed(true);
 
 		$this->save($event,$flush);	
 		return $event;
@@ -64,7 +68,7 @@ class EventManager extends AbstractManager
      *
      * @param obejct event
      *
-     * @return object event
+     * @return object first event of the serie
      */
 	public function saveSerie($event)
 	{
@@ -104,7 +108,7 @@ class EventManager extends AbstractManager
 		}
 		$this->flush();
 
-		return $event;	
+		return $occurences[0];	
 	}
 
 	/**
