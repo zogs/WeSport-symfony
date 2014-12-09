@@ -332,14 +332,16 @@ div.mm-is-menu * {
 
 .fresque {
 	width:100%;
-	height:15px;
+	height:10px;
 	background-color:white;
 	background-image:url(../img/fresque.jpg);
 	background-repeat: repeat-y;
 	background-size:100% 1px;
+	$fresque_colors : $deepred 5%,$red 15%,$softred 30%,$lightred 45%,$softyellow 60%,$lightgreen 75%,$softgreen 85%,$green 95%,$deepgreen 100%;	
+	@include vertical-stripes($fresque_colors, to right);
 }
 .fresque-mini{
-	height:15px;
+	height:5px;
 }
 
 .ws-icon {
@@ -1441,7 +1443,7 @@ div.mm-is-menu * {
 	}
 }
 
-.white-sheet {
+.page_content {
 	background-color:#FFF;
 	position:relative;
 	@extend %clearfix;
@@ -1663,6 +1665,8 @@ h1.title-sheet {
 ==== Event Create
 ======*/
 .create-event {
+
+	form { margin:0; }
 
 	table.form-table {
 		width:100%;

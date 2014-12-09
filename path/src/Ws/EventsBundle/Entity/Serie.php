@@ -43,12 +43,12 @@ class Serie
     /**
      * @ORM\Column(name="date_start", type="date", nullable=true)
      */
-    private $startDate;
+    private $startDate = null;
 
     /**
      * @ORM\Column(name="date_end", type="date", nullable=true)
      */
-    private $endDate;
+    private $endDate = null;
 
     /**
      * @ORM\Column(name="monday", type="boolean")

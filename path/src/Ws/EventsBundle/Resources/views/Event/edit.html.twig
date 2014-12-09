@@ -2,27 +2,18 @@
 
 {% block page_content %}
 
-    <div class="create-event">
-        <div class="fresque"></div>
-        <div class="white-sheet">           
-            <div class="head-sheet">        
-                <h1 class="title-sheet">
-                    Modifier votre activité
-                </h1>
-                <a href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}">Voir l'annonce - </a>
-                <a href="{{ path('ws_event_new') }}">Créer une nouvelle activité</a>
-            </div>
+    <div class="create-event">    
+        <div class="head-sheet">        
+            <h1 class="title-sheet">
+                Modifier votre activité
+            </h1>
+            <a href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}">Voir l'annonce - </a>
+            <a href="{{ path('ws_event_new') }}">Créer une nouvelle activité</a>
+        </div>
 
          {# include form block #}
         {% include 'WsEventsBundle:Event:form_template.html.twig' with {'form':form} %}
         {# /include #}
-
-        <div class="col_small">
-            <div class="block form-submit"></div>
-        </div>
-        
-        <div class="clearfix"></div>
-        <div class="fresque"></div>
     
     </div>
     

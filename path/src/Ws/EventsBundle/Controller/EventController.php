@@ -49,7 +49,7 @@ class EventController extends Controller
 
 			$event = $form->getData();			
 									
-			if($this->get('ws_events.manager')->saveAll($event)){
+			if($event = $this->get('ws_events.manager')->saveAll($event)){
 
 				//set flash message
 				$this->get('flashbag')->add('Bravo, votre activité est en ligne !','success');
@@ -63,7 +63,7 @@ class EventController extends Controller
 			else {
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');
 			}
-
+			
 			return $this->redirect($this->generateUrl('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
 		}             
 

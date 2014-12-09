@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 
 use Ws\SportsBundle\Form\Type\SelectSportType;
 use Ws\EventsBundle\Entity\Event;
@@ -68,49 +69,57 @@ class EventType extends AbstractType
 			))
 	;
 
-
-		$builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+		
+		$builder->addEventListener(FormEvents::SUBMIT, array($this,'onSubmit'));
 		$builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
-		$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this,'onPreSubmit'));
 	}
 
-	public function onPreSetData(FormEvent $event)
+	
+	/**
+	* Validate the date field
+	*
+	*/
+	public function onSubmit(FormEvent $event)
 	{
 		$form = $event->getForm();
 		$data = $event->getData();
-		$this->pre_event = clone($data);	
 
+		if($date = $data->getDate()){
+			if($date < new \DateTime('now')) $form->get('date')->addError(new FormError("Cette date doit être dans le futur..."));
+		}
+		
 	}
 
-	public function onPreSubmit(FormEvent $event)
-	{
-		$form = $event->getForm();
-		$data = $event->getData();
-	}
-
+	/**
+	* Set an array of changed values 
+	* 
+	*/
 	public function onPostSubmit(FormEvent $event)
 	{
-		$form = $event->getForm();
-		$this->post_event = $event->getData();
+		
+		
+		//Detect eventualy modification using php Reflector class
+		//If its is a modified event
+		if(NULL != $this->pre_event){
 
-		//Detect eventualy modification
-		//using php Reflector class
-		$reflector = new \ReflectionClass($this->post_event);
-		$properties = $reflector->getProperties();
-		$changes = array();
-		foreach ($properties as $property) {			
-			$property->setAccessible(true);			
-			if($property->getValue($this->pre_event) != $property->getValue($this->post_event)){				
-				$changes[$property->getName()] = array(
-					'pre' => $property->getValue($this->pre_event),
-					'post' => $property->getValue($this->post_event)
-					);
-			}			
+			$this->post_event = $event->getData();
+			$reflector = new \ReflectionClass($this->post_event);
+			$properties = $reflector->getProperties();
+			$changes = array();
+			foreach ($properties as $property) {			
+				$property->setAccessible(true);			
+				if($property->getValue($this->pre_event) != $property->getValue($this->post_event)){				
+					$changes[$property->getName()] = array(
+						'pre' => $property->getValue($this->pre_event),
+						'post' => $property->getValue($this->post_event)
+						);
+				}			
+			}
+			//set array of change to the event for future uses
+			$this->post_event->setChanges($changes);
+			$event->setData($this->post_event);
 		}
-		//set array of change to the event for future uses
-		$this->post_event->setChanges($changes);
 
-		$event->setData($this->post_event);
 		
 	}
 
@@ -124,6 +133,9 @@ class EventType extends AbstractType
 	{
 	    $resolver->setDefaults(array(
 	        'data_class' => 'Ws\EventsBundle\Entity\Event',
+	        'error_mapping' => array(
+	        	'InFutur' => 'date',
+	        	)
 	    ));
 	}
 }

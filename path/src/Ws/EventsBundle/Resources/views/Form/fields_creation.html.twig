@@ -2,7 +2,7 @@
 <div class="field_row field_{{ name }}  {% if valid == false %}field_error{% endif %}">
 	
         {% if icon is defined %}
-        	   <i class="icon {{ icon }}"></i>
+        	   <i class="icon {{ icon }}" title="{{ form.vars.label }}"></i>
         {% endif %}    
 
         {{ form_label(form) }}

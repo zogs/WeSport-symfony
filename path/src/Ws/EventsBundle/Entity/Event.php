@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContext;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Event
@@ -34,7 +33,6 @@ class Event
     private $title = null;
 
     /**
-     * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=255, unique=true)
      */
     private $slug;
@@ -157,17 +155,6 @@ class Event
         $this->participations = new ArrayCollection();
     }
 
-    /**
-    * @Assert\True(message = "La date doit être dans le futur")
-    */
-    public function isFutur()
-    {       
-        if(empty($this->date)) return true;
-        if($this->date == new \DateTime()) return true;
-        if($this->date > new \DateTime()) return true;
-        return false;
-    }
-    
 
     /**
      * Get Timing
@@ -236,7 +223,9 @@ class Event
      */
     public function getTitle()
     {
-        return $this->title;
+        if(!empty($this->title)) return $this->title;
+        if(isset($this->sport)) return $this->sport->getName();
+        return null;
     }
 
     /**

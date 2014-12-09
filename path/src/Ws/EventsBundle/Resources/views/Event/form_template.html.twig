@@ -1,6 +1,5 @@
 {% form_theme form 'WsEventsBundle:Form:fields_creation.html.twig' %}
 
-<div class="form">
     {{ form_start(form) }}
         {{ form_errors(form) }}
 
@@ -30,7 +29,7 @@
                             'placeholder':"Lieu ?",
                             'data-template-header':'<div class="tt-info tt-info-header">Veuillez choisir un lieu ci-dessous :</div>',
                             'data-template-footer':'<div class="tt-info tt-info-footer">ou vous pouvez créer un nouveau lieu !</div>',
-                            'data-template-empty':'<div class="tt-info tt-info-empty">Pas de résultats ... Merci de créer un nouveau lieu via le formulaire d\'à côté !</div>'
+                            'data-template-empty':'<div class="tt-info tt-info-empty">Hélas pas de résultats... Mais vous pouvez créer un nouveau lieu via le formulaire d\'à côté !!</div>'
                             },
                         'icon': "ws-icon-location2"
                         }
@@ -59,7 +58,7 @@
                     ) }}
                 </td>
                 <td class="cell-recur-date {% if form.serie.startdate.vars.errors|length or form.serie.enddate.vars.errors|length or form.serie.vars.errors|length %}cell-error{% endif %} {% if form.serie.startdate.vars.value or form.serie.startdate.vars.value %}cell-filled{% endif %}">
-                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Date récurrente ?</a>
+                    <a class="open-field" href="javascript:return false;" onclick="$(this).next().show();$(this).hide();">Toutes les semaines ?</a>
                     <div class="hidden">
                         {{ form_row(form.serie.startdate,{ attr:{ placeholder:"Date de début ?", 'class':"with_date_picker" }} ) }}
                         {{ form_row(form.serie.enddate,{ attr:{ placeholder:"Date de fin ?", 'class':"with_date_picker" }} ) }}
@@ -116,7 +115,8 @@
                     <div class="hidden">
                         {{ form_row(form.level,{ 
                             'empty_value': 'Niveau de jeu ?',
-                            'icon': 'ws-icon-star'
+                            'icon': 'ws-icon-star',
+                            'info': "Le niveau de jeu est une indication pour les participants..."
                             })
                         }}  
                         <a class="close-field" href="javascript:return false;" onclick="$(this).parent().hide().prev().show()"><span class="ws-icon-cancel-circle"></span></a>            
@@ -175,6 +175,4 @@
                         
         </table>    
         
-    {{ form_end(form) }}
-           
-</div>
+    {{ form_end(form) }}           

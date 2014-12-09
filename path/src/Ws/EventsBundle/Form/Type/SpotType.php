@@ -130,6 +130,10 @@ class SpotType extends AbstractType
 
     }
 
+    /**
+     * Set the Spot from the form date
+     *    
+     */
     public function onPreSubmit(FormEvent $event)
     {
         $form = $event->getForm();
@@ -139,35 +143,30 @@ class SpotType extends AbstractType
 
         //get spot from spot_id
         if(!empty($data['spot_id'])){
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']); 
-
-            //show error on spot_slug field
-            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas...");        
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']);   
+            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas..."); //show error on spot_slug field       
         }    
         //else from spot_slug
         elseif(!empty($data['spot_slug'])){
             $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug']);    
-
-            //show error on spot_slug field
-            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas...");
+            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas..."); //show error on spot_slug field
         }        
         //else try creating new spot
-        elseif(!empty($data['location']) && (!empty($data['name'] || !empty($data['address'])))){
+        elseif(!empty($data['location'])){            
+
+            //get location from city_id or city_name
+            if(!empty($data['location']['city_id']))                
+                $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['location']['city_id']);            
+            elseif(!empty($data['location']['city_name']))             
+                $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['location']['city_name']);
+            //trigger an error if the city cant be find
+            if(NULL == $location) $this->errors[] = array('location.city_name',"Cette ville n'existe pas...");
+            //trigger an error if the name of the spot is not defined
+            if(empty($data['name'])) $this->errors[] = array('name',"Le nom de l'endroit doit être rempli...");
 
             $spot = new Spot();
             $spot->setName($data['name']);
             $spot->setAddress($data['address']);
-
-            //get location from city_id or city_name
-            if(!empty($data['location']['city_id'])){                
-                $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['location']['city_id']);
-            }
-            elseif(!empty($data['location']['city_name'])){                
-                $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['location']['city_name']);
-            }
-            //else trigger an error
-            if(NULL == $location) $this->errors[] = array('location.city_name',"Cette ville n'existe pas...");
-
             $spot->setLocation($location);
             
         }
@@ -179,11 +178,17 @@ class SpotType extends AbstractType
 
     }
 
+    /**
+    * Triggers errors of the form
+    *
+    * (PRE_SUBMIT cant trigger error itself, because Symfony SUBMIT routine reset all errors at first )
+    */
     public function onSubmit(FormEvent $event)
     {
         $form = $event->getForm();
         $spot = $form->getData();        
                 
+        //
         //set errors if exist
         if(!empty($this->errors)){
             //for each errors

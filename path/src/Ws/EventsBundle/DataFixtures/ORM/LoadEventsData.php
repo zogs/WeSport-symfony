@@ -16,6 +16,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 
 		$event1 = new Event();
 		$event1->setTitle("Petit match entre amis");
+		$event1->setSlug($event1->getTitle().'-1');
 		$today = new \DateTime();
 		$event1->setDate($today); 
 		$event1->setTime($today);
@@ -38,6 +39,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 
 			$event = new Event();
 			$event->setTitle("Cherche copain nageur");
+			$event->setSlug($event->getTitle().'-'.$i);
 			$today = new \DateTime();
 			$event->setDate($today->modify('+'.$i.' days'));
 			$event->setTime($today->modify('+'.$i.' hours'));
@@ -61,6 +63,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 
 			$event = new Event();
 			$event->setTitle("Capoera !");
+			$event->setSlug($event->getTitle().'-'.$i);
 			$d = $i*2;
 			$today = new \DateTime();
 			$event->setDate($today->modify('+'.$d.' days'));

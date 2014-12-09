@@ -4,48 +4,19 @@
 
 {% block page_content %}
 
-    <div class="create-event">
-        <div class="fresque"></div>
-        <div class="white-sheet">           
-            <div class="head-sheet">        
-                <h1 class="title-sheet">
-                    Nouvelle activité !
-                </h1>
-            </div>
+    <div class="create-event"> 
+        <div class="fresque"></div>       
+        <div class="head-sheet">        
+            <h1 class="title-sheet">
+                Nouvelle activité !
+            </h1>
+        </div>
 
         {# include form block #}
         {% include 'WsEventsBundle:Event:form_template.html.twig' with {'form':form} %}
         {# /include #}
-        
-        <div class="col_small">
-
-             <div class="block block-yellow ">
-                <h3>Comment ça marche?</h3>
-                <div class="block-content">
-                    <ul class="event-create-howto">
-                        <li>
-                            Vous pouvez créer une activité à une <strong>date précise</strong> ou à une <strong>date régulière</strong>.<small> (ex: tous les lundis et mercredi du mois de Juin)</small>
-                        </li>
-                        <li>
-                            L'activité est <strong>confirmé</strong> quand le nombre minimum attendu <strong>est atteint</strong>. <small>Les participants recoivent un email confirmant que l'activité a bien lieu.</small>
-                        </li>
-                        <li>
-                            L'adresse et le téléphone ne sont <strong>visible que par</strong> les membres We-Sport inscrits.
-                        </li>
-                        <li>
-                            Tous les champs sont <strong>obligatoires</strong>, sauf le téléphone.
-                        </li>
-                        <li>
-                            L'annonce est <strong>modifiable</strong> jusqu'à ce que l'activité soit <strong>confirmé</strong>. <small>Les changements sont envoyés par email aux participants déjà inscrits.</small>
-                        </li>
-                    </ul>
-                </div>
-            </div> 
-        </div>
-        
-        <div class="clearfix"></div>
-        <div class="fresque"></div>
-    
+             
+        <div class="fresque"></div>      
     </div>
     
 {% endblock %}
