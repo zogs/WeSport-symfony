@@ -66,15 +66,13 @@ class CalendarSearchType extends AbstractType
             )       
             ->add('level','choice',array(
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
                 'required' => false,
                 'choices' => Event::$valuesAvailable['level'],
                 ))
             ->add('timestart','time',array(
                 'widget'=>'choice',
                 'input'=>'string',
-                'model_timezone'=>'Europe/Paris',
-                'view_timezone'=>'Europe/Paris',
                 'with_seconds'=>false,
                 'hours'=>array(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0),
                 'minutes'=>array(0),
@@ -84,8 +82,6 @@ class CalendarSearchType extends AbstractType
             ->add('timeend','time',array(
                 'widget'=>'choice',
                 'input'=>'string',
-                'model_timezone'=>'Europe/Paris',
-                'view_timezone'=>'Europe/Paris',
                 'with_seconds'=>false,
                 'hours'=>array(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0),
                 'minutes'=>array(0),
@@ -95,7 +91,7 @@ class CalendarSearchType extends AbstractType
             ->add('dayofweek','choice',array(
                 'choices'=>array('Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'),
                 'multiple'=>true,
-                'expanded'=>true,
+                'expanded'=>false,
                 'required'=>false,
                 ))
             ->add('organizer','entity',array(
