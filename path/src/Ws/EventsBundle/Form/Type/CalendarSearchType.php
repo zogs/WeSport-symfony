@@ -15,6 +15,7 @@ use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Manager\CalendarManager;
 use Ws\SportsBundle\Form\Type\SelectSportType;
 use My\WorldBundle\Form\Type\AutoCompleteCityType;
+use My\UtilsBundle\Form\DataTransformer\TimeToDatetimeTransformer;
 
 
 class CalendarSearchType extends AbstractType
@@ -46,10 +47,10 @@ class CalendarSearchType extends AbstractType
             ->add('type','choice',array(
                 'choices'=>Event::$valuesAvailable['type'],
                 'multiple'=>true,
-                'expanded'=>true,
+                'expanded'=>false,
                 'required'=>true,                
                 ))
-            ->add('price','text',array(
+            ->add('price','integer',array(
                 'required'=>false,
                 ))
             ->add('sports','entity',array(                                    
@@ -61,7 +62,7 @@ class CalendarSearchType extends AbstractType
                     'mapped' => true,
                     'group_by' => 'category',
                     'required' => false,
-                    'attr'=>array('class'=>'sportSelection','multiple'=>true,'data-placeholder'=>'Choississez un ou plusieurs sports')
+                    'attr'=>array('class'=>'sportSelection','multiple'=>true)
                     )
             )       
             ->add('level','choice',array(
@@ -70,24 +71,14 @@ class CalendarSearchType extends AbstractType
                 'required' => false,
                 'choices' => Event::$valuesAvailable['level'],
                 ))
-            ->add('timestart','time',array(
-                'widget'=>'choice',
-                'input'=>'string',
-                'with_seconds'=>false,
-                'hours'=>array(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0),
-                'minutes'=>array(0),
-                'empty_value' => "A partir de:",
+            ->add($builder->create('timestart','text',array(                
                 'required' => false,
-                ))
-            ->add('timeend','time',array(
-                'widget'=>'choice',
-                'input'=>'string',
-                'with_seconds'=>false,
-                'hours'=>array(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0),
-                'minutes'=>array(0),
-                'empty_value' => "Avant :",
+                ))->addModelTransformer(new TimeToDatetimeTransformer('H:i'))
+            )
+            ->add($builder->create('timeend','text',array(
                 'required' => false,
-                ))
+                ))->addModelTransformer(new TimeToDatetimeTransformer('H:i'))
+            )
             ->add('dayofweek','choice',array(
                 'choices'=>array('Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'),
                 'multiple'=>true,

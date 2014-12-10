@@ -62,6 +62,10 @@ $(document).ready(function() {
 		format: 'H:i',
 		step:30,
 		defaultTime:'13:00'
-	})
+	});
+
+	$('select.with_checkboxlist').dropdownchecklist({
+		minWidth:200,
+	});
 
 });

@@ -1,0 +1,16 @@
+{% block form_row %}
+<div class="field-inline field-{{ name }}  {% if valid == false %}field-error{% endif %}">
+	
+        {% if icon is defined %}
+        	   <i class="icon {{ icon }}" title="{{ form.vars.label }}"></i>
+        {% endif %}    
+
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+
+        {% if info is defined %}
+            <div class="form-info">{{ info }}</div>
+        {% endif  %}
+</div>
+{% endblock form_row %}

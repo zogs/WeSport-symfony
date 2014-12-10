@@ -1,40 +1,102 @@
 {% extends '::layout_centered.html.twig' %}
+{% form_theme form 'WsEventsBundle:Form:block-form-alert.html.twig' %}
+
 
 {% block page_content %}
 
-    <div class="createAlert">
+    <div class="create-alert">
         <div class="fresque"></div>
-        <div class="white-sheet">           
-            <div class="head-sheet">        
-                <h1 class="title-sheet">
-                   Créé une alerte !
-                </h1>
-            </div>
-
-        <div class="col_large">
-            {{ form_start(form) }}
-                {{ form_errors(form) }}
-
-                {{ form_row(form.email) }}
-                {{ form_row(form.frequency) }}
-                {{ form_row(form.duration) }}
-                {{ form_widget(form.search.location.city_id, {'id':'city_id','required':'required','attr':{'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
-                {{ form_row(form.search.location.city_name,{'id':'city_name'}) }}
-                {{ form_row(form.search.area) }}
-                {{ form_row(form.search.type) }}
-                {{ form_row(form.search.price) }}
-                {{ form_row(form.search.sports) }}
-                {{ form_row(form.search.level) }}
-                {{ form_row(form.search.timestart) }}
-                {{ form_row(form.search.timeend) }}
-                {{ form_row(form.search.dayofweek) }}
-
-             {{ form_end(form) }}      
+        <div class="head-sheet">      
+            <h1 class="title-sheet">
+               Créer une alerte !
+            </h1>
         </div>
 
-        <div class="col_small">
-           
-        </div>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <table class="form-table">
+                <tr class="form-row">
+                    <td>
+                        {{ form_row(form.frequency,{
+                            'label': "Je veux recevoir des alertes "
+                        }) }}
+                        {{ form_row(form.duration,{
+                            'label': "pendant "
+                        }) }}
+                        {{ form_row(form.email,{
+                            'label': " à l'adresse "
+                        }) }}                        
+                    </td>
+                </tr>
+
+                <tr class="form-row">
+                    <td>
+                        {{ form_row(form.search.sports,{
+                            'label': "Concernant les sports ",
+                        }) }}
+                        {{ form_row(form.search.level,{
+                            'label': " de niveaux ",
+                            'attr': {'class': 'with_checkboxlist'}
+                        }) }}                                                
+                    </td>
+                </tr>
+
+                <tr class="form-row">
+                    <td>
+                        {{ form_row(form.search.type,{
+                            'label': " Organisé par ",
+                            'attr': {'class':'with_checkboxlist'}
+                        }) }}
+                        {{ form_row(form.search.price,{
+                            'label': " d'un prix inférieur à "
+                        }) }}
+                    </td>
+                </tr>
+
+                <tr class="form-row">
+                    <td>
+                        {{ form_widget(form.search.location.city_id,{'id':'city_id','required':'required','attr':{'data-autocomplete-url':url('my_world_autocompletecity')}}) }}
+                        {{ form_row(form.search.location.city_name,{
+                            'id':'city_name',
+                            'label': "Dans la ville de ",
+                        }) }}
+                        {{ form_row(form.search.area,{
+                            'label': " et dans un rayon de "
+                        }) }}                        
+                    </td>
+                </tr>
+
+                <tr class="form-row">
+                    <td>
+                        {{ form_row(form.search.dayofweek,{
+                            'label': "Les jours suivants ",
+                            'attr': {'class': 'with_checkboxlist'},
+                        }) }}                        
+                        {{ form_row(form.search.timestart,{
+                            'label': " entre ",
+                            'attr': {'class':'with_time_picker'},
+                        }) }}
+                        {{ form_row(form.search.timeend,{
+                            'label': " et ",
+                            'attr': {'class':'with_time_picker'},
+                        }) }}
+                    </td>
+                </tr>
+
+                <tr class="form-row">
+                    <td class="cell-hidden">
+                        {{ form_row(form.search.organizer) }}
+                    </td>
+                </tr>
+
+                <tr class="form-row">
+                    <td class="cell-submit">
+                        <button type="submit" class="btn-ws btn-small">Sauvegarder</button>
+                    </td>
+                </tr>
+        </table>
+
+        {{ form_end(form) }}      
         
         <div class="clearfix"></div>
         <div class="fresque"></div>

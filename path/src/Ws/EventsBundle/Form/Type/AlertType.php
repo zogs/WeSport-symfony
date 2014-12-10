@@ -34,7 +34,7 @@ class AlertType extends AbstractType
                 ))
             ->add('frequency','choice',array(
                 'choices'=>array('daily'=>'Tous les jours','weekly'=>'Une fois par semaine'),
-                'expanded'=> true,
+                'expanded'=> false,
                 'multiple'=> false,
                 'required'=> true,
                 'data' => 'daily',                
@@ -49,8 +49,6 @@ class AlertType extends AbstractType
                 'data'=> 3,
                 ))
             ->add('search','calendar_search_type')
-
-            ->add('submit','submit')
             ;
     		
             $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
