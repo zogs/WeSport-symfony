@@ -1,0 +1,41 @@
+{# Les annonces de #}
+		<span>Les annonces de</span>
+		
+		{# Football Volley Kayak #}
+		{% for sport in alert.search.sports %}
+			<strong> {{ sport.name}} </strong>
+		{% endfor %}
+		
+		{# à Montpellier #}
+		<span>à <strong>{{ alert.search.location.city.name }}</strong></span>
+
+		{# étendu de 50km #}
+		{% if alert.search.area %}<span> étendu de <strong>{{ alert.search.area }}km</strong></span>{% endif %}
+
+		{# de niveau débutant #}
+		{% if alert.search.hasLevel %}<span> de niveaux <strong>{% for level in alert.search.level %} {{ level }} </strong>{% endfor %}</span>{% endif %}
+
+		{# organisé par #}
+		{% if alert.search.hasType %}<span> organisé par <strong>{% for type in alert.search.type %} {{ type }} </strong>{% endfor %}</span>{% endif %}
+
+		{# d'un prix inférieur à #}
+		{% if alert.search.price %}<span> d'un prix inférieur à <strong>{{ alert.search.price }}€</strong></span>{% endif %}
+
+		{# les lundi mardi jeudi #}
+		{% if alert.search.hasDayOfWeek %}<span> les <strong>{% for day in alert.search.dayOfWeek %} {{ day }}, {% endfor %}</strong></span>{% endif %}
+
+		{# entre 10h et 14h #}
+		{% if alert.search.hasTime %}<span> entre <strong>{{ alert.search.time.start|date('H:i') }}</strong> et <strong>{{ alert.search.time.end|date('H:i') }}</strong></span>{% endif %}
+
+		{# tout les jours | une fois par semaine #}
+		{% if alert.frequency == 'daily' %}
+			<span> chaque jours </span>
+		{% elseif alert.frequency == 'weekly' %}
+			<span> une fois par semaine</span>
+		{% endif %}
+
+		{# jusqu'au 14 septembre #}
+		<span> jusqu'au {{ alert.dateStop|date('d/m/Y') }}</span>
+
+		{# à l'adresse email #}
+		<span> à l'adresse <strong>{{ alert.email }}</strong></span>

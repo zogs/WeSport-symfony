@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 
 use My\WorldBundle\Entity\Location;
 
@@ -59,6 +60,7 @@ class CityToLocationType extends AbstractType
             ;
 
        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+       $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
     }
 
 
@@ -82,6 +84,23 @@ class CityToLocationType extends AbstractType
 
     }
     
+    /**
+     * onSubmit
+     * 
+     * Trigger a FormError if Location is not find
+     * 
+     * @param FormEvent $event
+     */
+    public function onSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        if($data == null){
+            $form->get('city_name')->addError(new FormError("Cette ville ne semble pas exister ..."));
+        }
+    }
+
     /**
      * @param OptionsResolverInterface $resolver
      */

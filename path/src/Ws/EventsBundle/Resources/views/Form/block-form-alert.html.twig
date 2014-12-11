@@ -6,8 +6,11 @@
         {% endif %}    
 
         {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
+        {{ form_widget(form) }}        
+
+        {% if form.vars.errors|length %}
+            {{ form_errors(form) }}
+        {% endif %}
 
         {% if info is defined %}
             <div class="form-info">{{ info }}</div>

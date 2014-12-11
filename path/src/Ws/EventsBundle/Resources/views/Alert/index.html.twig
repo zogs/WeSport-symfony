@@ -11,63 +11,54 @@
                 </h1>
             </div>
 
+        <table class="list-table table-striped">
 
-           {% for alert in alerts %}
-                   <table width="100%">
-                       <tr>
-                            <td>
-                              Envoi {{ alert.frequency }}
-                            </td>
-                           <td>
-                               Jusqu'au {{ alert.dateStop|date('Y-m-d') }}
-                           </td>
-                           <td>
-                               à {{ alert.search.location.city.name }}
-                           </td>                           
-                           <td>
-                             concernant : 
-                             {% for sport in alert.search.sports %}
-                             
-                                  {{ sport.name }} ,
-                              {% endfor %}
-                           </td>
-                           <td>
-                             du type :
-                             {% for type in alert.search.type %}
-                              	{{ type }} ,
-                             {% endfor %}
-                           </td>
-                           <td>
-                           	de {{ alert.search.time.start }} à {{ alert.search.time.end }}
-                           </td>
-                           <td>
-                           	d'un prix inférieur à {{ alert.search.price }}
-                           </td>
-                           <td>
-                           {% if alert.search.organizer is not null %}
-                           		de l'utilisateur {{ alert.search.organizer.username }}
-                           	{% else %}
-                           		de tous les utilisateurs
-                           {% endif %}
-                           </td>
-                           <td>
-                           	les jours suivant : 
-                           	{% for day in alert.search.dayOfWeek %}
-                           		{{ day }}
-                           	{% endfor %}
-                           </td>
-                           <td>
-                               <a href="{{ path('ws_alerts_delete',{alert:alert.id}) }}">Supprimer</a>
-                           </td>
-                       </tr>
-                   </table>
-            {% endfor %}
+		{% for alert in alerts %}
 
-            {% if alerts is empty %}
-              <p>Pas d'alerte créé. <a href="{{path('ws_alerts_create')}}">En créer une !</a></p>
-            {% endif %}
+			<tr class="{% if alert.active %}row-alert-active{% else %}row-alert-pending{% endif %}">
+				<td class="cell-status">
+					{% if alert.active %}
+						<span class="ws-icon ws-icon-checkmark-circle"></span>
+						En cours
+					{% else %}
+						<span class="ws-icon ws-icon-blocked"></span>
+						Stopé
+					{% endif %}		
+				</td>
+
+				<td class="cell-resume">					
+					{{ alert|alertContext|raw }}								
+				</td>
+
+				<td class="cell-frequency">
+					{{ alert|alertFrequency|raw }}
+				</td>
+				
+				<td class='cell-action'>
+					<p><a class="btn btn-mini" href="{{ path('ws_alerts_delete',{alert:alert.id}) }}">Supprimer</a></p>	
+
+					{% if alert.active %}
+						<p><a class="btn btn-mini" href="{{ path('ws_alerts_disable',{alert:alert.id}) }}">Désactiver</a></p>
+					{% else %}
+						<p><a class="btn btn-mini" href="{{ path('ws_alerts_enable',{alert:alert.id}) }}">Réactiver</a></p>
+					{% endif %}
+				</td>
+			</tr>
+
+		{% endfor %}
+
+			<tr class="row-bottom">
+				<td colspan="4">
+					<a class="btn-ws btn-small" href="{{ path('ws_alerts_create') }}">Créer une alerte</a>	
+					{% if alerts is empty %}
+						<i>Pas encore d'alerte crées</i>
+					{% endif %}
+				</td>
+			</tr>
+
+
+         </table>
                    
-        <a href="{{ path('ws_alerts_create') }}">Créer une autre alerte</a>
         <div class="clearfix"></div>
         <div class="fresque"></div>
     

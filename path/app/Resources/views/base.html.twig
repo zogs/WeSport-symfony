@@ -80,10 +80,21 @@
                             'max': 3
                         })) }}
                         
-                        <li><a href="{{ path('blog_homepage')}}">Blog</a></li>
+                        <li>
+                            <a href="{{ path('ws_alerts_index') }}">Alertes</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('blog_homepage')}}">Blog</a>
+
+                        </li>
+
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{path('sonata_admin_dashboard', {}) }}">-Admin.-</a></li>
+                        <li>
+                            <a href="{{path('sonata_admin_dashboard', {}) }}">-Admin.-</a>
+                        </li>
                         {% endif %}
+
                     </ul>
 
                     <ul class="nav pull-right">

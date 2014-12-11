@@ -42,6 +42,18 @@ class AlertManager extends AbstractManager
 		return true;
 	}
 
+	public function disableAlert($alert)
+	{
+		$alert->setActive(false);
+		return $this->save($alert,true);
+	}
+
+	public function enableAlert($alert)
+	{
+		$alert->setActive(true);
+		return $this->save($alert,true);
+	}
+
 	public function saveAlerted(Alert $alert, $events)
 	{
 		$alert->setNbEmails($alert->getNbEmails()+1);

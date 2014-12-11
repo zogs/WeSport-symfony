@@ -127,6 +127,16 @@ ws_alerts_delete:
     defaults: { _controller: WsEventsBundle:Alert:delete }
     requirements:
         _method: GET|POST
+ws_alerts_disable:
+    pattern: /alert/disable/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:disable }
+    requirements:
+        _method: GET|POST
+ws_alerts_enable:
+    pattern: /alert/enable/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:enable }
+    requirements:
+        _method: GET|POST
 ws_alerts_extend:
     pattern: /alert/extend/{nbmonth}/{alert}
     defaults: { _controller: WsEventsBundle:Alert:extend }

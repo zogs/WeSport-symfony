@@ -72,6 +72,10 @@ services:
         arguments: [@router]
         tags:
             - { name: twig.extension }
+    ws_events.twig.alertResume:
+        class: Ws\EventsBundle\Twig\AlertResumeExtension
+        tags:
+            - { name: twig.extension }
 
     #Event Listner
     ws_events.listener.events:

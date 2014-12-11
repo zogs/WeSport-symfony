@@ -1675,7 +1675,7 @@ table.form-table {
 		width:100%;
 
 		tr.form-row {
-			border:1px solid rgba(0,0,0,0.05);
+			border-bottom:1px solid rgba(0,0,0,0.05);
 			td { text-align:left;}
 		}
 		tr.form-row:nth-child(1) { background-color: #f8edec }
@@ -1683,8 +1683,83 @@ table.form-table {
 		tr.form-row:nth-child(3) { background-color: #ececec }
 		tr.form-row:nth-child(4) { background-color: #eff8ef }
 		tr.form-row:nth-child(5) { background-color: #e8f4ed }
-		tr.form-row:nth-child(n+5) { background-color: #e8f4ed }
+		tr.form-row:nth-child(n+5) { background-color: #e8f4ed; border-bottom:0px solid #000; }
 		
+}
+
+
+/*=== Alert Index====*/
+table.list-table {
+	width:100%;
+	margin-bottom:100px;
+
+	tr.row-alert-active {
+		td{
+			background-color:#E8F4ED;
+		}	
+		td.cell-status {
+			color:$darkgreen;
+			span.ws-icon {
+				color:$deepgreen;
+			}
+		}	
+	}
+	tr.row-alert-pending {
+		td{
+			background-color:#ECECEC;
+		}	
+		td.cell-status {
+			color:$softgrey;
+			span.ws-icon {
+				color:$deepgrey;
+			}
+		}	
+	}
+
+	tr{
+		padding:0 5%;
+		td {
+			color: $deepgrey;
+			padding:20px 20px;
+			text-align:left;
+			vertical-align: top;
+		}
+		td.cell-status {
+			width:20%;			
+
+			font-weight: bold;
+			text-align:left;
+			vertical-align: middle;
+			@include rem(15);
+			span.ws-icon { @include rem(50); }			
+		}
+
+		td.cell-resume {
+			width:40%;
+		}
+
+		td.cell-frequency {
+			width:30%;
+		}
+
+		td.cell-action {
+			width:10%;
+			text-align:right;
+
+		}
+
+		
+	}
+
+	tr.row-bottom {
+		td {
+			padding:50px 20px;
+		}
+	}
+
+	tr.row-alert-pendinf {
+
+	}
 }
 
 /*==== Alert Create======*/
@@ -1719,7 +1794,7 @@ table.form-table {
 
 			display:inline-block;
 			width:auto;
-			margin:5px 0;
+			margin:10px 5px;
 
 			label,input,select {
 				display: inline-block;
@@ -1785,7 +1860,8 @@ table.form-table {
 					@extend %alert-input-font;
 				}
 				.ui-state-hover {
-					background-color: #FFF;
+					background-color: #3875D7;
+					.ui-dropdownchecklist-text { color:#FFF; }
 				}
 			}
 			.twitter-typeahead {

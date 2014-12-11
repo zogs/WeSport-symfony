@@ -97,6 +97,28 @@ class AlertController extends Controller
 		return $this->redirect($this->generateUrl('ws_alerts_index'));
 	}
 
+	public function disableAction(Alert $alert)
+	{
+		if($this->getUser() != $alert->getUser()) throw new Exception("Sorry but you can't disable someone else's alert", 1);
+
+		$this->get('ws_events.alert.manager')->disableAlert($alert);
+
+		$this->get('flashbag')->add("Alerte désactivé !","success");
+
+		return $this->redirect($this->generateUrl('ws_alerts_index'));
+	}
+
+	public function enableAction(Alert $alert)
+	{
+		if($this->getUser() != $alert->getUser()) throw new Exception("Sorry but you can't enable someone else's alert", 1);
+
+		$this->get('ws_events.alert.manager')->enableAlert($alert);
+
+		$this->get('flashbag')->add("Alerte réactivé !","success");
+
+		return $this->redirect($this->generateUrl('ws_alerts_index'));
+	}
+
 	public function extendAction(Alert $alert, $nbmonth){
 
 		if($this->get('ws_events.alert.manager')->extendAlert($alert,$nbmonth)){

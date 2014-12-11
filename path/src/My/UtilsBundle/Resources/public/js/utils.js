@@ -65,7 +65,7 @@ $(document).ready(function() {
 	});
 
 	$('select.with_checkboxlist').dropdownchecklist({
-		minWidth:200,
+		minWidth:250,
 	});
 
 });
