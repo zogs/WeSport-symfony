@@ -518,7 +518,16 @@ class CalendarManager extends AbstractManager
     	if(isset($this->params['timestart'])) $time['start'] = $this->formatTime($this->params['timestart']);
     	if(isset($this->params['timeend'])) $time['end'] = $this->formatTime($this->params['timeend']);
 
-    	$this->search->setTime($time);
+    	if(isset($time['start'])){
+    		$d = \DateTime::createFromFormat('H:i:s',$time['start']);
+    		$this->search->setTimeStart($d);
+    	}
+
+    	if(isset($time['end'])){
+    		$d = \DateTime::createFromFormat('H:i:s',$time['end']);
+    		$this->search->setTimeEnd($d);
+    	} 
+    	
     	return;
     }
 

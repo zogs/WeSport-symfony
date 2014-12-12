@@ -9,10 +9,11 @@ use Ws\EventsBundle\Entity\Event;
 
 class AlertResumeExtension extends \Twig_Extension
 {
+    private $translator;
 
-    public function __construct()
+    public function __construct($translator)
     {
-
+        $this->translator = $translator;
     }
 
     public function getFilters()
@@ -53,18 +54,18 @@ class AlertResumeExtension extends \Twig_Extension
 
         // de niveau débutant 
         if($search->hasLevel()){
-            $tx .= '<span> de niveaux <strong>';
-            foreach ($search->getLevel() as $key => $level) {
-                $tx .= Event::$valuesAvailable['level'][$level].' ';
+            $tx .= '<span> de niveaux <strong>';            
+            foreach ($search->getLevelNames() as $key => $level) {
+                $tx .= $this->translator->trans('event.level.'.$level).' ';
             }
             $tx .= '</strong></span>';
         }        
 
         // organisé par 
         if($search->hasType()){
-            $tx .= '<span> organisé par <strong>';
-            foreach ($search->getType() as $key => $type) {
-                $tx .= Event::$valuesAvailable['type'][$type].' ';
+            $tx .= '<span> organisé par des<strong>';
+            foreach ($search->getTypeNames() as $key => $type) {
+                $tx .= $this->translator->trans('user.types.'.$type,array(),'MyUserBundle').' ';
             }
             $tx .= '</strong></span>';
         }        
@@ -82,8 +83,8 @@ class AlertResumeExtension extends \Twig_Extension
         }
         
         // entre 10h et 14h 
-        if($search->hasTime()) $tx .= '<span> entre <strong>'.$search->getTimeStart()->format('H:i').'</strong> et <strong>'.$search->getTimeEnd()->format('H:i').'</strong></span>';        
-
+        if($search->hasTime())  $tx .= '<span> entre <strong>'.$search->getTime('start').'</strong> et <strong>'.$search->getTime('end').'</strong></span>';        
+        
         
         
         return $tx;

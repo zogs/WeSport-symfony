@@ -750,6 +750,16 @@ class Event
      */
     public function getType()
     {
+        return self::$valuesAvailable['level'][$this->type];
+    }
+
+    /**
+     * Get type number
+     *
+     * @return string 
+     */
+    public function getTypeNumber()
+    {
         return $this->type;
     }
 

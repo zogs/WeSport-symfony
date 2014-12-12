@@ -1,0 +1,9 @@
+user:
+    type:
+        person: particulier
+        asso: association
+        pro: profesionnel
+    types:
+        person: particuliers
+        asso: associations
+        pro: profesionnels

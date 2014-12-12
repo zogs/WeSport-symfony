@@ -78,9 +78,14 @@ class Search
     private $type = array();
 
     /**
-    * @ORM\Column(name="time", type="string")
+    * @ORM\Column(name="timestart", type="datetime")
     */
-    private $time = array();
+    private $timestart = null;
+
+    /**
+    * @ORM\Column(name="timeend", type="datetime")
+    */
+    private $timeend = null;
 
     /**
     * @ORM\Column(name="price", type="integer", nullable=true)
@@ -99,15 +104,12 @@ class Search
     */
     public $organizer = null;
 
-    public $country;
-    public $timestart = null;
-    public $timeend = null;   
+    public $country; 
     public $raw_data = null;
     public $url = null;
     public $url_params = null;
     public $short_url_params = null;
     private $default = array( //usefull ?
-        'time' => array('start'=>'00:00:00','end'=>'24:00:00'),
         'day_of_week' => array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'),
         );
 
@@ -123,7 +125,6 @@ class Search
     public function onPrePersist()
     {
         if(is_array($this->type)) $this->type = json_encode($this->type, JSON_FORCE_OBJECT);
-        if(is_array($this->time)) $this->time = json_encode($this->time, JSON_FORCE_OBJECT);
         if(is_array($this->level)) $this->level = json_encode($this->level, JSON_FORCE_OBJECT);
         if(is_array($this->day_of_week)) $this->day_of_week = json_encode($this->day_of_week, JSON_FORCE_OBJECT);
         $this->date_created = new \DateTime();
@@ -135,7 +136,6 @@ class Search
     public function onPostLoad()
     {;
         $this->type = json_decode($this->type, JSON_FORCE_OBJECT);
-        $this->time = json_decode($this->time, JSON_FORCE_OBJECT);
         $this->level = json_decode($this->level, JSON_FORCE_OBJECT);
         $this->day_of_week = json_decode($this->day_of_week, JSON_FORCE_OBJECT);
     }
@@ -334,6 +334,11 @@ class Search
         return $this->type;
     }
 
+    public function getTypeNames()
+    {
+        return array_map(function($n){ return Event::$valuesAvailable['type'][$n]; },$this->type);
+    }
+
     public function getTypeKeys()
     {
         return array_keys($this->type);
@@ -402,9 +407,9 @@ class Search
         return false;
     }
 
-    public function setTimeStart($t)
+    public function setTimeStart(\Datetime $datetime)
     {
-        $this->timestart = $t;
+        $this->timestart = $datetime;
     }
 
     public function getTimeEnd()
@@ -418,9 +423,9 @@ class Search
         return false;
     }
 
-    public function setTimeEnd($t)
+    public function setTimeEnd(\Datetime $datetime)
     {
-        $this->timeend = $t;
+        $this->timeend = $datetime;
     }
 
     public function getPrice()
@@ -442,6 +447,11 @@ class Search
     public function getLevel()
     {
         return $this->level;
+    }
+
+    public function getLevelNames()
+    {
+        return array_map(function($i){ return self::$valuesAvailable['level'][$i];},$this->level);
     }
 
     public function hasLevel()

@@ -74,6 +74,7 @@ services:
             - { name: twig.extension }
     ws_events.twig.alertResume:
         class: Ws\EventsBundle\Twig\AlertResumeExtension
+        arguments: [@translator]
         tags:
             - { name: twig.extension }
 

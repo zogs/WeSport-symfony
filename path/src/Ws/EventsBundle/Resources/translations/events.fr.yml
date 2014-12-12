@@ -1,0 +1,7 @@
+event:
+    level:
+        all: tous niveaux
+        beginner: débutant
+        average: moyen
+        confirmed: confirmé
+        expert: expert
