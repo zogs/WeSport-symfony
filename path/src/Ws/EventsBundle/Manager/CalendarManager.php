@@ -46,12 +46,12 @@ class CalendarManager extends AbstractManager
 		'area'=>null,
 		'sports'=> array(), //array(67,68,72)
 		'nbdays'=>7,
-		'type' => array('pro','asso','person'),
-		'time' => array('start'=>'00:00:00','end'=>'00:00:00'),
+		'type' => array('pro','asso','person'),	
+		'time' => array(),	
 		'timestart'=> null,
 		'timeend' => null,
 		'price' => null,
-		'level' => array('all','beginner','average','confirmed','expert'),
+		'level' => array('all'),
 		'organizer' => null,
 		'dayofweek'=>array(),
 
@@ -459,7 +459,6 @@ class CalendarManager extends AbstractManager
 
 	private function prepareLevelParams()
 	{
-		
 		if(empty($this->params['level'])) return ;		
 		if(is_string($this->params['level']) && $this->params['level'] == $this->urlGenerator->defaults['level']) return; //if equal to URL default value
 
@@ -480,7 +479,7 @@ class CalendarManager extends AbstractManager
 		if(count(array_diff(Event::$valuesAvailable['level'],$a)) == 0) {
 			
 			$a = $valuesAvailable['level'];
-		}
+		}	
 
 		$this->search->setLevel($a);		
 

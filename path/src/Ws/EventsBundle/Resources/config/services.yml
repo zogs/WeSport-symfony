@@ -97,6 +97,12 @@ services:
         scope: container
         tags:
             - { name: kernel.event_subscriber }
+    ws_events.listener.alert:
+        class: Ws\EventsBundle\EventListener\AlertListener
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        scope: container
+        tags:
+            - { name: kernel.event_subscriber }
 
     #Enable Init Method for all the controller that implements InitControllerInterface
     symfony.controller.subscriber.init:

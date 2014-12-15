@@ -78,12 +78,12 @@ class Search
     private $type = array();
 
     /**
-    * @ORM\Column(name="timestart", type="datetime")
+    * @ORM\Column(name="timestart", type="datetime", nullable=true)
     */
     private $timestart = null;
 
     /**
-    * @ORM\Column(name="timeend", type="datetime")
+    * @ORM\Column(name="timeend", type="datetime", nullable=true)
     */
     private $timeend = null;
 
@@ -445,18 +445,18 @@ class Search
     }
 
     public function getLevel()
-    {
+    {        
         return $this->level;
     }
 
     public function getLevelNames()
     {
-        return array_map(function($i){ return self::$valuesAvailable['level'][$i];},$this->level);
+        return array_map(function($i){ return Event::$valuesAvailable['level'][$i];},$this->level);
     }
 
     public function hasLevel()
     {
-        if(isset($this->level['all'])) return false;
+        if(isset($this->level['0'])) return false; //"all level"
         if(!empty($this->level) && count($this->level) != count(Event::$valuesAvailable['level'])) return true;        
         return false;
     }

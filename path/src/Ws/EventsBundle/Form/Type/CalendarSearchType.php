@@ -83,7 +83,7 @@ class CalendarSearchType extends AbstractType
                 'choices'=>array('Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'),
                 'multiple'=>true,
                 'expanded'=>false,
-                'required'=>false,
+                'required'=>false,                
                 ))
             ->add('organizer','entity',array(
                 'class' => 'MyUserBundle:User',

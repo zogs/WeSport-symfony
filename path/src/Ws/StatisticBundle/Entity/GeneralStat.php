@@ -55,6 +55,11 @@ class GeneralStat
     */
     public $total_event_participation_canceled = 0;
 
+    /**
+    * @ORM\Column(name="total_alert_create", type="integer")
+    */
+    public $total_alert_create = 0;
+
 
 
 
@@ -227,5 +232,28 @@ class GeneralStat
     public function getTotalEventParticipationCanceled()
     {
         return $this->total_event_participation_canceled;
+    }
+
+    /**
+     * Set total_alert_create
+     *
+     * @param integer $totalAlertCreate
+     * @return GeneralStat
+     */
+    public function setTotalAlertCreate($totalAlertCreate)
+    {
+        $this->total_alert_create = $totalAlertCreate;
+
+        return $this;
+    }
+
+    /**
+     * Get total_alert_create
+     *
+     * @return integer 
+     */
+    public function getTotalAlertCreate()
+    {
+        return $this->total_alert_create;
     }
 }

@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Ws\EventsBundle\Form\Type\AlertType;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
 use Ws\EventsBundle\Entity\Alert;
+use Ws\EventsBundle\Event\WsEvents;
+use Ws\EventsBundle\Event\CreateAlert;
 
 class AlertController extends Controller
 {
@@ -19,8 +21,7 @@ class AlertController extends Controller
 	 * 
 	 */
 	public function createAction(Request $request)
-	{		
-
+	{						
 		//Prepare Search request from URL
 		//get manager
 		$manager = $this->get('calendar.manager');
@@ -49,7 +50,11 @@ class AlertController extends Controller
 				if($alert->getSearch()->hasSports()){
 					
 					if($this->get('ws_events.alert.manager')->saveAlert($alert)){
-						$this->get('flashbag')->add("Voila ! Vous allez recevoir plein d'annonces inchallah :)",'success');			
+
+						$this->get('flashbag')->add("Alerte enregistrée ! Mais n'oubliez pas d'ouvrir nos emails ;)",'success');
+
+						$this->get('event_dispatcher')->dispatch(WsEvents::ALERT_CREATE, new CreateAlert($alert,$this->getUser())); 	
+	
 					}
 
 					return $this->redirect($this->generateUrl('ws_alerts_index'));					

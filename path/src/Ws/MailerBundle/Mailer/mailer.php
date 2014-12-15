@@ -168,6 +168,21 @@ class Mailer
             return false;
     }
 
+    public function sendAlertConfirmation(Alert $alert, User $user)
+    {
+        $email = $alert->getEmail();
+        $subject = "Vos alertes coSporturage sont prêtes !";
+        $body = $this->templating->render('WsMailerBundle:Alerts:confirmation.html.twig',array(
+            'alert'=>$alert,
+            'user'=>$user,
+            ));
+
+        if($this->sendMessage($this->expediteur,$email,$subject,$body))
+            return true;
+        else
+            return false;
+    }
+
     public function sendAlertMessage(Alert $alert, CalendarUrlGenerator $generator, $events)
     {
         $email = $alert->getEmail();

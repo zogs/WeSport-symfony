@@ -29,4 +29,6 @@ final class WsEvents {
 	const CALENDAR_RESET = 'ws.calendar.reset';
 
 	const INVITATION_CREATE = 'ws.invitation.create';
+
+	const ALERT_CREATE = 'ws.alert.create';
 }
