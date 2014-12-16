@@ -5,3 +5,6 @@ event:
         average: moyen
         confirmed: confirmé
         expert: expert
+    frequency:
+        daily: chaque jours
+        weekly: une fois par semaine

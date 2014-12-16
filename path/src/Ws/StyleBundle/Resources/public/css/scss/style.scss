@@ -1707,13 +1707,23 @@ table.list-table {
 	tr.row-alert-pending {
 		td{
 			background-color:#ECECEC;
+			@include opacity(0.8);
 		}	
 		td.cell-status {
-			color:$softgrey;
+			color:$deepgrey;
 			span.ws-icon {
-				color:$deepgrey;
+				color:$softgrey;
 			}
-		}	
+		}			
+	}
+	tr.row-alert-empty {
+		td{
+			text-align:center;			
+			color:$lightblue;
+			@include rem(14);
+			line-height:50px;
+			span.ws-icon { color:$lightblue; @include rem(40); }
+		}
 	}
 
 	tr{
@@ -1722,13 +1732,13 @@ table.list-table {
 			color: $deepgrey;
 			padding:20px 20px;
 			text-align:left;
-			vertical-align: top;
+			vertical-align: middle;
 		}
 		td.cell-status {
 			width:20%;			
 
 			font-weight: bold;
-			text-align:left;
+			text-align:right;
 			vertical-align: middle;
 			@include rem(15);
 			span.ws-icon { @include rem(50); }			
@@ -1739,6 +1749,7 @@ table.list-table {
 		}
 
 		td.cell-frequency {
+			text-align:right;
 			width:30%;
 		}
 
