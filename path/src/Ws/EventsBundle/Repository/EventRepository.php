@@ -36,9 +36,9 @@ class EventRepository extends EntityRepository
 	
 		
 		
-		//\My\UtilsBundle\Utils\Debug::debug($search);
-		//\My\UtilsBundle\Utils\Debug::debug($qb->getParameters());
-		//\My\UtilsBundle\Utils\Debug::debug($qb->getDQL());
+		//dump($search);
+		//dump($qb->getParameters());
+		//dump($qb->getDQL());
 		//\My\UtilsBundle\Utils\Debug::debug($qb->getQuery()->getResult());
 		//exit();
 		
@@ -160,8 +160,8 @@ class EventRepository extends EntityRepository
 
 	private function filterByTime($qb)
 	{
-		if($this->search->hasTime('start')) $qb->andWhere($qb->expr()->gte('e.time',':timestart'))->setParameter('timestart',$this->search->getTime('start'));
-		if($this->search->hasTime('end')) $qb->andWhere($qb->expr()->lt('e.time',':timeend'))->setParameter('timeend',$this->search->getTime('end'));
+		if($this->search->hasTimeStart()) $qb->andWhere($qb->expr()->gte('e.time',':timestart'))->setParameter('timestart',$this->search->getTimeStart()->format('H:i'));
+		if($this->search->hasTimeEnd()) $qb->andWhere($qb->expr()->gte('e.time',':timeend'))->setParameter('timeend',$this->search->getTimeEnd()->format('H:i'));
 
 		return $qb;				
 	}

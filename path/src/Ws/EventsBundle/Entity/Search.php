@@ -346,7 +346,7 @@ class Search
 
     public function hasType()
     {
-        if(!empty($this->type) && count($this->type) != count(Event::$valuesAvailable['type'])) return true;
+        if(is_array($this->type) && !empty($this->type) && count($this->type) != count(Event::$valuesAvailable['type'])) return true;
         return false;
     }
 
@@ -381,9 +381,9 @@ class Search
 
     public function hasTime($t = null)
     {
-        if($t=='start' && !empty($this->time['start'])) return true;
-        if($t=='end' && !empty($this->time['end'])) return true;
-        if($t==null && ( isset($this->time['start']) || isset($this->time['end']) ) ) return true;
+        if($t=='start' && isset($this->timestart)) return true;
+        if($t=='end' && isset($this->timeend)) return true;
+        if($t==null && ( isset($this->timestart) || isset($this->timeend) ) ) return true;
         return false;       
     }
     

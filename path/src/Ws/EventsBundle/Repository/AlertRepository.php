@@ -17,7 +17,7 @@ class AlertRepository extends EntityRepository
 	{
 		if($type == 'daily') return $this->findDailyAlerts();
 		elseif($type == 'weekly') return $this->findWeeklyAlerts();
-		else throw new Exception("Type of alerts in not defined", 1);
+		else throw new \Exception("Type of alerts in not defined", 1);
 		
 	}
 

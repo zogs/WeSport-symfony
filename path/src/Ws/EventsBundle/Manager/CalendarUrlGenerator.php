@@ -192,16 +192,13 @@ class CalendarUrlGenerator {
 	}
 
 	private function getTimeParam()
-	{		
-		if($this->search->hasTime()){
-			$str = '';
-			if($this->search->hasTime('start')) $str .= substr($this->search->getTime('start'),0,5);
-			$str .= '-';
-			if($this->search->hasTime('end')) $str .= substr($this->search->getTime('end'),0,5);
-			return $str;
-		}
-		else
-			return null;
+	{	
+		if(!$this->search->hasTime()) return null;	
+		$str = '';	
+		if($this->search->hasTimeStart()) $str .= $this->search->getTimeStart()->format('H:i');
+		$str .= '-';
+		if($this->search->hasTimeEnd()) $str .= $this->search->getTimeEnd()->format('H:i');
+		return $str;
 	}
 
 	public function getPriceParam()
