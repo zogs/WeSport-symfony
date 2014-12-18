@@ -1,1 +1,8 @@
 ws.alert.create: total_alert_create
+my.user.register: total_user_registered
+ws.serie.new: total_event_created
+ws.event.confirm: total_event_created_confirmed
+ws.event.delete: total_event_deleted
+ws.participant.add: total_event_participation
+ws.participant.cancel: total_event_participation_canceled
+ws.alert.create: total_alert_created

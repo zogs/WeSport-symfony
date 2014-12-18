@@ -8,10 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="statistic_general")
-  * @ORM\Entity(repositoryClass="Ws\StatisticBundle\Entity\GeneralStatRepository")
+ * @ORM\Table(name="statistic_global")
+  * @ORM\Entity(repositoryClass="Ws\StatisticBundle\Entity\GlobalStatRepository")
  */
-class GeneralStat
+class GlobalStat
 {
     /**
      * @ORM\Id
@@ -56,9 +56,9 @@ class GeneralStat
     public $total_event_participation_canceled = 0;
 
     /**
-    * @ORM\Column(name="total_alert_create", type="integer")
+    * @ORM\Column(name="total_alert_created", type="integer")
     */
-    public $total_alert_create = 0;
+    public $total_alert_created = 0;
 
 
 

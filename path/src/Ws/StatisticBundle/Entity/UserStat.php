@@ -71,7 +71,7 @@ class UserStat
     public $event_participation_canceled = 0;
 
     /**
-    * @ORM\Column(name="alert_creted", type="integer")
+    * @ORM\Column(name="alert_created", type="integer")
     */
     public $alert_created = 0;
 

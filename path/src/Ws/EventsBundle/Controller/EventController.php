@@ -16,6 +16,7 @@ use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\DeleteEvent;
 use Ws\EventsBundle\Event\ChangeEvent;
 use Ws\EventsBundle\Event\DeleteSerie;
+use Ws\EventsBundle\Event\ConfirmEvent;
 use Ws\EventsBundle\Event\ViewEvent;
 use Ws\EventsBundle\Event\AddParticipant;
 use Ws\EventsBundle\Event\CancelParticipant;
@@ -57,8 +58,6 @@ class EventController extends Controller
 				//throw event SERIE_CREATE
 				$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_CREATE, new CreateEvents($event,$this->getUser())); 
 
-				//update statistic
-				$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_CREATED); 
 			}
 			else {
 				$this->get('flashbag')->add('peut pas sauvegardeeer !','error');

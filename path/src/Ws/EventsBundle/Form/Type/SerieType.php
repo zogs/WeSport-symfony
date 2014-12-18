@@ -56,7 +56,6 @@ class SerieType extends AbstractType
     {
         $data = $event->getData();
 
-        dump($data);
     }
 
     public function onSubmit(FormEvent $event)
