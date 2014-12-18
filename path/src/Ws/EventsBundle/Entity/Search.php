@@ -104,9 +104,9 @@ class Search
     private $level = array();
 
     /**
-    * @ORM\Column(name="order", type="string")
+    * @ORM\Column(name="ordered", type="string")
     */
-    private $order = 'chronological';
+    private $ordered = 'chronological';
 
 
     /**
@@ -485,18 +485,18 @@ class Search
 
     public function hasOrder()
     {
-        if(isset($this->order)) return true;
+        if(isset($this->ordered)) return true;
         return false;
     }
 
     public function getOrder()
     {
-        return $this->order;
+        return $this->ordered;
     }
 
     public function setOrder($order)
     {
-        $this->order = $order;
+        $this->order = $ordered;
     }
 
     public function hasOrganizer()

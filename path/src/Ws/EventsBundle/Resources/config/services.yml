@@ -99,7 +99,7 @@ services:
             - { name: kernel.event_subscriber }
     ws_events.listener.alert:
         class: Ws\EventsBundle\EventListener\AlertListener
-        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer,@statistic.manager]
         scope: container
         tags:
             - { name: kernel.event_subscriber }

@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Ws\EventsBundle\Entity\Alert;
+use Ws\EventsBundle\Event\WsEvents;
 
 class CreateAlert extends Event
 {
@@ -34,5 +35,13 @@ class CreateAlert extends Event
 	public function getUser()
 	{
 		return $this->user;
+	}
+
+	public function getStatLogic()
+	{
+		return array(
+			array('global',WsEvents::ALERT_NEW,+1),
+			array('user',WsEvents::ALERT_NEW,+1),
+			);
 	}
 }

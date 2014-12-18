@@ -10,7 +10,7 @@ use My\FlashBundle\Controller\FlashController as Flashbag;
 use Ws\MailerBundle\Mailer\Mailer;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\CreateAlert;
-
+use Ws\StatisticBundle\Manager\StatisticManager;
 
 class AlertListener implements EventSubscriberInterface
 {
@@ -18,20 +18,22 @@ class AlertListener implements EventSubscriberInterface
 	protected $router;
 	protected $flashbag;
 	protected $mailer;
+	protected $statistic;
 
 
-	public function __construct(EntityManager $em, Router $router, Flashbag $flashbag, Mailer $mailer)
+	public function __construct(EntityManager $em, Router $router, Flashbag $flashbag, Mailer $mailer, StatisticManager $statistic)
 	{
 		$this->em = $em;
 		$this->router = $router;
 		$this->flashbag = $flashbag;
 		$this->mailer = $mailer;
+		$this->statistic = $statistic;
 	}
 
 	static public function getSubscribedEvents()
 	{
 		return array(
-			WsEvents::ALERT_CREATE => 'onNewAlert',
+			WsEvents::ALERT_NEW => 'onNewAlert',
 		);
 	}
 
@@ -42,6 +44,7 @@ class AlertListener implements EventSubscriberInterface
 
 		$this->mailer->sendAlertConfirmation($alert,$user);
 
+		$this->statistic->setEvent($event);
 	}
 
 }

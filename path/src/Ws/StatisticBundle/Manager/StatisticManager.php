@@ -3,6 +3,7 @@
 namespace Ws\StatisticBundle\Manager;
 
 use My\ManagerBundle\Manager\AbstractManager;
+use Symfony\Component\Yaml\Parser;
 
 use Ws\StatisticBundle\Entity\GeneralStat;
 
@@ -12,7 +13,7 @@ class StatisticManager extends AbstractManager
 	protected $stat;
 	protected $ctx = 'general';
 	protected $ctx_id = null;
-
+	
 	public function setContext($ctx,$id = null)
 	{
 		$this->ctx = $ctx;
@@ -92,6 +93,61 @@ class StatisticManager extends AbstractManager
 
 		return $this->data;
 	}
+
+	public function setEvent($event)
+	{
+		if(!method_exists($event, 'getStatLogic')) throw new \Exception("Method getStatLogic must be defined", 1);		
+
+		$logics = $event->getStatLogic();
+
+		if(empty($logics)) return;
+
+		foreach ($logics as $key => $logic) {
+
+			$stat = $this->getContextStat($logic[0],$event);
+
+			$conf = $this->importConf($logic[0]);
+			
+			$field = $conf[$logic[1]];
+
+			if(!isset($stat->$field)) throw new \Exception("The Event name is not matching any field property of the context ".ucfirst($logic[0]), 1);
+			
+			$stat->$field += $logic[2];
+
+			$this->save($stat,true);
+		}
+	}
+
+	private function getContextStat($context,$event)
+	{
+		$context = strtolower($context);
+
+		if($context == 'global'){
+
+			if($stat = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findOneByName('main')){
+				return $stat;
+			}
+			else {
+				return $this->em->getRepository('WsStatisticBundle:GeneralStat')->initStat('main');
+			}			
+		}
+
+		if($context == 'user'){
+			if(!method_exists($event, 'getUser')) throw new \Exception("Method getUser must be defined", 1);
+			if($event->getUser() == null) throw new \Exception("User can not be null at his point",1);
+
+			return $this->em->getRepository('WsStatisticBundle:UserStat')->findOneByUser($event->getuser()->getId());
+			
+		}
+	}
+
+	private function importConf($context)
+	{
+		$yaml = new Parser();
+		return $yaml->parse(file_get_contents(__DIR__.'/../Resources/config/fields/'.$context.'.yml'));
+	}
+
+
 
 }
 ?>

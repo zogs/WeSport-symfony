@@ -21,6 +21,7 @@ class UserStat
     const EVENT_DELETED = 'event_deleted';
     const EVENT_PARTICIPATION_ADDED = 'event_participation';
     const EVENT_PARTICIPATION_CANCELED = 'event_participation_canceled';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -68,6 +69,11 @@ class UserStat
     * @ORM\Column(name="event_participation_canceled", type="integer")
     */
     public $event_participation_canceled = 0;
+
+    /**
+    * @ORM\Column(name="alert_creted", type="integer")
+    */
+    public $alert_created = 0;
 
 
 
