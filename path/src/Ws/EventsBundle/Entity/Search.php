@@ -30,6 +30,12 @@ class Search
     private $id;
 
     /**
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert", inversedBy="search")
+    * @ORM\JoinColumn(name="alert_id", referencedColumnName="id")
+    */
+    private $alert;
+
+    /**
     * @ORM\Column(name="date_created", type="datetime")
     */
     private $date_created = null;
@@ -97,6 +103,11 @@ class Search
     */
     private $level = array();
 
+    /**
+    * @ORM\Column(name="order", type="string")
+    */
+    private $order = 'chronological';
+
 
     /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
@@ -105,6 +116,7 @@ class Search
     public $organizer = null;
 
     public $country; 
+
     public $raw_data = null;
     public $url = null;
     public $url_params = null;
@@ -469,6 +481,22 @@ class Search
     public function getOrganizer()
     {
         return $this->organizer;
+    }
+
+    public function hasOrder()
+    {
+        if(isset($this->order)) return true;
+        return false;
+    }
+
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    public function setOrder($order)
+    {
+        $this->order = $order;
     }
 
     public function hasOrganizer()

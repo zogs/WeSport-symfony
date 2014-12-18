@@ -22,6 +22,8 @@ class AlertManager extends AbstractManager
 
 		$alert->getSearch()->setDate('infutur'); // reset search date param to 'none'
 
+		$alert->getSearch()->setAlert($alert);
+
 		$this->save($alert,true);
 		return true;	
 	}
@@ -80,11 +82,6 @@ class AlertManager extends AbstractManager
 		}
 	}
 
-	public function disactiveAlert(Alert $alert)
-	{
-		$alert->setActive(false);
-		$this->save($alert);
-	}
 
 }
 ?>

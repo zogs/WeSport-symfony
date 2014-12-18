@@ -407,19 +407,20 @@ div.mm-is-menu * {
 		display: inline;
 		position: relative;
 		@include rem(16);
+		font-weight:bold;
 	}
 	span.alert-icon{
 		position:absolute;
 		left:-50px;
-		top:-8px;
-		@include rem(36);
+		top:-5px;
+		@include rem(30);
 	}
 	div.alert-progress {
 		position: absolute;
 		bottom:0;
 		left:0;
-		height:5px;
-		width:0%;
+		height:0px;
+		width:100%;
 		background-color:rgba(0,0,0,0.05);
 		@include box-shadow(0 0 0 rgba(0,0,0,0));
 	}
@@ -452,11 +453,13 @@ div.mm-is-menu * {
 
 @-webkit-keyframes alertHide {
   0% { }
-  100% { top:-100px; }
+  100% { 
+  	top:-100px; 
+  }
 }
 @-webkit-keyframes alertTimer {
-  0% { width:0; }
-  100% {  width:100%; }
+  0% { height:0; }
+  100% {  height:100%; }
 }
 
 
@@ -1724,6 +1727,9 @@ table.list-table {
 			line-height:50px;
 			span.ws-icon { color:$lightblue; @include rem(40); }
 		}
+		td.cell-status {
+			text-align:right;
+		}
 	}
 
 	tr{
@@ -1735,10 +1741,10 @@ table.list-table {
 			vertical-align: middle;
 		}
 		td.cell-status {
-			width:20%;			
+			width:15%;			
 
 			font-weight: bold;
-			text-align:right;
+			text-align:left;
 			vertical-align: middle;
 			@include rem(15);
 			span.ws-icon { @include rem(50); }			
@@ -1754,7 +1760,7 @@ table.list-table {
 		}
 
 		td.cell-action {
-			width:10%;
+			width:15%;
 			text-align:right;
 
 		}

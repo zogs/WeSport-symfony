@@ -122,6 +122,11 @@ ws_alerts_index:
     defaults: { _controller: WsEventsBundle:Alert:index }
     requirements:
         _method: GET
+ws_alerts_view:
+    pattern: /alert/view/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:view }
+    requirements:
+        _method: GET
 ws_alerts_delete:
     pattern: /alert/delete/{alert}
     defaults: { _controller: WsEventsBundle:Alert:delete }

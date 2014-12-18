@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContext;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Event
  *
@@ -34,6 +36,7 @@ class Event
 
     /**
      * @ORM\Column(length=255, unique=true)
+     * @Gedmo\Slug(updatable=true, unique=true, fields={"title"})
      */
     private $slug;
 

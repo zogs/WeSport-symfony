@@ -33,14 +33,16 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterByOrganizer($qb);
 		$qb = $this->filterByDayOfWeek($qb);
 		$qb = $this->filterByAlerted($qb);
+		$qb = $this->orderBy($qb);
 	
 		
 		
 		//dump($search);
 		//dump($qb->getParameters());
 		//dump($qb->getDQL());
-		//\My\UtilsBundle\Utils\Debug::debug($qb->getQuery()->getResult());
-		//exit();
+		//dump($qb->getQuery()->getSql());
+		//dump($qb->getQuery()->getResult());
+		//exit();		
 		
 					
 		return $qb->getQuery()->getResult();
@@ -160,8 +162,8 @@ class EventRepository extends EntityRepository
 
 	private function filterByTime($qb)
 	{
-		if($this->search->hasTimeStart()) $qb->andWhere($qb->expr()->gte('e.time',':timestart'))->setParameter('timestart',$this->search->getTimeStart()->format('H:i'));
-		if($this->search->hasTimeEnd()) $qb->andWhere($qb->expr()->gte('e.time',':timeend'))->setParameter('timeend',$this->search->getTimeEnd()->format('H:i'));
+		if($this->search->hasTimeStart()) $qb->andWhere($qb->expr()->gte('e.time',':timestart'))->setParameter('timestart',$this->search->getTimeStart()->format('H:i:s'));
+		if($this->search->hasTimeEnd()) $qb->andWhere($qb->expr()->lte('e.time',':timeend'))->setParameter('timeend',$this->search->getTimeEnd()->format('H:i:s'));
 
 		return $qb;				
 	}
@@ -215,6 +217,15 @@ class EventRepository extends EntityRepository
 		if($this->search->hasAlert() === false ) return $qb;
 
 		$qb->leftjoin('Ws\EventsBundle\Entity\Alerted','a','WITH','a.alert = :alert AND a.event = e')->andWhere($qb->expr()->isNull('a'))->setParameter('alert',$this->search->getAlert());
+
+		return $qb;
+	}
+
+	private function orderBy($qb)
+	{
+		if($this->search->hasOrder() === false) return $qb;
+
+		if($this->search->getOrder() == 'chronological') $qb->orderBy('e.date','ASC')->addOrderBy('e.time','ASC');
 
 		return $qb;
 	}
