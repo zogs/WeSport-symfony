@@ -30,5 +30,5 @@ final class WsEvents {
 
 	const INVITATION_CREATE = 'ws.invitation.create';
 
-	const ALERT_CREATE = 'ws.alert.create';
+	const ALERT_NEW = 'ws.alert.create';
 }

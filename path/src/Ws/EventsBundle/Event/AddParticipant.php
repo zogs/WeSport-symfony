@@ -35,4 +35,12 @@ class AddParticipant extends Event
 	{
 		return $this->user;
 	}
+
+	public function getStatLogics()
+	{
+		return array(
+			new StatLogic('global',$this,+1),
+			new StatLogic('user',$this,+1)
+			);
+	}
 }

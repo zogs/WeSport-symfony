@@ -22,7 +22,7 @@
 			</div>
 
 			<div class="events-meta">
-				<div class="events-time">{{ event.time|date('h:i') }}</div>
+				<div class="events-time">{{ event.time|date('H\\hi') }}</div>
 				<div class="events-label">
 					{% if event.confirmed %}
 					<span class="ws-icon ws-icon-checkmark-circle ws-icon-confirm tooltipbottom" data-toggle="tooltip" title="L'activité est confirmé!"></span>			{% else %}							

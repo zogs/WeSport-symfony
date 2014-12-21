@@ -1,0 +1,59 @@
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+
+    <div class="viewAlert">
+        <div class="fresque"></div>
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                   Mon alerte
+                </h1>
+            </div>
+
+        <table class="list-table table-striped">
+										
+			{% include 'WsEventsBundle:Alert:Blocks/row_alert.html.twig' with {'alert':alert } %}							
+
+		</table>
+
+		<table class="list-table">
+			{% if events is not empty %}
+				{% for event in events %}
+					
+					<tr>
+						<td>
+							<span class="ws-icon ws-icon{{ event.sport.icon }} "></span>
+						</td>
+						<td>
+							{{ event.title }}
+						</td>
+						<td>
+							{{ event.spot.location.city.name }}
+						</td>
+						<td>
+							{{ event.date|date('d-m-Y') }} à {{ event.time|date('h\\hi') }}
+						</td>						
+					</tr>
+
+				{% endfor %}
+			{% else %}
+				<tr class="row-alert-empty">
+					<td>
+						Pas d'activité correspondante...
+					</td>
+				</tr>
+			{% endif %}
+			
+		</table>
+
+
+         </table>
+                   
+        <div class="clearfix"></div>
+        <div class="fresque"></div>
+    
+    </div>
+    
+{% endblock %}
+

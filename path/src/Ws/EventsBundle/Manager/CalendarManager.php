@@ -376,14 +376,14 @@ class CalendarManager extends AbstractManager
 
     	if(!empty($this->params['sports'])){
     		if(is_string($this->params['sports']))
-    			$sports = array_merge($sports,explode('-',trim($this->params['sports'],'-')));
+    			$sports = array_merge($sports,explode('+',trim($this->params['sports'],'+')));
     		if(is_array($this->params['sports']))
     			$sports = array_merge($sports,$this->params['sports']);
     	}
 
     	if(!empty($this->params['sport_name'])){
     		if(is_string($this->params['sport_name']))
-    			$sports = array_merge($sports,explode('-',trim($this->params['sport_name'],'-')));
+    			$sports = array_merge($sports,explode('+',trim($this->params['sport_name'],'+')));
     		if(is_array($this->params['sport_name']))
     			$sports = array_merge($sports,$this->params['sport_name']);
 

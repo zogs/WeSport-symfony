@@ -1,0 +1,7 @@
+ws.serie.new: event_created
+ws.event.confirm: event_confirmed
+ws.event.cancel: event_canceled
+ws.event.delete: event_deleted
+ws.participant.add: event_participation
+ws.participant.cancel: event_participation_canceled
+ws.alert.create: alert_created

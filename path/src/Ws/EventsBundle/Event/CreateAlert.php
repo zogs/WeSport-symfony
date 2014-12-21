@@ -6,8 +6,11 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Ws\EventsBundle\Entity\Alert;
+use Ws\EventsBundle\Event\WsEvents;
+use Ws\StatisticBundle\Manager\StatLogic;
+use Ws\StatisticBundle\Manager\EventStatisticInterface;
 
-class CreateAlert extends Event
+class CreateAlert extends Event implements EventStatisticInterface
 {
 	protected $alert;
 	protected $user;
@@ -35,4 +38,13 @@ class CreateAlert extends Event
 	{
 		return $this->user;
 	}
+
+	public function getStatLogics()
+	{
+		return array(
+			new StatLogic('global',$this,+1),
+			new StatLogic('user',$this,+1),			
+			);
+	}
+
 }

@@ -81,25 +81,25 @@ services:
     #Event Listner
     ws_events.listener.events:
         class: Ws\EventsBundle\EventListener\EventsListener
-        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer,@statistic.manager]
         scope: container
         tags:
             - { name: kernel.event_subscriber }
     ws_events.listener.invitation:
         class: Ws\EventsBundle\EventListener\InvitationListener
-        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer,@statistic.manager]
         scope: container
         tags:
             - { name: kernel.event_subscriber }
     ws_events.listener.participation:
         class: Ws\EventsBundle\EventListener\ParticipationListener
-        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer,@statistic.manager]
         scope: container
         tags:
             - { name: kernel.event_subscriber }
     ws_events.listener.alert:
         class: Ws\EventsBundle\EventListener\AlertListener
-        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer]
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag,@ws_mailer,@statistic.manager]
         scope: container
         tags:
             - { name: kernel.event_subscriber }

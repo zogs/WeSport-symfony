@@ -1,0 +1,31 @@
+<tr class="{% if alert.active %}row-alert-active{% else %}row-alert-pending{% endif %}">
+	<td class="cell-status">
+		{% if alert.active %}
+			<span class="ws-icon ws-icon-checkmark-circle"></span>
+			En cours
+		{% else %}
+			<span class="ws-icon ws-icon-blocked"></span>
+			Stopé
+		{% endif %}		
+	</td>
+
+	<td class="cell-resume">										
+		{% include 'WsEventsBundle:Alert:Blocks/tx_resume.html.twig' %}							
+	</td>
+
+	<td class="cell-frequency">										
+		{% include 'WsEventsBundle:Alert:Blocks/tx_frequency.html.twig' %}							
+	</td>
+	
+	<td class='cell-action'>
+		<p><a class="btn btn-mini" href="{{ path('ws_alerts_delete',{alert:alert.id}) }}">Supprimer</a></p>	
+
+		{% if alert.active %}
+			<p><a class="btn btn-mini" href="{{ path('ws_alerts_disable',{alert:alert.id}) }}">Désactiver</a></p>
+		{% else %}
+			<p><a class="btn btn-mini" href="{{ path('ws_alerts_enable',{alert:alert.id}) }}">Réactiver</a></p>
+		{% endif %}
+
+		<p><a class="btn btn-mini" href="{{ path('ws_alerts_view',{alert:alert.id}) }}">Voir les activités</a></p>			
+	</td>
+</tr>

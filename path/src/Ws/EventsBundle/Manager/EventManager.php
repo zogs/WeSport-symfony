@@ -45,9 +45,8 @@ class EventManager extends AbstractManager
 		$event->setLocation($event->getSpot()->getLocation());
 		//set the organizer
 		$event->setOrganizer($this->context->getToken()->getUser());
-		//set the slug
-		if($event->getTitle()) $event->setSlug($event->getTitle().'_'.$event->getId());
-		else $event->setSlug($event->getSport()->getName().'_'.$event->getId());
+		//set default title if empty
+		if($event->getTitle() == null) $event->setTitle($event->getSport()->getName());		
 		//auto comfirm if nbmin <=1
 		if($event->getNbmin()<=1) $event->setConfirmed(true);
 

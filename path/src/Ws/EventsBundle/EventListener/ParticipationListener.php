@@ -11,6 +11,7 @@ use Ws\MailerBundle\Mailer\Mailer;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\AddParticipant;
 use Ws\EventsBundle\Event\CancelParticipant;
+use Ws\StatisticBundle\Manager\StatisticManager;
 
 
 class ParticipationListener implements EventSubscriberInterface
@@ -19,14 +20,15 @@ class ParticipationListener implements EventSubscriberInterface
 	protected $router;
 	protected $flashbag;
 	protected $mailer;
+	protected $statistic;
 
-
-	public function __construct(EntityManager $em, Router $router, Flashbag $flashbag, Mailer $mailer)
+	public function __construct(EntityManager $em, Router $router, Flashbag $flashbag, Mailer $mailer, StatisticManager $statistic)
 	{
 		$this->em = $em;
 		$this->router = $router;
 		$this->flashbag = $flashbag;
 		$this->mailer = $mailer;
+		$this->statistic = $statistic;
 	}
 
 	static public function getSubscribedEvents()
@@ -43,6 +45,8 @@ class ParticipationListener implements EventSubscriberInterface
 		$participant = $event->getParticipant();
 
 		$this->mailer->sendParticipationAddedToAdmin($wsevent,$participant);
+
+		$this->statistic->setEvent($event)->update();
 	}
 
 	public function onCancelParticipant(CancelParticipant $event)
@@ -51,6 +55,8 @@ class ParticipationListener implements EventSubscriberInterface
 		$participant = $event->getParticipant();
 
 		$this->mailer->sendParticipationCanceledToAdmin($wsevent,$participant);
+
+		$this->statistic->setEvent($event)->update();
 	}
 
 

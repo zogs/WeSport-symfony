@@ -3,7 +3,7 @@
 {% block title %}
     <strong>{% if alert.user is not null %} {{ alert.user.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
     
-    Aprés {{ alert.duration }} mois d'activités, votre alerte coSporturage arrive à expiration... Mais vous pouvez la prolonger si vous le désirez !
+    Aprés {{ alert.duration }} mois d'activités, votre alerte coSporturage arrive à expiration...
 
 {% endblock title %}
 
@@ -20,33 +20,31 @@
                         <tbody>
                             <tr>
                                 <td>
-                                {% for sport in alert.search.sports %}
-                                    <img src="{{ asset('bundles/wssports/img/sport_icon/' ~ sport ~ '.gif') }}">
-                                {% endfor %}
-                                </td>
-                                <td>
-                                    <a href="{{ path('ws_alerts_index') }}">
-                                        <strong>Alert_id = {{ alert.id }}</strong>
-                                    </a>
-                                    <br>
-                                    <small><strong>à faire : ecrire une belle description de l'alerte</strong></small>
-                                    <br>                                    
+                                    <h2>Cette alerte s'arrête aujourd'hui :</h2>                               
+                                    <p>
+                                        {% include 'WsEventsBundle:Alert:Blocks/tx_resume.html.twig' with {'alert':alert} %}         
+                                    </p>
+                                    <p>
+                                        {% include 'WsEventsBundle:Alert:Blocks/tx_frequency.html.twig' with {'alert':alert} %}         
+                                    </p>                               
                                 </td>   
                             </tr>
                         </tbody>
                     </table>              
                 </td>
             </tr>
-            
-            
+                        
             <tr>
                 <td>
-                    <strong>Prolonger votre alerte simplement</strong> en cliquant sur les liens suivants :
+                    <strong>Vous pouvez prolonger votre alerte </strong> en cliquant sur les liens suivants :
                     <ul>
                         <li><a href="{{ path('ws_alerts_extend',{nbmonth:1,alert:alert.id}) }}">prolonger d'un mois</a></li>
                         <li><a href="{{ path('ws_alerts_extend',{nbmonth:2,alert:alert.id}) }}">prolonger de 2 mois</a></li>
                         <li><a href="{{ path('ws_alerts_extend',{nbmonth:6,alert:alert.id}) }}">prolonger de 6 mois</a></li>
                     </ul>
+                    <p>
+                        ou <strong>gérer vos alertes</strong> en <a href="{{ path('ws_alerts_index') }}">cliquant ici...</a>
+                    </p>
                 </td>
             </tr>
 

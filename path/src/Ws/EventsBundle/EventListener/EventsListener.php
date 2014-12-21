@@ -13,6 +13,7 @@ use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\ViewEvent;
 use Ws\EventsBundle\Event\ChangeEvent;
 use Ws\EventsBundle\Event\DeleteEvent;
+use Ws\StatisticBundle\Manager\StatisticManager;
 
 
 class EventsListener implements EventSubscriberInterface
@@ -21,14 +22,15 @@ class EventsListener implements EventSubscriberInterface
 	protected $router;
 	protected $flashbag;
 	protected $mailer;
+	protected $statistic;
 
-
-	public function __construct(EntityManager $em, Router $router, Flashbag $flashbag, Mailer $mailer)
+	public function __construct(EntityManager $em, Router $router, Flashbag $flashbag, Mailer $mailer, StatisticManager $statistic)
 	{
 		$this->em = $em;
 		$this->router = $router;
 		$this->flashbag = $flashbag;
 		$this->mailer = $mailer;
+		$this->statistic = $statistic;
 	}
 
 	static public function getSubscribedEvents()
@@ -44,7 +46,7 @@ class EventsListener implements EventSubscriberInterface
 
 	public function onNewEvents(CreateEvents $event)
 	{
-		//exit('onNewEvents WIN');
+		$this->statistic->setEvent($event)->update();
 	}
 
 	public function onViewEvent(ViewEvent $event)
@@ -68,6 +70,8 @@ class EventsListener implements EventSubscriberInterface
 		$ev = $event->getEvent();
 
 		$this->mailer->sendEventConfirmedToParticipants($ev);
+
+		$this->statistic->setEvent($event)->update();
 	}
 
 	public function onDeleteEvent(DeleteEvent $event)

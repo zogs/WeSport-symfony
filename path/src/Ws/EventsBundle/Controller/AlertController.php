@@ -51,9 +51,9 @@ class AlertController extends Controller
 					
 					if($this->get('ws_events.alert.manager')->saveAlert($alert)){
 
-						$this->get('flashbag')->add("Alerte enregistrée ! Mais n'oubliez pas d'ouvrir nos emails ;)",'success');
+						$this->get('flashbag')->add("C'est bon :) N'oubliez pas de regarder vos mails!",'success');
 
-						$this->get('event_dispatcher')->dispatch(WsEvents::ALERT_CREATE, new CreateAlert($alert,$this->getUser())); 	
+						$this->get('event_dispatcher')->dispatch(WsEvents::ALERT_NEW, new CreateAlert($alert,$this->getUser())); 	
 	
 					}
 
@@ -86,6 +86,19 @@ class AlertController extends Controller
 			'alerts'=>$alerts,
 			));
 
+	}
+
+	public function viewAction(Alert $alert)
+	{
+		if($alert->getUser() != $this->getUser()) throw new Exception("You can not see this page", 1);
+
+		$events = $this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Event')->findEvents($alert->getSearch());
+
+		return $this->render('WsEventsBundle:Alert:view.html.twig',array(
+			'alert' => $alert,
+			'events'=> $events,
+			));
+		
 	}
 
 
@@ -141,21 +154,22 @@ class AlertController extends Controller
 		$mailer = $this->get('ws_mailer');
 		$manager = $this->get('ws_events.alert.manager');
 		$generator = $this->get('calendar.url.generator');
-
-		//find daily or monthly alerts
-		$alerts = $em->getRepository('WsEventsBundle:Alert')->findAlerts($type);
-
 		$repo = $em->getRepository('WsEventsBundle:Event');		
 		$sended = array();
 		$expired = array();
 		$nb_events = 0;
+
+		//find daily or monthly alerts
+		$alerts = $em->getRepository('WsEventsBundle:Alert')->findAlerts($type);
+
 		//for each alert		
 		foreach ($alerts as $k => $alert) {
-			//find events matching the alert		
+
+			//find all events matching the alert		
 			$events = $repo->findEvents($alert->getSearch());
 
 			if(!empty($events)){
-				//mail the user with the new events
+				//mail the new events to the user
 				$mailer->sendAlertMessage($alert,$generator,$events);
 				//save which events have been alerted
 				$manager->saveAlerted($alert,$events);			
@@ -167,7 +181,7 @@ class AlertController extends Controller
 			//disactive outdated alerts
 			$now = new \DateTime('now');
 			if($alert->getDateStop()->format('Ymd') == $now->format('Ymd')){
-				$manager->disactiveAlert($alert);
+				$manager->disableAlert($alert);
 				//inform the user this alert is outdated
 				$mailer->sendExpiredAlertmessage($alert);
 

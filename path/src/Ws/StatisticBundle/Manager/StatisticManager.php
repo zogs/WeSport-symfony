@@ -3,66 +3,15 @@
 namespace Ws\StatisticBundle\Manager;
 
 use My\ManagerBundle\Manager\AbstractManager;
+use Symfony\Component\Yaml\Parser;
 
-use Ws\StatisticBundle\Entity\GeneralStat;
+use My\UserBundle\Entity\User;
 
 class StatisticManager extends AbstractManager
 {
-	protected $em;
 	protected $stat;
-	protected $ctx = 'general';
-	protected $ctx_id = null;
-
-	public function setContext($ctx,$id = null)
-	{
-		$this->ctx = $ctx;
-		$this->ctx_id = $id;
-
-		return $this;
-	}
-
-	public function get()
-	{
-		if($this->ctx == 'general'){			
-			$stat = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findOneByName('main');
-
-			if(NULL==$stat){
-				$stat = $this->em->getRepository('WsStatisticBundle:GeneralStat')->initStat('main');
-			}
-
-			$this->data = $stat;
-		}
-		if($this->ctx == 'user'){		
-			$this->data = $this->em->getRepository('WsStatisticBundle:UserStat')->findOneByUser($this->ctx_id);
-		}
-		return $this;
+	protected $logics = array();	
 		
-	}
-
-	public function increment($name,$i=1)
-	{
-		$this->data->$name += $i;
-		$this->save($this->data,true);
-		$this->saveGeneralStatistic($name,$i);		
-	}
-
-	public function decrement($name,$i=1)
-	{
-		$this->data->$name -= $i;
-		$this->save($this->data,true);
-		$this->saveGeneralStatistic($name,-$i);
-	}
-
-	private function saveGeneralStatistic($name,$i=1)
-	{
-		$name = 'total_'.$name;
-		if(property_exists(new GeneralStat,$name)){
-			$this->setContext('general')->get();
-			$this->data->$name += $i;
-			$this->save($this->data,true);
-		}
-	}
-
 	public function sportParticiped($sport,$user)
 	{
 		$this->em->getRepository('WsStatisticBundle:UserSportStat')->setSportParticiped($sport,$user);
@@ -73,25 +22,146 @@ class StatisticManager extends AbstractManager
 		$this->em->getRepository('WsStatisticBundle:UserSportStat')->setSportCreated($sport,$user);
 	}
 
-	public function update($ctx)
+	private function updateGlobalStat()
 	{
-		if($ctx=='general') return $this->updateGeneral();
+		$stat = $this->getStat('global');
 
-		if(isset($this->ctx)) $this->update($this->ctx);
-	}
-
-	private function updateGeneral()
-	{
-		$this->setContext('general')->get();
-
-		$this->data->setTotalEventCreated($this->em->getRepository('WsEventsBundle:Event')->countAll());
-		$this->data->setTotalUserRegistered($this->em->getRepository('MyUserBundle:User')->countAll());
-		$this->data->setTotalEventParticipation($this->em->getRepository('WsEventsBundle:Participation')->countAll());
+		$stat->setTotalEventCreated($this->em->getRepository('WsEventsBundle:Event')->countAll());
+		$stat->setTotalUserRegistered($this->em->getRepository('MyUserBundle:User')->countAll());
+		$stat->setTotalEventParticipation($this->em->getRepository('WsEventsBundle:Participation')->countAll());
 				
-		$this->save($this->data,true);
+		$this->save($stat,true);
 
-		return $this->data;
+		return $stat;
 	}
+
+
+	/**
+	 * Set statistic logics from an Event
+	 *
+	 * @param $event Event
+	 *
+	 * Event must have a method getStatLogic() that return an array of instruction, ex: array('user','ws.event.create',1|-1)
+	 */
+	public function setEvent($event)
+	{
+		if(!method_exists($event, 'getStatLogics')) throw new \Exception("Method getStatLogics must be defined", 1);		
+
+		$logics = $event->getStatLogics();
+		$this->logics = array_merge($this->logics,$logics);
+
+		return $this;		
+	}
+
+	/**
+	 * Set statistics logics
+	 *
+	 * @param $logics array of Ws\StatisticBundle\Manager\StatLogic
+	 */
+	public function setLogics($logics = array())
+	{
+		$this->logics = array_merge($this->logics,$logics);
+
+		return $this;
+	}
+
+	/**
+	 * Set statistics logic
+	 *
+	 * @param $logic Ws\StatisticBundle\Manager\StatLogic
+	 */
+	public function setLogic(StatLogic $logic)
+	{
+		$this->logics[] = $logic;
+
+		return $this;
+	}
+
+
+	/**
+	 * Update the statistics according to the logics
+	 */
+	public function update()
+	{
+		if(empty($this->logics)) return;
+
+		foreach ($this->logics as $logic) {
+
+			if(!$logic instanceof StatLogic) throw new \Exception("Logic must be a StatLogic class", 1);
+		
+			$stat = $this->getStat($logic->getContext(),$logic->getEvent());
+
+			$conf = $this->importConf($logic->getContext());
+			
+			$field = $conf[$logic->getName()];
+
+			if(!isset($stat->$field)) throw new \Exception("The Event name \"".$field."\" is not matching any field property of the context ".ucfirst($logic->getContext()), 1);
+			
+			$stat->$field += $logic->getIncrement();
+
+			$this->save($stat,true);
+		}
+	}
+
+	/**
+	 * Return or initialize the global statistics
+	 */
+	public function getGlobalStat()
+	{
+		if($stat = $this->em->getRepository('WsStatisticBundle:GlobalStat')->findOneByName('main')){
+			return $stat;
+		}
+		else {
+			return $this->em->getRepository('WsStatisticBundle:GlobalStat')->initStat('main');
+		}	
+	}
+
+	/**
+	 * Return the user statistic
+	 */
+	public function getUserStat(User $user)
+	{
+		return $this->em->getRepository('WsStatisticBundle:UserStat')->find($user);
+	}
+
+	/**
+	 * Return Stat object
+	 *
+	 * @param $context string 
+	 * @param $event Event
+	 *
+	 */
+	private function getStat($context,$event = null)
+	{
+		$context = strtolower($context);
+
+		if($context == 'global'){
+
+			return $this->getGlobalStat();			
+		}
+
+		if($context == 'user'){
+
+			if(!method_exists($event, 'getUser')) throw new \Exception("Method getUser must be defined", 1);
+			if($event->getUser() == null) throw new \Exception("User can not be null at his point",1);
+
+			return $this->getUserStat($event->getUser());
+
+			
+			
+		}
+	}
+
+	/**
+	 * get the parameters events=>fields of the context
+	 */
+	private function importConf($context)
+	{
+		$yaml = new Parser();
+		return $yaml->parse(file_get_contents(__DIR__.'/../Resources/config/fields/'.$context.'.yml'));
+	}
+
+
 
 }
 ?>
