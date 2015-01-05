@@ -58,9 +58,9 @@ class Event
     private $public = true;
 
     /**
-     * @ORM\Column(name="type", type="integer")
+     * @ORM\Column(name="type", type="string")
      */
-    private $type = 0;
+    private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Spot", fetch="EAGER", cascade={"persist","remove","merge","detach","refresh"})     
@@ -116,9 +116,9 @@ class Event
     private $price = 0;
 
     /**
-     * @ORM\Column(name="level", type="integer")
+     * @ORM\Column(name="level", type="string", nullable=true)
      */
-    private $level = 0;
+    private $level = null;
 
     /**
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
@@ -148,14 +148,24 @@ class Event
     public $changes_made;
 
     static public $valuesAvailable = array(
-        'level' => array('all','beginner','average','confirmed','expert'),
-        'type' => array('person','asso','pro'),
+        'level' => array(
+            'beginner'=>'beginner',
+            'average'=>'average',
+            'confirmed'=>'confirmed',
+            'expert'=>'expert',
+            ),
+        'type' => array(
+            'person'=>'person',
+            'asso'=>'asso',
+            'pro'=>'pro',
+            ),
         );
 
     public function __construct(){
 
         $this->date_depot = new \DateTime();
         $this->participations = new ArrayCollection();
+        $this->type = 'person';
     }
 
 
@@ -322,17 +332,6 @@ class Event
     {
         return $this->level;
     }
-
-    /**
-     * Get level
-     *
-     * @return \string 
-     */
-    public function getLevelString()
-    {        
-        return $this::$valuesAvailable['level'][$this->level];
-    }
-
 
     /**
      * Set city_id

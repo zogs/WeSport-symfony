@@ -39,7 +39,7 @@ class CalendarManager extends AbstractManager
 		);
 	private $computed = false;	
 	private $default = array(
-		'country' => 'FR',
+		'country' => null,
 		'date' => null,
 		'city_id'=>null,
 		'city_name'=>null,
@@ -124,6 +124,8 @@ class CalendarManager extends AbstractManager
 	public function addParams($params)
 	{		
 		$this->addParameters($params);
+
+		return $this;
 	}
 
 	public function addParamsURI($params)
@@ -133,6 +135,8 @@ class CalendarManager extends AbstractManager
 		}
 
 		$this->addParameters($params);
+
+		return $this;
 	}
 
 	public function addParamsFromCookies($cookies)
@@ -149,7 +153,9 @@ class CalendarManager extends AbstractManager
 		}		
 
 		$this->cookies = $a;
-		$this->addParameters($a);		
+		$this->addParameters($a);
+
+		return $this;		
 	}
 
 	public function addParamsFromUrl($url)
@@ -159,19 +165,26 @@ class CalendarManager extends AbstractManager
 		$index = $this->urlGenerator->getRouteParams();
 		foreach ($urlParams as $key => $value) {
 			$params[$index[$key]] = $value;
-		}		
+		}
+
 		$this->addParameters($params);	
+
+		return $this;
 	}
 
 	public function addParamsDate($date)
 	{
-		$this->addParameters(array('date'=>$date));		
+		$this->addParameters(array('date'=>$date));
+
+		return $this;		
 	}
 
 
 	public function addParameters($params)
 	{
 		$this->params = array_merge($this->params,$params);
+
+		return $this;
 	}
 
 	public function setAutoLocation($bool = null)
@@ -188,6 +201,15 @@ class CalendarManager extends AbstractManager
 	{
 		$this->params = $this->default;
 		if($resetCookie == true) $this->resetCookie();
+
+		return $this;
+	}
+
+	public function resetSearch()
+	{
+		$this->search = new Search();
+
+		return $this;
 	}
 
 	public function resetCookie()
@@ -232,12 +254,11 @@ class CalendarManager extends AbstractManager
 	}
 
 	public function getSearch()
-	{
-		$this->search->setRawData($this->getParams());
-		$this->urlGenerator->setSearch($this->search);
-		$this->search->setUrl($this->urlGenerator->getUrl());
-		$this->search->setUrlParams($this->urlGenerator->getUrlParams());
-		$this->search->setShortUrlParams($this->urlGenerator->getShortUrlParams());
+	{		
+		//$this->search->setUrl($this->urlGenerator->setSearch($this->search)->getUrl());
+		//$this->search->setUrlParams($this->urlGenerator->getUrlParams());
+		//$this->search->setShortUrlParams($this->urlGenerator->getShortUrlParams());
+
 		return $this->search;
 	}
 
@@ -276,7 +297,7 @@ class CalendarManager extends AbstractManager
 		$this->prepareOrganizerParams();
 		$this->prepareDayOfWeekParams();		
 
-		return $this->search;
+		return $this;
 	}
 
 	public function prepareDateParams()
@@ -310,7 +331,7 @@ class CalendarManager extends AbstractManager
 		elseif(isset($this->params['country']) && strlen($this->params['country']) <=2)
 			$country = $this->em->getRepository('MyWorldBundle:Country')->findCountryByCode($this->params['country']);
 
-		if(!isset($country) && $this->isFlashbagActive()) $this->flashbag->add('Veuillez choisir un pays','info');
+		if(!isset($country)) return;
 
 		$this->search->setCountry($country);
 		return;
@@ -337,7 +358,10 @@ class CalendarManager extends AbstractManager
 		if(!empty($this->params['city_id']) && is_numeric($this->params['city_id'])) $findme = $this->params['city_id'];					
 
 		if(is_numeric($findme)) $city = $this->em->getRepository('MyWorldBundle:City')->find($findme);
-		elseif(is_string($findme)) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($findme,$this->search->getCountry()->getCode());
+		elseif(is_string($findme)) {
+			if($this->search->getCountry()) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($findme,$this->search->getCountry()->getCode());
+			else $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($findme);
+		}
 			
 		if(isset($city) && $city->exist()){
 			$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());	
@@ -447,10 +471,7 @@ class CalendarManager extends AbstractManager
 			}			
 		}    	
 		
-		if(count(array_diff(Event::$valuesAvailable['type'],$r)) == 0) {
-
-			$r = Event::$valuesAvailable['type'];
-		}
+		$r = array_values($r);
 		
 		$this->search->setType($r);
 
@@ -501,22 +522,22 @@ class CalendarManager extends AbstractManager
 
     private function prepareTimeParams()
     {    	
-    	//return null 
     	if(empty($this->params['time']) && empty($this->params['timeend']) && empty($this->params['timestart'])) return; //if time not set
-    	if(is_string($this->params['time']) && $this->params['time'] == $this->urlGenerator->defaults['time']) return; //if equal to URL default value
-    	if(is_array($this->params['time']) && empty($this->params['timeend']) && empty($this->params['timestart']) && count(array_diff($this->default['time'],$this->params['time'])) == 0) return; //if equal to array default value
+    	if(is_string($this->params['time']) && $this->params['time'] == $this->urlGenerator->defaults['time']) return; //if equal to URL default value    	
+    	
 
     	$time = array();
     	if(is_string($this->params['time'])){
-    		$r = explode('-',$this->params['time'],2);
-    		if(empty($r)) return null;
+    		$r = explode('-',$this->params['time'],2);    		
+    		if(count($r) != 2) throw new \Exception("Time in url is not aknowledge");
     		$time['start'] = $this->formatTime($r[0]);
     		$time['end'] = $this->formatTime($r[1]);    		
     	}
-    	if(is_array($this->params['time'])) $time = $this->params['time'];
+    	    	
     	if(isset($this->params['timestart'])) $time['start'] = $this->formatTime($this->params['timestart']);
     	if(isset($this->params['timeend'])) $time['end'] = $this->formatTime($this->params['timeend']);
-
+    	
+    	
     	if(isset($time['start'])){
     		$d = \DateTime::createFromFormat('H:i:s',$time['start']);
     		$this->search->setTimeStart($d);
@@ -526,7 +547,7 @@ class CalendarManager extends AbstractManager
     		$d = \DateTime::createFromFormat('H:i:s',$time['end']);
     		$this->search->setTimeEnd($d);
     	} 
-    	
+
     	return;
     }
 
@@ -575,12 +596,14 @@ class CalendarManager extends AbstractManager
 
     private function formatTime($t){  
 
+    	if(empty($t)) return;
     	if(is_string($t)){
     		if(preg_match('/^[0-9]{2}\:[0-9]{2}\:[0-9]{2}$/',$t)) return $t;  
     		if(preg_match('/^[0-9]{2}\:[0-9]{2}$/',$t)) return $t.':00';  
     		if(preg_match('/^[0-9]{1}\:[0-9]{2}$/',$t)) return '0'.$t.':00';  
     		if(preg_match('/^[0-9]{1}\:[0-9]{1}$/',$t)) return '0'.$t.'0:00';
-    		if(preg_match('/^[0-9]{2}\:[0-9]{1}$/',$t)) return $t.'0:00';   	    
+    		if(preg_match('/^[0-9]{2}\:[0-9]{1}$/',$t)) return $t.'0:00'; 
+    		throw new \Exception("Time is not in a proper format");  	    
     	}
     	if(is_array($t)){
     		if(isset($t['hour']) && isset($t['minute'])) return $this->formatTime($t['hour'].':'.$t['minute']);

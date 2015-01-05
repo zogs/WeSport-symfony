@@ -33,11 +33,12 @@ class AlertType extends AbstractType
                 'mapped' => true,
                 ))
             ->add('frequency','choice',array(
-                'choices'=>array('daily'=>'Tous les jours','weekly'=>'Une fois par semaine'),
+                'choices'=>array('daily'=>'daily','weekly'=>'weekly'),
                 'expanded'=> false,
                 'multiple'=> false,
                 'required'=> true,
-                'data' => 'daily',                
+                'data' => 'daily',  
+                'translation_domain' => 'WsEventsBundle_alert',              
                 ))
             ->add('duration','choice',array(
                 'label'=>"Pour combien de temps",

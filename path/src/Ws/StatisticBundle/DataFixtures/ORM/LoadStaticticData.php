@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-use Ws\StatisticBundle\Entity\GeneralStat;
+use Ws\StatisticBundle\Entity\GlobalStat;
 
 class LoadStatisticData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -14,7 +14,7 @@ class LoadStatisticData extends AbstractFixture implements OrderedFixtureInterfa
 	public function load(ObjectManager $manager)
 	{		
 
-		$general = new GeneralStat();
+		$general = new GlobalStat();
 		$manager->persist($general);
 
 		$manager->flush();

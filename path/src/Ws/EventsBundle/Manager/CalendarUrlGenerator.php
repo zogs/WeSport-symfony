@@ -20,17 +20,17 @@ class CalendarUrlGenerator {
 		'type' => 'alltype',
 		'nbdays' => 7,
 		'date' => 'allweek',
-		'time' => 'allday',
+		'time' => 'alltime',
 		'price' => 'allprice',
 		'level' => 'alllevel',
 		'organizer' => 'allorganizer'
 		);
 
-	public function __construct(RouterInterface $router)
+	public function __construct(RouterInterface $router = null)
 	{
 		$this->router = $router;
 
-		$this->defaults['date'] = \date('Y-m-d');
+		$this->defaults['date'] = \date('dMy');
 	}
 
 	public function setRouter(RouterInterface $router)
@@ -38,10 +38,19 @@ class CalendarUrlGenerator {
 		$this->router = $router;
 	}
 
+	public function reset()
+	{
+		$this->fragments = array();
+		$this->url = '';
+		$this->search = null;
+	}
+
 	public function setSearch($search)
 	{
-		$this->search = $search;
 
+		$this->reset();
+		$this->search = $search;
+		
 		return $this;
 	}
 
@@ -215,7 +224,7 @@ class CalendarUrlGenerator {
 		if($this->search->hasLevel()){
 			$str = '';
 			foreach ($this->search->getLevel() as $k => $level) {
-				$str .= Event::$valuesAvailable['level'][$level].'-';
+				$str .= $level.'-';
 			}
 			$str = trim($str,'-');
 			return $str;

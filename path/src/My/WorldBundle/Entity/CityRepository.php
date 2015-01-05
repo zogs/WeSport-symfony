@@ -44,7 +44,7 @@ class CityRepository extends EntityRepository
 		if(isset($countryCode))
 			$qb->andWhere($qb->expr()->eq('c.cc1',$qb->expr()->literal($countryCode)));
 		if(isset($regionCode))
-			$qb->andWhere($qb->expr()->eq('c.ADM1',$qb->expr()->literal($regionCode)));
+			$qb->andWhere($qb->expr()->eq('c.adm1',$qb->expr()->literal($regionCode)));
 		if(isset($departementCode))
 			$qb->andWhere($qb->expr()->eq('c.adm2',$qb->expr()->literal($departementCode)));
 		if(isset($districtCode))

@@ -27,7 +27,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$event1->setSpot($this->getReference('spot_parc_beaune'));
 		$event1->setLocation($this->getReference('location_beaune'));
 		$event1->setPrice(10);
-		$event1->setLevel(rand(0,4));
+		
 
 		$manager->persist($event1);
 
@@ -51,8 +51,8 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$event->setSpot($this->getReference('spot_piscine_dijon'));
 			$event->setLocation($this->getReference('location_dijon'));
 			$event->setOccurence($i+1);
-			$event->setType(rand(0,3));
-			$event->setLevel(rand(0,4));
+			$event->setType('person');
+			$event->setLevel('confirmed');
 			$manager->persist($event);
 		
 			$this->addReference('event_natation'.$i, $event);
@@ -75,15 +75,48 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$event->setSpot($this->getReference('spot_parc_dijon'));
 			$event->setLocation($this->getReference('location_dijon'));
 			$event->setOccurence($i+1);
-			$event->setType(rand(0,3));
-			$event->setLevel(rand(0,4));
+			$event->setType('asso');			
 
 			$manager->persist($event);
 		
 			$this->addReference('event_boxe'.$i, $event);
 		}
 
+		$event3 = new Event();
+		$event3->setTitle("(privé) Petit match entre amis");
+		$event3->setSlug($event1->getTitle().'-1');
+		$today = new \DateTime();
+		$event3->setDate($today); 
+		$event3->setTime($today);
+		$event3->setSerie($this->getReference('serie1'));
+		$event3->setSport($this->getReference('sport_football'));
+		$event3->setDescription("Venez faire un petit 4contre4 :)");
+		$event3->setOrganizer($this->getReference('user1'));
+		$event3->setSpot($this->getReference('spot_parc_beaune'));
+		$event3->setLocation($this->getReference('location_beaune'));
+		$event3->setPrice(10);
+		$event3->setPublic(false);
+		$manager->persist($event3);
 
+		$this->addReference('event_football_private', $event3);
+
+		$event4 = new Event();
+		$event4->setTitle("(offline) Petit match entre amis");
+		$event4->setSlug($event1->getTitle().'-1');
+		$today = new \DateTime();
+		$event4->setDate($today); 
+		$event4->setTime($today);
+		$event4->setSerie($this->getReference('serie1'));
+		$event4->setSport($this->getReference('sport_football'));
+		$event4->setDescription("Venez faire un petit 4contre4 :)");
+		$event4->setOrganizer($this->getReference('user1'));
+		$event4->setSpot($this->getReference('spot_parc_beaune'));
+		$event4->setLocation($this->getReference('location_beaune'));
+		$event4->setPrice(10);
+		$event4->setOnline(false);
+		$manager->persist($event4);
+
+		$this->addReference('event_football_offline', $event4);
 		$manager->flush();
 
 	}

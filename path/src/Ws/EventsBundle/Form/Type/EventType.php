@@ -56,6 +56,7 @@ class EventType extends AbstractType
 			'expanded' => false,
 			'required' => false,
 			'choices' => Event::$valuesAvailable['level'],
+			'translation_domain' => 'WsEventsBundle_event',
 			))
 		->add('price','integer',array(
 			'required' => false,

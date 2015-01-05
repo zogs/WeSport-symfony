@@ -13,16 +13,16 @@
 		{% if alert.search.area %}<span> étendu de <strong>{{ alert.search.area }}km</strong></span>{% endif %}
 
 		{# de niveau débutant #}
-		{% if alert.search.hasLevel %}<span> de niveaux <strong>{% for level in alert.search.level %} {{ ('event.level.'~level)|trans({},'ws_events') }} </strong>{% endfor %}</span>{% endif %}
+		{% if alert.search.hasLevel %}<span> de niveaux <strong>{% for level in alert.search.level %} {{ level|trans({},'WsEventsBundle_event') }} </strong>{% endfor %}</span>{% endif %}
 
 		{# organisé par #}
-		{% if alert.search.hasType %}<span> organisé par les<strong>{% for type in alert.search.typeNames %} {{ ('user.types.'~type)|trans({},'MyUserBundle') }} </strong>{% endfor %}</span>{% endif %}
+		{% if alert.search.hasType %}<span> organisé par les<strong>{% for type in alert.search.type %} {{ ('user.types.'~type)|trans({},'MyUserBundle') }} </strong>{% endfor %}</span>{% endif %}
 
 		{# d'un prix inférieur à #}
 		{% if alert.search.price %}<span> d'un prix inférieur à <strong>{{ alert.search.price }}€</strong></span>{% endif %}
 
 		{# les lundi mardi jeudi #}
-		{% if alert.search.hasDayOfWeek %}<span> les <strong>{% for day in alert.search.dayOfWeek %} {{ ('days.day.'~day|lower)|trans({},'utils') }}, {% endfor %}</strong></span>{% endif %}
+		{% if alert.search.hasDayOfWeek %}<span> les <strong>{% for day in alert.search.dayOfWeek %} {{ ('days.day.'~day|lower)|trans({},'MyUtilsBundle') }}, {% endfor %}</strong></span>{% endif %}
 
 		{# entre 10h et 14h #}
 		{% if alert.search.hasTimeStart and alert.search.hasTimeEnd %}<span> entre {{ alert.search.timeStart|date('H\\hi') }} et {{ alert.search.timeEnd|date('H\\hi') }} 

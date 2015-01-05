@@ -108,10 +108,13 @@ class CalendarController extends Controller implements InitControllerInterface
 	public function updateAction(Request $request)
 	{
 		$manager = $this->get('calendar.manager');
-		$manager->addParamsFromCookies($request->cookies->all());
-		$manager->addParams($request->request->all());
-		$manager->prepareParams();
-		$search = $manager->getSearch();
+
+		$search = $manager
+					->addParamsFromCookies($request->cookies->all())
+					->addParams($request->request->all())
+					->prepareParams()
+					->getSearch();
+
 		$params = $search->getShortUrlParams();
 		
 		return $this->redirect($this->generateUrl('ws_calendar',$params));
@@ -124,9 +127,10 @@ class CalendarController extends Controller implements InitControllerInterface
 		//get manager
 		$manager = $this->get('calendar.manager');
 		//set params
-		$manager->addParamsFromCookies($this->getRequest()->cookies->all());
-		$manager->addParams($this->getRequest()->query->all());
-		$manager->addParamsDate($date);
+		$manager->addParamsFromCookies($this->getRequest()->cookies->all())
+				->addParams($this->getRequest()->query->all())
+				->addParamsDate($date);
+
 		//find searched week
 		$week = $manager->findCalendar();
 		//get search params

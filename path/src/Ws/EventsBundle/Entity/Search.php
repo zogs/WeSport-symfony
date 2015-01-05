@@ -106,8 +106,12 @@ class Search
     /**
     * @ORM\Column(name="ordered", type="string")
     */
-    private $ordered = 'chronological';
+    private $ordered;
 
+    /**
+    * @ORM\Column(name="visibility", type="string")
+    */
+    private $visibility;
 
     /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
@@ -117,7 +121,6 @@ class Search
 
     public $country; 
 
-    public $raw_data = null;
     public $url = null;
     public $url_params = null;
     public $short_url_params = null;
@@ -127,7 +130,13 @@ class Search
 
     public function __construct()
     {
+        //set defaults
         $this->sports = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->level = array(); //"all level"
+        $this->date = \date('Y-m-d');
+        $this->nb_days = 7;
+        $this->ordered = 'chronological';
+        $this->visibility = 'public';
     }
 
     /**
@@ -157,7 +166,7 @@ class Search
         return array(
             'location' => $this->getLocation(),
             'area' => $this->getArea(),
-            'sports' => $this->getSport(),
+            'sports' => $this->getSports(),
             'nb_days' => $this->getNbDays(),
             'day_of_week' => $this->getDayOfWeek(),
             'type' => $this->getType(),
@@ -282,7 +291,7 @@ class Search
 
     public function setArea($area)
     {
-        $this->area = $area;
+        $this->area = (int) $area;
     }
 
     public function getSports()
@@ -338,7 +347,7 @@ class Search
 
     public function setNbDays($nb)
     {
-        $this->nb_days = $nb;
+        $this->nb_days = (int) $nb;
     }
 
     public function getType()
@@ -385,9 +394,7 @@ class Search
 
     public function getTime($w = null)
     {
-        if($w == 'start') return $this->time['start'];
-        elseif($w == 'end') return $this->time['end'];
-        else return $this->time;
+        return array('start'=>$this->timestart,'end'=>$this->timeend);
 
     }
 
@@ -397,15 +404,6 @@ class Search
         if($t=='end' && isset($this->timeend)) return true;
         if($t==null && ( isset($this->timestart) || isset($this->timeend) ) ) return true;
         return false;       
-    }
-    
-    public function setTime($time)
-    {
-        if(is_array($time)){
-            if(isset($time['start'])) $this->setTimeStart($time['start']);
-            if(isset($time['end'])) $this->setTimeEnd($time['end']);
-            $this->time = $time;            
-        }
     }
 
     public function getTimeStart()
@@ -447,13 +445,13 @@ class Search
 
     public function hasPrice()
     {
-        if(isset($this->price)) return true;
+        if(isset($this->price) && $this->price != 0 ) return true;
         return false;
     }
 
     public function setPrice($price)
     {
-        $this->price = $price;
+        $this->price = (int) $price;
     }
 
     public function getLevel()
@@ -499,6 +497,22 @@ class Search
         $this->order = $ordered;
     }
 
+    public function hasVisibility()
+    {
+        if(isset($this->visibility)) return true;
+        return false;
+    }
+
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+
+    public function setVisibility($v)
+    {
+        $this->visibility = $v;
+    }
+
     public function hasOrganizer()
     {
         if(isset($this->organizer)) return true;
@@ -508,22 +522,6 @@ class Search
     public function setOrganizer(User $organizer)
     {
         $this->organizer = $organizer;
-    }
-
-    public function getRawData()
-    {
-        return $this->raw_data;
-    }
-
-    public function hasRawData()
-    {
-        if(isset($this->raw_data)) return true;
-        return false;
-    }
-
-    public function setRawData($data)
-    {
-        $this->raw_data = $data;
     }
 
     public function getUrl()

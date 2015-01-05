@@ -24,7 +24,7 @@ class EventRepository extends EntityRepository
 
 		$qb = $this->filterByDate($qb);
 		$qb = $this->filterBySports($qb);
-		$qb = $this->filterByOnline($qb);		
+		$qb = $this->filterByOnline($qb);
 		$qb = $this->filterByCity($qb);
 		$qb = $this->filterByType($qb);
 		$qb = $this->filterByTime($qb);
@@ -33,6 +33,7 @@ class EventRepository extends EntityRepository
 		$qb = $this->filterByOrganizer($qb);
 		$qb = $this->filterByDayOfWeek($qb);
 		$qb = $this->filterByAlerted($qb);
+		$qb = $this->filterByVisibility($qb);
 		$qb = $this->orderBy($qb);
 	
 		
@@ -171,8 +172,7 @@ class EventRepository extends EntityRepository
 	private function filterByPrice($qb)
 	{
 		if($this->search->hasPrice() === false) return $qb;
-		if($this->search->getPrice() > 0) return $qb->andWhere($qb->expr()->lt('e.price',':price'))->setParameter('price',$this->search->getPrice());
-		if($this->search->getPrice() == 0 ) return $qb->andWhere($qb->expr()->eq('e.price',0));
+		if($this->search->getPrice() > 0) return $qb->andWhere($qb->expr()->lte('e.price',':price'))->setParameter('price',$this->search->getPrice());		
 	}
 
 	private function filterByLevel($qb)
@@ -210,6 +210,16 @@ class EventRepository extends EntityRepository
 	private function filterByBothline($qb)
 	{
 		return $qb->andWhere('e.online = 1 OR e.online = 0');
+	}
+
+	private function filterByVisibility($qb)
+	{
+		if(!$this->search->hasVisibility()) return $qb;
+
+		if($this->search->getVisibility() == 'public') return $qb->andWhere('e.public = true');
+		if($this->search->getVisibility() == 'private') return $qb->andWhere('e.public = false');
+		
+		return $qb;
 	}
 
 	private function filterByAlerted($qb)

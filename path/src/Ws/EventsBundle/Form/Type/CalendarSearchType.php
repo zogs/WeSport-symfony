@@ -48,7 +48,8 @@ class CalendarSearchType extends AbstractType
                 'choices'=>Event::$valuesAvailable['type'],
                 'multiple'=>true,
                 'expanded'=>false,
-                'required'=>true,                
+                'required'=>true,   
+                'translation_domain' => 'WsEventsBundle_event'             
                 ))
             ->add('price','integer',array(
                 'required'=>false,
@@ -70,6 +71,7 @@ class CalendarSearchType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'choices' => Event::$valuesAvailable['level'],
+                'translation_domain' => 'WsEventsBundle_event'
                 ))
             ->add($builder->create('timestart','text',array(                
                 'required' => false,
@@ -80,10 +82,11 @@ class CalendarSearchType extends AbstractType
                 ))->addModelTransformer(new TimeToDatetimeTransformer('H:i'))
             )
             ->add('dayofweek','choice',array(
-                'choices'=>array('Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'),
+                'choices'=>array('Monday'=>'monday','Tuesday'=>'tuesday','Wednesday'=>'wednesday','Thursday'=>'thursday','Friday'=>'vendredi','Saturday'=>'saturday','Sunday'=>'sunday'),
                 'multiple'=>true,
                 'expanded'=>false,
-                'required'=>false,                
+                'required'=>false,   
+                'translation_domain' => 'MyUtilsBundle'             
                 ))
             ->add('organizer','entity',array(
                 'class' => 'MyUserBundle:User',

@@ -30,7 +30,7 @@ class CityRespositoryTest extends WebTestCase {
         $beaune = $this->repo->findCityByName('Beaune','FR','A1','21');
         $this->assertEquals(1,count($beaune));
         $this->assertEquals('Beaune',$beaune->getName());
-        $this->assertEquals('A1',$beaune->getADM1());
+        $this->assertEquals('A1',$beaune->getAdm1());
     }
 
     public function testFindCitiesSuggestions()
@@ -45,7 +45,7 @@ class CityRespositoryTest extends WebTestCase {
     public function testFindCitiesArround()
     {
         $beaune = $this->repo->findCityByName('Beaune','FR','A1','21');
-        $cities = $this->repo->findCitiesArround(10,$beaune->getLat(),$beaune->getLon(),'FR');
+        $cities = $this->repo->findCitiesArround(10,$beaune->getLatitude(),$beaune->getLongitude(),'FR');
         $count = count($cities);
         $this->assertGreaterThan(10,$count);
         $this->assertInstanceOf('My\WorldBundle\Entity\City',$cities[0]);
