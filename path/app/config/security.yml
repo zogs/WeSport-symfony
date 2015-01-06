@@ -23,6 +23,7 @@ security:
 
     access_control:
         # Routes are prefixed by ther user locale.
+        # - { path: ^/home, roles: ROLE, ip: X.X.X.X, host: example\.com$, methods: [POST, PUT] }
         - { path: ^/\w\w/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w\w/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w\w/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
