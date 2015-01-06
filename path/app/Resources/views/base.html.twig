@@ -67,7 +67,7 @@
                             </a>
                         </li>
 
-                        <li><a href="{{ path('ws_calendar') }}">Calendrier</a></li>
+                        <li><a href="{{ path('ws_calendar') }}">Le Calendrier</a></li>
 
                         <li class="mainbutton">
                             <a href="{{ path('ws_event_new') }} ">
@@ -81,11 +81,15 @@
                         })) }}
                         
                         <li>
-                            <a href="{{ path('ws_alerts_index') }}">Alertes</a>
+                            <a href="{{ path('ws_alerts_index') }}">Mes Alertes</a>
                         </li>
 
                         <li>
-                            <a href="{{ path('blog_homepage')}}">Blog</a>
+                            <a href="{{ path('user_profil_edit', {action:'account' }) }}">Mon Compte</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('blog_homepage')}}">Le Blog</a>
 
                         </li>
 

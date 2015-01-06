@@ -74,7 +74,7 @@ class LoadAlertData extends AbstractFixture implements OrderedFixtureInterface
 		$alert3->setUser($this->getReference('user1'));
 		$alert3->setEmail($this->getReference('user1')->getEmail());
 		$alert3->setSearch($search3);
-		$alert3->setFrequency('monthly');
+		$alert3->setFrequency('weekly');
 		$alert3->setDuration(6);
 		$alert3->setDateStart($start);
 		$alert3->setDateStop($end);
