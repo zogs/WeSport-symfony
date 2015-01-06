@@ -59,4 +59,18 @@ class AlertControllerTest extends WebTestCase
 
 	}
 
+	/**
+	 * Test if user can enable an Alert
+	 */
+	public function testEnable()
+	{
+		//Test is disabling works
+		$crawler = $this->client->request('GET','/fr/event/alert/index');
+		$firstAlert = $crawler->filter('.row-alert-pending')->first();
+		$url = $crawler->selectLink('Réactiver')->link()->getUri();
+		$crawlerDisable = $this->client->request('GET',$url);
+		$this->assertTrue($crawlerDisable->filter('body:contains("Redirecting to /fr/event/alert/index")')->count() == 1);
+
+	}
+
 }
