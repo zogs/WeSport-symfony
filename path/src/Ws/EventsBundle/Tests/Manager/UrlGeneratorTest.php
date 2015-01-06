@@ -52,9 +52,24 @@ class UrlGeneratorTest extends KernelTestCase
 		$search2->setNbDays(4);
 		$search2->setTimeEnd($this->now);
 
+		$search3 = new Search();
+		$search3->setCountry($this->em->getRepository('MyWorldBundle:Country')->findCountryByName('France'));
+		$search3->setLocation($this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('Beaune'));
+		$search3->setSports($this->em->getRepository('WsSportsBundle:Sport')->findAll());
+		$search3->setArea(100);
+		$search3->setType(array('person','pro','asso'));
+		$search3->setNbDays(14);
+		$search3->setTimeEnd($this->now);
+		$search3->setPrice(50);
+		$search3->setTimeStart($this->now);	
+		$search3->setDayOfWeek(array('monday','wednesday','friday','sunday'));
+		$search3->setLevel(array('beginner','average','expert'));
+		$search3->setOrganizer($this->em->getRepository('MyUserBundle:User')->findOneByUsername('admin'));
+
 		return array(
 			$search1,
 			$search2,
+			$search3,
 			);
 	}
 

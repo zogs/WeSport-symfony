@@ -35,7 +35,7 @@ class Alert
 
     /**
     * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", mappedBy="alert", cascade={"persist", "remove"}, fetch="EAGER")
-    * @ORM\JoinColumn(name="search_id")
+    * @ORM\JoinColumn(name="search_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
     */
     private $search;
 

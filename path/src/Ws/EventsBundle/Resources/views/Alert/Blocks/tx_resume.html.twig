@@ -1,22 +1,26 @@
 		{# Les annonces de #}
-		<span>Les annonces de</span>
+		<span>Les annonces </span>
 		
 		{# Football Volley Kayak #}
-		{% for sport in alert.search.sports %}
-			<strong> {{ sport.name}} </strong>
-		{% endfor %}
+		{% if alert.search.sports is not empty %}
+			<span> des sports 
+			{% for sport in alert.search.sports %}
+				<strong> {{ sport.name}} </strong>
+			{% endfor %}
+			</span>
+		{% endif %}
 		
 		{# à Montpellier #}
-		<span>à <strong>{{ alert.search.location.city.name }}</strong></span>
+		{% if alert.search.location %}<span>à <strong>{{ alert.search.location.city.name }}</strong></span>{% endif %}
 
 		{# étendu de 50km #}
 		{% if alert.search.area %}<span> étendu de <strong>{{ alert.search.area }}km</strong></span>{% endif %}
 
 		{# de niveau débutant #}
-		{% if alert.search.hasLevel %}<span> de niveaux <strong>{% for level in alert.search.level %} {{ level|trans({},'WsEventsBundle_event') }} </strong>{% endfor %}</span>{% endif %}
+		{% if alert.search.hasLevel %}<span> de niveaux <strong>{% for level in alert.search.level %} {{ level|trans({},'WsEventsBundle_event') }} {% endfor %}</strong></span>{% endif %}
 
 		{# organisé par #}
-		{% if alert.search.hasType %}<span> organisé par les<strong>{% for type in alert.search.type %} {{ ('user.types.'~type)|trans({},'MyUserBundle') }} </strong>{% endfor %}</span>{% endif %}
+		{% if alert.search.hasType %}<span> organisé par les<strong>{% for type in alert.search.type %} {{ ('user.types.'~type)|trans({},'MyUserBundle') }} {% endfor %}</strong></span>{% endif %}
 
 		{# d'un prix inférieur à #}
 		{% if alert.search.price %}<span> d'un prix inférieur à <strong>{{ alert.search.price }}€</strong></span>{% endif %}
@@ -27,6 +31,9 @@
 		{# entre 10h et 14h #}
 		{% if alert.search.hasTimeStart and alert.search.hasTimeEnd %}<span> entre {{ alert.search.timeStart|date('H\\hi') }} et {{ alert.search.timeEnd|date('H\\hi') }} 
 		{% else %}
-			{% if alert.search.hasTimeStart %}<span> aprés {{ alert.search.timeStart|date('H\\hi') }}</span> {% endif %}
-			{% if alert.search.hasTimeEnd %}<span> aprés {{ alert.search.timeEnd|date('H\\hi') }}</span> {% endif %}
+			{% if alert.search.hasTimeStart %}<span> aprés <strong>{{ alert.search.timeStart|date('H\\hi') }}</strong></span> {% endif %}
+			{% if alert.search.hasTimeEnd %}<span> aprés <strong>{{ alert.search.timeEnd|date('H\\hi') }}</strong></span> {% endif %}
 		{% endif %}
+
+		{# de Organisateur #}
+		{% if alert.search.organizer %}<span> de l'utilisateur <strong><a href="{{ alert.search.organizer|link2user }}">{{ alert.search.organizer.username|capitalize }}</a><strong></span>{% endif %}

@@ -1,6 +1,6 @@
 
 		{# tout les jours | une fois par semaine #}
-		<span><strong>{{ ('event.frequency.'~alert.frequency)|trans({},'ws_events')|capitalize }}</strong></span>		
+		<span><strong>{{ (alert.frequency)|trans({},'WsEventsBundle_alert')|capitalize }}</strong></span>		
 
 		{# jusqu'au 14 septembre #}
 		<span> jusqu'au <strong>{{ alert.dateStop|date('d/m/Y') }}</strong></span>
