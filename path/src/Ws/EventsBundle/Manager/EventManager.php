@@ -5,6 +5,7 @@ namespace Ws\EventsBundle\Manager;
 use My\ManagerBundle\Manager\AbstractManager;
 
 use Ws\EventsBundle\Entity\Participation;
+use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Entity\Serie;
 
 class EventManager extends AbstractManager
@@ -19,7 +20,7 @@ class EventManager extends AbstractManager
      *
      * @return object event
      */
-	public function saveAll($event)
+	public function saveAll(Event $event)
 	{
 		if($event->getSerie()->getStartDate() && $event->getSerie()->getEndDate() ){
 			return $this->saveSerie($event);
@@ -39,7 +40,7 @@ class EventManager extends AbstractManager
      *
      * @return object event
      */
-	public function saveEvent($event, $flush = false)
+	public function saveEvent(Event $event, $flush = false)
 	{
 		//set the location from the spot
 		$event->setLocation($event->getSpot()->getLocation());
@@ -60,9 +61,11 @@ class EventManager extends AbstractManager
      * @param object event
      * @param boolean flush
      */
-	public function deleteEvent($event, $flush = false)
+	public function deleteEvent(Event $event, $flush = true)
 	{
-		$this->delete($event);
+		$this->delete($event,$flush);
+
+		return true;
 	}
 
 	/**
@@ -72,7 +75,7 @@ class EventManager extends AbstractManager
      *
      * @return object first event of the serie
      */
-	public function saveSerie($event)
+	public function saveSerie(Event $event)
 	{
 		$serie = $event->getSerie();
 		$start = $serie->getStartDate();
@@ -137,7 +140,7 @@ class EventManager extends AbstractManager
      *
      * @return object participation
      */
-	public function saveParticipation($event,$user,$flush = false)
+	public function saveParticipation(Event $event,$user,$flush = false)
 	{
 		$participation = new Participation();
 		$participation->setEvent($event);
@@ -155,7 +158,7 @@ class EventManager extends AbstractManager
 	 * @param object $event
 	 * @param object $user	 
 	 */
-	public function isNotParticipating($event,$user)
+	public function isNotParticipating(Event $event,$user)
 	{
 		if($this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user))
 			return false;
@@ -169,7 +172,7 @@ class EventManager extends AbstractManager
 	 * @param object $event
 	 * @param object $user	 
 	 */
-	public function isParticipating($event,$user)
+	public function isParticipating(Event $event,$user)
 	{
 		if($this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user))
 			return true;
@@ -184,7 +187,7 @@ class EventManager extends AbstractManager
      * @param object event
      * @param object user
      */
-	public function deleteParticipation($event,$user,$flush = false)
+	public function deleteParticipation(Event $event,$user,$flush = false)
 	{
 		$participation = $this->em->getRepository('WsEventsBundle:Participation')->findParticipation($event,$user);
 
@@ -202,7 +205,7 @@ class EventManager extends AbstractManager
      *
      * @return object event
      */	
-	public function confirmEvent($event)
+	public function confirmEvent(Event $event)
 	{
 		$event->setConfirmed(true);
 		$this->save($event,true);
@@ -216,7 +219,7 @@ class EventManager extends AbstractManager
      *
      * @return object event
      */	
-	public function unconfirmEvent($event)
+	public function unconfirmEvent(Event $event)
 	{
 		$event->setConfirmed(false);
 		$this->save($event,true);
@@ -230,7 +233,7 @@ class EventManager extends AbstractManager
      *
      * @return object event
      */	
-	public function publishEvent($event)
+	public function publishEvent(Event $event)
 	{
 		$event->setOnline(true);
 		$this->save($event,true);
@@ -244,7 +247,7 @@ class EventManager extends AbstractManager
      *
      * @return object event
      */	
-	public function unpublishEvent($event)
+	public function unpublishEvent(Event $event)
 	{
 		$event->setOnline(false);
 		$this->save($event,true);

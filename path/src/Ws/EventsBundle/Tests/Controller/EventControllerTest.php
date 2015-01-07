@@ -44,10 +44,37 @@ class AlertControllerTest extends WebTestCase
 		$events = $this->em->getRepository('WsEventsBundle:Event')->findByTitle('To be deleted');
 		$event = $events[0];
 
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_delete',array('event'=>$event->getId(),'token'=>$this->csrfProvider->generateCsrfToken('event_delete'))));
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
+		$crawler = $this->client->request('GET',$this->router->generate('ws_event_edit',array('event'=>$event->getId())));
+		$link = $crawler->selectLink("Supprimer l'annonce")->link();
+		$crawler = $this->client->click($link);
+
+		dump($crawler->filter('body')->text());
 		dump($this->client->getResponse()->getStatusCode());
-		$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());
+		//$crawler = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));		
+
+		//$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());
 	}
+
+	/*
+	public function testDeleteSerie()
+	{
+		$events = $this->em->getRepository('WsEventsBundle:Event')->findByTitle('To be deleted');
+		$event = $events[0];
+		$serie = $event->getSerie();
+
+		//crawl to the delete url
+		$crawler = $this->client->request('GET',$this->router->generate('ws_serie_delete',array('serie'=>$serie,'token'=>$this->csrfProvider->generateCsrfToken('serie_delete'))));
+
+		//check if the page of the first event of the serie exist
+		$crawler = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
+		$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());
+
+		//check if the page of the second event of the serie exist
+		$event = $events[1];
+		$crawmer = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
+		$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());		
+
+	}
+	*/
 
 }

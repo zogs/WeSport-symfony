@@ -26,6 +26,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$event1->setOrganizer($this->getReference('user_admin'));
 		$event1->setSpot($this->getReference('spot_parc_beaune'));
 		$event1->setLocation($this->getReference('location_beaune'));
+		$event1->setNbmin(5);
 		$event1->setPrice(10);
 		
 
@@ -74,9 +75,8 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$event->setOrganizer($this->getReference('user1'));
 			$event->setSpot($this->getReference('spot_parc_dijon'));
 			$event->setLocation($this->getReference('location_dijon'));
-			$event->setOccurence($i+1);
-			$event->setType('asso');			
-
+			$event->setOccurence($i+1);			
+			$event1->setNbmin(5);
 			$manager->persist($event);
 		
 			$this->addReference('event_boxe'.$i, $event);

@@ -156,7 +156,7 @@ class EventController extends Controller
 
 		if($this->get('ws_events.manager')->deleteEvent($event)){
 
-			$this->get('flashbag')->add("L'activité a été supprimé ! ");
+			$this->get('flashbag')->add("L'activité a été supprimé !");
 
 			$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_DELETE, new DeleteEvent($event,$this->getUser()));  
 
