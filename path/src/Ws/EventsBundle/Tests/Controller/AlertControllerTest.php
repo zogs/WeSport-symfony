@@ -104,7 +104,9 @@ class AlertControllerTest extends WebTestCase
 		$this->assertTrue($crawlerExtended->filter('body:contains("Redirecting to /fr/event/alert/index")')->count() == 1);		
 	}
 
-	
+	/**
+	 * Test if admin can send the alerts
+	 */
 	public function testSendingAlerts()
 	{
 		$client = static::createClient(array(),array(
@@ -112,14 +114,13 @@ class AlertControllerTest extends WebTestCase
 			'PHP_AUTH_PW' => 'fatboy',
 			));
 
+		//Try to send the daily alerts
 		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'daily')));
-
 		$this->assertTrue($crawler->filter('body:contains("1 daily alertes")')->count() == 1);
 		$this->assertTrue($crawler->filter('body:contains("guichardsim+user1@gmail.com --> 1 événements")')->count() == 1);
 
-
+		//Try to send the weekly alerts
 		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'weekly')));
-
 		$this->assertTrue($crawler->filter('body:contains("1 weekly alertes")')->count() == 1);
 		$this->assertTrue($crawler->filter('body:contains("guichardsim+user1@gmail.com --> 1 événements")')->count() == 1);
 

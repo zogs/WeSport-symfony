@@ -20,31 +20,40 @@ class LoadSerieData extends AbstractFixture implements OrderedFixtureInterface
 		$serie->setStartDate($today);
 		$serie->setEndDate($today);
 		$serie->setOrganizer($this->getReference('user1'));
+		$manager->persist($serie);
 
 		$serie2 = new Serie();
-		$serie2->setOccurences(3);
+		$serie2->setOccurences(10);
 		$serie2->setStartDate($today);
 		$serie2->setEndDate($today);
 		$serie2->setFriday(1);
 		$serie2->setOrganizer($this->getReference('asso1'));
+		$manager->persist($serie2);
 
 		$serie3 = new Serie();
-		$serie3->setOccurences(3);
+		$serie3->setOccurences(20);
 		$serie3->setStartDate($today);
 		$enddate = new \DateTime();
-		$enddate->modify('+ 22 days');
+		$enddate->modify('+ 20 days');
 		$serie3->setEndDate($enddate);
 		$serie3->setOrganizer($this->getReference('user1'));
-
-		$manager->persist($serie);
-		$manager->persist($serie2);
 		$manager->persist($serie3);
+
+		$serie4 = new Serie();
+		$serie4->setOccurences(20);
+		$serie4->setStartDate($today);
+		$enddate = new \DateTime();
+		$enddate->modify('+ 20 days');
+		$serie4->setEndDate($enddate);
+		$serie4->setOrganizer($this->getReference('user1'));
+		$manager->persist($serie4);
 
 		$manager->flush();
 
 		$this->addReference('serie1', $serie);
 		$this->addReference('serie2', $serie2);
 		$this->addReference('serie3', $serie3);
+		$this->addReference('serie4', $serie4);
 	}
 
 	public function getOrder(){

@@ -22,6 +22,11 @@ ws_event_edit:
         event: \d+
         _method: GET|POST
 
+#SERIE
+ws_serie_delete:
+    pattern: /serie/delete/{serie}/{token}
+    defaults: { _controller: WsEventsBundle:Event:deleteSerie }
+
 #SPOT
 ws_spot_index:
     pattern: /spot/index
@@ -56,7 +61,7 @@ ws_calendar_reset:
         _method: GET
 ws_calendar:
     pattern: /calendar/{date}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{level}/{organizer}
-    defaults: { _controller: WsEventsBundle:Calendar:load, city:null, sports:null, date:null, nbdays:null, type:null, time:null, price:null, level:null, organizer:null }
+    defaults: { _controller: WsEventsBundle:Calendar:load, date:null, city:null, sports:null, type:null, nbdays:null, time:null, price:null, level:null, organizer:null }
     requirements:         
         _method: GET
 ws_calendar_update:

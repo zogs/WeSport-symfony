@@ -5,6 +5,7 @@ namespace Ws\EventsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Ws\EventsBundle\Form\Type\AlertType;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
@@ -149,6 +150,9 @@ class AlertController extends Controller
 
 	public function sendAlertsAction($type)
 	{
+		//only ROLE_ADMIN can perform this
+		if($this->get('security.context')->isGranted('ROLE_ADMIN') === false) throw new AccessDeniedException('Only administrators can perform this action');
+
 
 		$em = $this->getDoctrine()->getManager();
 		$mailer = $this->get('ws_mailer');

@@ -32,7 +32,7 @@ class Serie
     private $type = 'person';
     
     /**
-     * @ORM\OneToMany(targetEntity="Event", mappedBy="serie", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="serie", fetch="EAGER", cascade={"persist","remove"})
      */
     private $events;
     /**

@@ -122,11 +122,6 @@ class EventManager extends AbstractManager
      */
 	public function deleteSerie(Serie $serie)
 	{
-		//delete all events of the serie
-		$events = $this->em->getRepository('WsEventsBundle:Event')->findBySerie($serie);
-		foreach ($events as $event) {			
-			$this->delete($event);
-		}
 		//delete serie
 		$this->delete($serie,true);
 

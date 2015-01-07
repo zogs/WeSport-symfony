@@ -13,7 +13,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 
 	public function load(ObjectManager $manager)
 	{		
-
+		//Evenement unique 
 		$event1 = new Event();
 		$event1->setTitle("Petit match entre amis");
 		$event1->setSlug($event1->getTitle().'-1');
@@ -23,7 +23,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$event1->setSerie($this->getReference('serie1'));
 		$event1->setSport($this->getReference('sport_football'));
 		$event1->setDescription("Venez faire un petit 4contre4 :)");
-		$event1->setOrganizer($this->getReference('user1'));
+		$event1->setOrganizer($this->getReference('user_admin'));
 		$event1->setSpot($this->getReference('spot_parc_beaune'));
 		$event1->setLocation($this->getReference('location_beaune'));
 		$event1->setPrice(10);
@@ -34,7 +34,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$this->addReference('event_football', $event1);
 		
 
-		//serie 
+		//Serie d'événeement d'un user
 		for($i=0; $i<=10; $i++){
 
 			$event = new Event();
@@ -58,7 +58,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$this->addReference('event_natation'.$i, $event);
 		}
 
-		//serie 
+		//Serie d'évenement de l'asso
 		for($i=0; $i<=20; $i++){
 
 			$event = new Event();
@@ -82,6 +82,31 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$this->addReference('event_boxe'.$i, $event);
 		}
 
+		//Serie to be deleted
+		for($i=0; $i<=20; $i++){
+
+			$event = new Event();
+			$event->setTitle("To be deleted");
+			$event->setSlug($event->getTitle().'-'.$i);
+			$today = new \DateTime();
+			$d = $i;
+			$event->setDate($today->modify('+'.$d.' days'));
+			$event->setTime($today);
+			$event->setSerie($this->getReference('serie4'));
+			$event->setSport($this->getReference('sport_boxe'));
+			$event->setDescription("Test event - to be deleted");
+			$event->setOrganizer($this->getReference('user1'));
+			$event->setSpot($this->getReference('spot_parc_dijon'));
+			$event->setLocation($this->getReference('location_dijon'));
+			$event->setOccurence($i+1);
+			$event->setConfirmed(0);			
+			$event->setPublic(false);
+			$manager->persist($event);
+		
+			$this->addReference('event_to_be_deleted'.$i, $event);
+		}
+
+		// Evenement privé
 		$event3 = new Event();
 		$event3->setTitle("(privé) Petit match entre amis");
 		$event3->setSlug($event1->getTitle().'-1');
@@ -100,6 +125,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 
 		$this->addReference('event_football_private', $event3);
 
+		//Evenement offline
 		$event4 = new Event();
 		$event4->setTitle("(offline) Petit match entre amis");
 		$event4->setSlug($event1->getTitle().'-1');

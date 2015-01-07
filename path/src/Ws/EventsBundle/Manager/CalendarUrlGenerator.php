@@ -134,6 +134,11 @@ class CalendarUrlGenerator {
 		return $this->search->getCountry()->getName();		
 	}
 
+	public function getDefault($paramName)
+	{
+		return $this->defaults[$paramName];
+	}
+
 	private function getCityParam()
 	{
 		//if a city is enquire

@@ -5,6 +5,7 @@ namespace Ws\EventsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Ws\EventsBundle\Entity\Event;
 use Ws\EventsBundle\Entity\Serie;
@@ -115,11 +116,11 @@ class EventController extends Controller
 	public function confirmAction(Event $event, $token)
 	{
 		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
-			throw new AccessDeniedHttpException('Invalid CSRF token.');
+			throw new AccessDeniedException('Invalid CSRF token.');
 		}
 
 		if($this->getUser()!=$event->getOrganizer()) {
-			throw $this->createNotFoundException('Vous ne pouvez pas supprimer cet événement');        
+			throw $this->createNotFoundException('Vous ne pouvez pas confirmer cet événement');        
 		} 
 
 		if($this->get('ws_events.manager')->confirmEvent($event)){
@@ -145,8 +146,8 @@ class EventController extends Controller
 	 */
 	public function deleteAction(Event $event,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
-			throw new AccessDeniedHttpException('Invalid CSRF token.');
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_delete', $token)) {
+			throw new AccessDeniedException('Invalid CSRF token.');
 		}
 
 		if($this->getUser()!=$event->getOrganizer()) {
@@ -155,14 +156,14 @@ class EventController extends Controller
 
 		if($this->get('ws_events.manager')->deleteEvent($event)){
 
-			$this->get('flashbag')->add("L'activité a été supprimé... Tanpis, ça sera pour une prochaine fois! ");
+			$this->get('flashbag')->add("L'activité a été supprimé ! ");
 
 			$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_DELETE, new DeleteEvent($event,$this->getUser()));  
 
 			$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_DELETED); 
 		}		
 
-		$this->redirect($this->generateUrl("ws_event_new"));     
+		return $this->redirect($this->generateUrl("ws_event_new"));     
 	}
 
 
@@ -174,28 +175,24 @@ class EventController extends Controller
 	 *
 	 * @return Redirect
 	 */
-	public function deleteSerieAction(Event $event,$token)
+	public function deleteSerieAction(Serie $serie,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('delete_serie', $token)) {
-			throw new AccessDeniedHttpException('Invalid CSRF token.');
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('serie_delete', $token)) {
+			throw new AccessDeniedException('Invalid CSRF token.');
 		}
 
-		if($this->getUser()!=$event->getOrganizer()) {
+		if($this->getUser()!=$serie->getOrganizer()) {
 			throw $this->createNotFoundException('Vous ne pouvez pas supprimer cette série');        
 		}   
 
-		//get whole serie
-		$serie = $event->getSerie();
-
 		//throw event DELETE_SERIE
-		$sfevent = new DeleteSerie($serie,$this->getUser());
-		$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_DELETE, $sfevent);
-
+		$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_DELETE, new DeleteSerie($serie,$this->getUser()));
 
 		$this->get('ws_events.manager')->deleteSerie($serie);
+		
 		$this->get('flashbag')->add("Tous les événements ont été supprimés !",'success');
 
-		$this->redirect($this->generateUrl("ws_event_new")); 
+		return $this->redirect($this->generateUrl("ws_event_new")); 
 
 	}
 

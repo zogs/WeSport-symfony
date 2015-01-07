@@ -7,8 +7,10 @@
             <h1 class="title-sheet">
                 Modifier votre activité
             </h1>
-            <a href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}">Voir l'annonce - </a>
-            <a href="{{ path('ws_event_new') }}">Créer une nouvelle activité</a>
+            <a class="btn btn-mini" href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}">Voir l'annonce</a>
+             <a class="btn btn-mini" href="{{ path('ws_event_delete',{event:event.id,token:csrf_token('event_delete')}) }}">Supprimer l'annonce</a>
+             {% if event.serie.occurences > 1 %}<a class="btn btn-mini" href="{{ path('ws_serie_delete',{serie:event.serie.id,token:csrf_token('serie_delete')}) }}">Supprimer toute la série</a>{% endif %}
+            <a class="btn btn-mini" href="{{ path('ws_event_new') }}">Créer une nouvelle activité</a>
         </div>
 
          {# include form block #}

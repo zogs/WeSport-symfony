@@ -63,7 +63,7 @@ class Event
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Spot", fetch="EAGER", cascade={"persist","remove","merge","detach","refresh"})     
+     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Spot", fetch="EAGER", cascade={"persist"})     
      */
     private $spot;
 
