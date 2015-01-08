@@ -83,7 +83,7 @@ class Event
     private $sport;
 
     /**
-     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Participation", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Participation", mappedBy="event", cascade={"remove"}, orphanRemoval=true)
      */
     private $participations;
 

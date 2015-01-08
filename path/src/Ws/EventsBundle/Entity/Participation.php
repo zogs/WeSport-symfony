@@ -23,6 +23,7 @@ class Participation
 
     /**
     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Event", inversedBy="participations")
+    * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
     */
     private $event;
 
