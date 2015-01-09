@@ -104,6 +104,7 @@ class EventManager extends AbstractManager
 		}
 		//save serie
 		$serie->setNboccurence(count($occurences));
+		$serie->setOrganizer($this->context->getToken()->getUser());
 		$this->save($occurence,true);
 
 		//save participations

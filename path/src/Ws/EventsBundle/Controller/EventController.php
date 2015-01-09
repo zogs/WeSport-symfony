@@ -49,8 +49,8 @@ class EventController extends Controller
 
 		if($form->isValid()){
 
-			$event = $form->getData();			
-									
+			$event = $form->getData();	
+				
 			if($event = $this->get('ws_events.manager')->saveAll($event)){
 
 				//set flash message

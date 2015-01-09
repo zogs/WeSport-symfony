@@ -11,22 +11,36 @@ class EventControllerTest extends WebTestCase
 	public $router;
 	public $em;
 
-	public function __construct()
+	/**
+	 * PHPUnit setup
+	 */
+	public function setUp()
 	{
 		
-		$this->client = static::createClient(array(),array(
+		$this->client = self::createClient(array(),array(
 			'PHP_AUTH_USER' => 'user1',
 			'PHP_AUTH_PW' => 'fatboy',
 			));	
 
+
 		$this->router = $this->client->getContainer()->get('router');
 		$this->em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
-		$this->csrfProvider = $this->client->getContainer()->get('form.csrf_provider');
-
 	}
-	/*
+	/**
+	 * PHPUnit close up
+	 */
+	protected function tearDown()
+	{
+		$this->em->close();
+		unset($this->client, $this->em);
+	}
+	
+	/**
+	 * Test creation of an event
+	 */
 	public function testCreate()
 	{
+		
 		$crawler = $this->client->request('GET',$this->router->generate('ws_event_new'));
 
 		$spots = $this->em->getRepository('WsEventsBundle:Spot')->findAll();
@@ -56,10 +70,68 @@ class EventControllerTest extends WebTestCase
 
 		$crawler = $this->client->followRedirect();
 
-		$this->assertEquals('Ws\EventsBundle\Controller\EventController::viewAction',$this->client->getRequest()->attributes->get('_controller'));		
-	}		
+		$this->assertEquals('Ws\EventsBundle\Controller\EventController::viewAction',$this->client->getRequest()->attributes->get('_controller'));	
+
+	}
+
+	/**
+	 * Test failing creating of an error
+	 */
+	public function testCreateErrors()
+	{
+		$crawler = $this->client->request('GET',$this->router->generate('ws_event_new'));
+
+		$now = new \Datetime('now');
+
+		$form = $crawler->selectButton('Sauvegarder')->form(array(
+				'event[spot][spot_id]' => 649681651658416,
+				'event[spot][location][city_name]' => 'A-city-that-do-not-exist',
+				'event[date]' => $now->modify('- 1 day')->format('d/m/Y'),
+				'event[serie][startdate]' => $now->format('Y-m-d'),
+				'event[serie][enddate]' => 'today',
+				'event[time]' => $now->format('s:i:h'),
+			));
+
+		$crawler = $this->client->submit($form);
+
+		$this->assertTrue($crawler->filter('.cell-error,.field_error')->count() > 0);
+	}	
+
+	/**
+	 * Test edition of an event
+	 */
+	public function testEdit()
+	{
+		$event = $this->em->getRepository('WsEventsBundle:Event')->findOneByTitle('Test-event');
+
+		$crawler = $this->client->request('GET',$this->router->generate('ws_event_edit',array('event'=>$event->getId())));
+
+		$spots = $this->em->getRepository('WsEventsBundle:Spot')->findAll();
+		$sports = $this->em->getRepository('WsSportsBundle:Sport')->findAll();
+		$now = new \Datetime('now');
+
+		$form = $crawler->selectButton('Sauvegarder')->form(array(
+				'event[sport]' => $sports[1]->getId(),
+				'event[title]' => 'Test-event',
+				'event[spot][spot_id]' => $spots[0]->getId(),
+				'event[date]' => $now->modify('+3 day')->format('d/m/Y'),
+				'event[time]' => $now->format('H:i'),
+				'event[description]' => '[Edited] Created by automated tests - to be destroy be automated test - ',
+				'event[nbmin]' => 100,
+				'event[level]' => 'beginner',
+				'event[price]' => 2,
+				'event[public]' => false,				
+			));
+
+		$crawler = $this->client->submit($form);
+
+		$this->assertEquals('Ws\EventsBundle\Controller\EventController::editAction',$this->client->getRequest()->attributes->get('_controller'));
+		$this->assertEquals($crawler->filter('.cell-error')->count(),0);	
+	}	
 	
-	
+	/**
+	 * Test view of an event
+	 */
 	public function testView()
 	{		
 		$this->client->restart();
@@ -73,50 +145,54 @@ class EventControllerTest extends WebTestCase
 		$this->assertRegExp('/test-event/',$this->client->getRequest()->attributes->get('slug'));		
 
 	}
-	*/
-
+	
+	/**
+	 * Test deletion of an event
+	 */
 	public function testDelete()
-	{
+	{		
 		//get the event to test
-		$events = $this->em->getRepository('WsEventsBundle:Event')->findByTitle('Test-event');
-		$event = $events[0];
-		$event_id = $event->getId();
+		$event      = $this->em->getRepository('WsEventsBundle:Event')->findOneByTitle('Test-event');
+		$event_id   = $event->getId();
 		$event_slug = $event->getSlug();
 
 		//restart client
 		$this->client->restart();
 		
 		//run the delete url
-		$token = $this->csrfProvider->generateCsrfToken('event_delete');	
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_delete',array('event'=>$event_id,'token'=>$token)));			
+		$token = $this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('event_delete');	
+		$crawler = $this->client->request('DELETE',$this->router->generate('ws_event_delete',array('event'=>$event_id,'token'=>$token)));			
 		
-		//check if view event return 404
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event_id,'slug'=>$event_slug)));			
+		//check if view event is foundable		
+		$crawler = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event_id,'slug'=>$event_slug)));
+					
 		$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());
 	}
 
-	/*
+	/**
+	 * Test deletion of an entire serie
+	 */
 	public function testDeleteSerie()
 	{
+		//get the serie and the events to test
 		$events = $this->em->getRepository('WsEventsBundle:Event')->findByTitle('Test-event');
-		$event = $events[0];
-		$serie = $event->getSerie();
+		$serie = $events[0]->getSerie();
+		foreach ($events as $k => $event) {
+			$events[$k] = array(
+				'id' => $event->getId(),
+				'slug' => $event->getSlug()
+				);
+		}
 
 		//crawl to the delete url
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_edit',array('event'=>$event->getId())));
-		$link = $crawler->selectLink("Supprimer toute la série")->link();
-		$crawler = $this->client->click($link);		
+		$token = $this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('serie_delete');	
+		$crawler = $this->client->request('DELETE',$this->router->generate('ws_serie_delete',array('serie'=>$serie->getId(),'token'=>$token)));	
 
-		//check if the page of the first event of the serie return 404
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
-		$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());
-
-		//check if the page of the second event of the serie return 404
-		$event = $events[1];
-		$crawmer = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug())));
-		$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());		
-
-	}
-	*/
-
+		//check if the page of the events return 404
+		foreach ($events as $event) {
+						
+			$crawler = $this->client->request('GET',$this->router->generate('ws_event_view',array('event'=>$event['id'],'slug'=>$event['slug'])));		
+			$this->assertTrue(404 === $this->client->getResponse()->getStatusCode());			
+		}
+	}	
 }
