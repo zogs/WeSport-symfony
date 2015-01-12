@@ -15,4 +15,10 @@ interface EventStatisticInterface
      * will be converted in Statistic field by the parameters in the "context".yml
      */
     public function getName();
+
+    /**
+     * Return the current user
+     *
+     */
+    public function getUser();
 }

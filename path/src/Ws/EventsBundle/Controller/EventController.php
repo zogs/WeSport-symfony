@@ -218,8 +218,7 @@ class EventController extends Controller
 		//render
 		return $this->render('WsEventsBundle:Event:view.html.twig',array(
 			'event'=> $event,
-			'gmap'=> $gmap,
-			'token'=> $this->get('form.csrf_provider')->generateCsrfToken('event_token')
+			'gmap'=> $gmap,			
 			)
 		);
 	}

@@ -497,11 +497,6 @@ class CalendarManager extends AbstractManager
 			}
 		}
 		
-		if(count(array_diff(Event::$valuesAvailable['level'],$a)) == 0) {
-			
-			$a = $valuesAvailable['level'];
-		}	
-
 		$this->search->setLevel($a);		
 
 		return;

@@ -6,8 +6,10 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Ws\EventsBundle\Entity\Event as WsEvent;
+use Ws\StatisticBundle\Manager\StatLogic;
+use Ws\StatisticBundle\Manager\EventStatisticInterface;
 
-class AddParticipant extends Event
+class AddParticipant extends Event implements EventStatisticInterface
 {
 	protected $event;
 	protected $user;
@@ -32,6 +34,11 @@ class AddParticipant extends Event
 
 	// Le listener doit avoir accès à l'utilisateur
 	public function getParticipant()
+	{
+		return $this->user;
+	}
+
+	public function getUser()
 	{
 		return $this->user;
 	}

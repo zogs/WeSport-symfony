@@ -25,7 +25,7 @@ class ParticipationController extends Controller
 	 */
 	public function addAction(Event $event,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('participation_add', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
@@ -41,10 +41,6 @@ class ParticipationController extends Controller
 
 			//throw event
 			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));
-
-			//update stat 
-			$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_PARTICIPATION_ADDED);
-			$this->get('statistic.manager')->setContext('user',$event->getOrganizer())->get()->increment(UserStat::EVENT_TOTAL_PARTICIPANTS);
 
 		} else {
 			$this->get('flashbag')->add("Il semble que vous participiez déjà",'warning');
@@ -69,7 +65,7 @@ class ParticipationController extends Controller
 	 */
 	public function cancelAction(Event $event,$token)
 	{
-		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('event_token', $token)) {
+		if (!$this->get('form.csrf_provider')->isCsrfTokenValid('participation_cancel', $token)) {
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
@@ -85,9 +81,6 @@ class ParticipationController extends Controller
 
 			//throw event
 			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));  
-
-			$this->get('statistic.manager')->setContext('user',$this->getUser())->get()->increment(UserStat::EVENT_PARTICIPATION_CANCELED); 
-			$this->get('statistic.manager')->setContext('user',$event->getOrganizer())->get()->decrement(UserStat::EVENT_TOTAL_PARTICIPANTS); 
 		}
 
 		return $this->redirect($this->generateUrl(

@@ -128,33 +128,41 @@ class AlertControllerTest extends WebTestCase
 	}
 
 	/**
-	 * Test if user can delete an Alert
-	*
-	 
-	public function testDelete()
+	 * Test if user can extend an Alert
+	 *
+	 */
+	 public function testExtend()
 	{
+		$alert = $this->em->getRepository('WsEventsBundle:Alert')->findOneByEmail('test@local.host');
+		$id = $alert->getId();
 
-		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_index'));
-		$url = $crawler->filter('.row-alert-pending')->first()->filter('td.cell-action')->selectLink('Supprimer')->link()->getUri();		
-		$crawlerDeleted = $this->client->request('GET',$url);
-		$this->assertTrue($crawlerDeleted->filter('body:contains("Redirecting to /fr/event/alert/index")')->count() == 1);
-		//check if the alert has been by verifying the count of remaining alerts equals to 2
-		$this->assertTrue($this->client->request('GET','/fr/event/alert/index')->filter('.row-alert')->count() == 2);
+		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_extend',array('alert'=>$id)));
+
+		$this->client->followRedirect();
+		$this->assertEquals('Ws\EventsBundle\Controller\AlertController::indexAction',$this->client->getRequest()->attributes->get('_controller'));		
 	}
 
 	/**
-	 * Test if user can extend an Alert
-	 	public function testExtend()
+	 * Test if user can delete an Alert
+	*
+	 */
+	public function testDelete()
 	{
-		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_index'));
-		$url = $crawler->filter('.row-alert')->first()->selectLink('Prolonger')->link()->getUri();
-		$crawlerExtended = $this->client->request('GET',$url);
-		$this->assertTrue($crawlerExtended->filter('body:contains("Redirecting to /fr/event/alert/index")')->count() == 1);		
+		$alert = $this->em->getRepository('WsEventsBundle:Alert')->findOneByEmail('test@local.host');
+		$id = $alert->getId();
+
+		$crawler = $this->client->request('DELETE',$this->router->generate('ws_alerts_delete',array('alert'=>$id)));
+		$this->client->followRedirect();
+
+		$this->assertEquals('Ws\EventsBundle\Controller\AlertController::indexAction',$this->client->getRequest()->attributes->get('_controller'));	
+
 	}
 
 	/**
 	 * Test if admin can send the alerts
-	 	public function testSendingDailyAlerts()
+	 *
+	 
+	 public function testSendingDailyAlerts()
 	{
 		$client = static::createClient(array(),array(
 			'PHP_AUTH_USER' => 'admin',
@@ -163,14 +171,15 @@ class AlertControllerTest extends WebTestCase
 
 		//Try to send the daily alerts
 		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'daily')));
-		$this->assertTrue($crawler->filter('body:contains("1 daily alertes")')->count() == 1);
-		$this->assertTrue($crawler->filter('body:contains("guichardsim+user1@gmail.com --> 1 événements")')->count() == 1);
+		$this->assertTrue($crawler->filter('body:contains("daily alertes")')->count() == 1);
+		$this->assertTrue($crawler->filter('body:contains("-->")')->count() >= 1);
 
 	}
 
 	/**
 	 * Test if admin can send the alerts
 	 *
+	 
 	public function testSendingWeeklyAlerts()
 	{
 		$client = static::createClient(array(),array(
@@ -180,10 +189,10 @@ class AlertControllerTest extends WebTestCase
 
 		//Try to send the weekly alerts
 		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'weekly')));
-		$this->assertTrue($crawler->filter('body:contains("1 weekly alertes")')->count() == 1);
-		$this->assertTrue($crawler->filter('body:contains("guichardsim+user1@gmail.com --> 1 événements")')->count() == 1);
+		$this->assertTrue($crawler->filter('body:contains("weekly alertes")')->count() == 1);
+		$this->assertTrue($crawler->filter('body:contains("-->")')->count() >= 1);
 
 	}
 	
-	*/
+	
 }
