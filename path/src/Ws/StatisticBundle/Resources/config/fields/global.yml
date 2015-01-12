@@ -1,4 +1,4 @@
-ws.alert.create: total_alert_create
+ws.alert.create: total_alert_created
 my.user.register: total_user_registered
 ws.serie.new: total_event_created
 ws.event.confirm: total_event_created_confirmed

@@ -27,7 +27,7 @@ services:
         class: Ws\EventsBundle\Form\Type\AlertType     
         arguments: [@security.context]
         tags:
-            - { name: form.type, alias: alert_type }
+            - { name: form.type, alias: alert }
 
     ws_events.form.type.search:
         class: Ws\EventsBundle\Form\Type\CalendarSearchType 

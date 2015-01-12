@@ -82,30 +82,6 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 			$this->addReference('event_boxe'.$i, $event);
 		}
 
-		//Serie to be deleted
-		for($i=0; $i<=20; $i++){
-
-			$event = new Event();
-			$event->setTitle("To be deleted");
-			$event->setSlug($event->getTitle().'-'.$i);
-			$today = new \DateTime();
-			$d = $i;
-			$event->setDate($today->modify('+'.$d.' days'));
-			$event->setTime($today);
-			$event->setSerie($this->getReference('serie4'));
-			$event->setSport($this->getReference('sport_boxe'));
-			$event->setDescription("Test event - to be deleted");
-			$event->setOrganizer($this->getReference('user1'));
-			$event->setSpot($this->getReference('spot_parc_dijon'));
-			$event->setLocation($this->getReference('location_dijon'));
-			$event->setOccurence($i+1);
-			$event->setConfirmed(0);			
-			$event->setPublic(false);
-			$manager->persist($event);
-		
-			$this->addReference('event_to_be_deleted'.$i, $event);
-		}
-
 		// Evenement privé
 		$event3 = new Event();
 		$event3->setTitle("(privé) Petit match entre amis");

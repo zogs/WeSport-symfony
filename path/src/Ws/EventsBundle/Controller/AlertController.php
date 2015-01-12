@@ -41,7 +41,7 @@ class AlertController extends Controller
 		$alert->setSearch($search);
 		
 		//Create form
-		$form = $this->createForm('alert_type',$alert);
+		$form = $this->createForm('alert',$alert);
 		$form->handleRequest($this->getRequest());
 
 		if($form->isValid()){
@@ -184,7 +184,7 @@ class AlertController extends Controller
 
 			//disactive outdated alerts
 			$now = new \DateTime('now');
-			if($alert->getDateStop()->format('Ymd') == $now->format('Ymd')){
+			if($alert->getDateStop()->format('Ymd') >= $now->format('Ymd')){
 				$manager->disableAlert($alert);
 				//inform the user this alert is outdated
 				$mailer->sendExpiredAlertmessage($alert);

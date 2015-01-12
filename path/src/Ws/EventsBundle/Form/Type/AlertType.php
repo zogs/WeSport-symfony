@@ -80,7 +80,7 @@ class AlertType extends AbstractType
     }
     public function getName()
     {
-        return 'alert_type';
+        return 'alert';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
