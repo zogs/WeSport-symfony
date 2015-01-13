@@ -136,7 +136,7 @@ class AlertControllerTest extends WebTestCase
 		$alert = $this->em->getRepository('WsEventsBundle:Alert')->findOneByEmail('test@local.host');
 		$id = $alert->getId();
 
-		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_extend',array('alert'=>$id)));
+		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_extend',array('alert'=>$id,'nbmonth'=>6)));
 
 		$this->client->followRedirect();
 		$this->assertEquals('Ws\EventsBundle\Controller\AlertController::indexAction',$this->client->getRequest()->attributes->get('_controller'));		
@@ -152,6 +152,7 @@ class AlertControllerTest extends WebTestCase
 		$id = $alert->getId();
 
 		$crawler = $this->client->request('DELETE',$this->router->generate('ws_alerts_delete',array('alert'=>$id)));
+
 		$this->client->followRedirect();
 
 		$this->assertEquals('Ws\EventsBundle\Controller\AlertController::indexAction',$this->client->getRequest()->attributes->get('_controller'));	
@@ -194,5 +195,5 @@ class AlertControllerTest extends WebTestCase
 
 	}
 	
-	
+	*/
 }

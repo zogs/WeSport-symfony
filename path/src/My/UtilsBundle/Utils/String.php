@@ -98,7 +98,7 @@ class String {
 
 	static function findEmailsInString($str){
 		
-	 	$mail = preg_match_all($this::$email_pattern, $str,$matches);
+	 	$mail = preg_match_all(self::$email_pattern, $str,$matches);
 	 	return $matches[0];
 	}
 

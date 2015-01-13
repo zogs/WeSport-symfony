@@ -33,8 +33,9 @@ class InvitationController extends Controller
 		//Only people who participate to the event can invite other
 		if($em->getRepository('WsEventsBundle:Participation')->isUserParticipating($this->getUser(),$event)){
 			
-			$secu = $this->get('security.context');		
-			$form = $this->createForm(new InvitationsType($em,$secu,$event));
+			$secu = $this->get('security.context');	
+			$router = $this->get('router');	
+			$form = $this->createForm(new InvitationsType($em,$secu,$router,$event));
 		
 			$form->handleRequest($this->getRequest());
 
@@ -185,7 +186,7 @@ class InvitationController extends Controller
 
 		$this->getDoctrine()->getManager()->getRepository('WsEventsBundle:InvitationBlacklist')->addEmailsToBlackList($emails);
 
-		$this->get('flashbag')->add('Voila, vous ne recevrez plus d\'invitation de la part des utilisateurs de coSporturage.fr... Mais vous pouvez toujours changer d\'avis !!');
+		$this->get('flashbag')->add("Voila, vous ne recevrez plus d'invitation... Revenez si vous changez d'avis !");
 
 		return $this->redirect($this->generateUrl('ws_calendar'));
 	}
@@ -203,7 +204,7 @@ class InvitationController extends Controller
 
 		$this->getDoctrine()->getManager()->getRepository('WsEventsBundle:InvitationBlacklist')->removeEmailsFromBlackList($emails);
 
-		$this->get('flashbag')->add('Bravo! Vous allez pouvoir recevoir des invitations de la part des membres de coSporturage.fr');
+		$this->get('flashbag')->add('Bravo, vous pouvez maintenant recevoir des invitations de la part des membres de coSporturage.fr !');
 
 		return $this->redirect($this->generateUrl('ws_calendar'));
 	}

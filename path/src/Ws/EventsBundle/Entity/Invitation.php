@@ -37,7 +37,7 @@ class Invitation
     private $name;
 
      /**
-    * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invited", mappedBy="invitation", cascade="persist")
+    * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invited", mappedBy="invitation", cascade={"persist","remove"})
     */
     private $invited;
 
@@ -46,8 +46,14 @@ class Invitation
     */
     private $date;
 
-    private $emails = null;
+    /**
+    * @ORM\Column(name="content", type="string", nullable=true)
+    */
     private $content = null;
+    
+    private $emails = null;
+    
+
 
 
     function __construct(){

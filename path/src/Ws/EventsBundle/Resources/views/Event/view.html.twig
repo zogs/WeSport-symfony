@@ -101,11 +101,11 @@
 
 									{# grant the possibility for a visitor to see the invitation button #}
 									{% if is_granted('IS_AUTHENTICATED_ANONYMOUSLY') %}
-										<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
+										<a class="btn btn-mini" href="{{ path('ws_invit_create',{event:event.id}) }}">Invitez des amis</a>
 									{% else %}
 										{# show Invite button if not invitations yet#}
 										{% if event.invitations is empty %}
-											<a class="btn btn-mini" href="{{ path('ws_invit_new',{event:event.id}) }}">Invitez des amis</a>
+											<a class="btn btn-mini" href="{{ path('ws_invit_create',{event:event.id}) }}">Invitez des amis</a>
 										{# else show the number of invitation pending remaining #}
 										{% else %}
 											{# calcul nb responses #}

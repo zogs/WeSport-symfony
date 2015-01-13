@@ -30,12 +30,6 @@ class Search
     private $id;
 
     /**
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert", inversedBy="search")
-    * @ORM\JoinColumn(name="alert_id", referencedColumnName="id")
-    */
-    private $alert;
-
-    /**
     * @ORM\Column(name="date_created", type="datetime")
     */
     private $date_created = null;

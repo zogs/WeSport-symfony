@@ -58,5 +58,13 @@ class InvitationManager extends AbstractManager
 		return $this->em->getRepository('WsEventsBundle:Invitation')->findByEvent($event);
 	}
 
+	public function deleteInvit($invit)
+	{
+		$this->delete($invit);
+		$this->flush();
+
+		return true;
+	}
+
 }
 ?>

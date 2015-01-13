@@ -21,7 +21,7 @@ services:
         class: Ws\EventsBundle\Form\Type\InvitationsType
         arguments: [@doctrine.orm.entity_manager,@security.context,@router]
         tags:
-            - { name: form.type, alias: invitations_type }
+            - { name: form.type, alias: invitation }
 
     ws_events.form.type.alert:
         class: Ws\EventsBundle\Form\Type\AlertType     

@@ -84,7 +84,7 @@ ws_participation_cancel:
 
 
 #INVITATION
-ws_invit_new:
+ws_invit_create:
     pattern: /invite/{event}
     defaults: { _controller: WsEventsBundle:Invitation:create}
     requirements:
@@ -136,7 +136,7 @@ ws_alerts_delete:
     pattern: /alert/delete/{alert}
     defaults: { _controller: WsEventsBundle:Alert:delete }
     requirements:
-        _method: GET|POST
+        _method: GET|DELETE
 ws_alerts_disable:
     pattern: /alert/disable/{alert}
     defaults: { _controller: WsEventsBundle:Alert:disable }

@@ -239,7 +239,7 @@ class Mailer
     public function sendInvitedMessage(Invited $invited)
     {
         $from = $this->expediteur;
-        $subject = "Invitation d'un ami (".ucfirst($invited->getInvitation()->getInviter()->getUsername()).')';
+        $subject = "Invitation d'un ami !";
         $body = $this->templating->render('WsMailerBundle:Events:invitation.html.twig',array(
             'invit' => $invited->getInvitation(),
             'invited' => $invited

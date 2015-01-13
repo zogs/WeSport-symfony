@@ -34,6 +34,7 @@ class Participation
 
      /**
     * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Invited")    
+    * @ORM\JoinColumn(name="invited_id", nullable=true, onDelete="SET NULL")
     */
     private $invited = null;
 

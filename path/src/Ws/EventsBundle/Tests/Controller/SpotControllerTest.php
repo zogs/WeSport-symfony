@@ -34,7 +34,7 @@ class SpotControllerTest extends WebTestCase
 
 	public function testAutoComplete()
 	{
-		$string = 'dijon';
+		$string = 'beaune';
 		$suggestions = $this->em->getRepository('WsEventsBundle:Spot')->findSuggestions(20,$string,'FR');
 		$this->assertEquals(2,count($suggestions));
 

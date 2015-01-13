@@ -199,7 +199,7 @@ class InvitationsType extends AbstractType
 
 	public function getName()
 	{
-		return 'invitations_type';
+		return 'invitation';
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
