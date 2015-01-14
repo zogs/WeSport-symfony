@@ -28,37 +28,37 @@ class GlobalStat
     /**
     * @ORM\Column(name="total_user_registered", type="integer")
     */
-    public $total_user_registered = 0;
+    private $total_user_registered = 0;
 
     /**
     * @ORM\Column(name="total_event_created", type="integer")
     */
-    public $total_event_created = 0;
+    private $total_event_created = 0;
 
     /**
     * @ORM\Column(name="total_event_created_confirmed", type="integer")
     */
-    public $total_event_created_confirmed = 0;
+    private $total_event_created_confirmed = 0;
 
     /**
     * @ORM\Column(name="total_event_deleted", type="integer")
     */
-    public $total_event_deleted = 0;
+    private $total_event_deleted = 0;
 
     /**
     * @ORM\Column(name="total_event_participation", type="integer")
     */
-    public $total_event_participation = 0;
+    private $total_event_participation = 0;
 
     /**
     * @ORM\Column(name="total_event_participation_canceled", type="integer")
     */
-    public $total_event_participation_canceled = 0;
+    private $total_event_participation_canceled = 0;
 
     /**
     * @ORM\Column(name="total_alert_created", type="integer")
     */
-    public $total_alert_created = 0;
+    private $total_alert_created = 0;
 
 
 
@@ -255,5 +255,28 @@ class GlobalStat
     public function getTotalAlertCreate()
     {
         return $this->total_alert_create;
+    }
+
+    /**
+     * Set total_alert_created
+     *
+     * @param integer $totalAlertCreated
+     * @return GlobalStat
+     */
+    public function setTotalAlertCreated($totalAlertCreated)
+    {
+        $this->total_alert_created = $totalAlertCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get total_alert_created
+     *
+     * @return integer 
+     */
+    public function getTotalAlertCreated()
+    {
+        return $this->total_alert_created;
     }
 }

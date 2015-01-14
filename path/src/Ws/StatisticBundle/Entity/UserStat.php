@@ -38,42 +38,42 @@ class UserStat
     /**
     * @ORM\Column(name="event_created", type="integer")
     */
-    public $event_created = 0;
+    private $event_created = 0;
 
     /**
     * @ORM\Column(name="event_created_confirmed", type="integer")
     */
-    public $event_created_confirmed = 0;
+    private $event_created_confirmed = 0;
 
     /**
     * @ORM\Column(name="event_created_canceled", type="integer")
     */
-    public $event_created_canceled = 0;
+    private $event_created_canceled = 0;
 
     /**
     * @ORM\Column(name="event_created_total_participants", type="integer")
     */
-    public $event_created_total_participants = 0;
+    private $event_created_total_participants = 0;
 
     /**
     * @ORM\Column(name="event_deleted", type="integer")
     */
-    public $event_deleted = 0;
+    private $event_deleted = 0;
 
     /**
     * @ORM\Column(name="event_participation", type="integer")
     */
-    public $event_participation = 0;
+    private $event_participation = 0;
 
     /**
     * @ORM\Column(name="event_participation_canceled", type="integer")
     */
-    public $event_participation_canceled = 0;
+    private $event_participation_canceled = 0;
 
     /**
     * @ORM\Column(name="alert_created", type="integer")
     */
-    public $alert_created = 0;
+    private $alert_created = 0;
 
 
 
@@ -270,5 +270,74 @@ class UserStat
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set event_participation
+     *
+     * @param integer $eventParticipation
+     * @return UserStat
+     */
+    public function setEventParticipation($eventParticipation)
+    {
+        $this->event_participation = $eventParticipation;
+
+        return $this;
+    }
+
+    /**
+     * Get event_participation
+     *
+     * @return integer 
+     */
+    public function getEventParticipation()
+    {
+        return $this->event_participation;
+    }
+
+    /**
+     * Set event_participation_canceled
+     *
+     * @param integer $eventParticipationCanceled
+     * @return UserStat
+     */
+    public function setEventParticipationCanceled($eventParticipationCanceled)
+    {
+        $this->event_participation_canceled = $eventParticipationCanceled;
+
+        return $this;
+    }
+
+    /**
+     * Get event_participation_canceled
+     *
+     * @return integer 
+     */
+    public function getEventParticipationCanceled()
+    {
+        return $this->event_participation_canceled;
+    }
+
+    /**
+     * Set alert_created
+     *
+     * @param integer $alertCreated
+     * @return UserStat
+     */
+    public function setAlertCreated($alertCreated)
+    {
+        $this->alert_created = $alertCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get alert_created
+     *
+     * @return integer 
+     */
+    public function getAlertCreated()
+    {
+        return $this->alert_created;
     }
 }

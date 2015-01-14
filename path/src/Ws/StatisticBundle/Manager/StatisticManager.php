@@ -6,6 +6,7 @@ use My\ManagerBundle\Manager\AbstractManager;
 use Symfony\Component\Yaml\Parser;
 
 use My\UserBundle\Entity\User;
+use My\UtilsBundle\Utils\String;
 
 class StatisticManager extends AbstractManager
 {
@@ -91,15 +92,24 @@ class StatisticManager extends AbstractManager
 		
 			$stat = $this->getStat($logic->getContext(),$logic->getEvent());
 
-			$conf = $this->importConf($logic->getContext());
-			
+			$conf = $this->importConf($logic->getContext());			
 			$field = $conf[$logic->getName()];
+			$method = String::camelize($field,true);
+			$setMethod = 'set'.$method;
+			$getMethod = 'get'.$method;
 
-			if(!isset($stat->$field)) throw new \Exception("The Event name \"".$field."\" is not matching any field property of the context ".ucfirst($logic->getContext()), 1);
+			if(method_exists($stat,$setMethod) && method_exists($stat,$getMethod)){
 			
-			$stat->$field += $logic->getIncrement();
+				$before = $stat->$getMethod();		
+				$after = $before + $logic->getIncrement();		
+				$stat->$setMethod($after);
 
-			$this->save($stat,true);
+				$this->save($stat,true);
+
+			} else {
+				throw new \Exception("The Event named \"".$field."\" is not matching any field property of the context ".ucfirst($logic->getContext()."... Also Setter and Getter must be defined"), 1);
+			}
+			
 		}
 	}
 

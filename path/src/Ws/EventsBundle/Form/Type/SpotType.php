@@ -141,18 +141,8 @@ class SpotType extends AbstractType
         
         $spot = NULL;
 
-        //get spot from spot_id
-        if(!empty($data['spot_id'])){
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']);   
-            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas..."); //show error on spot_slug field       
-        }    
-        //else from spot_slug
-        elseif(!empty($data['spot_slug'])){
-            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug']);    
-            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas..."); //show error on spot_slug field
-        }        
-        //else try creating new spot
-        elseif(!empty($data['location'])){            
+        //if location is defined, create new spot
+        if(!empty($data['location'])){            
 
             //get location from city_id or city_name
             if(!empty($data['location']['city_id']))                
@@ -170,6 +160,17 @@ class SpotType extends AbstractType
             $spot->setLocation($location);
             
         }
+        //else get spot from spot_id
+        elseif(!empty($data['spot_id'])){
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneById($data['spot_id']);   
+            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas..."); //show error on spot_slug field       
+        }    
+        //else from spot_slug
+        elseif(!empty($data['spot_slug'])){
+            $spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($data['spot_slug']);    
+            if(NULL == $spot) $this->errors[] = array('spot_slug',"Ce lieu n'existe pas..."); //show error on spot_slug field
+        }        
+        
         else {
             $this->errors[] = array('spot_slug',"Un lieu est nécessaire...");
         }        
