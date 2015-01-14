@@ -111,7 +111,7 @@ class Search
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
     * @ORM\JoinColumn(name="organizer_id", nullable=true)
     */
-    public $organizer = null;
+    private $organizer = null;
 
     public $country; 
 

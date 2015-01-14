@@ -59,6 +59,16 @@ class User extends BaseUser
     private $settings = null;
 
     /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Alert", mappedBy="user")
+     */
+    private $alerts;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="inviter")
+     */
+    private $invitations;
+
+    /**
      * @ORM\OneToOne(targetEntity="Ws\StatisticBundle\Entity\UserStat", cascade={"persist","remove"}, mappedBy="user")
      */
     private $statistic = null;

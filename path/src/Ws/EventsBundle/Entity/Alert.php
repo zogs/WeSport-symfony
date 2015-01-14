@@ -34,13 +34,13 @@ class Alert
     private $email;
 
     /**
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", mappedBy="alert", cascade={"all"}, fetch="EAGER")
-    * @ORM\JoinColumn(name="search_id", referencedColumnName="id")
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"all"}, fetch="EAGER")
+    * @ORM\JoinColumn(name="search_id")
     */
     private $search;
 
     /**
-    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Alerted", inversedBy="alert")
+    * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Alerted", mappedBy="alert")
     */
     private $sended;
 

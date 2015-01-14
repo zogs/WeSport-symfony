@@ -22,7 +22,7 @@ class Alerted
     private $id;
 
      /**
-    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Alert")
+    * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Alert", inversedBy="sended")
     */
     private $alert;
 
