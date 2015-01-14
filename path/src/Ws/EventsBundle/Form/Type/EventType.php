@@ -62,7 +62,7 @@ class EventType extends AbstractType
 			'required' => false,
 		))
 		//debug todo
-		->add('invitations','invitations_type',array(
+		->add('invitations','invitation',array(
 				'mapped' => false,			
 			))
 		->add('public','checkbox',array(
