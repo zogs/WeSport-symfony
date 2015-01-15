@@ -12,6 +12,18 @@ my_world_nextlevel:
     requirements:
         _method: GET
 
+my_world_city_search:
+    pattern: /city/search
+    defaults: { _controller: MyWorldBundle:City:search }
+    requirements:
+        _method: GET|POST
+
+my_world_city_view:
+    pattern: /city/view/{city}
+    defaults: { _controller: MyWorldBundle:City:view }
+    requirements:
+        _method: GET
+
 my_world_autocompletecity:
     pattern: /autocompletecity/{country}/{prefix}
     defaults: { _controller: MyWorldBundle:City:autoComplete, country:'FR', prefix:'' }

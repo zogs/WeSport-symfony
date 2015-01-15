@@ -123,6 +123,11 @@ class String {
 		return htmlspecialchars_decode($s, ENT_QUOTES);
 	}
 
+	static function randomHash($length = 10)
+	{
+		return bin2hex(mcrypt_create_iv($length/2, MCRYPT_DEV_URANDOM));
+	}
+
 	/**
 	* Translates a camel case string into a string with
 	* underscores (e.g. firstName -> first_name)
@@ -150,6 +155,7 @@ class String {
 		$func = create_function('$c', 'return strtoupper($c[1]);');
 		return preg_replace_callback('/_([a-z])/', $func, $str);
 	} 
+
 
 
 } ?>

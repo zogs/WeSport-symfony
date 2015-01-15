@@ -60,7 +60,7 @@ class UserControllerTest extends WebTestCase
 
 	public function testRequestActivationMail()
 	{
-		$crawler = $this->client->request('GET',$this->router->generate('user_request_activation_mail'));
+		$crawler = $this->client->request('GET',$this->router->generate('my_user_request_activation_mail'));
 
 		$form = $crawler->selectButton('Envoyer')->form(array(
 			'form[email]' => 'testemail@local.host'
@@ -83,6 +83,15 @@ class UserControllerTest extends WebTestCase
 		$this->assertEquals('Ws\EventsBundle\Controller\CalendarController::loadAction',$this->client->getRequest()->attributes->get('_controller'));	
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
+
+	public function testDelete()
+    {
+        $user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname');
+
+        $this->client->getContainer()->get('fos_user.user_manager')->deleteUser($user);
+
+        $this->assertNull($this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname'));
+    }
 
 	
 	

@@ -3,7 +3,7 @@
 namespace My\WorldBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\ORM\EntityNotFoundException;
 /**
  * LocationRepository
  *
@@ -334,6 +334,7 @@ class LocationRepository extends EntityRepository
 	public function createLocationFromCityId($id)
 	{
 		$city = $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
+		if($city == null) throw new EntityNotFoundException();
 		$states['city'] = $city;
 		$states['country'] = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($city->getCc1());
 		if($city->getAdm1() != null) $states['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm1(),'ADM1');

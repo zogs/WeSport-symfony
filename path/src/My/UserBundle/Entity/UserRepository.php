@@ -4,6 +4,7 @@ namespace My\UserBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+use My\UtilsBundle\Utils\String;
 /**
  * SettingsRepository
  *
@@ -18,5 +19,16 @@ class UserRepository extends EntityRepository
 				 ->select('COUNT(u)')
 				 ->getQuery()
 				 ->getSingleScalarResult();
+	}
+
+	public function generateNewConfirmationToken(User $user)
+	{
+		$token = String::randomHash(120);
+		$user->setConfirmationToken($token);
+
+		$this->_em->persist($user);
+		$this->_em->flush();
+
+		return $user;
 	}
 }

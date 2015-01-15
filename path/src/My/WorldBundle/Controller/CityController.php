@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use My\WorldBundle\Entity\City;
+
 class CityController extends Controller
 {
     public function autoCompleteAction($country,$prefix)
@@ -28,6 +30,30 @@ class CityController extends Controller
         }
 
         return new JsonResponse($cities);
+    }
+
+    public function searchAction(Request $request)
+    {        
+        $form = $this->createForm('city_to_location_type');
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+
+            $location = $form->getData();
+            return $this->redirect($this->generateUrl('my_world_city_view',array('city'=>$location->getCity()->getId())));
+        }
+
+        return $this->render('MyWorldBundle:City:form.html.twig',array(
+            'form' => $form->createView()
+            ));
+    }
+
+    public function viewAction(City $city)
+    {        
+        return $this->render('MyWorldBundle:City:view.html.twig',array(
+            'city'=>$city
+            ));
     }
 
 }

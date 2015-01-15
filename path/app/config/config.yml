@@ -156,7 +156,7 @@ fos_user:
     registration:
         confirmation:
             enabled: true 
-            template: MyUserBundle:Registration:confirm_email.html.twig
+            template: MyUserBundle:Registration:email.html.twig
         form:
             type: my_user_registration
     from_email:

@@ -40,7 +40,7 @@ class CityToLocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $builder->add('city_id','hidden',array(
+        $builder->add('city_id','text',array(
                 'required' => false,
                 'attr' => array(
                     'class' => 'city-id-autocompleted'
@@ -78,10 +78,9 @@ class CityToLocationType extends AbstractType
         
         $location = null;
         if(!empty($data['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
-        elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);
-
-        $form->setData($location);
-
+        elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);        
+        $form->setData($location);        
+        return;
     }
     
     /**
@@ -95,8 +94,8 @@ class CityToLocationType extends AbstractType
     {
         $form = $event->getForm();
         $data = $event->getData();
-
-        if($data == null){
+        
+        if($data == null || $data->getId() == null){
             $form->get('city_name')->addError(new FormError("Cette ville ne semble pas exister ..."));
         }
     }

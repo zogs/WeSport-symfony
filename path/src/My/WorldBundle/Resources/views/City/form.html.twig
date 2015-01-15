@@ -1,0 +1,17 @@
+{% extends '::layout_centered.html.twig' %}
+{% form_theme form 'WsEventsBundle:Form:block-form-alert.html.twig' %}
+
+
+{% block page_content %}
+
+	{{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.city_id) }}
+        {{ form_row(form.city_name) }}
+
+		<button type="submit">Rechercher</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}

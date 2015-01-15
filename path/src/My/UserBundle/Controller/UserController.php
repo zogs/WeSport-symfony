@@ -28,17 +28,16 @@ class UserController extends Controller
         $form->handleRequest($request);
  
         if($form->isValid()) {
-
-            //get user
+            
             $data = $form->getData();
             $email = $data['email'];
-            $user =  $this->container->get('fos_user.user_manager')->findUserByEmail($email);
-            //get mailer
-            $mailer = $this->get('fos_user.mailer.twig_swift'); //this service is by default set to private, change to public in friendsofsymfony\user-bundle\FOS\UserBundle\Resources\config\mailer.xml
+            //get user
+            $user = $this->getDoctrine()->getRepository('MyUserBundle:User')->findOneByEmail($email);
+            $user = $this->getDoctrine()->getRepository('MyUserBundle:User')->generateNewConfirmationToken($user);
             //send mail
-            $mailer->sendConfirmationEmailMessage($user);
+            $this->get('my_user.mailer')->sendConfirmationEmailMessage($user);
             //flash message
-            $this->get('flashbag')->add("Un email vous a été envoyé. Veuillez cliquez sur le lien contenu dans cet email",'success');
+            $this->get('flashbag')->add("Un email vous a été envoyé! Veuillez cliquez sur le lien contenu dans cet email.",'success');
             
         }
 
@@ -85,4 +84,5 @@ class UserController extends Controller
             )
         );
     }
+
 }
