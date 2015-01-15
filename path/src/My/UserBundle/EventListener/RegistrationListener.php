@@ -12,6 +12,8 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
 
+use My\FlashBundle\Controller\FlashController;
+
 class RegistrationListener implements EventSubscriberInterface
 {
 
@@ -19,7 +21,7 @@ class RegistrationListener implements EventSubscriberInterface
   private $router;
   private $flashbag;
 
-  public function __construct(EntityManager $em, UrlGeneratorInterface $router, $flashbag)
+  public function __construct(EntityManager $em, UrlGeneratorInterface $router, FlashController $flashbag)
   {
     $this->em = $em;
     $this->router = $router;
@@ -47,7 +49,8 @@ class RegistrationListener implements EventSubscriberInterface
   public function onRegistrationCompleted( FilterUserResponseEvent $event )
   {
 
-    $this->flashbag->clear()->add('Inscription presque terminé, un email de confirmation vous a envoyé! Allez voir...','success');
+    $this->flashbag->add('Pour terminer votre inscription, cliquez sur le lien dans le mail que nous vous avons envoyé !');
+    $this->flashbag->add("Si vous ne le trouvez pas, pensez à vérifier le dossier \"Indésirables\" de votre boîte mail",'warning');
   }
 
   public function onRegistrationConfirm( GetResponseUserEvent  $event )

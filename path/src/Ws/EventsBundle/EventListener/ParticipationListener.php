@@ -46,7 +46,7 @@ class ParticipationListener implements EventSubscriberInterface
 
 		$this->mailer->sendParticipationAddedToAdmin($wsevent,$participant);
 
-		$this->statistic->setEvent($event)->update();
+		$this->statistic->fromEvent($event)->update();
 	}
 
 	public function onCancelParticipant(CancelParticipant $event)
@@ -56,7 +56,7 @@ class ParticipationListener implements EventSubscriberInterface
 
 		$this->mailer->sendParticipationCanceledToAdmin($wsevent,$participant);
 
-		$this->statistic->setEvent($event)->update();
+		$this->statistic->fromEvent($event)->update();
 	}
 
 

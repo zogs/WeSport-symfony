@@ -44,7 +44,7 @@ class AlertListener implements EventSubscriberInterface
 
 		$this->mailer->sendAlertConfirmation($alert,$user);
 
-		$this->statistic->setEvent($event)->update();
+		$this->statistic->fromEvent($event)->update();
 	}
 
 }

@@ -40,13 +40,13 @@ class EventControllerTest extends WebTestCase
 	 */
 	public function testCreate()
 	{
-		
+		//crawl to formular
 		$crawler = $this->client->request('GET',$this->router->generate('ws_event_new'));
-
+		//get needed entities
 		$spots = $this->em->getRepository('WsEventsBundle:Spot')->findAll();
 		$sports = $this->em->getRepository('WsSportsBundle:Sport')->findAll();
 		$now = new \Datetime('now');
-
+		//fill form
 		$form = $crawler->selectButton('Sauvegarder')->form(array(
 				'event[sport]' => $sports[0]->getId(),
 				'event[title]' => 'Test-event',
@@ -65,11 +65,10 @@ class EventControllerTest extends WebTestCase
 				'event[price]' => 4,
 				'event[public]' => false,				
 			));
-
+		//submit form
 		$crawler = $this->client->submit($form);
 
 		$crawler = $this->client->followRedirect();
-
 		$this->assertEquals('Ws\EventsBundle\Controller\EventController::viewAction',$this->client->getRequest()->attributes->get('_controller'));	
 
 	}

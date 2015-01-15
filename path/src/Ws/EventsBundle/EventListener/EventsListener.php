@@ -46,7 +46,7 @@ class EventsListener implements EventSubscriberInterface
 
 	public function onNewEvents(CreateEvents $event)
 	{
-		$this->statistic->setEvent($event)->update();
+		$this->statistic->fromEvent($event)->update();
 	}
 
 	public function onViewEvent(ViewEvent $event)
@@ -71,7 +71,7 @@ class EventsListener implements EventSubscriberInterface
 
 		$this->mailer->sendEventConfirmedToParticipants($ev);
 
-		$this->statistic->setEvent($event)->update();
+		$this->statistic->fromEvent($event)->update();
 	}
 
 	public function onDeleteEvent(DeleteEvent $event)
@@ -79,6 +79,8 @@ class EventsListener implements EventSubscriberInterface
 		$ev = $event->getEvent();
 
 		$this->mailer->sendEventDeletedToParticipants($ev);
+
+		$this->statistic->fromEvent($event)->update();
 	}
 
 

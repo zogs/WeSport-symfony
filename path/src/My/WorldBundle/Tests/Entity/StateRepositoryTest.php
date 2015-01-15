@@ -19,7 +19,7 @@ class StateRespositoryTest extends WebTestCase {
         ;
     }
 
-    public function testFindStateByCodes()
+    public function testFindStateByCode()
     {
         $bourgogne = $this->repo->findStateByCode('FR','A1','ADM1');
         $this->assertEquals('Bourgogne',$bourgogne->getName());
@@ -29,6 +29,13 @@ class StateRespositoryTest extends WebTestCase {
 
         $ecosse = $this->repo->findStateByCode('UK','SCT','ADM1');
         $this->assertEquals('Scotland',$ecosse->getName());
+    }
+
+    public function testFindStatesByParent()
+    {
+        $departement_bourguigon = $this->repo->findStatesByParent('ADM2','FR','A1');
+
+        $this->assertEquals(4,count($departement_bourguigon));
     }
 }
 ?>

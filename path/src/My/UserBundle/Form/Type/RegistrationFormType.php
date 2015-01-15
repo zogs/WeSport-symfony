@@ -86,7 +86,7 @@ class RegistrationFormType extends BaseType
 
 
         ->add('submit','submit',array(
-            'label' => 'S inscrire',
+            'label' => "S'inscrire",
             'attr' => array(
                 'class'=>'btn btn-info'
                 )

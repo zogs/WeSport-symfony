@@ -23,19 +23,7 @@ class StatisticManager extends AbstractManager
 		$this->em->getRepository('WsStatisticBundle:UserSportStat')->setSportCreated($sport,$user);
 	}
 
-	private function updateGlobalStat()
-	{
-		$stat = $this->getStat('global');
-
-		$stat->setTotalEventCreated($this->em->getRepository('WsEventsBundle:Event')->countAll());
-		$stat->setTotalUserRegistered($this->em->getRepository('MyUserBundle:User')->countAll());
-		$stat->setTotalEventParticipation($this->em->getRepository('WsEventsBundle:Participation')->countAll());
-				
-		$this->save($stat,true);
-
-		return $stat;
-	}
-
+	
 
 	/**
 	 * Set statistic logics from an Event
@@ -44,7 +32,7 @@ class StatisticManager extends AbstractManager
 	 *
 	 * Event must have a method getStatLogic() that return an array of instruction, ex: array('user','ws.event.create',1|-1)
 	 */
-	public function setEvent($event)
+	public function fromEvent($event)
 	{
 		if(!method_exists($event, 'getStatLogics')) throw new \Exception("Method getStatLogics must be defined", 1);		
 
@@ -171,6 +159,21 @@ class StatisticManager extends AbstractManager
 		return $yaml->parse(file_get_contents(__DIR__.'/../Resources/config/fields/'.$context.'.yml'));
 	}
 
+	/**
+	 * update global stats with the real count of database entitites
+	 */
+	public function updateGlobalStat()
+	{
+		$stat = $this->getGlobalStat();
+
+		$stat->setTotalEventCreated($this->em->getRepository('WsEventsBundle:Event')->countAll());
+		$stat->setTotalUserRegistered($this->em->getRepository('MyUserBundle:User')->countAll());
+		$stat->setTotalEventParticipation($this->em->getRepository('WsEventsBundle:Participation')->countAll());
+				
+		$this->save($stat,true);
+
+		return $stat;
+	}
 
 
 }

@@ -9,11 +9,6 @@ use My\UserBundle\Form\Type\ProfilEditionType;
 
 class UserController extends Controller
 {
-    public function indexAction($name)
-    {
-        return $this->render('MyUserBundle:Default:index.html.twig', array('name' => $name));
-    }
-
     public function viewProfilAction($id)
     {
     	$user = $this->getDoctrine()->getRepository('MyUserBundle:User')->findOneById($id);

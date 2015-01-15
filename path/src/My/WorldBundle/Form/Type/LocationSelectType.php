@@ -41,7 +41,7 @@ class LocationSelectType extends AbstractType
         $countries = $em->getRepository('MyWorldBundle:Country')->findCountryList();
 
         $builder   
-            ->add('id','hidden',array(
+            ->add('id','text',array(
                 'required'=>true,
                 'mapped'=>true,
                 'data'=>'0'

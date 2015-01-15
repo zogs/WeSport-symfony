@@ -14,7 +14,9 @@ class StatLogic {
 		$this->event = $event;
 		$this->context = $context;
 		$this->increment = $increment;
+		//set name from the event class
 		if(method_exists($event, 'getName')) $this->name = $event->getName();
+		//or from the constructor
 		if(!empty($name)) $this->name = $name;
 	}
 

@@ -366,17 +366,17 @@ class LocationRepository extends EntityRepository
 		$location = new Location();
 
 		if(isset($states['country']))
-			$location->setCountry($states['country']);
+			$location->setCountry($this->_em->getRepository('MyWorldBundle:Country')->find($states['country']));
 		if(isset($states['region']))
-			$location->setRegion($states['region']);
+			$location->setRegion($this->_em->getRepository('MyWorldBundle:State')->find($states['region']));
 		if(isset($states['department']))
-			$location->setDepartement($states['department']);
+			$location->setDepartement($this->_em->getRepository('MyWorldBundle:State')->find($states['department']));
 		if(isset($states['district']))
-			$location->setDistrict($states['district']);
+			$location->setDistrict($this->_em->getRepository('MyWorldBundle:State')->find($states['district']));
 		if(isset($states['division']))
-			$location->setDivision($states['division']);
+			$location->setDivision($this->_em->getRepository('MyWorldBundle:State')->find($states['division']));
 		if(isset($states['city']))
-			$location->setCity($states['city']);
+			$location->setCity($this->_em->getRepository('MyWorldBundle:City')->find($states['city']));
 
 		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=0;"); 
 		$this->_em->persist($location);
