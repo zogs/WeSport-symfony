@@ -36,19 +36,28 @@ class LocationManager
 		return $this->getLocationFromCityId($city->getId()); 
 	}
 
+	/**
+	 * Return the nearest city Location from latitude and longitude
+	 *
+	 *@param number $lat
+	 *@param number $lon
+	 *@param (option) string $countryName
+	 *
+	 *@return object Location
+	 */
 	public function getLocationFromNearestCityLatLon($lat,$lon,$countryName = null)
 	{
+		//get country code
 		$countryCode = (isset($countryName))? $this->em->getRepository('MyWorldBundle:Country')->findCodeByCountryName($countryName) : null;
 
+		$cities = $this->em->getRepository('MyWorldBundle:City')->findCitiesArround(2,$lat,$lon,$countryCode,'km');
+
 		//look for cities in a radius of 1km, and multiply radius per 2 if no result, until result, within 100km maximum
-		for($i=1;$i<=100;$i*2){
+		for($i=1;$i<=100;$i++){
 			$cities = $this->em->getRepository('MyWorldBundle:City')->findCitiesArround($i,$lat,$lon,$countryCode,'km');
-			if(!empty($cities)) break;
+			//return the Location object from the city id	
+			if(isset($cities[0])) return $this->getLocationFromCityId($cities[0]->getId());
 		}
-		//la ville la plus proche est en début de tableau
-		$city = $cities[0]; 
-		//retourne la Location correspondant à la ville			
-		return $this->getLocationFromCityId($city->getId());
 	}
 }
 ?>

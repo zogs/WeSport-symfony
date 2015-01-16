@@ -80,8 +80,8 @@ class CityRepository extends EntityRepository
 			);
 
 		$qb->setMaxResults( $limit );
-		$qb->orderBy('c.fullnamed','ASC');
-		$qb->addOrderBy('c.pop','DESC');
+		$qb->orderBy('c.pop','DESC');
+		$qb->addOrderBy('c.fullnamed','ASC');
 
 		return $qb->getQuery()->getResult();
 	}

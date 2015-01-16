@@ -24,6 +24,13 @@ my_world_city_view:
     requirements:
         _method: GET
 
+my_world_location_nearest:
+    pattern: /location/near/{lat}/{lon}/{country}
+    defaults: { _controller: MyWorldBundle:Location:nearestLatLon, country: France }
+    requirements:
+        _method: GET
+
+
 my_world_autocompletecity:
     pattern: /autocompletecity/{country}/{prefix}
     defaults: { _controller: MyWorldBundle:City:autoComplete, country:'FR', prefix:'' }

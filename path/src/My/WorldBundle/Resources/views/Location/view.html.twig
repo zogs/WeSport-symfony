@@ -1,0 +1,32 @@
+{% extends '::layout_centered.html.twig' %}
+
+
+{% block page_content %}
+
+	
+<table class="table table-stripped">
+	<tr>
+		<th>Id</th>	
+		<th>Pays</th>
+		<th>Ville</th>
+	</tr>
+	{% if city.name is defined %}
+	<tr>
+		<td>{{ location.id }}</td>
+		<td>{{ location.pays.name }}</td>		
+		<td>{{ location.city.name }}</td>
+	</tr>
+	{% else %}
+	<tr>
+		<td colspan="5">Cette Location n'existe pas</td>
+	</tr>
+	{% endif %}
+</table>
+
+		
+
+
+{% endblock %}
+
+
+
