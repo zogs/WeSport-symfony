@@ -89,6 +89,9 @@ class CalendarController extends Controller implements InitControllerInterface
 		//get search params
 		$search = $manager->getSearch();
 	
+		//get sports
+		$sports = $this->getDoctrine()->getRepository('WsSportsBundle:Sport')->findAll();
+
 		//throw event
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_VIEW, new ViewCalendar($search,$this->getUser())); 
 		
@@ -96,6 +99,7 @@ class CalendarController extends Controller implements InitControllerInterface
 			'weeks' => array($week),
 			'is_ajax' => false,
 			'search' => $search,            
+			'sports' => $sports,
 			)
 		);
 	}  
@@ -152,20 +156,11 @@ class CalendarController extends Controller implements InitControllerInterface
 		$manager = $this->get('calendar.manager');
 
 		$manager->resetParams();
-
-		$week = $manager->findCalendar();
-		//get search params
 		$search = $manager->getSearch();
 
-		//throw RESET_CALENDAR
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_RESET, new ResetCalendar($search,$this->getUser())); 
 
-
-		return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
-			'weeks' => array($week),
-			'is_ajax' => false,
-			'search' => $search,
-			));
+		return $this->redirect($this->generateUrl('ws_calendar'));
 
 	}
 

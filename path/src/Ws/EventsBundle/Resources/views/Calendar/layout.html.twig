@@ -17,46 +17,59 @@
 
 		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
 
-			<div class="calendar-form-row">
+			<table class="calendar-form">
+				<tr class="calendar-form-main">
+					<td class="calendar-form-main-left"></td>
+					<td class="calendar-form-main-middle">
 
-				<div class="calendar-form-left"></div>
-				<div class="calendar-form-rounded">
-
-					<div class="form-wrapper city-wrapper">
-						<label for="city_name"><span class="city-icon ws-icon ws-icon-office"></span></label>
-						<input type="text" id="city_name" name="city_name" class="city-autocomplete" value="{% if search.location is not null %}{{ search.location.city.name }}{% endif %}" placeholder='Votre ville...' data-autocomplete-url="{{ path('my_world_autocompletecity')}}" data-trigger-length="10" data-template-empty="" data-template-header="" data-template-footer="">
-						<input type="hidden" id="city_id" name="city_id" class="city-id-autocompleted" value="{% if search.location is not null %}{{ search.location.city.id }}{% endif %}">
-					</div>
-
-					<div class="form-wrapper sport-wrapper">
-						<label for="sport_name"><span class="sport-icon ws-icon ws-icon-running"></span></label>
-						<input type="text" id="sport_name" name="sport_name" class="sport-autocomplete" value="" placeholder='Un sport...' data-autocomplete-url="{{ path('ws_sports_autocomplete') }}" data-trigger-length="10" data-template-empty="" data-template-header="" data-template-footer="">
+						<label for="sport_name">Je veux du </label>
+						{#<input type="text" id="sport_name" name="sport_name" 
+								class="sportSelection" 
+								value="" 
+								placeholder='sport' 
+								data-autocomplete-url="{{ path('ws_sports_autocomplete') }}" 
+								data-trigger-length="10" 
+								data-template-empty="" 
+								data-template-header="" 
+								data-template-footer="">
 						<input type="hidden" id="sport_id" name="sport_id" class="sport-id-autocompleted" value="" >
 						<input type="hidden" name="sports" value=""><!-- important -->						
-					</div>
+						#}
+						<select name="sport_name" multiple="multiple" class="sportSelection" placeholder="sport">
+							{% for sport in sports %}
+								<option value="{{ sport.id }}">{{ sport.name }}</option>
+							{% endfor %}
+						</select>		
 
-					<div class="form-wrapper area-wrapper">						
-						<label for="area"><span class="area-icon ws-icon ws-icon-expand"></span></label>
-						<input type="text" id="area" name="area" value="{% if search.area is not null %}{{ search.area }}km{% endif %}" placeholder="+0km">							
-					</div>
-					
-					<div class="form-wrapper submit-wrapper">
+						<label for="city_name">dans ma</label>
+						<input type="text" id="city_name" name="city_name" 
+								class="city-autocomplete" 
+								value="{% if search.location is not null %}{{ search.location.city.name }}{% endif %}" 
+								placeholder='ville' 
+								data-autocomplete-url="{{ path('my_world_autocompletecity')}}" 
+								data-trigger-length="10" 
+								data-template-empty="" 
+								data-template-header="" 
+								data-template-footer="">								
+						<input type="hidden" id="city_id" name="city_id" class="city-id-autocompleted" value="{% if search.location is not null %}{{ search.location.city.id }}{% endif %}">
+
+						
 						<button type="submit"><span class="ws-icon ws-icon-loupe"></span></button>									
-					</div>
-					
-				</div>
+							
+					</td>
 
-				<div class="calendar-form-right">
-					<table>
-						<tr>
-							<td>
-								<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong> la recherche</a><br>
-								<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a><br>								
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
+					<td class="calendar-form-main-right">
+						<table>
+							<tr>
+								<td>
+									<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong> la recherche</a><br>
+									<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a><br>								
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
 			
 	{% endblock %}
 
