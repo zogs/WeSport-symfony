@@ -12,18 +12,18 @@
 
 $lightblue:#95b9c4;
 $deepblue:#296272;
-$darkblue:#2b4b54;
+$darkblue:#3a5f69;
 $backblue:#578c9c;
 
 $darkred:#ad251d;
 $deepred:#bf4e48;
-$red:#e77450;
-$softred:#f1ad6c;
-$lightred:#f5db93;
-$softyellow:#ebebbe;
-$lightgreen:#d4e792;
-$softgreen:#a5d172;
-$green:#6cb669;
+$red:#e98161;
+$softred:#f2b67a;
+$lightred:#f6df9d;
+$softyellow:#ededc4;
+$lightgreen:#d9ea9d;
+$softgreen:#aed580;
+$green:#7abd78;
 $deepgreen:#1a9850;
 $darkgreen:#006837;
 
@@ -476,64 +476,147 @@ div.mm-is-menu * {
 
 /* Calendar Form */
 
-.calendar-form-row {
+table.calendar-form {
 	
-	width:100%;
-	height:80px;	
-	margin: 100px auto 30px auto;
+	width:100%;	
+	margin: 100px auto 60px auto;
 }
 
-.calendar-form-left { width:20%; float:left; height:inherit; }
-.calendar-form-right { width:20%; float:left; height:inherit; }
-.calendar-form-rounded { 
-	width:60%; 
-	padding-left:50px;
+tr.calendar-form-main { height:80px;}
+td.calendar-form-main-left { width:20%; height: inherit; float:left; }
+td.calendar-form-main-middle { 
+	width:50%; 
 	float:left; 
 	height:inherit; 
-	background-color:$deepblue;
-	border:1px solid rgba(255,255,255,0.3);
-	border-radius:100px;
-	@include box-shadow(inset 0 0 40px 0px rgba(0, 0, 0, 0.1));
-}
-
-
-.form-wrapper {
-	display:inline-block;
-	height:inherit;
+	vertical-align:middle;
 	position: relative;
-	label {
-		position:absolute;
-		top:25%;
-		left:0;
+	font-family:'Harlow';
+	@include rem(40);
+	text-align:center;
+	
+
+	label {		
 		display: inline;
+		font-family:inherit;
+		font-size:inherit;
+		color:white;
 		cursor: pointer;
 		margin:0;
+		@include long-shadow(text,$deepblue,5,false,false,right); 
+
 		.ws-icon {
 			color:$darkblue;
 			@include rem(40);
 		}
 	}
-}
 
-.city-wrapper { width:35%; float:left;}
-.sport-wrapper { width:35%; float:left; }
-.area-wrapper { width:18%; float:left; 
-	input#area { @include rem(26);}
-	span.area-icon { @include rem(30); @include rotate(45deg); margin:10px 0 0 10px; }
-}
-.submit-wrapper { width:10%; float:right; 
+	input,select {
+		width:200px;
+		height:auto;
+		display:inline;
+		margin:0 20px 0 0;
+		padding:0 0 0 0;
+		color:$lightblue;	
+		font-family: inherit;
+		font-size: inherit;
+		line-height:130%;
+		background: transparent;
+		border: 0px solid transparent;
+		background-image:url(../img/dotted.png);
+		background-repeat: repeat-x;
+		background-position-y: 45px;
+		background-size:8px 5px;
+		outline: none;
+		@include box-shadow(0 0 0 0 rgba(0,0,0,0));
+		@include long-shadow(text,$deepblue,5,false,false,right); 
+		@include border-radius(0);
+
+		&::-webkit-input-placeholder{ 
+					color: #8db3be;
+				}
+	}
+
 	button[type=submit] {
-		height:inherit; width:100%; border-radius:100px; background-color: $deepred; border:0;
+		display:inline;
+		width:90px; 
+		height:90px; 
+		border-radius:100px; 
+		background-color: rgba(0,0,0,0.25); 
+		border:0;
 		span.ws-icon {
-			@include rem(34); color:rgba(255,255,255,0.7);
+			@include rem(34); color:$lightblue;
 			@include transition(0.2s ease);	
 		}
 		&:hover span.ws-icon { @include rotate(360deg); @include rem(60); }
 	}
+
+
+	.tt-dropdown-menu {
+		width:300px;
+	}
+	.twitter-typeahead {
+		line-height:130%;
+	}
+
+	.select2-container {
+		width:200px;		
+		background-image:url(../img/dotted.png);
+		background-repeat: repeat-x;
+		background-position-y: 50px;
+		background-size:8px 5px;
+		.select2-choices {
+			border:0;
+			background:transparent;			
+
+			.select2-search-field{				
+				input {
+					font-family: "Harlow"; 
+					color: #8db3be !important;
+				}
+			}
+			.select2-search-choice {
+				color: $lightblue;
+				font-transform:lowercase;
+				background-color: transparent;
+				background-image:none;
+				border:0;
+				box-shadow:0 0 0;
+				margin:0;
+				padding: 2px 5px;
+				.sport-name { display:none;}
+				.ws-icon {
+					color:white;
+				}
+				.select2-search-choice-close {
+					top:30px;
+					left:40%;
+					visibility: hidden;	
+					background: url('../img/select2.png') right top no-repeat;		
+				}
+				&:hover .select2-search-choice-close {
+					visibility: visible;
+					&:hover {
+						background-position: right -11px;
+					}
+				}
+			}
+		}	
+	}
+	/*
+	.twitter-typeahead{ 
+		width:100%;
+		input[type=text] { width:100% }
+		
+	}	
+	*/
 }
 
-.calendar-form-right {
-	padding-left:10px;
+td.calendar-form-main-right { 
+	width:20%; 
+	float:left; 
+	height:inherit; 
+	vertical-align: middle;
+
 	table { height:inherit; }
 	a:link,a:visited {
 		color:white;
@@ -544,63 +627,10 @@ div.mm-is-menu * {
 	}
 }
 
-/* inputs font style */
-.calendar-form-rounded {
-	input.city-autocomplete,input.sport-autocomplete,input#area {
-		width:100%;
-		padding:0 0 0 55px;		
-		height:100%;
-		margin:0 0 0 0;
-		color:$lightblue;	
-		font-family:'Harlow';
-		line-height: 200%;							
-		text-overflow: ellipsis;
-		background: transparent;
-		border:0;
-		box-shadow:0 0 0 #000;			
-		@include rem(32);
-		@include long-shadow(text,$darkblue,50,false,false,right);	
 
-		/* placeholder font style */
-		@include placeholder{
-			color: $lightblue;
-			@include long-shadow(text,$darkblue,50,false,false,right);
-			@include opacity(0.5);
-		}
-	}
+
+
 	
-	/* TYPEAHEAD CUSTOM STYLE */
-	.twitter-typeahead {
-		width:100%;
-	}
-
-	.tt-dropdown-menu { 
-		width:100%; 
-		margin-top:-2px;
-		text-align: left; 
-		background-color: $deepblue; 
-		border-bottom-left-radius: 8px;
-		border-bottom-right-radius: 8px;
-		box-shadow:0 5px 20px rgba(0,0,0,0.4);
-		z-index:2000;
-	}
-
-	.tt-suggestion {  padding:10px 33px 10px 50px; }
-	.tt-name {  @include rem(16);  font-weight:bold;  color:#EDEEF0; }
-	.tt-icon { @include rem(30); color:#111; background-color:#FFF; padding:3px; border-radius:100px; }
-	.tt-sub {  @include rem(12);; font-style:italic;  color:#999;}
-	.tt-id{ display: none;}
-	.tt-suggestion.tt-cursor{  background-color:#0097cf;}
-	
-	.twitter-typeahead {
-		height:100%; // vertical ajustment
-	}
-
-	.tt-hint {
-		display:none; 		
-	}
-	
-}
 
 
 .calendar {	
@@ -1923,26 +1953,31 @@ table.list-table {
 	.twitter-typeahead{ 
 		width:100%;
 		input[type=text] { width:100% }
-		.tt-dropdown-menu {
+		
+	}
+}
+.tt-dropdown-menu {
 			width:100%;
 			margin:0;
 			margin-top:-10px;
 			background-color:#FFF;
 			color:$deepgrey;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 			
-			.tt-info { padding:3px 10px; color:inherit; margin:0; @include rem(10); background-color:#FEFEFE; }
-			.tt-info-footer { text-align:right; }
-			.info-empty { padding:20px 10px; @include rem(14); font-weight:bold; background-color: #F0F0F0; @include diagonal-stripes(-45deg,rgba(0, 0, 0, 0.02), 100); }
-			.tt-suggestion { width:100%; padding:2px 3px 0px 30px; position:relative; &:before {content:''; position:absolute; left:10px; top:10px; border-top:5px solid transparent; border-bottom:5px solid transparent;  border-left:5px solid $deepgrey; }}
+			.tt-info { padding:3px 10px; font-family: inherit; color:inherit; margin:0; @include rem(10); background-color:#FEFEFE; }
+			.tt-info-footer { text-align:right; font-family: inherit; }
+			.info-empty { padding:20px 10px; @include rem(14); font-family: inherit; font-weight:bold; background-color: #F0F0F0; @include diagonal-stripes(-45deg,rgba(0, 0, 0, 0.02), 100); }
+			.tt-suggestion { width:100%; padding:2px 3px 0px 30px; font-family: inherit; position:relative; &:before {content:''; position:absolute; left:10px; top:10px; border-top:5px solid transparent; border-bottom:5px solid transparent;  border-left:5px solid $deepgrey; }}
 			.tt-suggestion p { margin:5px 0 0 0;}
-			.tt-name {  @include rem(16);  color:inherit; font-weight:bold; padding-bottom:0; margin-bottom:0; }
-			.tt-icon { @include rem(30); color:inherit; background-color:#FFF; padding:3px; border-radius:100px; }
-			.tt-sub {  @include rem(12); color:inherit; font-style:italic; }
+			.tt-name {  @include rem(16);  color:inherit; font-family: inherit; font-weight:bold; padding-bottom:0; margin-bottom:0; }
+			.tt-icon { @include rem(30); color:inherit; font-family: inherit; background-color:#FFF; padding:3px; border-radius:100px; }
+			.tt-sub {  @include rem(12); color:inherit; font-family: inherit; font-style:italic; }
 			.tt-id { display: none;}
-			.tt-suggestion.tt-cursor{  background-color:#FAFAFA;}
-		}
-	}
+			.tt-suggestion.tt-cursor{  background-color:#F0F0F0;}
 }
+
+
+
 
 /*==== Event Create======*/
 .create-event {
