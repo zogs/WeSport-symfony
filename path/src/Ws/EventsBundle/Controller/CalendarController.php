@@ -10,7 +10,7 @@ use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\ViewCalendar;
 use Ws\EventsBundle\Event\AjaxCalendar;
 use Ws\EventsBundle\Event\ResetCalendar;
-
+use Ws\EventsBundle\Manager\CalendarUrlGenerator;
 
 use Yavin\Symfony\Controller\InitControllerInterface;
 
@@ -84,14 +84,21 @@ class CalendarController extends Controller implements InitControllerInterface
 		$manager->addParamsFromCookies($this->getRequest()->cookies->all());
 		$manager->addParamsURI($params);
 		$manager->addParams($this->getRequest()->query->all());
-		//find searched week
-		$week = $manager->findCalendar();
-		//get search params
-		$search = $manager->getSearch();
-	
-		//get sports
-		$sports = $this->getDoctrine()->getRepository('WsSportsBundle:Sport')->findAll();
 
+
+		//dump($this->getRequest()->cookies->all());
+		//dump($params);
+		//dump($this->getRequest()->query->all());
+		//exit();
+
+		//find searched week
+		$week = $manager->findCalendar();		
+		//get search
+		$search = $manager->getSearch();		
+		//search must be persisted to be manageable by symfony ( note that it is not flushed )
+		//$this->get('doctrine.orm.entity_manager')->persist($search);
+		//create form		
+		$form = $this->createForm('calendar_search',$search);
 		//throw event
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_VIEW, new ViewCalendar($search,$this->getUser())); 
 		
@@ -99,7 +106,7 @@ class CalendarController extends Controller implements InitControllerInterface
 			'weeks' => array($week),
 			'is_ajax' => false,
 			'search' => $search,            
-			'sports' => $sports,
+			'form' => $form->createView(),
 			)
 		);
 	}  
@@ -111,17 +118,24 @@ class CalendarController extends Controller implements InitControllerInterface
 	 */
 	public function updateAction(Request $request)
 	{
-		$manager = $this->get('calendar.manager');
+		$form = $this->createForm('calendar_search');
+		$form->handleRequest($request);
 
-		$search = $manager
-					->addParamsFromCookies($request->cookies->all())
-					->addParams($request->request->all())
-					->prepareParams()
-					->getSearch();
+		$search = $form->getData();
 
-		$params = $search->getShortUrlParams();
+		if($form->isValid()){
+
+			$urlGenerator = new CalendarUrlGenerator($this->get('router'));			
+			$params = $urlGenerator->setSearch($search)->getShortUrlParams();
+			
+			return $this->redirect($this->generateUrl('ws_calendar',$params));
+		}
+		else {
+
+			$this->get('flashbag')->add('Oups une erreur est apparu dans le formulaire..','error');
+			return $this->redirect($this->generateUrl('ws_calendar'));
+		}
 		
-		return $this->redirect($this->generateUrl('ws_calendar',$params));
 
 	}
 
@@ -154,8 +168,8 @@ class CalendarController extends Controller implements InitControllerInterface
 	public function resetAction()
 	{
 		$manager = $this->get('calendar.manager');
-
-		$manager->resetParams();
+		
+		$manager->resetParams()->resetCookie()->resetSearch();
 		$search = $manager->getSearch();
 
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_RESET, new ResetCalendar($search,$this->getUser())); 

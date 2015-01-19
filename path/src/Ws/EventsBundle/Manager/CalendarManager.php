@@ -24,29 +24,17 @@ class CalendarManager extends AbstractManager
 	private $cookies = array();
 	private $query = array();
 	private $uri = array();
-	private $search = array(
-		'date' => null,
-		'country' => null,
-		'city' => null,
-		'area' => null,
-		'sports' => null,
-		'nbdays' => null,
-		'type' => null,
-		'time' => null,
-		'price' => null,
-		'level' => null,
-		'organizer' => null,
-		);
 	private $computed = false;	
 	private $default = array(
 		'country' => null,
 		'date' => null,
+		'city' => null,
 		'city_id'=>null,
 		'city_name'=>null,
 		'area'=>null,
-		'sports'=> array(), //array(67,68,72)
+		'sports'=> null, //array(67,68,72)
 		'nbdays'=>7,
-		'type' => array('pro','asso','person'),	
+		'type' => null,	
 		'time' => array(),	
 		'timestart'=> null,
 		'timeend' => null,
@@ -214,16 +202,16 @@ class CalendarManager extends AbstractManager
 
 	public function resetCookie()
 	{
-		$response = new Response();
-		$allparams = array_merge((array)$this->search,$this->default);		
+	
+		$allparams = $this->default;		
 		foreach ($allparams as $key => $value) {						
-
-			$cookie1 = new Cookie('calendar_param_'.$key,'',time() - 3600, '/');
-			$cookie2 = new Cookie($key,'',time() - 3600, '/');											
-			$response->headers->setCookie($cookie1);
-			$response->headers->setCookie($cookie2);			
+			$response = new Response();		
+			$response->headers->clearCookie('calendar_param_'.$key);
+			$response->headers->clearCookie($key);																
+			$response->send();	
 		}			
-		$response->send();	
+
+		return $this;
 	}
 
 	public function saveSearchCookie()
@@ -429,11 +417,11 @@ class CalendarManager extends AbstractManager
     			$sport = $repo->findOneBySlug($key);  
     		elseif(is_array($key))
     			$sport = $key;
-
+    		
     		if(empty($sport) && $this->isFlashbagActive() ) $this->flashbag->add('Ce sport est inconnu au bataillon... '.$key.'??','error');
 
     		$sports[$i] = $sport;  		      		
-    	}    
+    	}        	
 
     	//avoid doublon
     	$ids = array();
@@ -441,8 +429,6 @@ class CalendarManager extends AbstractManager
 			if(in_array($sport->getId(), $ids)) unset($sports[$k]);
 			$ids[] = $sport->getId();
     	}
-
-    	$sports = array_values($sports); //reset keys value for futur use
 
     	$this->search->setSports($sports);
     	return;
@@ -472,7 +458,7 @@ class CalendarManager extends AbstractManager
 		}    	
 		
 		$r = array_values($r);
-		
+
 		$this->search->setType($r);
 
 		return;

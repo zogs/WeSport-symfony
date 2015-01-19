@@ -55,6 +55,17 @@ class Sport implements Translatable
     protected $category;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Ws\EventsBundle\Entity\Search", inversedBy="sports")
+     */
+    protected $searchs;
+
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
      * Set id
      *
      * @param integer $id

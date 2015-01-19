@@ -57,7 +57,7 @@ class Search
     private $area = null;
 
     /**
-    * @ORM\ManyToMany(targetEntity="Ws\SportsBundle\Entity\Sport", fetch="EAGER")
+    * @ORM\ManyToMany(targetEntity="Ws\SportsBundle\Entity\Sport", mappedBy="searchs", fetch="EAGER")
     * @ORM\JoinTable(name="events_search_sports")
     */
     private $sports = null;
@@ -125,7 +125,7 @@ class Search
     public function __construct()
     {
         //set defaults
-        $this->sports = new \Doctrine\Common\Collections\ArrayCollection();
+        //$this->sports = new \Doctrine\Common\Collections\ArrayCollection();
         $this->level = array(); //"all level"
         $this->date = \date('Y-m-d');
         $this->nb_days = 7;
@@ -304,28 +304,17 @@ class Search
 
     public function addSport($sport)
     {
-        $this->sports->add($sport);
+        $this->sports[] = $sport;
     }
 
     public function hasSports()
     {
-        return !$this->sports->isEmpty();
+        return !empty($this->sports);
     }    
 
     public function setSports($sports)
     {
-        if(is_array($sports)){
-            foreach ($sports as $i => $sport) {
-                $this->sports->add($sport);
-            }
-        }
-        elseif(is_a($sports,'\Doctrine\Common\Collections\ArrayCollection')){
-            $this->sports = $sports;            
-        }
-        else{
-            throw new \Exception("Sports must be an array or a Doctrine Collection", 1);
-            
-        }
+        $this->sports = $sports;
     }
 
     public function getNbDays()

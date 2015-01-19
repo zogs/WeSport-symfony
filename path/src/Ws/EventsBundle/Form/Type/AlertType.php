@@ -49,7 +49,7 @@ class AlertType extends AbstractType
                 'mapped'=> false,
                 'data'=> 3,
                 ))
-            ->add('search','calendar_search_type')
+            ->add('search','calendar_search')
             ;
     		
             $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
