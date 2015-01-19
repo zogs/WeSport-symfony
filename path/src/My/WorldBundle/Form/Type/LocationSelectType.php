@@ -16,19 +16,19 @@ use Doctrine\ORM\EntityManager;
 class LocationSelectType extends AbstractType
 {
     public $em;
+    private $router;
+    private $options;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em,Router $router)
     {
         $this->em = $em;
+        $this->router = $router;
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         
     }
-
-
-
 
     /**
      * @param FormBuilderInterface $builder
@@ -41,17 +41,13 @@ class LocationSelectType extends AbstractType
         $countries = $em->getRepository('MyWorldBundle:Country')->findCountryList();
 
         $builder   
-            ->add('id','text',array(
-                'required'=>true,
-                'mapped'=>true,
-                'data'=>'0'
-                ))         
+                 
             ->add('country','choice',array(
                 'choices'=>$countries,
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre pays',
-                'attr'=>array('class'=>'geo-select geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
 
                 ))
             ->add('region','choice',array(
@@ -59,7 +55,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre région',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'region','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'region','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('department','choice',array(
@@ -67,7 +63,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre Département',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'department','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'department','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('district','choice',array(
@@ -75,7 +71,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre district',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'district','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'district','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('division','choice',array(
@@ -83,7 +79,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre division',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'division','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'division','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('city','choice',array(
@@ -91,22 +87,18 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre ville',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))                                                                     
         ;
 
+        $this->options = $options;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
-
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
-        
-
     }
     
-    /*
-        
-        Before persist, find and replace with the adequate Location
-
+    /**
+     *  Before persist, find and replace with the adequate Location
      */
     public function onPreSubmit(FormEvent $event)
     {
@@ -115,11 +107,10 @@ class LocationSelectType extends AbstractType
 
         //persist null if no country is submitted
         if(empty($data['country'])){
-            $form->setData(null);
-            return;
+            return $form->setData(null);
         }
 
-        //find and replace the country field
+        //find and replace country name by country id
         if(!empty($data['country']) && is_string($data['country'])){
             $country = $this->em->getRepository('MyWorldBundle:Country')->findByCodeOrId($data['country']);
             $data['country'] = $country->getId();                
@@ -155,7 +146,7 @@ class LocationSelectType extends AbstractType
 
     public function addGeoField(FormInterface $form, $location, $level, $value = '')
     {        
-        $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListByLocationLevel($location,$level);
+        $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListByLevel($location,$level);
         if(empty($list)) return;
 
         $form->add($list['level'],'choice',array(
@@ -163,7 +154,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre '.$list['level'],
-                'attr'=>array('class'=>'geo-select geo-select-'.$list["level"].' geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe'),
+                'attr'=>array('class'=>'geo-select geo-select-'.$list["level"].' geo-select-ajax','data-geo-level'=>$list["level"],'data-icon'=>'globe','data-ajax-url'=>$this->options['ajax_url'],'style'=>"width:100%"),
                 'data'=>$value
                 ));
     }
@@ -177,6 +168,7 @@ class LocationSelectType extends AbstractType
             'data_class' => 'My\WorldBundle\Entity\Location',
             'cascade_validation' => false,
             'validation_groups' => false,
+            'ajax_url' => $this->router->generate('my_world_location_select_nextlevel'),
         ));
     }
 
@@ -185,6 +177,6 @@ class LocationSelectType extends AbstractType
      */
     public function getName()
     {
-        return 'location_selectboxs';
+        return 'location_select';
     }
 }

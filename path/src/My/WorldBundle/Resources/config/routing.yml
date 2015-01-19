@@ -2,13 +2,13 @@ my_world_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: MyWorldBundle:Default:index }
 
-my_world_test:
-    pattern: /test
-    defaults: { _controller: MyWorldBundle:Default:test }
+my_world_location_select_test:
+    pattern: /location/select/test
+    defaults: { _controller: MyWorldBundle:Location:formSelectLocation }
 
-my_world_nextlevel:
+my_world_location_select_nextlevel:
     pattern: /next_geo_level
-    defaults: { _controller: MyWorldBundle:Default:nextGeoLevel }
+    defaults: { _controller: MyWorldBundle:Location:nextGeoLevel }
     requirements:
         _method: GET
 

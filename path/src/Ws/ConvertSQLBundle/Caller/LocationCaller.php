@@ -10,7 +10,7 @@ class LocationCaller extends AbstractCaller
 	public function findLocationFromData()
 	{
 
-		$states = $this->em->getRepository('MyWorldBundle:Location')->findAllDataFromCode($this->entry);
+		$states = $this->em->getRepository('MyWorldBundle:Location')->findStatesFromCodes($this->entry);
 
 		if(empty($states)) return null;
 

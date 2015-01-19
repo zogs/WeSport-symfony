@@ -13,9 +13,9 @@ services:
 
     world.form.type.locationSelectType:
         class: My\WorldBundle\Form\Type\LocationSelectType
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager,@router]
         tags:
-            - { name:form.type, alias: location_selectboxs }
+            - { name:form.type, alias: location_select }
 
     world.location_manager:
         class: My\WorldBundle\Manager\LocationManager

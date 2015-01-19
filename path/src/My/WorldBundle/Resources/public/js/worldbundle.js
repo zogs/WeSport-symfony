@@ -71,6 +71,7 @@ $(document).ready(function() {
 		var level = parent.attr('data-geo-level');
 		var value = parent.val();
 		parent.addClass('geo-loading');
+		//parent.parent('.control-group').next('.control-group .controls .geo-select').empty().hide();
 
 		$.ajax({
 			type: 'GET',
@@ -80,7 +81,7 @@ $(document).ready(function() {
 			success: function(data){
 
 				parent.removeClass('geo-loading');
-				$('#'+data.level+'_select_field').empty().append(data.options).select2().show();
+				$('#location_select_'+data.level).empty().append(data.options).select2().show();
 							
 			}
 		})

@@ -120,7 +120,7 @@ class ProfilEditionType extends AbstractType
                         'data' => new \DateTime('1996/06/18'),                
                         ))
 
-                    ->add('location','location_selectboxs',array(
+                    ->add('location','location_select',array(
                         'data'=>$user->getLocation()
                         ))
                     ;                    

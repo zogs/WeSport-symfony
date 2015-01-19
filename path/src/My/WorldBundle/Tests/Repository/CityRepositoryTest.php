@@ -125,6 +125,9 @@ class CityRepositoryTest extends WebTestCase
 		$pays = 'France';
 		$cities = $this->repo->findCitiesArround(10,$lat,$lon,'FR');
 		$this->assertEquals('Dijon',$cities[0]->getName());
+		$this->assertEquals('Larrey',$cities[1]->getName());
+		$this->assertEquals('La Fillotte',$cities[2]->getName());
+		$this->assertEquals('Talant',$cities[3]->getName());
 		$this->assertEquals(36,count($cities));	
 
 		//Le Conquet
@@ -132,6 +135,9 @@ class CityRepositoryTest extends WebTestCase
 		$lon = -4.763050;
 		$cities = $this->repo->findCitiesArround(10,$lat,$lon);
 		$this->assertEquals('Le Conquet',$cities[0]->getName());
+		$this->assertEquals('Lochrist',$cities[1]->getName());
+		$this->assertEquals('Lanfeust',$cities[2]->getName());
+		$this->assertEquals('Trebabu',$cities[3]->getName());
 		$this->assertEquals(23,count($cities));	
 	}
 
