@@ -536,6 +536,11 @@ td.calendar-form-main-middle {
 				}
 	}
 
+	select#calendar_search_sports {
+		option { display:none; }
+		height:40px;
+	}
+
 	button[type=submit] {
 		display:inline;
 		width:90px; 
@@ -556,6 +561,9 @@ td.calendar-form-main-middle {
 	}
 	.twitter-typeahead {
 		line-height:130%;
+		input:focus {
+			outline: none;
+		}
 	}
 
 	.select2-container {
@@ -565,8 +573,11 @@ td.calendar-form-main-middle {
 		background-position-y: 50px;
 		background-size:8px 5px;
 		.select2-choices {
+			height: 60px !important;
 			border:0;
-			background:transparent;			
+			background:transparent;	
+			overflow: visible;	
+			&:focus { outline: none;}
 
 			.select2-search-field{				
 				input {
@@ -583,18 +594,23 @@ td.calendar-form-main-middle {
 				box-shadow:0 0 0;
 				margin:0;
 				padding: 2px 5px;
+				@include long-shadow(text,$deepblue,5,false,false,right); 
 				.sport-name { display:none;}
 				.ws-icon {
-					color:white;
+					color:$lightblue;
+					@include rem(40);
+					@include long-shadow(text,$deepblue,5,false,false,right); 
 				}
 				.select2-search-choice-close {
-					top:30px;
+					top:-15px;
 					left:40%;
 					visibility: hidden;	
+					@include opacity(0.5);
 					background: url('../img/select2.png') right top no-repeat;		
 				}
 				&:hover .select2-search-choice-close {
 					visibility: visible;
+					@include opacity(1);
 					&:hover {
 						background-position: right -11px;
 					}

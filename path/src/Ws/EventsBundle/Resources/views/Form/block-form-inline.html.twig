@@ -1,0 +1,10 @@
+{% block form_row %} 
+
+    {{ form_label(form) }}
+    {{ form_widget(form) }}        
+
+    {% if form.vars.errors|length %}
+        {{ form_errors(form) }}
+    {% endif %}
+
+{% endblock form_row %}

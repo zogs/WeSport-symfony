@@ -40,7 +40,7 @@ class CityToLocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $builder->add('city_id','text',array(
+        $builder->add('city_id','hidden',array(
                 'required' => false,
                 'attr' => array(
                     'class' => 'city-id-autocompleted'

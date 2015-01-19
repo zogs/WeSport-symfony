@@ -45,10 +45,10 @@ class CalendarSearchType extends AbstractType
                 'required'=>false,
                 ))
             ->add('type','choice',array(
-                'choices'=>Event::$valuesAvailable['type'],
+                'choices'=> Event::$valuesAvailable['type'],
                 'multiple'=>true,
                 'expanded'=>false,
-                'required'=>true,   
+                'required'=>false,   
                 'translation_domain' => 'WsEventsBundle_event'             
                 ))
             ->add('price','integer',array(
@@ -56,14 +56,15 @@ class CalendarSearchType extends AbstractType
                 ))
             ->add('sports','entity',array(                                    
                     'class'=>'WsSportsBundle:Sport',
-                    'label'=>'Sport',
+                    'empty_value'=>"Sports",
+                    'label'=>'Sports',
                     'property'=>'name',
                     'expanded'=>false,
                     'multiple' => true,
                     'mapped' => true,
                     'group_by' => 'category',
                     'required' => false,
-                    'attr'=>array('class'=>'sportSelection','multiple'=>true)
+                    'attr'=>array('class'=>'sportSelection','multiple'=>true,'placeholder'=>"Choississez un sport")
                     )
             )       
             ->add('level','choice',array(
@@ -109,9 +110,15 @@ class CalendarSearchType extends AbstractType
         $form = $event->getForm();
         $search = $event->getData(); 
 
-        //for Type field, set key values as array
-        if(is_array($search->getType()))  $search->setType(array_keys($search->getType()));
-        
+        //merge sports entity to em that were detach by the redirection
+        if($search->hasSports()){
+            $a = array();
+            foreach ($search->getSports() as $key => $sport) {
+                $sport = $this->em->merge($sport);
+                $a[] = $sport;
+            }
+            $search->setSports($a);
+        }
     }
 
     public function onPreSubmit(FormEvent $event)
@@ -129,7 +136,9 @@ class CalendarSearchType extends AbstractType
         $search = $this->manager->getSearch();
 
         //set user to Search
-        $search->setUser($this->user);
+        if($this->user != 'anon.'){
+            $search->setUser($this->user);            
+        }        
        
         //return
         $form->setData($search);
@@ -143,7 +152,7 @@ class CalendarSearchType extends AbstractType
 
     public function getName()
     {
-        return 'calendar_search_type';
+        return 'calendar_search';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

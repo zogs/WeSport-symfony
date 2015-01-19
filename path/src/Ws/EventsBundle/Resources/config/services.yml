@@ -33,7 +33,7 @@ services:
         class: Ws\EventsBundle\Form\Type\CalendarSearchType 
         arguments: [@calendar.manager,@security.context,@doctrine.orm.entity_manager]
         tags:
-            - { name: form.type, alias: calendar_search_type }
+            - { name: form.type, alias: calendar_search }
 
     ws_events.form.type.spot:
         class: Ws\EventsBundle\Form\Type\SpotType   

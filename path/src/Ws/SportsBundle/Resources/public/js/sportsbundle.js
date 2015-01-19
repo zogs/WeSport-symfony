@@ -67,7 +67,7 @@ $(document).ready(function() {
 
 function addSportIcon(sport){	
 	if(trim(sport.id)!='')
-		return '<span class="ws-icon ws-icon-small ws-icon-'+sport.text.toLowerCase()+'"></span> <span class="sport-name">'+sport.text+'</span>';		
+		return '<span class="ws-icon ws-icon-'+sport.text.toLowerCase()+'"></span> <span class="sport-name">'+sport.text+'</span>';		
 	else 
 		return sport.text;
 }
