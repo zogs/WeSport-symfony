@@ -30,6 +30,12 @@ class StateRepositoryTest extends WebTestCase
 		unset($this->client, $this->em);
 	}
 
+	public function testFindStateByName()
+	{
+	    $bourgogne = $this->repo->findStateByName('Bourgogne','FR');
+	    $this->assertEquals('Bourgogne',$bourgogne->getName());
+
+	}
 
 	public function testFindStateByCode()
 	{

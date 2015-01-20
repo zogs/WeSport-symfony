@@ -12,7 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class StateRepository extends EntityRepository
 {
-	
+	public function findStateByName($name,$countryCode = null)
+	{
+		$sql = "
+			SELECT s
+			FROM MyWorldBundle:State s
+			JOIN MyWorldBundle:Country c
+			WITH c.code = s.cc1
+			AND s.name = :name
+			AND s.lang = c.lang ";
+		if(isset($countryCode)) $sql .= " AND s.cc1 = :cc1 ";
+
+		$q = $this->getEntityManager()->createQuery($sql);
+		$q->setParameter('name',$name);
+		if(isset($countryCode)) $q->setParameter('cc1',$countryCode);
+
+		return $q->getOneOrNullResult();
+	}
+
 	public function findStateByCodes($cc1,$adm1,$adm2 = null,$adm3 = null,$adm4 = null)
 	{
 		if(!empty($adm4))

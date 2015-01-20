@@ -92,7 +92,7 @@ class State
     public function getLevel()
     {
         if($this->dsg=='ADM1') return 'region';
-        if($this->dsg=='ADM2') return 'department';
+        if($this->dsg=='ADM2') return 'departement';
         if($this->dsg=='ADM3') return 'district';
         if($this->dsg=='ADM4') return 'division';
     }

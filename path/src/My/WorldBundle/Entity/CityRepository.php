@@ -93,7 +93,7 @@ class CityRepository extends EntityRepository
 			return $this->findCitiesByCode($parent->getCc1());
 		if($parent->getLevel()=='region')
 			return $this->findCitiesByCode($parent->getCc1(),$parent->getADMCODE());
-		if($parent->getLevel()=='department')
+		if($parent->getLevel()=='departement')
 			return $this->findCitiesByCode($parent->getCc1(),$parent->getADMPARENT(),$parent->getADMCODE());
 		if($parent->getLevel()=='district')
 			return $this->findCitiesByCode($parent->getCc1(),null,$parent->getADMPARENT(),$parent->getADMCODE());

@@ -4,12 +4,175 @@ namespace My\WorldBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
+
+use My\WorldBundle\Entity\City;
+use My\WorldBundle\Entity\Location;
 /**
  * LocationRepository
  *
  */
 class LocationRepository extends EntityRepository
 {
+
+	/**
+	 * find Location from city name 
+	 * (if not finded, create it)
+	 * @param string $name
+	 * @param string $countryCode
+	 * @return Location
+	 */
+	public function findLocationByCityName($name,$countryCode = null)
+	{
+		$city = $this->_em->getRepository('MyWorldBundle:City')->findCityByName($name,$countryCode);
+
+		if(NULL !== $city)
+			return $this->findLocationByCityId($city->getId());
+		else
+			return NULL;
+	}
+
+	/**
+	 * find Location from city ID
+	 * (if not exist create it)
+	 * @param integer id
+	 */
+	public function findLocationByCityId($id)
+	{
+
+		if($location = $this->findOneByCity($id)){
+
+			return $location;
+		}
+		else {
+			$city = $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
+			return $this->createLocationFromCity($city);	
+		}
+	}
+
+	/**
+	 * find Location of a country by its code
+	 * (create it if not find)
+	 *
+	 * @param string $code : 2 caracters database code
+	 * @return object Location
+	 */
+	public function findLocationByCountryCode($code)
+	{
+		$country = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($code);
+		if($location = $this->findOneByCountry($code)){
+			return $location;
+		}
+		else {
+			return $this->createLocation(array(
+				'country'=>$country
+				));
+		}
+	}
+
+	/**
+	 * Create Location from a city
+	 *
+	 * @param object City
+	 * @return object Location
+	 */
+	public function createLocationFromCity(City $city)
+	{
+		$states['city'] = $city;
+		$states['country'] = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($city->getCc1());
+		if($city->getAdm1() != null) $states['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm1(),'ADM1');
+		if($city->getAdm2() != null) $states['departement'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm2(),'ADM2');
+		if($city->getAdm3() != null) $states['district'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm3(),'ADM3');
+		if($city->getAdm4() != null) $states['division'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm4(),'ADM4');
+
+		return $this->createLocation($states);
+	}
+
+
+	/**
+	 * Create a Location object from an array of states level
+	 *
+	 * @param associative array of states (ex: array('country'=>Object:Country,'region'=>Object:State,etc...))
+	 * @return object Location
+	 */
+	public function createLocation($states)
+	{
+		$location = new Location();
+
+		if(isset($states['country']))
+			$location->setCountry($this->_em->getRepository('MyWorldBundle:Country')->find($states['country']));
+		if(isset($states['region']))
+			$location->setRegion($this->_em->getRepository('MyWorldBundle:State')->find($states['region']));
+		if(isset($states['departement']))
+			$location->setDepartement($this->_em->getRepository('MyWorldBundle:State')->find($states['departement']));
+		if(isset($states['district']))
+			$location->setDistrict($this->_em->getRepository('MyWorldBundle:State')->find($states['district']));
+		if(isset($states['division']))
+			$location->setDivision($this->_em->getRepository('MyWorldBundle:State')->find($states['division']));
+		if(isset($states['city']))
+			$location->setCity($this->_em->getRepository('MyWorldBundle:City')->find($states['city']));
+
+		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=0;"); 
+		$this->_em->persist($location);
+		$this->_em->flush();
+		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=1;"); 
+
+		return $location;
+	}
+
+	/**
+	 * Return a state level object by its id
+	 *
+	 * @param string level
+	 * @param integer id
+	 * @return state level (Country object OR City object OR State object)
+	 */
+	public function findStateById($level,$id)
+	{
+		if($level=='country')
+			return $this->_em->getRepository('MyWorldBundle:Country')->findByCodeOrId($id);
+		if($level=='region')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='departement')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='district')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='division')
+			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
+		if($level=='city')
+			return $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
+	}
+
+
+	/**
+	 * Return list of children states of a parent
+	 *
+	 * @param object City|State|Country
+	 *
+	 * @return array of state
+	 */
+	public function findChildrenStatesByParent($parent)
+	{
+
+		$level = $parent->getLevel();
+		if($level=='city')
+			return null; //no child
+		if($level=='country')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM1',$parent->getCode(),'');
+		if($level=='region')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM2',$parent->getCc1(),$parent->getAdmCode());
+		if($level=='departement')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM3',$parent->getCc1(),$parent->getAdmCode());
+		if($level=='district')
+			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM4',$parent->getCc1(),$parent->getAdmCode());
+		if($level=='division')
+			$children = $this->_em->getRepository('MyWorldBundle:City')->findCitiesByStateParent($parent);
+
+		if(empty($children))
+			$children = $this->_em->getRepository('MyWorldBundle:City')->findCitiesByStateParent($parent);
+		
+
+		return $children;
+	}
 
 	/**
 	 * Find all states from an array (or object) that contains cc1|ADM1|ADM2|ADM3|ADM4|city fields
@@ -81,7 +244,19 @@ class LocationRepository extends EntityRepository
 		return $states;
 	}
 
-	public function findStatesByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
+
+	/**
+	 * Return array of states from codes
+	 *
+	 * @param string $countryCode
+	 * @param string $regionCode
+	 * @param string $departementCode
+	 * @param string $districtCode
+	 * @param string $divisionCode
+	 *
+	 * @return array 
+	 */
+	public function findStatesByCodes($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
 		$states = array();
 
@@ -103,9 +278,25 @@ class LocationRepository extends EntityRepository
 		return $states;
 	}
 
-	public function findStatesListByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
+	/**
+	 * Return formatted array of level id=>name
+	 * ex: array(
+	 *	'level'=>'departement',
+	 *	'list'=>array(
+	 *		id=>name,
+	 *	))
+	 *
+	 * @param string $countryCode
+	 * @param string $regionCode
+	 * @param string $departementCode
+	 * @param string $districtCode
+	 * @param string $divisionCode
+	 *
+	 * @return array
+	 */
+	public function findStatesListByCodes($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
-		$states = $this->findStatesByCode($countryCode, $regionCode, $departementCode, $districtCode, $divisionCode);
+		$states = $this->findStatesByCodes($countryCode, $regionCode, $departementCode, $districtCode, $divisionCode);
 
 		foreach ($states as $state) {
 			$r[$state->getId()] = $state->getName();
@@ -125,15 +316,15 @@ class LocationRepository extends EntityRepository
 			$list['list'] = $list;
 		}
 		elseif($level == 'region')
-			$list = $this->findStatesListByCode($location->getCountry()->getCode());
-		elseif($level == 'department')
-			$list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getAdmCode());
+			$list = $this->findStatesListByCodes($location->getCountry()->getCode());
+		elseif($level == 'departement')
+			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode());
 		elseif($level == 'district')
-			$list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode());
+			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode());
 		elseif($level == 'division')
-			$list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode(),$location->getDistrict()->getAdmCode());
+			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode(),$location->getDistrict()->getAdmCode());
 		elseif($level == 'city')
-			$list = $this->findStatesListByCode($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode(),$location->getDistrict()->getAdmCode(),$location->getDivision()->getAdmCode());		
+			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode(),$location->getDistrict()->getAdmCode(),$location->getDivision()->getAdmCode());		
 		else
 			throw new Exception("Level is not correctly defined", 1);
 		
@@ -179,10 +370,10 @@ class LocationRepository extends EntityRepository
 		else
 			$qb->andWhere($qb->expr()->isNull('l.region'));
 
-		if(isset($states['department']) && is_object($states['department']) && $states['department']->exist()) 
-			$qb->andWhere($qb->expr()->eq('l.departement',$states['department']->getId()));
-		elseif(!empty($states['department']) && is_numeric($states['department']))
-			$qb->andWhere($qb->expr()->eq('l.departement',$states['department']));
+		if(isset($states['departement']) && is_object($states['departement']) && $states['departement']->exist()) 
+			$qb->andWhere($qb->expr()->eq('l.departement',$states['departement']->getId()));
+		elseif(!empty($states['departement']) && is_numeric($states['departement']))
+			$qb->andWhere($qb->expr()->eq('l.departement',$states['departement']));
 		else
 			$qb->andWhere($qb->expr()->isNull('l.departement'));
 
@@ -251,166 +442,5 @@ class LocationRepository extends EntityRepository
 	}
 
 
-	/**
-	 * find Location from city name 
-	 * @param string $name
-	 * @param string $countryCode
-	 * @return Location
-	 */
-	public function findLocationByCityName($name,$countryCode = null)
-	{
-		$city = $this->_em->getRepository('MyWorldBundle:City')->findCityByName($name,$countryCode);
-
-		if(NULL != $city)
-			return $this->findLocationByCityId($city->getId());
-		else
-			return NULL;
-	}
-
-	/**
-	 * find location from city ID
-	 * if not exist create it
-	 * @param integer id
-	 */
-	public function findLocationByCityId($id)
-	{
-
-		if($location = $this->findOneByCity($id)){
-
-			return $location;
-		}
-		else {
-
-			return $this->createLocationFromCityId($id);	
-		}
-	}
-
-	/**
-	 * create location from a city
-	 * @param integer id
-	 */
-	public function createLocationFromCityId($id)
-	{
-		$city = $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
-		if($city == null) throw new EntityNotFoundException();
-		$states['city'] = $city;
-		$states['country'] = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($city->getCc1());
-		if($city->getAdm1() != null) $states['region'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm1(),'ADM1');
-		if($city->getAdm2() != null) $states['departement'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm2(),'ADM2');
-		if($city->getAdm3() != null) $states['district'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm3(),'ADM3');
-		if($city->getAdm4() != null) $states['division'] = $this->_em->getRepository('MyWorldBundle:State')->findStateByCode($city->getCc1(),$city->getAdm4(),'ADM4');
-
-		return $this->createLocation($states);
-	}
-
-	public function findLocationByCountryCode($code)
-	{
-		$country = $this->_em->getRepository('MyWorldBundle:Country')->findCountryByCode($code);
-		if($location = $this->findOneByCountry($code)){
-			return $location;
-		}
-		else {
-			return $this->createLocation(array(
-				'country'=>$country
-				));
-		}
-	}
-
-	/**
-	 * create location from states
-	 * @param associative array of states 
-	 */
-	public function createLocation($states)
-	{
-		$location = new Location();
-
-		if(isset($states['country']))
-			$location->setCountry($this->_em->getRepository('MyWorldBundle:Country')->find($states['country']));
-		if(isset($states['region']))
-			$location->setRegion($this->_em->getRepository('MyWorldBundle:State')->find($states['region']));
-		if(isset($states['department']))
-			$location->setDepartement($this->_em->getRepository('MyWorldBundle:State')->find($states['department']));
-		if(isset($states['district']))
-			$location->setDistrict($this->_em->getRepository('MyWorldBundle:State')->find($states['district']));
-		if(isset($states['division']))
-			$location->setDivision($this->_em->getRepository('MyWorldBundle:State')->find($states['division']));
-		if(isset($states['city']))
-			$location->setCity($this->_em->getRepository('MyWorldBundle:City')->find($states['city']));
-
-		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=0;"); 
-		$this->_em->persist($location);
-		$this->_em->flush();
-		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=1;"); 
-
-		return $location;
-
-	}
-
-	/*
-	public function createLocation($country,$region,$departement = null,$district = null,$division = null,$city = null)
-	{
-		$location = new Location();
-
-		if($country->exist())	
-			$location->setCountry($country);
-		if($region->exist()) 
-			$location->setRegion($region);
-		if($departement->exist()) 
-			$location->setDepartement($departement);
-		if($district->exist()) 
-			$location->setDistrict($district);
-		if($division->exist()) 
-			$location->setDivision($division);
-		if($city->exist()) 
-			$location->setCity($city);
-
-		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=0;"); 
-		$this->_em->persist($location);
-		$this->_em->flush();
-		$this->_em->getConnection()->executeUpdate("SET FOREIGN_KEY_CHECKS=1;"); 
-
-		return $location;
-	}
-	*/
-
-	public function findStateById($level,$id)
-	{
-		if($level=='country')
-			return $this->_em->getRepository('MyWorldBundle:Country')->findByCodeOrId($id);
-		if($level=='region')
-			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
-		if($level=='department')
-			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
-		if($level=='district')
-			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
-		if($level=='division')
-			return $this->_em->getRepository('MyWorldBundle:State')->findOneById($id);
-		if($level=='city')
-			return $this->_em->getRepository('MyWorldBundle:City')->findOneById($id);
-	}
-
-	public function findChildrenStatesByParent($parent)
-	{
-
-		$level = $parent->getLevel();
-		if($level=='city')
-			return null; //no child
-		if($level=='country')
-			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM1',$parent->getCode(),'');
-		if($level=='region')
-			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM2',$parent->getCc1(),$parent->getAdmCode());
-		if($level=='department')
-			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM3',$parent->getCc1(),$parent->getAdmCode());
-		if($level=='district')
-			$children = $this->_em->getRepository('MyWorldBundle:State')->findStatesByParent('ADM4',$parent->getCc1(),$parent->getAdmCode());
-		if($level=='division')
-			$children = $this->_em->getRepository('MyWorldBundle:City')->findCitiesByStateParent($parent);
-
-		if(empty($children))
-			$children = $this->_em->getRepository('MyWorldBundle:City')->findCitiesByStateParent($parent);
-		
-
-		return $children;
-	}
 	
 }

@@ -58,12 +58,12 @@ class LocationSelectType extends AbstractType
                 'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'region','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
-            ->add('department','choice',array(
+            ->add('departement','choice',array(
                 'choices'=>array(),
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre Département',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'department','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
+                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'departement','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('district','choice',array(
@@ -138,7 +138,7 @@ class LocationSelectType extends AbstractType
         if($location == NULL) return;
         if($location->getCountry() != NULL) $this->addGeoField($form, $location, 'country', $location->getCountry()->getCode());                        
         if($location->getRegion() != NULL) $this->addGeoField($form, $location, 'region', $location->getRegion()->getId());            
-        if($location->getDepartement() != NULL) $this->addGeoField($form, $location, 'department', $location->getDepartement()->getId());            
+        if($location->getDepartement() != NULL) $this->addGeoField($form, $location, 'departement', $location->getDepartement()->getId());            
         if($location->getDistrict() != NULL) $this->addGeoField($form, $location, 'district', $location->getDistrict()->getId());            
         if($location->getDivision() != NULL) $this->addGeoField($form, $location, 'division', $location->getDivision()->getId());            
         if($location->getCity() != NULL) $this->addGeoField($form, $location, 'city', $location->getCity()->getId());

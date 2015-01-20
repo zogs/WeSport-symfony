@@ -76,7 +76,7 @@ class LocationController extends Controller
         $helpers = array(
             'country'=>"Sélectionnez un pays",
             'region'=>"Séléectionnez une région",
-            'department'=>"Sélectionnez un département",
+            'departement'=>"Sélectionnez un département",
             'district'=>"Select a district",
             'division'=>"Select a division",
             'city'=>"Sélectionnez une ville"
