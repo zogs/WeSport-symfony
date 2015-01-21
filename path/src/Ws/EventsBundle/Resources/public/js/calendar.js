@@ -1,16 +1,13 @@
 $(document).ready(function(){
 
 	//calendar form
-	$('#calendar_search_type').dropdownchecklist({
-		emptyText: "indifférent",
-		width: 150
-	});
-	$('#calendar_search_level').dropdownchecklist({
+	$('#calendar_search_type,#calendar_search_level').dropdownchecklist({
 		emptyText: "indifférent",
 		width: 150
 	});
 
-	$('#calendar_search_area').select2();
+	$('#calendar_search_area,#calendar_search_price').select2({		
+	});
 
 	
 

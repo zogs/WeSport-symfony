@@ -428,7 +428,7 @@ class Search
 
     public function hasPrice()
     {
-        if(isset($this->price) && $this->price != 0 ) return true;
+        if(isset($this->price)) return true;
         return false;
     }
 

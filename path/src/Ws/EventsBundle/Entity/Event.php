@@ -726,7 +726,7 @@ class Event
     {
         foreach ($this->participations as $participation) {
             
-            if($participation->getUser() == $user) return true;
+            if($participation->getUser() === $user) return true;
         }
         return false;
     }

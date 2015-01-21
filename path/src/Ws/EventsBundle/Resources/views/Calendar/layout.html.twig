@@ -52,11 +52,14 @@
 						<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a>
 					</td>
 				</tr>
-				<tr class="calendar-form-options">
-					<td colspan="2">
+				<tr>
+					<td colspan="2" class="calendar-form-options">
 						
 						{{ form_row(form.area,{
 							'label':"Dans un rayon de ",														
+							'attr': {
+									'data-placeholder':"indifférent"
+							}
 						})}}
 
 						{{ form_row(form.type,{
@@ -66,11 +69,13 @@
 
 						{{ form_row(form.level,{
 							'label':"d'un niveau ",
-							'empty_value': "indifférent",
 						})}}
 
 						{{ form_row(form.price,{
-							'label':"d'un prix inférieur à ",
+							'label':"d'un prix ",				
+							'attr': {
+									'data-placeholder':"indifférent"
+							}
 						})}}
 
 					</td>

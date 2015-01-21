@@ -485,18 +485,21 @@ table.calendar-form {
 tr.calendar-form-main { 
 	height:120px;
 }
-tr.calendar-form-options {
+td.calendar-form-options {
 	height:80px;
 }
 
-@mixin bottom-dotted($y:45){
+@mixin calendar-form-bottom-dotted($y:45){
 	background-image:url(../img/dotted.png);
 	background-repeat: repeat-x;
 	background-position-y: unquote($y +'px');
 	background-size:8px 5px;
 }
+@mixin calendar-form-text-shadow(){
+	@include long-shadow(text,$deepblue,5,false,false,right); 
+}
 
-tr.calendar-form-main,tr.calendar-form-options {
+tr.calendar-form-main,td.calendar-form-options {
 	label {		
 		display: inline-block;
 		font-family:'Harlow';
@@ -504,7 +507,7 @@ tr.calendar-form-main,tr.calendar-form-options {
 		color:white;
 		cursor: pointer;
 		margin:0;
-		@include long-shadow(text,$deepblue,5,false,false,right); 
+		@include calendar-form-text-shadow(); 
 
 		.ws-icon {
 			color:$darkblue;
@@ -524,10 +527,10 @@ tr.calendar-form-main,tr.calendar-form-options {
 		line-height:130%;
 		background: transparent;
 		border: 0px solid transparent;
-		@include bottom-dotted();
+		@include calendar-form-bottom-dotted();
 		outline: none;
 		@include box-shadow(0 0 0 0 rgba(0,0,0,0));
-		@include long-shadow(text,$deepblue,5,false,false,right); 
+		@include calendar-form-text-shadow();
 		@include border-radius(0);
 
 		&::-webkit-input-placeholder{ 
@@ -558,6 +561,8 @@ tr.calendar-form-main,tr.calendar-form-options {
 		}
 		&:hover span.ws-icon { @include rotate(360deg); @include rem(60); }
 	}
+
+	
 }
 
 
@@ -577,10 +582,9 @@ td.calendar-form-main-left {
 			outline: none;
 		}
 	}
-
 	.select2-container {
 		width:200px;		
-		@include bottom-dotted(47);
+		@include calendar-form-bottom-dotted(47);
 		.select2-choices {
 			height: 60px !important;
 			border:0;
@@ -604,12 +608,12 @@ td.calendar-form-main-left {
 				box-shadow:0 0 0;
 				margin:0;
 				padding: 2px 5px;
-				@include long-shadow(text,$deepblue,5,false,false,right); 
+				@include calendar-form-text-shadow();
 				.sport-name { display:none;}
 				.ws-icon {
 					color:$lightblue;
 					@include rem(40);
-					@include long-shadow(text,$deepblue,5,false,false,right); 
+					@include calendar-form-text-shadow();
 				}
 				.select2-search-choice-close {
 					top:-15px;
@@ -645,43 +649,70 @@ td.calendar-form-main-right {
 	}
 }
 
-tr.calendar-form-options {
-	td {
-		text-align:center;
-		label,input,select {
-			@include rem(30);
-			width:auto;
-		}
+td.calendar-form-options {
 
-		.ui-dropdownchecklist { 
-			margin:0 20px 0 10px;
-		}
-		.ui-dropdownchecklist-selector {
-			height:40px;
-			line-height:40px;
+	text-align:center;
+	label,input,select {
+		@include rem(30);
+		width:auto;
+	}
+
+	.select2-container {
+		margin:0 10px 7px 2px;
+		
+		.select2-choice {
+			padding-right:20px;
 			background:transparent;
-			border:1px solid transparent;
-			@include long-shadow(text,$deepblue,5,false,false,right); 
-		}
-		.ui-dropdownchecklist-text {
-			height:inherit;
-			line-height:inherit;
-			text-align:left;
-			font-family: "Harlow";
-			color: $lightblue;
-			@include rem(30);
-		}
-		.ui-dropdownchecklist-item {
-			padding:3px 0 3px 5px;
-			text-align:left;
-			label {
-				font-family: "Helvetica neue", Helvetica, sans-serif;
-				color:black;
-				font-size:16px;
-				text-shadow:0 0 0;
+			border:0px solid transparent;
+			.select2-chosen {
+				text-align:left;
+				font-family:"Harlow";
+				color: $lightblue !important;
+				margin-right:0; //!
+				@include rem(30);
+				@include calendar-form-text-shadow();
+				@include box-shadow(0 0 0);
 			}
+			.select2-arrow {
+				display:none;
+			}		
 		}
 	}
+	.select2-dropdown-open {
+		.select2-choice {
+				@include box-shadow(0 0 0);			
+		}
+	}			
+
+	.ui-dropdownchecklist { 
+		margin:0 20px 0 10px;
+	}
+	.ui-dropdownchecklist-selector {
+		height:40px;
+		line-height:40px;
+		background:transparent;
+		border:1px solid transparent;
+		@include calendar-form-text-shadow();
+	}
+	.ui-dropdownchecklist-text {
+		height:inherit;
+		line-height:inherit;
+		text-align:left;
+		font-family: "Harlow";
+		color: $lightblue;
+		@include rem(30);
+	}
+	.ui-dropdownchecklist-item {
+		padding:3px 0 3px 5px;
+		text-align:left;
+		label {
+			font-family: "Helvetica neue", Helvetica, Arial, sans-serif;
+			color:black;
+			@include rem(14);
+			text-shadow:0 0 0;
+		}
+	}
+	
 }
 
 
