@@ -110,14 +110,16 @@ class CalendarSearchType extends AbstractType
         $form = $event->getForm();
         $search = $event->getData(); 
 
-        //merge sports entity to em that were detach by the redirection
-        if($search->hasSports()){
-            $a = array();
-            foreach ($search->getSports() as $key => $sport) {
-                $sport = $this->em->merge($sport);
-                $a[] = $sport;
+        if(null !== $search){
+            //merge sports entity to em that were detach by the redirection
+            if($search->hasSports()){
+                $a = array();
+                foreach ($search->getSports() as $key => $sport) {
+                    $sport = $this->em->merge($sport);
+                    $a[] = $sport;
+                }
+                $search->setSports($a);
             }
-            $search->setSports($a);
         }
     }
 

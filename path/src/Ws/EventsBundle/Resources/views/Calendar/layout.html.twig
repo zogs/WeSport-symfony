@@ -19,9 +19,8 @@
 		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
 
 			<table class="calendar-form">
-				<tr class="calendar-form-main">
-					<td class="calendar-form-main-left"></td>
-					<td class="calendar-form-main-middle">
+				<tr class="calendar-form-main">					
+					<td class="calendar-form-main-left">
 
 						
 						{{ form_row(form.sports,{
@@ -32,9 +31,10 @@
 								}
 						}) }}
 					
+						{% if form.location.city_name.vars.data is not null %}{% set label = "dans ma ville "%}{% else %}{% set label = "dans ma "%}{% endif %}
 						{{ form_row(form.location.city_id) }}
 						{{ form_row(form.location.city_name,{
-							'label':"dans ma ",
+							'label': label,
 							'required':false,
 							'attr':{
 									'placeholder':"ville"
@@ -48,14 +48,31 @@
 					</td>
 
 					<td class="calendar-form-main-right">
-						<table>
-							<tr>
-								<td>
-									<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong> la recherche</a><br>
-									<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a><br>								
-								</td>
-							</tr>
-						</table>
+						<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong> la recherche</a><br>
+						<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a>
+					</td>
+				</tr>
+				<tr class="calendar-form-options">
+					<td colspan="2">
+						
+						{{ form_row(form.area,{
+							'label':"Dans un rayon de ",														
+						})}}
+
+						{{ form_row(form.type,{
+							'label':"organisé par ",
+							'empty_value': "tous",
+						})}}
+
+						{{ form_row(form.level,{
+							'label':"d'un niveau ",
+							'empty_value': "indifférent",
+						})}}
+
+						{{ form_row(form.price,{
+							'label':"d'un prix inférieur à ",
+						})}}
+
 					</td>
 				</tr>
 			</table>

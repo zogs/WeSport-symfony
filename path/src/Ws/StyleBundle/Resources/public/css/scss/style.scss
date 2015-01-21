@@ -479,26 +479,28 @@ div.mm-is-menu * {
 table.calendar-form {
 	
 	width:100%;	
-	margin: 100px auto 60px auto;
+	margin: 100px auto 0px auto;
 }
 
-tr.calendar-form-main { height:80px;}
-td.calendar-form-main-left { width:20%; height: inherit; float:left; }
-td.calendar-form-main-middle { 
-	width:50%; 
-	float:left; 
-	height:inherit; 
-	vertical-align:middle;
-	position: relative;
-	font-family:'Harlow';
-	@include rem(40);
-	text-align:center;
-	
+tr.calendar-form-main { 
+	height:120px;
+}
+tr.calendar-form-options {
+	height:80px;
+}
 
+@mixin bottom-dotted($y:45){
+	background-image:url(../img/dotted.png);
+	background-repeat: repeat-x;
+	background-position-y: unquote($y +'px');
+	background-size:8px 5px;
+}
+
+tr.calendar-form-main,tr.calendar-form-options {
 	label {		
-		display: inline;
-		font-family:inherit;
-		font-size:inherit;
+		display: inline-block;
+		font-family:'Harlow';
+		@include rem(40);
 		color:white;
 		cursor: pointer;
 		margin:0;
@@ -513,19 +515,16 @@ td.calendar-form-main-middle {
 	input,select {
 		width:200px;
 		height:auto;
-		display:inline;
+		display:inline-block;
 		margin:0 20px 0 0;
 		padding:0 0 0 0;
 		color:$lightblue;	
-		font-family: inherit;
-		font-size: inherit;
+		font-family:'Harlow';
+		@include rem(40);
 		line-height:130%;
 		background: transparent;
 		border: 0px solid transparent;
-		background-image:url(../img/dotted.png);
-		background-repeat: repeat-x;
-		background-position-y: 45px;
-		background-size:8px 5px;
+		@include bottom-dotted();
 		outline: none;
 		@include box-shadow(0 0 0 0 rgba(0,0,0,0));
 		@include long-shadow(text,$deepblue,5,false,false,right); 
@@ -536,13 +535,18 @@ td.calendar-form-main-middle {
 				}
 	}
 
+	select option {
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		color:black;
+	}
+
 	select#calendar_search_sports {
 		option { display:none; }
 		height:40px;
 	}
 
 	button[type=submit] {
-		display:inline;
+		display:inline-block;
 		width:90px; 
 		height:90px; 
 		border-radius:100px; 
@@ -554,13 +558,21 @@ td.calendar-form-main-middle {
 		}
 		&:hover span.ws-icon { @include rotate(360deg); @include rem(60); }
 	}
+}
 
 
+td.calendar-form-main-left { 
+	width:65%; 
+	height:inherit; 
+	position: relative;	
+	text-align:right; 
+	
 	.tt-dropdown-menu {
 		width:300px;
 	}
 	.twitter-typeahead {
-		line-height:130%;
+		line-height:60px;
+		margin-left: 10px;
 		input:focus {
 			outline: none;
 		}
@@ -568,10 +580,7 @@ td.calendar-form-main-middle {
 
 	.select2-container {
 		width:200px;		
-		background-image:url(../img/dotted.png);
-		background-repeat: repeat-x;
-		background-position-y: 50px;
-		background-size:8px 5px;
+		@include bottom-dotted(47);
 		.select2-choices {
 			height: 60px !important;
 			border:0;
@@ -582,6 +591,7 @@ td.calendar-form-main-middle {
 			.select2-search-field{				
 				input {
 					font-family: "Harlow"; 
+					@include rem(40);
 					color: #8db3be !important;
 				}
 			}
@@ -618,20 +628,12 @@ td.calendar-form-main-middle {
 			}
 		}	
 	}
-	/*
-	.twitter-typeahead{ 
-		width:100%;
-		input[type=text] { width:100% }
-		
-	}	
-	*/
 }
 
 td.calendar-form-main-right { 
-	width:20%; 
-	float:left; 
+	width:35%; 
+	padding-left:20px;
 	height:inherit; 
-	vertical-align: middle;
 
 	table { height:inherit; }
 	a:link,a:visited {
@@ -643,6 +645,44 @@ td.calendar-form-main-right {
 	}
 }
 
+tr.calendar-form-options {
+	td {
+		text-align:center;
+		label,input,select {
+			@include rem(30);
+			width:auto;
+		}
+
+		.ui-dropdownchecklist { 
+			margin:0 20px 0 10px;
+		}
+		.ui-dropdownchecklist-selector {
+			height:40px;
+			line-height:40px;
+			background:transparent;
+			border:1px solid transparent;
+			@include long-shadow(text,$deepblue,5,false,false,right); 
+		}
+		.ui-dropdownchecklist-text {
+			height:inherit;
+			line-height:inherit;
+			text-align:left;
+			font-family: "Harlow";
+			color: $lightblue;
+			@include rem(30);
+		}
+		.ui-dropdownchecklist-item {
+			padding:3px 0 3px 5px;
+			text-align:left;
+			label {
+				font-family: "Helvetica neue", Helvetica, sans-serif;
+				color:black;
+				font-size:16px;
+				text-shadow:0 0 0;
+			}
+		}
+	}
+}
 
 
 
@@ -663,7 +703,6 @@ td.calendar-form-main-right {
 	width:100%;
 	height:80px;
 	position:relative;	
-	z-index:1;
 	border-top:1px solid rgba(255,255,255,0.4);	
 }
 
@@ -674,6 +713,10 @@ td.calendar-form-main-right {
 }
 
 .calender-sports-choices {
+
+	display:none;
+
+
 	width:100%;
 	position: relative;	
 	top:-111px;	
