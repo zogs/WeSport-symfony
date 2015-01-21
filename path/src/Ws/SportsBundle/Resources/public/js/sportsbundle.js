@@ -53,7 +53,7 @@ $(document).ready(function() {
 	})
 
 
-	$(".sportSelection").each(function(){
+	$("select.sportSelection").each(function(){
 
 		$(this).select2({
 			formatResult: addSportIcon,
