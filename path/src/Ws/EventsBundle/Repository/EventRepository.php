@@ -172,6 +172,7 @@ class EventRepository extends EntityRepository
 	private function filterByPrice($qb)
 	{
 		if($this->search->hasPrice() === false) return $qb;
+		if($this->search->getPrice() == 0) return $qb->andWhere($qb->expr()->eq('e.price',':price'))->setParameter('price',$this->search->getPrice());
 		if($this->search->getPrice() > 0) return $qb->andWhere($qb->expr()->lte('e.price',':price'))->setParameter('price',$this->search->getPrice());		
 	}
 

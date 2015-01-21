@@ -534,10 +534,16 @@ class CalendarManager extends AbstractManager
 
     private function preparePriceParams()
     {
-    	if(isset($this->params['price']) && !is_numeric($this->params['price'])) return null;
-    	if(is_string($this->params['price']) && $this->params['price'] == $this->urlGenerator->defaults['price']) return; //if equal to URL default value
-
-    	$this->search->setPrice($this->params['price']);
+    	$price = null;
+    	if(isset($this->params['price'])){
+    		if(is_numeric($this->params['price'])) $price = $this->params['price'];
+    		elseif(is_string($this->params['price'])){
+    			if($this->params['price'] == $this->urlGenerator->defaults['price']) return;
+    			$price = str_replace('€', '', $this->params['price']);
+    			if(!is_numeric($price)) $price = null;
+    		}
+    	}
+    	$this->search->setPrice($price);
 		return;
     }
 

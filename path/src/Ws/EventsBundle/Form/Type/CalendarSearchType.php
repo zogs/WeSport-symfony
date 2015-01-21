@@ -51,8 +51,16 @@ class CalendarSearchType extends AbstractType
                 'required'=>false,   
                 'translation_domain' => 'WsEventsBundle_event'             
                 ))
-            ->add('price','integer',array(
+            ->add('price','choice',array(
                 'required'=>false,
+                'expanded'=>false,
+                'multiple'=>false,
+                'choices'=> array(
+                    0 => 'gratuite',
+                    10 => 'inférieur à 10€',
+                    25 => 'inférieur à 25€',
+                    50 => 'inférieur à 50€',
+                    )
                 ))
             ->add('sports','entity',array(                                    
                     'class'=>'WsSportsBundle:Sport',
