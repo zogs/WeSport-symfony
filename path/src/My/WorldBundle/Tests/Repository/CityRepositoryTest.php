@@ -141,4 +141,29 @@ class CityRepositoryTest extends WebTestCase
 		$this->assertEquals(23,count($cities));	
 	}
 
+	public function testFindCitiesByStateParent()
+	{
+		$london = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('London','UK');
+
+		//TOO LONG TO TEST cities of all UK
+		//$cities = $this->repo->findCitiesByStateParent($london->getCountry());
+		//$this->assertEquals(14905,count($cities));
+
+		//TOO LONG TO TEST cities of all England
+		//$cities = $this->repo->findCitiesByStateParent($london->getRegion());
+		//$this->assertEquals(10427,count($cities));
+
+		//cities of departement
+		$cities = $this->repo->findCitiesByStateParent($london->getDepartement());
+		$this->assertEquals(239,count($cities));
+
+		//cities of district
+		$cities = $this->repo->findCitiesByStateParent($london->getDistrict());
+		$this->assertEquals(235,count($cities));
+
+		//cities of division
+		$cities = $this->repo->findCitiesByStateParent($london->getDivision());
+		$this->assertEquals(3,count($cities));
+	}
+
 }

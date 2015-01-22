@@ -7,7 +7,7 @@ my_world_location_select_test:
     defaults: { _controller: MyWorldBundle:Location:formSelectLocation }
 
 my_world_location_select_nextlevel:
-    pattern: /next_geo_level
+    pattern: /location/levelchildren
     defaults: { _controller: MyWorldBundle:Location:nextGeoLevel }
     requirements:
         _method: GET
@@ -32,7 +32,7 @@ my_world_location_nearest:
 
 
 my_world_autocompletecity:
-    pattern: /autocompletecity/{country}/{prefix}
+    pattern: /city/autocomplete/{country}/{prefix}
     defaults: { _controller: MyWorldBundle:City:autoComplete, country:'FR', prefix:'' }
     requirements:
         _method: GET

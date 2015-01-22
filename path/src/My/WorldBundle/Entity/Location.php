@@ -115,10 +115,7 @@ class Location
      */
     public function getCountry()
     {
-        if(isset($this->country))
             return $this->country;
-        else 
-            return new Country();
     }
 
     /**
@@ -141,10 +138,7 @@ class Location
      */
     public function getRegion()
     {
-        if(isset($this->region))
             return $this->region;
-        else
-            return new State();
     }
 
     /**
@@ -167,10 +161,7 @@ class Location
      */
     public function getDepartement()
     {
-        if(isset($this->departement))
             return $this->departement;
-        else
-            return new State();
     }
 
     /**
@@ -193,10 +184,7 @@ class Location
      */
     public function getDistrict()
     {
-        if(isset($this->district))
             return $this->district;
-        else
-            return new State();
     }
 
     /**
@@ -219,10 +207,7 @@ class Location
      */
     public function getDivision()
     {
-        if(isset($this->division))
             return $this->division;
-        else
-            return new State();
     }
 
     /**
@@ -257,10 +242,7 @@ class Location
      */
     public function getCity()
     {
-        if(isset($this->city))
             return $this->city;
-        else
-            return new City();
     }
 
     /**

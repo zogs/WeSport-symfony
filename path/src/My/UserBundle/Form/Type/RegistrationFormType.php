@@ -82,7 +82,7 @@ class RegistrationFormType extends BaseType
                 )
             ))
 
-        ->add('location','location_selectboxs',array( ))
+        ->add('location','location_select',array( ))
 
 
         ->add('submit','submit',array(

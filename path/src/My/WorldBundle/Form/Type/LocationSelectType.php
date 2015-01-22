@@ -139,14 +139,16 @@ class LocationSelectType extends AbstractType
         if($location->getCountry() != NULL) $this->addGeoField($form, $location, 'country', $location->getCountry()->getCode());                        
         if($location->getRegion() != NULL) $this->addGeoField($form, $location, 'region', $location->getRegion()->getId());            
         if($location->getDepartement() != NULL) $this->addGeoField($form, $location, 'departement', $location->getDepartement()->getId());            
-        if($location->getDistrict() != NULL) $this->addGeoField($form, $location, 'district', $location->getDistrict()->getId());            
-        if($location->getDivision() != NULL) $this->addGeoField($form, $location, 'division', $location->getDivision()->getId());            
+        if($location->getDistrict() !== NULL) $this->addGeoField($form, $location, 'district', $location->getDistrict()->getId());            
+        if($location->getDivision() !== NULL) $this->addGeoField($form, $location, 'division', $location->getDivision()->getId());            
         if($location->getCity() != NULL) $this->addGeoField($form, $location, 'city', $location->getCity()->getId());
+        exit();
     }
 
     public function addGeoField(FormInterface $form, $location, $level, $value = '')
     {        
-        $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListByLevel($location,$level);
+                dump($level);
+        $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListFromLocationByLevel($location,$level);
         if(empty($list)) return;
 
         $form->add($list['level'],'choice',array(

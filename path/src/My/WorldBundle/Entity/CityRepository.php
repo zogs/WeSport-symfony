@@ -13,6 +13,12 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
  */
 class CityRepository extends EntityRepository
 {
+	/**
+	 * Return City:object from its UNI code
+	 *
+	 * @param integer $uni
+	 * @return City:object	
+	 */
 	public function findCityByUNI($uni)
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -25,6 +31,12 @@ class CityRepository extends EntityRepository
 
 	}
 
+	/**
+	 * Return City:object from its unique id
+	 *
+	 * @param interger $id
+	 * @return City:object
+	 */
 	public function findCityById($id)
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -37,6 +49,19 @@ class CityRepository extends EntityRepository
 
 	}
 
+	/**
+	 * Return City:object from its name
+	 * Can be optimised by giving owning states codes
+	 *
+	 * @param string $name
+	 * @param string $countryCode
+	 * @param string $regionCode
+	 * @param string $departementCode
+	 * @param string $districtCode
+	 * @param string $division Code
+	 *
+	 * @return City:object
+	 */
 	public function findCityByName($name,$countryCode = null, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -60,6 +85,20 @@ class CityRepository extends EntityRepository
 
 		return $qb->getQuery()->getOneOrNullResult();
 	}
+
+	/**
+	 * Return array of cities suggestions from a prefix string
+	 *
+	 * @param integer $limit : number of suggestions
+	 * @param string $prefix 
+	 * @param string $countryCode
+	 * @param string $regionCode
+	 * @param string $departementCode
+	 * @param string $districtCode
+	 * @param string $division Code
+	 *
+	 * @return array of City:object
+	 */
 	public function findCitiesSuggestions( $limit, $prefix , $countryCode = null, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null){
 
 		$qb = $this->createQueryBuilder('c');
@@ -86,7 +125,12 @@ class CityRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
-
+	/**
+	 * Return array of City:object that are contains in the parent given
+	 *
+	 * @param Country|State:objects $parent
+	 * @return array of City:object
+	 */
 	public function findCitiesByStateParent($parent)
 	{
 		if($parent->getLevel()=='country')
@@ -102,6 +146,17 @@ class CityRepository extends EntityRepository
 		
 	}
 
+	/**
+	 * Return array of City:object from states codes
+	 *
+	 * @param string $countryCode
+	 * @param string $regionCode
+	 * @param string $departementCode
+	 * @param string $districtCode
+	 * @param string $division Code
+	 *
+	 * @return array of City:object
+	 */
 	public function findCitiesByCode($countryCode, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
 		$sql = "
@@ -110,10 +165,10 @@ class CityRepository extends EntityRepository
 			JOIN MyWorldBundle:Country c 
 			WITH c.code = s.cc1
 			WHERE s.cc1 = :cc1
-			AND (
+			AND ( 1 = 1 
 				";
 		if(isset($regionCode))
-			$sql .= " s.adm1 = :adm1 ";
+			$sql .= " AND s.adm1 = :adm1 ";
 		if(isset($departementCode))
 			$sql .= " AND s.adm2 = :adm2 ";
 		if(isset($districtCode))
@@ -143,6 +198,17 @@ class CityRepository extends EntityRepository
 		return $query->getResult();
 	}
 
+	/**
+	 * Return array of City:object that are in the radius $radius of the coord $lat $lon
+	 *
+	 * @param integer $radius
+	 * @param integer $lat
+	 * @param integer $lon
+	 * @param (optional) string $countryCode : optimise the request
+	 * @param (optional) string $unit : unit to use km|miles
+	 *
+	 * @return array of City:object
+	 */
 	public function findCitiesArround($radius, $lat, $lon, $countryCode = null, $unit = 'km')
 	{		
 		//constante for units

@@ -12,6 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class StateRepository extends EntityRepository
 {
+	/**
+	 * Find State:object by its name
+	 *
+	 * @param string $name
+	 * @param (optional) string $countryCode : optimize the query
+	 *
+	 * @return State:object|Null
+	 */
 	public function findStateByName($name,$countryCode = null)
 	{
 		$sql = "
@@ -30,18 +38,13 @@ class StateRepository extends EntityRepository
 		return $q->getOneOrNullResult();
 	}
 
-	public function findStateByCodes($cc1,$adm1,$adm2 = null,$adm3 = null,$adm4 = null)
-	{
-		if(!empty($adm4))
-			return $this->findStateByCode($cc1,$adm4,'ADM4');
-		if(!empty($adm3))
-			return $this->findStateByCode($cc1,$adm3,'ADM3');
-		if(!empty($adm2))
-			return $this->findStateByCode($cc1,$adm2,'ADM2');
-		if(!empty($adm1))
-			return $this->findStateByCode($cc1,$adm1,'ADM1');
-	}
-
+	/**
+	 * Find State object by its code 
+	 *
+	 * @param string $cc1 countryCode
+	 * @param string $code administrative code
+	 * @param string $level level of the admnistrative code - ex: ADM1|ADM2
+	 */
 	public function findStateByCode($cc1, $code, $level)
 	{
 		//return empty State if no code specified
@@ -64,11 +67,45 @@ class StateRepository extends EntityRepository
 			'level'=>$level)
 		);
 
-		$results = $q->getResult();
-		
-		return $results[0];
+		$result = $q->getResult();
+
+		return $result[0];
 	}
 
+	/**
+	 * Find State:object from its adm codes
+	 * (is an alias of findStateByCode)
+	 *
+	 * @param string $cc1 : countryCode
+	 * @param string $adm1 : administrative code 1
+	 * @param string $adm2 : administrative code 2 (optional)
+	 * @param string $adm3 : administrative code 3 (optional)
+	 * @param string $adm4 : administrative code 4 (optional)
+	 *
+	 * @return State:object
+	 */
+	public function findStateByCodes($cc1,$adm1,$adm2 = null,$adm3 = null,$adm4 = null)
+	{
+		if(!empty($adm4))
+			return $this->findStateByCode($cc1,$adm4,'ADM4');
+		if(!empty($adm3))
+			return $this->findStateByCode($cc1,$adm3,'ADM3');
+		if(!empty($adm2))
+			return $this->findStateByCode($cc1,$adm2,'ADM2');
+		if(!empty($adm1))
+			return $this->findStateByCode($cc1,$adm1,'ADM1');
+	}
+
+
+	/**
+	 * Find array of State:objects from its parents
+	 *
+	 * @param string $level level of the states to return - ex: ADM1,ADM2
+	 * @param string $cc1 countryCode
+	 * @param string $parent admnistrative code of the parent state
+	 *
+	 * @return array of State:objects
+	 */
 	public function findStatesByParent($level, $cc1, $parent = '')
 	{
 		$q = $this->getEntityManager()->createQuery("

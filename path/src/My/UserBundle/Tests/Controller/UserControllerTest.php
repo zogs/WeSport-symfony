@@ -47,7 +47,10 @@ class UserControllerTest extends WebTestCase
 			'fos_user_registration_form[birthday][month]' => 1,
 			'fos_user_registration_form[birthday][year]' => 1979,
 			'fos_user_registration_form[gender]' => 'm',
-			'fos_user_registration_form[location][id]' => $location->getId(),
+			'fos_user_registration_form[location][country]' => $location->getCountry()->getCode(),
+			'fos_user_registration_form[location][region]' => $location->getRegion()->getId(),
+			'fos_user_registration_form[location][departement]' => $location->getDepartement()->getId(),
+			'fos_user_registration_form[location][city]' => $location->getCity()->getId(),
 			));
 
 		$crawler = $this->client->submit($form);

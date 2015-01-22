@@ -45,12 +45,9 @@ class LocationController extends Controller
         //find current state
         $parent = $em->getRepository('MyWorldBundle:Location')->findStateById($request->query->get('level'),$request->query->get('value'));
 
-        //find location object of the current state
-        //$actual_location = $em->getRepository('MyWorldBundle:Location')->findLocationFromOneState($parent);
-
         //find children of the current state
         $children = $em->getRepository('MyWorldBundle:Location')->findChildrenStatesByParent($parent);
-        
+
         //create html options
         $level = '';
         $options = '';

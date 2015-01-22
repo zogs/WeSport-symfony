@@ -168,4 +168,54 @@ class LocationRepositoryTest extends WebTestCase
 		$this->assertEquals('departement',$states['level']);
 		$this->assertEquals("Departement de la Cote-d' Or",$states['list'][4963]);
 	}
+
+	public function testFindStatesListFromLocationByLevel()
+	{
+		//get london Location
+		$london = $this->repo->findLocationByCityName('London','UK');
+		//country
+		$countries = $this->repo->findStatesListFromLocationByLevel($london,'country');
+		$this->assertEquals(265,count($countries['list']));		
+		//region
+		$regions = $this->repo->findStatesListFromLocationByLevel($london,'region');
+		$this->assertEquals('England',$regions['list'][12532]);
+		$this->assertEquals('Northern Ireland',$regions['list'][12549]);
+		$this->assertEquals('Scotland',$regions['list'][12566]);
+		$this->assertEquals('Wales',$regions['list'][12583]);
+		//departement
+		$dpts = $this->repo->findStatesListFromLocationByLevel($london,'departement');
+		$this->assertEquals('North East England',$dpts['list'][12600]);
+		$this->assertEquals(9,count($dpts['list']));
+		//district
+		$dists = $this->repo->findStatesListFromLocationByLevel($london,'district');
+		$this->assertEquals('Greater London',$dists['list'][12756]);
+		//division
+		$divs = $this->repo->findStatesListFromLocationByLevel($london,'division');
+		$this->assertEquals(33,count($divs['list']));
+		//cities
+		$cities = $this->repo->findStatesListFromLocationByLevel($london,'city');
+		$this->assertEquals('City of London',$cities['list'][3902000]);
+		$this->assertEquals('London',$cities['list'][3902006]);
+		$this->assertEquals('Puddle Dock',$cities['list'][3902020]);
+		$this->assertEquals(3,count($cities['list']));		
+	}
+
+	public function testFindLocationFromStates()
+	{
+		//get Location
+		$london = $this->repo->findLocationByCityName('London','UK');
+
+		$states = array(
+			'country' => $london->getCountry(),
+			'region' => $london->getRegion(),
+			'departement' => $london->getDepartement(),
+			'district' => $london->getDistrict(),
+			'division' => $london->getDivision(),
+			'city' => $london->getCity(),
+			);
+
+		$test = $this->repo->findLocationFromStates($states);
+
+		$this->assertEquals($london->getId(),$test->getId());
+	}
 }
