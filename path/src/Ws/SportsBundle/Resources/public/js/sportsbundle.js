@@ -65,9 +65,12 @@ $(document).ready(function() {
 });
 
 
-function addSportIcon(sport){	
-	if(trim(sport.id)!='')
-		return '<span class="ws-icon ws-icon-'+sport.text.toLowerCase()+'"></span> <span class="sport-name">'+sport.text+'</span>';		
+function addSportIcon(sport){		
+
+	if(sport.id != 'undefined'){
+		var icon = $(sport.element[0].outerHTML).attr('data-icon');
+		return '<span class="ws-icon ws-icon-'+icon+'"></span> <span class="sport-name">'+sport.text+'</span>';		
+	}
 	else 
 		return sport.text;
 }
