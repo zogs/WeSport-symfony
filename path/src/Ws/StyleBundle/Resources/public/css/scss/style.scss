@@ -479,14 +479,14 @@ div.mm-is-menu * {
 table.calendar-form {
 	
 	width:100%;	
-	margin: 100px auto 0px auto;
+	margin: 70px auto 0px auto;
 }
 
 tr.calendar-form-main { 
-	height:120px;
+	height:100px;
 }
 td.calendar-form-options {
-	height:80px;
+	height:40px;
 }
 
 @mixin calendar-form-bottom-dotted($y:45){
@@ -496,18 +496,26 @@ td.calendar-form-options {
 	background-size:8px 5px;
 }
 @mixin calendar-form-text-shadow(){
-	@include long-shadow(text,$deepblue,5,false,false,right); 
+	@include long-shadow(text,#3f6672,5,false,false,right); 
+}
+@mixin calendar-form-text-main(){
+	font-family: 'Harlow';
+	@include rem(40);
+	@include calendar-form-text-shadow();
+}
+@mixin calendar-form-text-options(){
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	@include rem(16);
+	@include calendar-form-text-shadow();
 }
 
 tr.calendar-form-main,td.calendar-form-options {
 	label {		
 		display: inline-block;
-		font-family:'Harlow';
-		@include rem(40);
 		color:white;
 		cursor: pointer;
 		margin:0;
-		@include calendar-form-text-shadow(); 
+		@include calendar-form-text-main();
 
 		.ws-icon {
 			color:$darkblue;
@@ -519,18 +527,15 @@ tr.calendar-form-main,td.calendar-form-options {
 		width:200px;
 		height:auto;
 		display:inline-block;
-		margin:0 20px 0 0;
 		padding:0 0 0 0;
+		@include calendar-form-text-main();
 		color:$lightblue;	
-		font-family:'Harlow';
-		@include rem(40);
 		line-height:130%;
 		background: transparent;
 		border: 0px solid transparent;
 		@include calendar-form-bottom-dotted();
 		outline: none;
 		@include box-shadow(0 0 0 0 rgba(0,0,0,0));
-		@include calendar-form-text-shadow();
 		@include border-radius(0);
 
 		&::-webkit-input-placeholder{ 
@@ -552,6 +557,7 @@ tr.calendar-form-main,td.calendar-form-options {
 		display:inline-block;
 		width:90px; 
 		height:90px; 
+		margin-left:40px;
 		border-radius:100px; 
 		background-color: rgba(0,0,0,0.25); 
 		border:0;
@@ -567,7 +573,7 @@ tr.calendar-form-main,td.calendar-form-options {
 
 
 td.calendar-form-main-left { 
-	width:65%; 
+	width:70%; 
 	height:inherit; 
 	position: relative;	
 	text-align:right; 
@@ -594,8 +600,7 @@ td.calendar-form-main-left {
 
 			.select2-search-field{				
 				input {
-					font-family: "Harlow"; 
-					@include rem(40);
+					@include calendar-form-text-main();
 					color: #8db3be !important;
 				}
 			}
@@ -635,15 +640,15 @@ td.calendar-form-main-left {
 }
 
 td.calendar-form-main-right { 
-	width:35%; 
+	width:30%; 
 	padding-left:20px;
 	height:inherit; 
 
 	table { height:inherit; }
-	a:link,a:visited {
+	a:link,a:active,a:visited {
 		color:white;
 	}
-	a:active, a:hover {
+	a:hover {
 		color:white;
 		text-decoration:underline;
 	}
@@ -651,14 +656,26 @@ td.calendar-form-main-right {
 
 td.calendar-form-options {
 
+	position:relative;
+
+	div#calendar-form-options-container {
+
+		position:relative;
+		top:50px;
+		@include transition(all 0.5s ease-in-out);		
+		&.open {
+			top:0px;
+		}
+	}
+
 	text-align:center;
 	label,input,select {
-		@include rem(30);
+		@include calendar-form-text-options();
 		width:auto;
 	}
 
 	.select2-container {
-		margin:0 10px 7px 2px;
+		margin:0;
 		
 		.select2-choice {
 			padding-right:20px;
@@ -666,11 +683,9 @@ td.calendar-form-options {
 			border:0px solid transparent;
 			.select2-chosen {
 				text-align:left;
-				font-family:"Harlow";
+				@include calendar-form-text-options();
 				color: $lightblue !important;
 				margin-right:0; //!
-				@include rem(30);
-				@include calendar-form-text-shadow();
 				@include box-shadow(0 0 0);
 			}
 			.select2-arrow {
@@ -685,7 +700,7 @@ td.calendar-form-options {
 	}			
 
 	.ui-dropdownchecklist { 
-		margin:0 20px 0 10px;
+		margin:0;
 	}
 	.ui-dropdownchecklist-selector {
 		height:40px;
@@ -696,11 +711,17 @@ td.calendar-form-options {
 	}
 	.ui-dropdownchecklist-text {
 		height:inherit;
-		line-height:inherit;
+		line-height:44px;
 		text-align:left;
-		font-family: "Harlow";
+		@include calendar-form-text-options();
 		color: $lightblue;
-		@include rem(30);
+	}
+	.ui-dropdownchecklist-dropcontainer {
+		border:1px solid #5C99DD;
+		border-bottom-left-radius: 4px;
+		border-bottom-right-radius: 4px;
+		padding:10px 5px;
+		line-height:14px;
 	}
 	.ui-dropdownchecklist-item {
 		padding:3px 0 3px 5px;
@@ -710,6 +731,11 @@ td.calendar-form-options {
 			color:black;
 			@include rem(14);
 			text-shadow:0 0 0;
+			line-height: 22px;
+			text-transform: capitalize;
+		}
+		input[type=checkbox] {
+			margin-right:5px;
 		}
 	}
 	
@@ -853,14 +879,16 @@ td.calendar-form-options {
 }
 
 .calendar-arianne{
-	width: 34%;
+	width: 80%;
 	padding:0 0 0 30px;
 	line-height: 260%;
-	color:#999;
+	color:#FFF;
+	font-size:12px;
 	//@include long-shadow(text,#152e35,50,false,false,right);
-	table { height:100%; }
-	strong{ @include rem(14); color:#FFF;}
-	span { @include rem(12)}
+	table { height:100%; width:100%; text-align:center;}
+	strong{ color:inherit; font-size:inherit;}
+	span { font-size:inherit; color:#999; }	
+	span.ws-icon { color:white; margin-right:5px; }
 }
 
 .calendar-loader{

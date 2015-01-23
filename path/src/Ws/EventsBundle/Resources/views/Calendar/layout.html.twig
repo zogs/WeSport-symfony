@@ -15,21 +15,25 @@
 	{% endblock %}
 
 	{% block search_calendar %}
-
+		
 		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
 
 			<table class="calendar-form">
 				<tr class="calendar-form-main">					
 					<td class="calendar-form-main-left">
 
-						
-						{{ form_row(form.sports,{
-							'label':"Je veux du ",
-							'required':false,
-							'attr':{
-									'placeholder':"sport"
-								}
-						}) }}
+
+						<label for="{{ form.sports.vars.id }}">Je veux du </label>
+						<select name="{{form.sports.vars.full_name }}" id="{{ form.sports.vars.id }}" class="{{ form.sports.vars.attr.class }}" multiple="{{ form.sports.vars.multiple }}" placeholder="sports" tabindex="-1">
+							{% for category,choices in form.sports.vars.choices %}
+								<optgroup label="{{ category }}">
+									{% for sport in choices %}
+										<option value="{{ sport.data.id }}" data-icon="{{ sport.data.icon }}">{{ sport.data.name }}</option>
+									{% endfor %}
+								</optgroup>
+							{% endfor %}
+
+						</select>
 					
 						{% if form.location.city_name.vars.data is not null %}{% set label = "dans ma ville "%}{% else %}{% set label = "dans ma "%}{% endif %}
 						{{ form_row(form.location.city_id) }}
@@ -49,35 +53,38 @@
 
 					<td class="calendar-form-main-right">
 						<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong> la recherche</a><br>
-						<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a>
+						<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a><br>
+						<a href="javascript:;" id="calendar-form-options-toggle" class="btn-link"><strong>Plus d'options ?</strong> </a><br>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" class="calendar-form-options">
-						
-						{{ form_row(form.area,{
-							'label':"Dans un rayon de ",														
-							'attr': {
-									'data-placeholder':"indifférent"
-							}
-						})}}
+						<div id="calendar-form-options-container">
+							
+							{{ form_row(form.area,{
+								'label':"Dans un rayon de ",														
+								'attr': {
+										'data-placeholder':"indifférent"
+								}
+							})}}
 
-						{{ form_row(form.type,{
-							'label':"organisé par ",
-							'empty_value': "tous",
-						})}}
+							{{ form_row(form.type,{
+								'label':"organisé par ",
+								'empty_value': "tous",
+							})}}
 
-						{{ form_row(form.level,{
-							'label':"d'un niveau ",
-						})}}
+							{{ form_row(form.level,{
+								'label':"d'un niveau ",
+							})}}
 
-						{{ form_row(form.price,{
-							'label':"d'un prix ",				
-							'attr': {
-									'data-placeholder':"indifférent"
-							}
-						})}}
-
+							{{ form_row(form.price,{
+								'label':"d'un prix ",				
+								'attr': {
+										'data-placeholder':"indifférent"
+								}
+							})}}
+							
+						</div>
 					</td>
 				</tr>
 			</table>
@@ -97,9 +104,34 @@
 				<table>
 					<tr>
 						<td>
-							<span class="ws-icon ws-icon-location" style="color:white"></span>
-							{{ search.getHtmlLocationString()|raw }}
-							<br>
+								{% if search.sports is not null %}
+								{% for sport in search.sports %}
+									<span class="ws-icon ws-icon-{{ sport.icon }}"></span><strong>{{ sport.name }}</strong>
+									{% if not loop.last %}<span> + </span>{% endif %}
+								{% endfor %}
+								{% endif %}
+
+								{% if search.location is not null %}
+								<span>à</span> <span class="ws-icon ws-icon-location" style="color:white"></span>{{ search.getHtmlLocationString()|raw }}
+								{% endif %}
+
+								{% if search.hasType %} 
+									<span>organisé par </span>
+									{% for type in search.type %}
+											<strong>{{ type|trans({},'WsEventsBundle_event') }}</strong>
+									{% endfor %}
+								{% endif %}
+
+								{% if search.hasLevel %} 
+									<span>d'un niveau </span>
+									{% for level in search.level %}
+											<strong>{{ level|trans({},'WsEventsBundle_event') }}</strong>
+									{% endfor %}
+								{% endif %}
+
+								{% if search.hasPrice %} 
+									<span>d'un prix inférieur à </span><strong>{{ search.price }}€ </strong>
+								{% endif %}							
 						</td>
 					</tr>
 				</table>
