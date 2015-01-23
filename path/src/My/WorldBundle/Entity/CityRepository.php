@@ -64,26 +64,45 @@ class CityRepository extends EntityRepository
 	 */
 	public function findCityByName($name,$countryCode = null, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null)
 	{
-		$qb = $this->createQueryBuilder('c');
+		$params = array();
+		$sql = "
+			SELECT c
+			FROM MyWorldBundle:City c
+			JOIN MyWorldBundle:Country p
+			WITH p.code = c.cc1 
+			WHERE (p.lang = c.lc OR c.lc = '')
+		";
 
-		if(isset($countryCode))
-			$qb->andWhere($qb->expr()->eq('c.cc1',$qb->expr()->literal($countryCode)));
-		if(isset($regionCode))
-			$qb->andWhere($qb->expr()->eq('c.adm1',$qb->expr()->literal($regionCode)));
-		if(isset($departementCode))
-			$qb->andWhere($qb->expr()->eq('c.adm2',$qb->expr()->literal($departementCode)));
-		if(isset($districtCode))
-			$qb->andWhere($qb->expr()->eq('c.adm3',$qb->expr()->literal($districtCode)));
-		if(isset($divisionCode))
-			$qb->andWhere($qb->expr()->eq('c.adm4',$qb->expr()->literal($divisionCode)));
+		if(isset($countryCode)) {
+			$sql.=' AND c.cc1 = :cc1 ';
+			$params['cc1'] = $countryCode;
+		}
+		if(isset($regionCode)){
+			$sql .= 'AND c.adm1 = :adm1 ';
+			$params['adm1'] = $regionCode;
+		}
+		if(isset($departementCode)){
+			$sql .= 'AND c.adm2 = :adm2 ';
+			$params['adm2'] = $departementCode;
+		}
+		if(isset($districtCode)){
+			$sql .= 'AND c.adm3 = :adm3 ';
+			$params['adm3'] = $districtCode;
+		}
+		if(isset($divisionCode)){
+			$sql .= 'AND c.adm4 = :adm4 ';
+			$params['adm4'] = $divisionCode;
+		}
 
-		$qb->andWhere(
-			$qb->expr()->eq('c.fullnamed',$qb->expr()->literal($name)));
+		$sql .= ' AND (c.fullnamed = :name OR c.fullname = :name) ';
+		$params['name'] = $name;
 
-		$qb->addOrderBy('c.pop','DESC');
-		$qb->setMaxResults(1);
+		$sql .= ' ORDER BY c.pop DESC';
 
-		return $qb->getQuery()->getOneOrNullResult();
+		$qb = $this->getEntityManager()->createQuery($sql)->setParameters($params);
+		$qb->setMaxResults(1);	
+
+		return $qb->getOneOrNullResult();
 	}
 
 	/**
@@ -101,28 +120,45 @@ class CityRepository extends EntityRepository
 	 */
 	public function findCitiesSuggestions( $limit, $prefix , $countryCode = null, $regionCode = null, $departementCode = null, $districtCode = null, $divisionCode = null){
 
-		$qb = $this->createQueryBuilder('c');
+		$params = array();
+		$sql = "
+			SELECT c
+			FROM MyWorldBundle:City c
+			JOIN MyWorldBundle:Country p
+			WITH p.code = c.cc1 
+			WHERE p.lang = c.lc
+		";
 
-		if(isset($countryCode))
-			$qb->andWhere($qb->expr()->eq('c.cc1',$qb->expr()->literal($countryCode)));			
-		if(isset($regionCode))
-			$qb->andWhere($qb->expr()->eq('c.adm1',$qb->expr()->literal($regionCode)));			
-		if(isset($departementCode))
-			$qb->andWhere($qb->expr()->eq('c.adm2',$qb->expr()->literal($departementCode)));
-		if(isset($districtCode))
-			$qb->andWhere($qb->expr()->eq('c.adm3',$qb->expr()->literal($districtCode)));
-		if(isset($divisionCode))
-			$qb->andWhere($qb->expr()->eq('c.adm4',$qb->expr()->literal($divisionCode)));			
+		if(isset($countryCode)) {
+			$sql.=' AND c.cc1 = :cc1 ';
+			$params[':cc1'] = $countryCode;
+		}
+		if(isset($regionCode)){
+			$sql .= 'AND c.adm1 = :adm1 ';
+			$params[':adm1'] = $regionCode;
+		}
+		if(isset($departementCode)){
+			$sql .= 'AND c.adm2 = :adm2 ';
+			$params[':adm2'] = $departementCode;
+		}
+		if(isset($districtCode)){
+			$sql .= 'AND c.adm3 = :adm3 ';
+			$params[':adm3'] = $districtCode;
+		}
+		if(isset($divisionCode)){
+			$sql .= 'AND c.adm4 = :adm4 ';
+			$params[':adm4'] = $divisionCode;
+		}
 
-		$qb->andWhere(
-				$qb->expr()->like('c.fullnamed',$qb->expr()->literal($prefix.'%'))
-			);
+		$sql .= ' AND (c.fullnamed LIKE :prefix OR c.fullname LIKE :prefix) ';
+		$params[':prefix'] = $prefix.'%';
 
-		$qb->setMaxResults( $limit );
-		$qb->orderBy('c.pop','DESC');
-		$qb->addOrderBy('c.fullnamed','ASC');
+		$sql .= ' ORDER BY c.pop DESC'  ;
 
-		return $qb->getQuery()->getResult();
+		$qb = $this->getEntityManager()->createQuery($sql)->setParameters($params);
+		$qb->setMaxResults($limit);	
+
+		return $qb->getResult();
 	}
 
 	/**
@@ -234,12 +270,13 @@ class CityRepository extends EntityRepository
 
 		$sql = 'SELECT C.*, '.$distance_formula;
 		$sql .= 'FROM world_cities as C ';
-		$sql .= 'WHERE 1=1 ';
+		$sql .= 'JOIN world_country as WC ON WC.CC1 = C.CC1 ';
+		$sql .= 'WHERE (WC.LO = C.LC OR C.LC="") ';
 		if(isset($countryCode))
-			$sql .= 'AND cc1=:cc1 ';
+			$sql .= 'AND C.cc1=:cc1 ';
 		$sql .= ' AND C.longitude BETWEEN '.$lon1.' AND '.$lon2.' AND C.latitude BETWEEN '.$lat1.' AND '.$lat2.' ';
 		$sql .= ' having distance < '.$radius;
-		$sql .= ' ORDER BY distance ASC';
+		$sql .= ' ORDER BY distance ASC, C.pop DESC';
 
 		//Use the ResultSetMappingBuilder to map the results data to the City object data
 		$rsm = new ResultSetMappingBuilder($this->_em);

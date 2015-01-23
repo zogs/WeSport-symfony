@@ -34,28 +34,29 @@ class UserControllerTest extends WebTestCase
 
 	public function testCreate()
 	{
-		$crawler = $this->client->request('GET',$this->router->generate('fos_user_registration_register'));
-
 		$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('Dijon','FR');
 
-		$form = $crawler->selectButton("S'inscrire")->form(array(
-			'fos_user_registration_form[username]' => 'testname',
-			'fos_user_registration_form[email]' => 'testemail@local.host',
-			'fos_user_registration_form[plainPassword][first]' => 'pa$$word',
-			'fos_user_registration_form[plainPassword][second]' => 'pa$$word',
-			'fos_user_registration_form[birthday][day]' => 1,
-			'fos_user_registration_form[birthday][month]' => 1,
-			'fos_user_registration_form[birthday][year]' => 1979,
-			'fos_user_registration_form[gender]' => 'm',
-			'fos_user_registration_form[location][country]' => $location->getCountry()->getCode(),
-			'fos_user_registration_form[location][region]' => $location->getRegion()->getId(),
-			'fos_user_registration_form[location][departement]' => $location->getDepartement()->getId(),
-			'fos_user_registration_form[location][city]' => $location->getCity()->getId(),
+		$crawler = $this->client->request('POST',$this->router->generate('fos_user_registration_register'),array(
+			'type' => 'person',
+			'username' => 'testname',
+			'email' => 'testemail@local.host',
+			'plainPassword' => array(
+				'first' => 'pa$$word',
+				'second' => 'pa$$word'),
+			'birthday' => array(
+				'day' => 1,
+				'month' => 1,
+				'year' => 1979),
+			'gender' => 'f',
+			'location'=> array(
+				'country' => $location->getCountry()->getCode(),
+				'region' => $location->getRegion()->getId(),
+				'departement' => $location->getDepartement()->getId(),
+				'city' => $location->getCity()->getId()),
 			));
 
-		$crawler = $this->client->submit($form);
-
-		$crawler = $this->client->followRedirect();
+		dump($crawler->filter('form')->text());
+		//$crawler = $this->client->followRedirect();
 
 		$this->assertEquals('Ws\EventsBundle\Controller\CalendarController::loadAction',$this->client->getRequest()->attributes->get('_controller'));	
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);

@@ -303,14 +303,19 @@ class LocationRepository extends EntityRepository
 	{
 		$states = $this->findStatesByCodes($countryCode, $regionCode, $departementCode, $districtCode, $divisionCode, $cityBoolean);
 
-		foreach ($states as $state) {
-			$r[$state->getId()] = $state->getName();
+		$level = $states[0]->getLevel();
+
+		$list = array();
+		foreach ($states as $k => $state) {
+			$list[$state->getId()] = $state->getName();
 		}
 
-		return array(
-			'level'=>$states[0]->getLevel(),
-			'list'=> $r
+		$array = array(
+			'level'=>$level,
+			'list'=> $list,
 			);
+
+		return $array;
 	}
 
 	/**
@@ -329,30 +334,31 @@ class LocationRepository extends EntityRepository
 	 *			')
 	 *		'')
 	 */
-	public function findStatesListFromLocationByLevel($location, $level)
+	public function findStatesListFromLocationByLevel(Location $location, $level)
 	{
-		/*
-
-		PLZ REWRITE THIS 
-
-		*/
-
 		$list = array();
+
+		$countryCode = ($location->getCountry())? $location->getCountry()->getCode() : null;
+		$regionCode = ($location->getRegion())?  $location->getRegion()->getAdmCode() : null;
+		$departementCode = ($location->getDepartement())?  $location->getDepartement()->getAdmCode() : null;
+		$districtCode = ($location->getDistrict())?  $location->getDistrict()->getAdmCode() : null;
+		$divisionCode = ($location->getDivision())?  $location->getDivision()->getAdmCode() : null;
+
 		if($level == 'country') {
 			$countries = $this->_em->getRepository('MyWorldBundle:Country')->findCountryList();
 			$list['level'] = 'country';
 			$list['list'] = $countries;
 		}
 		elseif($level == 'region')
-			$list = $this->findStatesListByCodes($location->getCountry()->getCode());
+			$list = $this->findStatesListByCodes($countryCode);
 		elseif($level == 'departement')
-			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode());
+			$list = $this->findStatesListByCodes($countryCode,$regionCode);
 		elseif($level == 'district')
-			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode());
+			$list = $this->findStatesListByCodes($countryCode,$regionCode,$departementCode);
 		elseif($level == 'division')
-			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode(),$location->getDistrict()->getAdmCode());
+			$list = $this->findStatesListByCodes($countryCode,$regionCode,$departementCode,$districtCode);
 		elseif($level == 'city')
-			$list = $this->findStatesListByCodes($location->getCountry()->getCode(),$location->getRegion()->getAdmCode(),$location->getDepartement()->getAdmCode(),$location->getDistrict()->getAdmCode(),$location->getDivision()->getAdmCode(),true);		
+			$list = $this->findStatesListByCodes($countryCode,$regionCode,$departementCode,$districtCode,$divisionCode,true);		
 		else
 			throw new Exception("$level is not correctly defined", 1);
 		
@@ -377,7 +383,7 @@ class LocationRepository extends EntityRepository
 	 *
 	 * @return Location:object
 	 */
-	public function findLocationFromStates($states)
+	public function findLocationFromStates(array $states)
 	{
 		$qb = $this->_em->createQueryBuilder('l');
 		

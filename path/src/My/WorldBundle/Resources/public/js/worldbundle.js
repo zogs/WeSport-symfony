@@ -81,7 +81,7 @@ $(document).ready(function() {
 			success: function(data){
 
 				parent.removeClass('geo-loading');
-				$('#location_select_'+data.level).empty().append(data.options).select2().show();
+				$('.geo-select-'+data.level).first().empty().append(data.options).select2().show();
 							
 			}
 		})

@@ -36,8 +36,6 @@ class LocationControllerTest extends WebTestCase
 	{
 		$london = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('London','UK');
 
-		$crawler = $this->client->request('GET',$this->router->generate('my_world_location_select_test'));
-
 		$crawler = $this->client->request('POST',$this->router->generate('my_world_location_select_test'),array(
 			'location_select' => array(
 				'country' => $london->getCountry()->getCode(),
@@ -50,13 +48,9 @@ class LocationControllerTest extends WebTestCase
 				)
 			));
 
-		dump($crawler->filter('body')->text());
-		dump($london->getCity()->getId());
-		/*
-		FUCK THIS TEST
 		$this->assertEquals('My\WorldBundle\Controller\LocationController::formSelectLocationAction',$this->client->getRequest()->attributes->get('_controller'));
 		$this->assertTrue($crawler->filter('span.sf-dump-num:contains("'.$london->getId().'")')->count() >= 1);	
-		*/
+		
 	}
 
 	public function testNextGeoLevelAjax()

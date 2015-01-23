@@ -197,7 +197,15 @@ class LocationRepositoryTest extends WebTestCase
 		$this->assertEquals('City of London',$cities['list'][3902000]);
 		$this->assertEquals('London',$cities['list'][3902006]);
 		$this->assertEquals('Puddle Dock',$cities['list'][3902020]);
-		$this->assertEquals(3,count($cities['list']));		
+		$this->assertEquals(3,count($cities['list']));
+
+
+		//City of Finistere
+		$brest = $this->repo->findLocationByCityName('Brest','FR');
+		$cities = $this->repo->findStatesListFromLocationByLevel($brest,'city');
+		$this->assertEquals(1205,count($cities['list']));
+		$this->assertEquals('Plouguerneau',$cities['list'][2573632]);		
+		
 	}
 
 	public function testFindLocationFromStates()

@@ -21,7 +21,6 @@ class LocationController extends Controller
     public function formSelectLocationAction(Request $request)
     {
     	$location = null;
-
     	$form = $this->createForm('location_select');
     	$form->handleRequest($request);
 

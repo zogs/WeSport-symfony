@@ -47,7 +47,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre pays',
-                'attr'=>array('class'=>'geo-select geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
+                'attr'=>array('class'=>'geo-select geo-select-country geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
 
                 ))
             ->add('region','choice',array(
@@ -55,7 +55,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre région',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'region','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
+                'attr'=>array('class'=>'geo-select geo-select-region geo-select-ajax hide','data-geo-level'=>'region','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('departement','choice',array(
@@ -63,7 +63,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre Département',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'departement','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
+                'attr'=>array('class'=>'geo-select geo-select-departement geo-select-ajax hide','data-geo-level'=>'departement','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('district','choice',array(
@@ -71,7 +71,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre district',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'district','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
+                'attr'=>array('class'=>'geo-select geo-select-district geo-select-ajax hide','data-geo-level'=>'district','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('division','choice',array(
@@ -79,7 +79,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre division',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'division','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
+                'attr'=>array('class'=>'geo-select geo-select-division geo-select-ajax hide','data-geo-level'=>'division','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
             ->add('city','choice',array(
@@ -87,7 +87,7 @@ class LocationSelectType extends AbstractType
                 'required'=>false,
                 'mapped'=>false,
                 'empty_value'=>'Votre ville',
-                'attr'=>array('class'=>'geo-select geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
+                'attr'=>array('class'=>'geo-select geo-select-city geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))                                                                     
         ;
@@ -119,11 +119,11 @@ class LocationSelectType extends AbstractType
         //find Location that fit the form data
         $location = $this->em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
 
-        //replace with the  object location
-        $form->setData($location);
-
         //add all relevant geo field to render view
         $this->addGeoFields($form, $location);
+
+        //replace with the  object location
+        $form->setData($location);
     }
 
     public function onPreSetData(FormEvent $event)
@@ -131,6 +131,7 @@ class LocationSelectType extends AbstractType
         $form = $event->getForm();
         $location = $event->getData();        
         $this->addGeoFields($form, $location);
+
     }    
 
     public function addGeoFields(FormInterface $form, $location)
@@ -142,14 +143,17 @@ class LocationSelectType extends AbstractType
         if($location->getDistrict() !== NULL) $this->addGeoField($form, $location, 'district', $location->getDistrict()->getId());            
         if($location->getDivision() !== NULL) $this->addGeoField($form, $location, 'division', $location->getDivision()->getId());            
         if($location->getCity() != NULL) $this->addGeoField($form, $location, 'city', $location->getCity()->getId());
-        exit();
     }
 
     public function addGeoField(FormInterface $form, $location, $level, $value = '')
     {        
-                dump($level);
         $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListFromLocationByLevel($location,$level);
         if(empty($list)) return;
+
+        if($level=='region') {
+            dump($list);
+            exit();
+        }
 
         $form->add($list['level'],'choice',array(
                 'choices'=>$list['list'],
