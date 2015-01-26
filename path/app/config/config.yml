@@ -35,6 +35,7 @@ twig:
             - ':Form:buttons.html.twig' 
             - 'MyWorldBundle:Form:location_selectboxs.html.twig' 
             - 'MyUtilsBundle:Form:field_tags.html.twig'
+            - 'WsSportsBundle:Form:select_multiple.html.twig'
 
 # Activate Twig Extension
 services:

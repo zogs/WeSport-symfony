@@ -524,7 +524,7 @@ tr.calendar-form-main,td.calendar-form-options {
 	}
 
 	input,select {
-		width:200px;
+		min-width: 200px;
 		height:auto;
 		display:inline-block;
 		padding:0 0 0 0;
@@ -620,8 +620,13 @@ td.calendar-form-main-left {
 			outline: none;
 		}
 	}
+
+	.city-autocomplete {
+		width:auto !important;
+	}
+
 	.select2-container {
-		width:200px;		
+		min-width:180px;		
 		@include calendar-form-bottom-dotted(47);
 		.select2-choices {
 			height: 60px !important;
@@ -632,6 +637,8 @@ td.calendar-form-main-left {
 
 			.select2-search-field{				
 				input {
+					width:50px;
+					min-width:0px;
 					@include calendar-form-text-main();
 					color: #8db3be !important;
 				}
@@ -653,7 +660,7 @@ td.calendar-form-main-left {
 					@include calendar-form-text-shadow();
 				}
 				.select2-search-choice-close {
-					top:-15px;
+					top:35%;
 					left:40%;
 					visibility: hidden;	
 					@include opacity(0.5);

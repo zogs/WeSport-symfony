@@ -15,8 +15,7 @@ class CityController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $cities = $em->getRepository('MyWorldBundle:City')->findCitiesSuggestions(10,$prefix,$country);
-        dump($cities);
-        exit();
+
         foreach($cities as $k => $city){
 
             $city->upperstate = $em->getRepository('MyWorldBundle:State')->findStateByCodes($city->getCC1(),$city->getADM1(),$city->getADM2(),$city->getADM3(),$city->getADM4());

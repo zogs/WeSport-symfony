@@ -127,8 +127,10 @@ class CalendarManager extends AbstractManager
 		return $this;
 	}
 
-	public function addParamsFromCookies($cookies)
+	public function addParamsFromCookies($cookies = array())
 	{		
+		if(null === $cookies) return $this;
+		
 		$a = array();
 		foreach ($cookies as $k => $value) {
 			if(in_array($k,$this->params_cookie_ignored)) continue;
@@ -189,6 +191,16 @@ class CalendarManager extends AbstractManager
 	{
 		$this->params = $this->default;
 		if($resetCookie == true) $this->resetCookie();
+
+		return $this;
+	}
+
+	public function setSearch($search)
+	{
+		if($search === null)
+			$this->search = new Search();
+		else 
+			$this->search = $search;
 
 		return $this;
 	}

@@ -53,7 +53,7 @@ ws_calendar_ajax:
     pattern: /calendar/ajax/{date}
     defaults: { _controller: WsEventsBundle:Calendar:ajax, date:'now'}
     requirements:         
-        _method: GET
+        _method: GET|POST
 ws_calendar_reset:
     pattern: /calendar/reset
     defaults: { _controller: WsEventsBundle:Calendar:reset}

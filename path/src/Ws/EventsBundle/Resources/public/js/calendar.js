@@ -322,11 +322,11 @@ $(document).ready(function(){
 			form += '&nbdays='+findNumberDayPerWeek();
 
 			$.ajax({
-				type:'GET',
+				type:'POST',
 				url: url,
 				data : form,
 				success: function( newhtml ){						
-
+					
 					var oldhtml = _cal.html();
 					document.getElementById('calendar-content').innerHTML = oldhtml+newhtml;
 

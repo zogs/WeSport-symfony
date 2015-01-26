@@ -82,3 +82,12 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
 ###
+
+#redirect url/ to url
+#(must be the last route)
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: MyUtilsBundle:Redirecting:removeTrailingSlash }
+    requirements:
+        url: .*/$
+    methods: [GET|POST]

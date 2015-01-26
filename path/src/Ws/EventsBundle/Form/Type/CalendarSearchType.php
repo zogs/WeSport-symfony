@@ -62,18 +62,7 @@ class CalendarSearchType extends AbstractType
                     50 => 'moins de 50€',
                     )
                 ))
-            ->add('sports','entity',array(                                    
-                    'class'=>'WsSportsBundle:Sport',
-                    'empty_value'=>"Sports",
-                    'label'=>'Sports',
-                    'property'=>'name',
-                    'expanded'=>false,
-                    'multiple' => true,
-                    'mapped' => true,
-                    'group_by' => 'category',
-                    'required' => false,
-                    'attr'=>array('class'=>'sportSelection','multiple'=>true,'placeholder'=>"Choississez un sport")
-                    )
+            ->add('sports','sport_select_multiple',array()
             )       
             ->add('level','choice',array(
                 'multiple' => true,
@@ -116,7 +105,7 @@ class CalendarSearchType extends AbstractType
     public function onPreSetData(FormEvent $event)
     {
         $form = $event->getForm();
-        $search = $event->getData(); 
+        $search = $event->getData();          
 
         if(null !== $search){
             //merge sports entity to em that were detach by the redirection
@@ -128,7 +117,7 @@ class CalendarSearchType extends AbstractType
                 }
                 $search->setSports($a);
             }
-        }
+        } 
     }
 
     public function onPreSubmit(FormEvent $event)
@@ -149,7 +138,7 @@ class CalendarSearchType extends AbstractType
         if($this->user != 'anon.'){
             $search->setUser($this->user);            
         }        
-       
+
         //return
         $form->setData($search);
 

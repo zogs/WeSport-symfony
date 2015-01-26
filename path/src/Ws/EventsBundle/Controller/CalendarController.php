@@ -83,7 +83,7 @@ class CalendarController extends Controller implements InitControllerInterface
 		//set parameters
 		$manager->addParamsFromCookies($this->getRequest()->cookies->all());
 		$manager->addParamsURI($params);
-		$manager->addParams($this->getRequest()->query->all());
+		//$manager->addParams($this->getRequest()->query->all());
 
 		//find searched week
 		$week = $manager->findCalendar();		
@@ -132,23 +132,34 @@ class CalendarController extends Controller implements InitControllerInterface
 	}
 
 
-	public function ajaxAction($date)
+	public function ajaxAction(Request $request, $date)
 	{
-		//get manager
+		//get calendar manager
 		$manager = $this->get('calendar.manager');
-		//set params
-		$manager->addParamsFromCookies($this->getRequest()->cookies->all())
-				->addParams($this->getRequest()->query->all())
-				->addParamsDate($date);
+
+		//get and submit form
+		$form = $this->createForm('calendar_search');
+		$form->handleRequest($request);
+		$search = $form->getData();
+		$manager->setSearch($search);
+
+		//set manager params
+		//$manager->addParamsFromCookies($this->getRequest()->cookies->get('calendar_search'))
+				//->addParams($this->getRequest()->query->all())
+		$manager->addParamsDate($date);
+		
+		dump($manager->getParams());
 
 		//find searched week
 		$week = $manager->findCalendar();
 		//get search params
 		$search = $manager->getSearch();
-
-		//throw AJAX_CALENDAR
+		//throw event
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_AJAX, new AjaxCalendar($search,$this->getUser())); 
 
+		dump($search);
+		dump($week);
+		exit();
 
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig',array(
 			'weeks' => array($week),

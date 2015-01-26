@@ -1,6 +1,7 @@
 {% extends '::base.html.twig' %}
 {% form_theme form 'WsEventsBundle:Form:block-form-inline.html.twig' %}
 
+
 {% block body %}
 
 	{% block autolocation %}
@@ -22,19 +23,13 @@
 				<tr class="calendar-form-main">					
 					<td class="calendar-form-main-left">
 
-
-						<label for="{{ form.sports.vars.id }}">Je veux du </label>
-						<select name="{{form.sports.vars.full_name }}" id="{{ form.sports.vars.id }}" class="{{ form.sports.vars.attr.class }}" multiple="{{ form.sports.vars.multiple }}" placeholder="sports" tabindex="-1">
-							{% for category,choices in form.sports.vars.choices %}
-								<optgroup label="{{ category }}">
-									{% for sport in choices %}
-										<option value="{{ sport.data.id }}" data-icon="{{ sport.data.icon }}">{{ sport.data.name }}</option>
-									{% endfor %}
-								</optgroup>
-							{% endfor %}
-
-						</select>
+						{# Je veux du Sports #}
+						{{ form_row(form.sports,{
+							'label': "Je veux du ",							
+						}) }}
 					
+
+						{# dans ma Ville #}
 						{% if form.location.city_name.vars.data is not null %}{% set label = "dans ma ville "%}{% else %}{% set label = "dans ma "%}{% endif %}
 						{{ form_row(form.location.city_id) }}
 						{{ form_row(form.location.city_name,{
