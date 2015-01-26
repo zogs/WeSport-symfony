@@ -30,12 +30,6 @@ class UserStat
     private $id;
 
     /**
-    * @ORM\OneToOne(targetEntity="My\UserBundle\Entity\User", inversedBy="statistic")
-    * @ORM\JoinColumn(name="user_id")
-    */
-    private $user;
-
-    /**
     * @ORM\Column(name="event_created", type="integer")
     */
     private $event_created = 0;

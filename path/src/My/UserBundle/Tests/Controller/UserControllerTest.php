@@ -37,26 +37,30 @@ class UserControllerTest extends WebTestCase
 		$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('Dijon','FR');
 
 		$crawler = $this->client->request('POST',$this->router->generate('fos_user_registration_register'),array(
-			'type' => 'person',
-			'username' => 'testname',
-			'email' => 'testemail@local.host',
-			'plainPassword' => array(
-				'first' => 'pa$$word',
-				'second' => 'pa$$word'),
-			'birthday' => array(
-				'day' => 1,
-				'month' => 1,
-				'year' => 1979),
-			'gender' => 'f',
-			'location'=> array(
-				'country' => $location->getCountry()->getCode(),
-				'region' => $location->getRegion()->getId(),
-				'departement' => $location->getDepartement()->getId(),
-				'city' => $location->getCity()->getId()),
-			));
+			'fos_user_registration_form' => array(
+				'type' => 'person',
+				'username' => 'testname',
+				'email' => 'testemail@local.host',
+				'plainPassword' => array(
+					'first' => 'pa$$word',
+					'second' => 'pa$$word'),
+				'birthday' => array(
+					'day' => 1,
+					'month' => 1,
+					'year' => 1979),
+				'gender' => 'f',
+				'location'=> array(
+					'country' => $location->getCountry()->getCode(),
+					'region' => $location->getRegion()->getId(),
+					'departement' => $location->getDepartement()->getId(),
+					'city' => $location->getCity()->getId()
+					),
+				'_token' => $this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('user_registration_intention'),
+				)
+			)
+		);
 
-		dump($crawler->filter('form')->text());
-		//$crawler = $this->client->followRedirect();
+		$crawler = $this->client->followRedirect();
 
 		$this->assertEquals('Ws\EventsBundle\Controller\CalendarController::loadAction',$this->client->getRequest()->attributes->get('_controller'));	
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
@@ -75,7 +79,25 @@ class UserControllerTest extends WebTestCase
 		$this->assertEquals('My\UserBundle\Controller\UserController::requestActivationMailAction',$this->client->getRequest()->attributes->get('_controller'));	
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
+	/*
+	public function testLoginBeforeActivation()
+	{
+		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
 
+		$form = $crawler->selectButton('Connexion')->form(array(
+			'_username' => 'testname',
+			'_password' => 'pa$$word',
+			));
+
+		$crawler = $this->client->submit($form);
+
+		$crawler = $this->client->followRedirect();
+
+		dump($crawler->filter('body')->text());
+		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
+
+	}
+	*/
 	public function testActivationMail()
 	{
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname');
@@ -88,14 +110,31 @@ class UserControllerTest extends WebTestCase
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
 
+	public function testLoginBeforeActivation()
+	{
+		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
+
+		$form = $crawler->selectButton('Connexion')->form(array(
+			'_username' => 'testname',
+			'_password' => 'pa$$word',
+			));
+
+		$crawler = $this->client->submit($form);
+
+		$crawler = $this->client->followRedirect();
+
+		$this->assertTrue($crawler->filter('.nav-login:contains("testname")')->count() == 1);
+
+	}
+
 	public function testDelete()
-    {
-        $user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname');
+	{
+		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname');
 
-        $this->client->getContainer()->get('fos_user.user_manager')->deleteUser($user);
+		$this->client->getContainer()->get('fos_user.user_manager')->deleteUser($user);
 
-        $this->assertNull($this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname'));
-    }
+		$this->assertNull($this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname'));
+	}
 
 	
 	

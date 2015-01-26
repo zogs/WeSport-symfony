@@ -4,6 +4,7 @@ namespace My\UserBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use My\WorldBundle\Form\Type\LocationSelectType;
 
@@ -91,6 +92,17 @@ class RegistrationFormType extends BaseType
                 'class'=>'btn btn-info'
                 )
             ));
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class'      => 'My\UserBundle\Entity\User',
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            // a unique key to help generate the secret token
+            'intention'       => 'user_registration_intention',
+        ));
     }
 
     public function getName()

@@ -69,7 +69,7 @@ class User extends BaseUser
     private $invitations;
 
     /**
-     * @ORM\OneToOne(targetEntity="Ws\StatisticBundle\Entity\UserStat", cascade={"persist","remove"}, mappedBy="user")
+     * @ORM\OneToOne(targetEntity="Ws\StatisticBundle\Entity\UserStat", cascade={"persist","remove"})
      */
     private $statistic = null;
 

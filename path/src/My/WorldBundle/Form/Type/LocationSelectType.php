@@ -149,12 +149,7 @@ class LocationSelectType extends AbstractType
     {        
         $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListFromLocationByLevel($location,$level);
         if(empty($list)) return;
-
-        if($level=='region') {
-            dump($list);
-            exit();
-        }
-
+        
         $form->add($list['level'],'choice',array(
                 'choices'=>$list['list'],
                 'required'=>false,
