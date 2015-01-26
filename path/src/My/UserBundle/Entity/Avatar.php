@@ -54,6 +54,11 @@ class Avatar
         return 'defaults/default'.rand(1,10).'.gif';
     }
 
+    public function isDefaultAvatar()
+    {
+        return strpos($this->path,'defaults/') === 0 ? true : false;
+    }
+
     public function getSavingFilename()
     {
         if(isset($this->filename)) return $this->filename;
@@ -127,7 +132,8 @@ class Avatar
      */
     public function removeUpload()
     {
-        if ($this->filenameForRemove) {
+        //delete avatar file, except if its a default avatar
+        if (!$this->isDefaultAvatar() && $this->filenameForRemove) {
             unlink($this->filenameForRemove);
         }
     }
