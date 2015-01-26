@@ -85,18 +85,10 @@ class CalendarController extends Controller implements InitControllerInterface
 		$manager->addParamsURI($params);
 		$manager->addParams($this->getRequest()->query->all());
 
-
-		//dump($this->getRequest()->cookies->all());
-		//dump($params);
-		//dump($this->getRequest()->query->all());
-		//exit();
-
 		//find searched week
 		$week = $manager->findCalendar();		
 		//get search
-		$search = $manager->getSearch();		
-		//search must be persisted to be manageable by symfony ( note that it is not flushed )
-		//$this->get('doctrine.orm.entity_manager')->persist($search);
+		$search = $manager->getSearch();	
 		//create form		
 		$form = $this->createForm('calendar_search',$search);
 		//throw event

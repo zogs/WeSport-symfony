@@ -543,6 +543,7 @@ class CalendarManager extends AbstractManager
     			if(!is_numeric($price)) $price = null;
     		}
     	}
+
     	$this->search->setPrice($price);
 		return;
     }

@@ -20,8 +20,11 @@ $(document).ready(function(){
 	if($('#calendar-content').length){
 
 
-		$('#calendar-search .ajax-refresh').on('change',function(){
-			//callThisWeek();
+		$('#calendar-search').submit(function(e){
+			callThisWeek();
+			e.preventDefault();
+			return false;
+
 		});
 
 		//init var 
@@ -50,7 +53,7 @@ $(document).ready(function(){
 
 
 		//Appel la semaine courante
-		//callThisWeek();
+		callThisWeek();
 
 		window.cancelRequestAnimFrame = ( function() {
 		    return window.cancelAnimationFrame          ||

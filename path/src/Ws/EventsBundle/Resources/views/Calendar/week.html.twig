@@ -19,8 +19,11 @@
 			<div class="addEvent" id="addPoint{{ date }}">
 				<a title="Ajouter un sport" href="{{ path("ws_event_new") }}" draggable='false' ondragstart="return false;">
 				<span class="ws-icon ws-icon-plus-alt"></span>
-				<br><br>
-				<strong>Ajouter un sport</strong>
+				<span class="ws-icon ws-icon-plus-alt ws-icon-fade"></span>
+				<div>
+					<strong>Ajouter un sport</strong>
+					<small>le {{ date|date('j M') }}</small>
+				</div>
 				</a>
 			</div>
 		</td>
