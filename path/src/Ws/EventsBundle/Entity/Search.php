@@ -434,7 +434,7 @@ class Search
 
     public function setPrice($price)
     {
-        $this->price = (int) $price;
+        $this->price = $price;
     }
 
     public function getLevel()

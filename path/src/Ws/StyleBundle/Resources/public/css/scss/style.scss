@@ -555,17 +555,49 @@ tr.calendar-form-main,td.calendar-form-options {
 
 	button[type=submit] {
 		display:inline-block;
+		position: relative;
 		width:90px; 
 		height:90px; 
 		margin-left:40px;
 		border-radius:100px; 
-		background-color: rgba(0,0,0,0.25); 
+		background-color: rgba(0,0,0,0.20); 
 		border:0;
-		span.ws-icon {
-			@include rem(34); color:$lightblue;
-			@include transition(0.2s ease);	
+		@include transition(all 0.1s ease-in-out);	
+
+		span {
+			position:absolute;
+			top:50%;
+			left:50%;
 		}
-		&:hover span.ws-icon { @include rotate(360deg); @include rem(60); }
+		span.ws-icon {
+			margin-top:-20px;
+			margin-left:-20px;
+			@include rem(40); color:$lightblue;
+			@include transition(all 0.2s ease-in-out);	
+		}
+		span.shadow {			
+			display:block;
+			width:0;
+			height:0;
+			border-radius: 400px;
+			background-color: rgba(0,0,0,0.2);
+			@include transition(all 0.2s ease-in-out);	
+		}
+
+
+		&:hover {
+			background-color: rgba(0,0,0,0.15);
+			span.ws-icon { @include rotate(100deg); }					
+
+		}
+
+		&:active {
+			background-color: rgba(0,0,0,0.1);
+			span.ws-icon { @include rotate(720deg); }
+			span.shadow { width:150px; height:150px; margin-left:-75px; margin-top:-75px; background-color: rgba(0,0,0,0);}
+		}
+
+
 	}
 
 	
@@ -764,7 +796,8 @@ td.calendar-form-options {
 }
 
 .header-part {
-	height:100%; 
+	position:relative;
+	height:inherit; 
 	display: inline-block;
 	vertical-align: top;
 }
@@ -845,7 +878,7 @@ td.calendar-form-options {
 	padding-top:15px;	
 	text-align: center;
 	background-color:$deepred;
-	position: relative;
+	
 
 	a.calendar-nav-prev{
 		position: relative;
@@ -857,38 +890,60 @@ td.calendar-form-options {
 		font-weight:bold;
 		text-transform: uppercase;
 		line-height: 260%;
+		z-index:3;
 		@include rem(18);
+		@include transition(all 0.5s ease-out);
 
 		&:before{
 			content:''; display: block; position:absolute; top:50%; margin-top:-10px; left:20px;
 			border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right:10px solid $darkred; 
 		}
-		
-		&:hover:before{ 
-			//border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left:10px solid $darkred; border-right:10px solid transparent;
+
+	}
+	
+	&:before {
+		content:''; display: block; position: absolute; top:0; left:-100px; right:40px; height:inherit;  z-index:2;
+		background-color:$deepred;
+		@include transition(all 0.3s ease-out);	
+	}
+	&:after {
+		content:''; display: block; position:absolute; top:0; right:0; 
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $deepred; border-right:40px solid transparent; z-index:2;
+		@include transition(all 0.3s ease-out);	
+	}
+	&:hover {
+		a.calendar-nav-prev {
+			background-color:rgba(255,255,255,0.7);		
 		}
+
+		&:before {
+			margin-right:-40px;
+		}
+		&:after{
+			margin-right:-80px;	
+		}	
 	}
-	&:after{
-		content:''; display: block; position:absolute; top:0; right:0;
-		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $darkblue; 
-	}
-	&:hover:after{
-		margin-right:-80px;
-		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $deepred; border-right:40px solid transparent;
-	}
+
 }
 
 .calendar-arianne{
-	width: 80%;
-	padding:0 0 0 30px;
-	line-height: 260%;
+	width: 40%;
+	padding:0 0 0 50px;
 	color:#FFF;
 	font-size:12px;
 	//@include long-shadow(text,#152e35,50,false,false,right);
-	table { height:100%; width:100%; text-align:center;}
-	strong{ color:inherit; font-size:inherit;}
-	span { font-size:inherit; color:#999; }	
+	table { height:100%; width:100%; text-align:left; vertical-align: middle;}
+	p { margin:0; padding:0; line-height: 20px; }
+	strong,span,i{ font-size:inherit; color:#999; }
 	span.ws-icon { color:white; margin-right:5px; }
+
+
+	&:before{
+		content:''; display: block; position:absolute; top:0; left:-43px; z-index:1;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $darkblue;
+		//@include transition(all 0.2s ease-out);	 
+		
+	}
 }
 
 .calendar-loader{
@@ -905,9 +960,15 @@ td.calendar-form-options {
 	}
 
 .calendar-loading {
-	width: 20%;
+	width: 39%;
 	position: relative;
 	text-align:center;
+
+
+	&:before{
+		content:''; display: block; position:absolute; top:0; right:-50px; z-index:1;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $darkblue; 
+	}
 }
 
 .calendar-event-type {
@@ -973,7 +1034,9 @@ td.calendar-form-options {
 		font-weight:bold;
 		text-transform: uppercase;
 		line-height: 260%;
+		z-index:3;
 		@include rem(18);
+		@include transition(all 0.5s ease-out);
 
 		&:before{
 			content:''; display: block; position:absolute; top:50%; margin-top:-10px; right:20px;
@@ -983,14 +1046,31 @@ td.calendar-form-options {
 			//border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right:10px solid $darkgreen; border-left:10px solid transparent;
 		}
 	}
-	&:after{
-		content:''; display: block; position:absolute; top:0; left:0;
-		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $darkblue; 
+
+	&:before {
+		content:''; display: block; position: absolute; top:0; right:-100px; left:40px; height:inherit; z-index:2; 
+		background-color: $deepgreen;
+		@include transition(all 0.3s ease-out);	
 	}
-	&:hover:after{
-		margin-left:-80px;
+
+	&:after {
+		content:''; display: block; position:absolute; top:0; left:0; z-index:2;
 		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $deepgreen; border-left:40px solid transparent;
+		@include transition(all 0.3s ease-out);	
 	}
+
+	&:hover {
+		a.calendar-nav-next {
+			background-color:rgba(255,255,255,0.7);		
+		}
+		&:before {
+			margin-left:-40px;
+		}
+		&:after{
+			margin-left:-80px;	
+		}	
+	}
+
 }
 
 		
@@ -1166,7 +1246,7 @@ td.calendar-form-options {
 			 				text-shadow: none;
 			 			}
 			 		}
-			 	}			 				 
+			 	}	 				 
 			}
 
 
@@ -1244,24 +1324,55 @@ td.calendar-form-options {
  		margin-top:30px;
  		margin-bottom:100px;
  		text-align: center;
+ 		position:relative;
  		a{ 			
 	 		span.ws-icon{
+	 			position: absolute;
+	 			display:block;
 	 			color:inherit;
+	 			top:0;
+	 			left:50%;
+	 			margin-left:-35px;
 	 			@include rem(70);
-	 			@include transition(all 0.2s ease-in-out);			
+	 			@include transition(all 0.4s ease-in-out);			
 	 		}
-	 		strong {
-	 			text-transform: uppercase;
-	 			color:inherit;
-	 			@include rem(17);
-	 			@include opacity(0);
-	 			@include transition(all 0.2s ease);	
+	 		span.ws-icon-fade {
+	 			@include opacity(1);
+	 		}
+	 		div {
+	 			width:100%;
+	 			position:absolute;
+	 			top:200px;
+		 		@include opacity(0);
+		 		@include transition(all 0.2s ease);	
+		 		strong {
+		 			display:block;
+		 			width:100%;
+		 			text-transform: uppercase;
+		 			color:inherit;
+		 			@include rem(20);
+		 		}
+		 		small {
+		 			display:block;
+		 			width:100%;
+		 			color:inherit;
+		 			font-weight: bold;
+		 			@include rem(16);
+		 		}
 	 		}
  		}
  		&:hover a 
  		{
- 			span{}
- 			strong { @include opacity(1); }
+ 			div {
+ 				top:100px;
+ 				@include opacity(1);
+ 			}
+ 			span.ws-icon-fade {
+ 				@include rem(140);
+ 				margin-left:-70px;
+ 				margin-top:-35px;
+ 				@include opacity(0);
+ 			}
  		}
  	}
 

@@ -47,7 +47,10 @@
 
 						{{ form_row(form._token) }}
 						
-						<button type="submit"><span class="ws-icon ws-icon-loupe"></span></button>									
+						<button type="submit">
+							<span class="shadow"></span>
+							<span class="ws-icon ws-icon-loupe"></span>
+						</button>									
 							
 					</td>
 
@@ -91,7 +94,7 @@
 			
 	{% endblock %}
 
-	
+
 	<div class="calendar" id="calendar">		
 
 		<div class="calendar-header">
@@ -103,35 +106,39 @@
 			<div class="header-part calendar-arianne">
 				<table>
 					<tr>
-						<td>
+						<td>	
+							<p>
 								{% if search.sports is not null %}
 								{% for sport in search.sports %}
 									<span class="ws-icon ws-icon-{{ sport.icon }}"></span><strong>{{ sport.name }}</strong>
 									{% if not loop.last %}<span> + </span>{% endif %}
 								{% endfor %}
 								{% endif %}
-
+							</p>
+							<p>
 								{% if search.location is not null %}
 								<span>à</span> <span class="ws-icon ws-icon-location" style="color:white"></span>{{ search.getHtmlLocationString()|raw }}
 								{% endif %}
-
+							</p>
+							<p>
 								{% if search.hasType %} 
 									<span>organisé par </span>
 									{% for type in search.type %}
-											<strong>{{ type|trans({},'WsEventsBundle_event') }}</strong>
+											<i>{{ type|trans({},'WsEventsBundle_event') }}</i>
 									{% endfor %}
 								{% endif %}
 
 								{% if search.hasLevel %} 
 									<span>d'un niveau </span>
 									{% for level in search.level %}
-											<strong>{{ level|trans({},'WsEventsBundle_event') }}</strong>
+											<i>{{ level|trans({},'WsEventsBundle_event') }}</i>
 									{% endfor %}
 								{% endif %}
 
 								{% if search.hasPrice %} 
 									<span>d'un prix inférieur à </span><strong>{{ search.price }}€ </strong>
 								{% endif %}							
+							</p>
 						</td>
 					</tr>
 				</table>
@@ -143,8 +150,8 @@
 				</div>					
 			</div>
 
-			<div class="header-part calendar-event-type">
 				{#
+			<div class="header-part calendar-event-type">
 				<div class="typeChoice">
 					<input type="checkbox" name="type[]" id="type-person" value="person" {% if ('person' in search.type) or ( search.type is null) %} checked="checked"{% endif %}>
 					<label for="type-person" class="typeLabel">
@@ -163,8 +170,8 @@
 						Professionel
 					</label>
 				</div>
-				#}
 			</div>
+				#}
 
 			{#
 			<div class="header-part calendar-period">
