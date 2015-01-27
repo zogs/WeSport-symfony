@@ -31,6 +31,7 @@ class CalendarManager extends AbstractManager
 		'city' => null,
 		'city_id'=>null,
 		'city_name'=>null,
+		'location'=>null,
 		'area'=>null,
 		'sports'=> null, //array(67,68,72)
 		'nbdays'=>7,
@@ -48,7 +49,7 @@ class CalendarManager extends AbstractManager
 	private $flashbag;
 	private $serializer;
 	private $urlGenerator;
-	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time','level','price','date');
+	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time');
 
 
 	public function __construct(Container $container)
@@ -88,7 +89,7 @@ class CalendarManager extends AbstractManager
 		//prevent memory leak
 		$this->em->clear();
 		//save the search in cookie
-		$this->saveSearchCookie();
+		$this->saveCookies();
 
 		return $events;
 	}
@@ -107,6 +108,17 @@ class CalendarManager extends AbstractManager
 	public function getParams()
 	{
 		return $this->params;
+	}
+
+
+	public function setSearch($search)
+	{
+		if($search === null)
+			$this->search = new Search();
+		else 
+			$this->search = $search;
+
+		return $this;
 	}
 
 	public function addParams($params)
@@ -140,7 +152,7 @@ class CalendarManager extends AbstractManager
 				$param = str_replace('calendar_param_','',$k);
 				$a[$param] = $value;				
 			}
-		}		
+		}	
 
 		$this->cookies = $a;
 		$this->addParameters($a);
@@ -172,6 +184,8 @@ class CalendarManager extends AbstractManager
 
 	public function addParameters($params)
 	{
+		if(empty($params)) return $this;
+
 		$this->params = array_merge($this->params,$params);
 
 		return $this;
@@ -195,15 +209,6 @@ class CalendarManager extends AbstractManager
 		return $this;
 	}
 
-	public function setSearch($search)
-	{
-		if($search === null)
-			$this->search = new Search();
-		else 
-			$this->search = $search;
-
-		return $this;
-	}
 
 	public function resetSearch()
 	{
@@ -226,10 +231,8 @@ class CalendarManager extends AbstractManager
 		return $this;
 	}
 
-	public function saveSearchCookie()
-	{		
-		
-		
+	public function saveCookies()
+	{						
 		foreach ($this->params as $key => $value) {			
 			
 			if(in_array($key,$this->params_cookie_ignored)) continue; //some params dont go in cookie	
@@ -437,6 +440,7 @@ class CalendarManager extends AbstractManager
 
     	//avoid doublon
     	$ids = array();
+
     	foreach ($sports as $k => $sport) {
 			if(in_array($sport->getId(), $ids)) unset($sports[$k]);
 			$ids[] = $sport->getId();

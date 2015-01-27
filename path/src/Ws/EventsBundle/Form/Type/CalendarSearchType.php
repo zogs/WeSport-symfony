@@ -125,6 +125,8 @@ class CalendarSearchType extends AbstractType
         $form = $event->getForm();
         $data = $event->getData();
 
+        //if no data is submitted, return 
+        if(empty($data)) return;        
         //reset search params ( dont reset cookies with false)
         $this->manager->resetParams(false);
         //add submitted  search params
@@ -135,7 +137,7 @@ class CalendarSearchType extends AbstractType
         $search = $this->manager->getSearch();
 
         //set user to Search
-        if($this->user != 'anon.'){
+        if(is_a($this->user,'My\UserBundle\Entity\User')){
             $search->setUser($this->user);            
         }        
 

@@ -53,7 +53,7 @@ $(document).ready(function(){
 
 
 		//Appel la semaine courante
-		callThisWeek();
+		//callThisWeek();
 
 		window.cancelRequestAnimFrame = ( function() {
 		    return window.cancelAnimationFrame          ||
@@ -322,7 +322,7 @@ $(document).ready(function(){
 			form += '&nbdays='+findNumberDayPerWeek();
 
 			$.ajax({
-				type:'POST',
+				type:'GET',
 				url: url,
 				data : form,
 				success: function( newhtml ){						

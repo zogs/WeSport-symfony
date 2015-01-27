@@ -1050,7 +1050,7 @@ td.calendar-form-main-left .tt-dropdown-menu {
 }
 /* line 616, scss/style.scss */
 td.calendar-form-main-left .twitter-typeahead {
-  line-height: 60px;
+  top: -20px;
   margin-left: 10px;
 }
 /* line 619, scss/style.scss */

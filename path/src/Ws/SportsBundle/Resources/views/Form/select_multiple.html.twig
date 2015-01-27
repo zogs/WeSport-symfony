@@ -9,8 +9,8 @@
 	<select name="{{form.vars.full_name }}" id="{{ form.vars.id }}" class="{{ form.vars.attr.class }}" multiple="{{ form.vars.multiple }}" placeholder="sports" tabindex="-1">
 		{% for category,choices in form.vars.choices %}
 			<optgroup label="{{ category }}">
-				{% for sport in choices %}
-					<option value="{{ sport.data.id }}" data-icon="{{ sport.data.icon }}">{{ sport.data.name }}</option>
+				{% for sport in choices %}					
+					<option value="{{ sport.data.id }}" data-icon="{{ sport.data.icon }}" {% if sport is selectedchoice(form.vars.value) %} selected="selected"{% endif %}>{{ sport.data.name }}</option>
 				{% endfor %}
 			</optgroup>
 		{% endfor %}

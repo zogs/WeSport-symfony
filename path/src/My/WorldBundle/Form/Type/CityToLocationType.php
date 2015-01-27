@@ -19,8 +19,9 @@ use My\WorldBundle\Form\DataTransformer\CityToLocationTransformer;
 
 class CityToLocationType extends AbstractType
 {
-    public $em;
-    public $router;
+    private $em;
+    private $router;
+    private $form_filled = false;
 
 
     /**
@@ -77,8 +78,13 @@ class CityToLocationType extends AbstractType
         $data = $event->getData();
         
         $location = null;
-        if(!empty($data['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
-        elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);        
+
+        if(!empty($data['city_id']) || !empty($data['city_name'])){
+            $this->form_filled = true;
+            if(!empty($data['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
+            elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);        
+        }
+        
         $form->setData($location);        
         return;
     }
@@ -95,8 +101,11 @@ class CityToLocationType extends AbstractType
         $form = $event->getForm();
         $data = $event->getData();
         
-        if($data == null || $data->getId() == null){
-            $form->get('city_name')->addError(new FormError("Cette ville ne semble pas exister ..."));
+        if($this->form_filled){
+
+            if($data == null || $data->getId() == null){
+                $form->get('city_name')->addError(new FormError("Cette ville ne semble pas exister ..."));
+            }
         }
     }
 
