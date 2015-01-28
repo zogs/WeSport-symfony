@@ -50,6 +50,7 @@ class CityToLocationType extends AbstractType
                 ->add('city_name','text',array(
                     'attr'=>array(
                         'class' => 'city-autocomplete',
+                        'size' => strlen($options['placeholder']),
                         'data-autocomplete-url' => $options['ajax_url'],
                         'data-template-empty' => '<div class="tt-city-noresult">'.$options['empty_html'].'</div>',
                         'data-template-footer' => '<div class="tt-city-footer">'.$options['footer_html'].'</div>',
@@ -60,8 +61,37 @@ class CityToLocationType extends AbstractType
                 ))
             ;
 
-       $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
-       $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+        $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
+    }
+
+    /**
+     * OnPreSetData
+     *
+     *
+     */
+    public function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $location = $event->getData();
+
+        if(isset($location) && $location->exist()) {
+
+            //add Size parameter to input
+            $form->add('city_name','text',array(
+                    'attr'=>array(
+                        'class' => 'city-autocomplete',
+                        'size' => strlen($location->getCity()->getName()),
+                        'data-autocomplete-url' => $options['ajax_url'],
+                        'data-template-empty' => '<div class="tt-city-noresult">'.$options['empty_html'].'</div>',
+                        'data-template-footer' => '<div class="tt-city-footer">'.$options['footer_html'].'</div>',
+                        'data-template-header' => '<div class="tt-city-header">'.$options['header_html'].'</div>',
+                        'data-trigger-length' =>2,
+                        'autocomplete' => "off"
+                        )
+            ));
+        }
     }
 
 
@@ -115,14 +145,15 @@ class CityToLocationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'invalid_message' => 'Form AutoCompleteCityType Error',
             'data_class' => 'My\WorldBundle\Entity\Location',
+            'invalid_message' => 'Form AutoCompleteCityType Error',
             'cascade_validation' => false,
             'ajax_url' => $this->router->generate('my_world_autocompletecity'),
             'empty_html' => 'Pas de résultats',
             'footer_html' => '',
             'header_html' => '',
-            'trigger-length' =>3
+            'trigger-length' =>3,
+            'placeholder' => "Votre ville?",
 
         ));
     }

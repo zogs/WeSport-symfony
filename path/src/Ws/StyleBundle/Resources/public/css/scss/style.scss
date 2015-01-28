@@ -533,14 +533,13 @@ tr.calendar-form-main,td.calendar-form-options {
 		line-height:130%;
 		background: transparent;
 		border: 0px solid transparent;
-		@include calendar-form-bottom-dotted();
 		outline: none;
 		@include box-shadow(0 0 0 0 rgba(0,0,0,0));
 		@include border-radius(0);
-
-		&::-webkit-input-placeholder{ 
-					color: #8db3be;
-				}
+		
+		@include placeholder {
+			color: #8db3be;
+		}
 	}
 
 	select option {
@@ -619,10 +618,11 @@ td.calendar-form-main-left {
 		input:focus {
 			outline: none;
 		}
+		@include calendar-form-bottom-dotted();
 	}
 
 	.city-autocomplete {
-		width:auto !important;
+		width:auto;
 	}
 
 	.select2-container {
@@ -713,10 +713,10 @@ td.calendar-form-options {
 		width:auto;
 	}
 
-	.select2-container {
+	.select2-container,.select2-container-multi {
 		margin:0;
 		
-		.select2-choice {
+		.select2-choice,.select2-choices {
 			padding-right:20px;
 			background:transparent;
 			border:0px solid transparent;
@@ -729,7 +729,23 @@ td.calendar-form-options {
 			}
 			.select2-arrow {
 				display:none;
-			}		
+			}	
+			.select2-search-field input[type=text]{ 
+				width:100px;
+			    min-width: 0;
+			    @include calendar-form-text-options();
+			    color: $lightblue !important;
+
+				    
+			}
+			.select2-search-choice {
+				margin-top:5px;
+				border:0;
+				background: transparent;
+				@include calendar-form-text-options();
+				color: $lightblue !important; 
+				@include box-shadow(0 0 0);
+			}	
 		}
 	}
 	.select2-dropdown-open {
@@ -737,47 +753,6 @@ td.calendar-form-options {
 				@include box-shadow(0 0 0);			
 		}
 	}			
-
-	.ui-dropdownchecklist { 
-		margin:0;
-	}
-	.ui-dropdownchecklist-selector {
-		height:40px;
-		line-height:40px;
-		background:transparent;
-		border:1px solid transparent;
-		@include calendar-form-text-shadow();
-	}
-	.ui-dropdownchecklist-text {
-		height:inherit;
-		line-height:44px;
-		text-align:left;
-		@include calendar-form-text-options();
-		color: $lightblue;
-	}
-	.ui-dropdownchecklist-dropcontainer {
-		border:1px solid #5C99DD;
-		border-bottom-left-radius: 4px;
-		border-bottom-right-radius: 4px;
-		padding:10px 5px;
-		line-height:14px;
-	}
-	.ui-dropdownchecklist-item {
-		padding:3px 0 3px 5px;
-		text-align:left;
-		label {
-			font-family: "Helvetica neue", Helvetica, Arial, sans-serif;
-			color:black;
-			@include rem(14);
-			text-shadow:0 0 0;
-			line-height: 22px;
-			text-transform: capitalize;
-		}
-		input[type=checkbox] {
-			margin-right:5px;
-		}
-	}
-	
 }
 
 
@@ -934,7 +909,7 @@ td.calendar-form-options {
 }
 
 .calendar-arianne{
-	width: 40%;
+	width: 80%;
 	padding:0 0 0 50px;
 	color:#FFF;
 	font-size:12px;
@@ -945,11 +920,16 @@ td.calendar-form-options {
 	span.ws-icon { color:white; margin-right:5px; }
 
 
+	//blue left arrow
 	&:before{
-		content:''; display: block; position:absolute; top:0; left:-43px; z-index:1;
-		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $darkblue;
-		//@include transition(all 0.2s ease-out);	 
-		
+		content:''; display: block; position:absolute; top:0; left:-40px; z-index:1;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $darkblue;		
+	}
+	
+	//blue right arrow
+	&:after{
+		content:''; display: block; position:absolute; top:0; right:-40px; z-index:1;
+		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $darkblue; 
 	}
 }
 
@@ -967,15 +947,36 @@ td.calendar-form-options {
 	}
 
 .calendar-loading {
-	width: 39%;
-	position: relative;
+	width: 100%;
+	position:absolute;
+	top:0;
+	left:0;
+	height:100%;
+	z-index:4;
+	//text
+	padding-top:25px;
+	color:rgba(255,255,255,0.4);
+	font-size:14px;
 	text-align:center;
+	//hide by default
+	display:none;
+	//set background
+	@include diagonal-stripes(-45deg, rgba(255,255,255,0.1), 100);
+	background-position:0px 0px;
+	
+	//loading state
+	&.loading {
+		//display
+		display:block;
+		//animate
+		@include animation(calendarLoading 10s linear infinite)		
+	}	
+}
 
-
-	&:before{
-		content:''; display: block; position:absolute; top:0; right:-50px; z-index:1;
-		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $darkblue; 
-	}
+//calendar loading animation
+@include keyframes(calendarLoading) {
+	from { background-position: 0 0; }
+	to { background-position: -100% 0; }
 }
 
 .calendar-event-type {
@@ -1350,6 +1351,7 @@ td.calendar-form-options {
 	 			width:100%;
 	 			position:absolute;
 	 			top:200px;
+	 			pointer-events: none;
 		 		@include opacity(0);
 		 		@include transition(all 0.2s ease);	
 		 		strong {

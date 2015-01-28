@@ -31,13 +31,15 @@
 
                 <tr class="form-row">
                     <td>
-                        {{ form_row(form.search.sports,{
-                            'label': "Concernant les sports ",
-                        }) }}
-                        {{ form_row(form.search.level,{
-                            'label': " de niveaux ",
-                            'attr': {'class': 'with_checkboxlist'}
-                        }) }}                                                
+                        <div class="field-inline field-sport">
+                            {{ form_row(form.search.sports,{
+                                'label': "Concernant les sports ",
+                            }) }}
+                            {{ form_row(form.search.level,{
+                                'label': " de niveaux ",
+                                'attr': {'class': 'with_checkboxlist'}
+                            }) }}                                                                            
+                        </div>
                     </td>
                 </tr>
 

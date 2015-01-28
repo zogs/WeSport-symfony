@@ -154,7 +154,11 @@ class CalendarManager extends AbstractManager
 			}
 		}	
 
+		//set cookies parameters
 		$this->cookies = $a;
+
+		//add cookies parameters to global parameters (except date)
+		if(isset($a['date'])) unset($a['date']);
 		$this->addParameters($a);
 
 		return $this;		
@@ -304,21 +308,30 @@ class CalendarManager extends AbstractManager
 	}
 
 	public function prepareDateParams()
-	{
-		$today = \date('Y-m-d');	
-		$cookie_date = (isset($this->cookies['date']))? $this->cookies['date'] : $today;		
+	{	
+		//get current date to today's date
+		$cdate = new \DateTime('now');
+		$cdate = $cdate->format('Y-m-d');
 
+		//set current date to cookie date except if it's a past date
+		if(isset($this->cookies['date'])){
+			$cookieDate = \DateTime::createFromFormat('Y-m-d',$this->cookies['date']);			
+			if($cookieDate->format('Y-m-d') >= $cdate) $cdate = $this->cookies['date'];
+		}
+		
+		//calcul date params
 		if(isset($this->params['date'])) {
-			if($this->params['date'] == 'now') $day = $today;
-			elseif($this->params['date'] == 'next')  $day = date('Y-m-d',strtotime($cookie_date.' + '.$this->params['nbdays'].' days'));
-			elseif($this->params['date'] == 'prev') $day = date('Y-m-d',strtotime($cookie_date.' - '.$this->params['nbdays'].' days'));
-			elseif($this->params['date'] == 'none') $day = null;
-			else $day = $this->formatDate($this->params['date']);
+			dump($this->params['date']);
+			if($this->params['date'] == 'now') $date = $cdate;
+			elseif($this->params['date'] == 'next')  $date = date('Y-m-d',strtotime($cdate.' + '.$this->params['nbdays'].' days'));
+			elseif($this->params['date'] == 'prev') $date = date('Y-m-d',strtotime($cdate.' - '.$this->params['nbdays'].' days'));
+			elseif($this->params['date'] == 'none') $date = null;
+			else $date = $this->formatDate($this->params['date']);
 		}		
-		else $day = $today;
+		else $date = $cdate;
 
-		$this->search->setDate($day);
-		$this->params['date'] = $day;
+		$this->search->setDate($date);
+		$this->params['date'] = $date;
 
 		return;
 	}

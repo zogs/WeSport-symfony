@@ -46,6 +46,11 @@ $(document).ready(function() {
 		)
 		.on('typeahead:selected',function(evt,suggestion){
 			$('.city-id-autocompleted').get(index).value = suggestion.id;
+
+			if($(this).hasClass('auto-adjust-width')){
+				console.log(suggestion.name.length);
+				$(this).attr('size',suggestion.name.length+2);
+			}
 		})
 		;
 	})

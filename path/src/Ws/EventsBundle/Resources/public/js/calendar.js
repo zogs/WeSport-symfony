@@ -1,13 +1,15 @@
 $(document).ready(function(){
 
 	//calendar form
+	/*
 	$('#calendar_search_type,#calendar_search_level').dropdownchecklist({
 		emptyText: "indifférent",
 		width: 130
 	});
+*/
 
-	$('#calendar_search_area,#calendar_search_price').select2({	
-		width: 130	
+	$('.calendar-form-options select').select2({	
+		placeholder: "indifférent"
 	});
 
 	$('#calendar-form-options-toggle').click(function(){
@@ -316,7 +318,7 @@ $(document).ready(function(){
 
 		function callWeek(url,direction){		
 
-			_loader.show();		
+			_loader.addClass('loading');		
 			
 			var form = $('#calendar-search').serialize();
 			form += '&nbdays='+findNumberDayPerWeek();
@@ -364,7 +366,7 @@ $(document).ready(function(){
 					updateUrl(_search_url);
 					
 									
-					_loader.hide();
+					_loader.removeClass('loading');
 
 
 				},

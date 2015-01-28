@@ -36,7 +36,8 @@
 							'label': label,
 							'required':false,
 							'attr':{
-									'placeholder':"ville"
+									'placeholder':"ville",
+									'class': "city-autocomplete auto-adjust-width",
 								}
 						}) }}	
 
@@ -57,7 +58,7 @@
 				</tr>
 				<tr>
 					<td colspan="2" class="calendar-form-options">
-						<div id="calendar-form-options-container">
+						<div id="calendar-form-options-container" class="{% if search.hasArea or search.hasType or search.hasLevel or search.price %}open {% endif %}">
 							
 							{{ form_row(form.area,{
 								'label':"Dans un rayon de ",														
@@ -68,11 +69,16 @@
 
 							{{ form_row(form.type,{
 								'label':"organisé par ",
-								'empty_value': "tous",
+								'attr': {
+									'data-placeholder':"indifférent"
+								}
 							})}}
 
 							{{ form_row(form.level,{
 								'label':"d'un niveau ",
+								'attr' : {
+									'data-placeholder':"indifférent"
+								}
 							})}}
 
 							{{ form_row(form.price,{
@@ -93,12 +99,15 @@
 	<div class="calendar" id="calendar">		
 
 		<div class="calendar-header">
+			<div class="header-part calendar-loading" id="calendar-loader">Chargement...</div>
+
 			<div class="header-part week-nav previousWeek">
 				<a class="calendar-nav-prev calendar-nav-link" id="colomn-prev-arrow" title="Semaine précédante" href="" draggable="false">AVANT</a>
-			</div>
+			</div><!--
 			
 
-			<div class="header-part calendar-arianne">
+			--><div class="header-part calendar-arianne">
+				{#
 				<table>
 					<tr>
 						<td>	
@@ -137,13 +146,10 @@
 						</td>
 					</tr>
 				</table>
-			</div>
+				#}
+			</div><!--
 
-			<div class="header-part calendar-loading">
-				<div class="calendar-loader" id="calendar-loader">
-					<img class="loading-bar" src="{{ asset('bundles/wsstyle/img/ajax-loader-bar.gif') }}" title="Chargement..." /><					
-				</div>					
-			</div>
+			
 
 				{#
 			<div class="header-part calendar-event-type">
@@ -211,7 +217,7 @@
 			#}
 			
 
-			<div class="header-part week-nav nextWeek">
+			--><div class="header-part week-nav nextWeek">
 				<a class="calendar-nav-next calendar-nav-link" id="colomn-next-arrow" title="Semaine suivante" href="" draggable='false' >APRES</a>
 			</div>			
 		</div>
