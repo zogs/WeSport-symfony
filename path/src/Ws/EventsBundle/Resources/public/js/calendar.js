@@ -207,43 +207,47 @@ $(document).ready(function(){
 
 		function slideCalendar(direction){
 
-			var width = _screenWidth;
-			var slideDuration = 700;
-			var delayDisplay = parseInt(slideDuration/_nbDays);
+			//set parameters
+			var width = _screenWidth; //width of screen
+			var slideDuration = 700; //slide duration
+			var delayDisplay = parseInt(slideDuration/_nbDays); //disaply delay between each colomn
 
+			//set the slider position depending on the direction of slide
 			if(direction == 'right') {
-				contentPosition = width;
-				contentSliding = '-='+width;
+				before = width;
+				after = '-='+width;
 			}
 			if(direction == 'left') {
-				contentPosition = -width;
-				contentSliding = '+='+width;
+				before = -width;
+				after = '+='+width;
 			}
 			if(typeof direction == 'undefined'){
-				contentPosition = -width;
-				contentSliding = '+='+width;
+				before = -width;
+				after = '+='+width;
 				slideDuration = 0;
 			}
-
+			//create a weeks object with the two weeks
 			var weeks = _oldWeek.add(_newWeeks);
-
+			//reset the calendar to its original position (because it can be modify by the drag system)
 			_cal.css('left',0);
-			
+			//add state class
 			weeks.addClass('sliding');
-
-			_newWeeks.css({'left':contentPosition+'px'});
-
+			//set the new week off the screen
+			_newWeeks.css({'left':before+'px'});
+			//begin the incremental display of colomn
 			if(direction=='left') _newDays = _newDays.get().reverse(); //reverse order the colomn are displayed
 			_displayDays = setInterval(function(){ displayColomns(direction)},delayDisplay);
-
-			_oldWeek.find('.events-day').empty();
-
+			//remove old events for better rendering
+			_oldWeek.find('.events-day .events').remove();
+			//begin the animation
 			_newWeeks.animate({
-				left:contentSliding,
+				left:after,
 				},slideDuration,'easeOutCirc',function(){ 
-						
+						//remove old week
 						_oldWeek.remove();
+						//remove state class
 						_newWeeks.removeClass('sliding');
+						//recalculate the calendar height
 						setHeightCalendar();						
 						return;				
 			});
@@ -329,9 +333,11 @@ $(document).ready(function(){
 				data : form,
 				success: function( newhtml ){						
 					
+					//update the html with the new content
 					var oldhtml = _cal.html();
 					document.getElementById('calendar-content').innerHTML = oldhtml+newhtml;
 
+					//get jquery object for futur use
 					_oldWeek = _cal.find(".events-weeks:first").attr('id','old-week');
 					_newWeeks = _cal.find(".events-weeks:last").attr('id','new-week');	
 					_newWeekFirst = _newWeeks.find('.events-week:first');				
@@ -339,23 +345,31 @@ $(document).ready(function(){
 					_newHidden = _newDays.find('.hidden');
 					_search_url = _newWeeks.attr('data-search-url');
 
+					/* seems useless ?
 					_hidden = [];
 					for(var i=0; i<_newHidden.length; i++){
+						console.log(_newHidden[i]);
 						var obj = $(_newHidden[i]);									
 						_hidden[obj.attr('id')] = obj.offset().top;
 						
 					}				
+					 */
 
+					 //begin slide animation
 					slideCalendar(direction);	  				
 					
+					//if this is the "today" week, set _cWeek to true
 					setCurrentWeek();
 
+					//trigger a scroll event to display all visible events
 					$(window).scroll(); //refresh scroll function to display new event
 
+					//variable for vertical slider
 					_newPage = 1;
 					_moreEvents = true;
 					_drag = false;
 
+					//hide previous button if its the current week
 					if(isCurrentWeek()){					
 						$('a.calendar-nav-prev').hide();
 					}
@@ -363,12 +377,11 @@ $(document).ready(function(){
 						$('a.calendar-nav-prev').show();
 					}
 
+					//update the url
 					updateUrl(_search_url);
 					
-									
+					//remove loading				
 					_loader.removeClass('loading');
-
-
 				},
 				dataType:'html'
 			});		

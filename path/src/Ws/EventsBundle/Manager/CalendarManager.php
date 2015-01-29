@@ -75,6 +75,8 @@ class CalendarManager extends AbstractManager
 		//get first day of the week
 		$day = $this->search->getDate();
 		if($day == null) throw new Exception("First day of the week is missing", 1);
+		//stock the first day for later
+		$firstDay = $day;
 		
 		$events = array();
 		$nb = $this->search->getNbDays();
@@ -86,6 +88,9 @@ class CalendarManager extends AbstractManager
 			$events[$day] = $repo->findEvents($this->getSearch());
 			$day = date("Y-m-d", strtotime($day. " +1 day"));
 		}
+		
+		//reset date to the first day of the week
+		$this->search->setDate($firstDay);
 		//prevent memory leak
 		$this->em->clear();
 		//save the search in cookie
@@ -261,11 +266,7 @@ class CalendarManager extends AbstractManager
 	}
 
 	public function getSearch()
-	{		
-		//$this->search->setUrl($this->urlGenerator->setSearch($this->search)->getUrl());
-		//$this->search->setUrlParams($this->urlGenerator->getUrlParams());
-		//$this->search->setShortUrlParams($this->urlGenerator->getShortUrlParams());
-
+	{				
 		return $this->search;
 	}
 
@@ -304,6 +305,8 @@ class CalendarManager extends AbstractManager
 		$this->prepareOrganizerParams();
 		$this->prepareDayOfWeekParams();		
 
+		$this->prepareUrl();
+
 		return $this;
 	}
 
@@ -320,8 +323,7 @@ class CalendarManager extends AbstractManager
 		}
 		
 		//calcul date params
-		if(isset($this->params['date'])) {
-			dump($this->params['date']);
+		if(isset($this->params['date'])) {			
 			if($this->params['date'] == 'now') $date = $cdate;
 			elseif($this->params['date'] == 'next')  $date = date('Y-m-d',strtotime($cdate.' + '.$this->params['nbdays'].' days'));
 			elseif($this->params['date'] == 'prev') $date = date('Y-m-d',strtotime($cdate.' - '.$this->params['nbdays'].' days'));
@@ -609,6 +611,13 @@ class CalendarManager extends AbstractManager
 
     	$this->search->setDayOfWeek($days);
     	return;
+    }
+
+    private function prepareUrl()
+    {
+    	$this->search->setUrl($this->urlGenerator->setSearch($this->search)->getUrl());
+	$this->search->setUrlParams($this->urlGenerator->getUrlParams());
+	$this->search->setShortUrlParams($this->urlGenerator->getShortUrlParams());
     }
 
     private function formatTime($t){  

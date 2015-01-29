@@ -2,10 +2,20 @@ parameters:
 #    tuto_user.example.class: Tuto\UserBundle\Example
 
 services:
-    #Entry point
+    #Handler
     entry_point.user_login:
         class: My\UserBundle\Service\LoginEntryPoint
         arguments: [@router]
+    login_success.handler:
+        class: My\UserBundle\Service\LoginSuccessHandler
+        arguments: [@router,@security.context]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+    logout_success.handler:
+        class: My\UserBundle\Service\LogoutSuccessHandler
+        arguments: [@router,@security.context]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
 
     #Form Type
     acme_user.registration.form.type:

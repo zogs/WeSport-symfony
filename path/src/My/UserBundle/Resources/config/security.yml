@@ -22,6 +22,7 @@ security:
                 always_use_default_target_path : false
                 default_target_path: ws_calendar
                 remember_me: true
+                success_handler: login_success.handler
             remember_me:
                 key :    %secret%
                 lifetime: 3000000000
@@ -30,5 +31,6 @@ security:
             logout:       
                 path: fos_user_security_logout
                 target: ws_calendar
+                success_handler: logout_success.handler
             switch_user:  true
             entry_point: entry_point.user_login

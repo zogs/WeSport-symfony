@@ -22,6 +22,7 @@ class CityToLocationType extends AbstractType
     private $em;
     private $router;
     private $form_filled = false;
+    private $options;
 
 
     /**
@@ -61,6 +62,7 @@ class CityToLocationType extends AbstractType
                 ))
             ;
 
+        $this->options = $options;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
         $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
@@ -83,10 +85,10 @@ class CityToLocationType extends AbstractType
                     'attr'=>array(
                         'class' => 'city-autocomplete',
                         'size' => strlen($location->getCity()->getName()),
-                        'data-autocomplete-url' => $options['ajax_url'],
-                        'data-template-empty' => '<div class="tt-city-noresult">'.$options['empty_html'].'</div>',
-                        'data-template-footer' => '<div class="tt-city-footer">'.$options['footer_html'].'</div>',
-                        'data-template-header' => '<div class="tt-city-header">'.$options['header_html'].'</div>',
+                        'data-autocomplete-url' => $this->options['ajax_url'],
+                        'data-template-empty' => '<div class="tt-city-noresult">'.$this->options['empty_html'].'</div>',
+                        'data-template-footer' => '<div class="tt-city-footer">'.$this->options['footer_html'].'</div>',
+                        'data-template-header' => '<div class="tt-city-header">'.$this->options['header_html'].'</div>',
                         'data-trigger-length' =>2,
                         'autocomplete' => "off"
                         )

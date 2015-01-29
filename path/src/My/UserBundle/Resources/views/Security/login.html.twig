@@ -61,6 +61,10 @@
 				<a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié ?</a>	    			
 			</p>
 		</div>
+
+		{% if app.request.get('_route') != app.request.headers.get('referer') %}   
+		    <input type="hidden" name="_target_path" value="{{ app.request.headers.get('referer') }}" />   
+		{% endif %}
 		
 	    
 	</form>
