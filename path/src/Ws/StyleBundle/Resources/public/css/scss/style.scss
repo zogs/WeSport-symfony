@@ -182,12 +182,6 @@ div.mm-is-menu * {
 
 
 
-.weSport{
-	.logo { height:30px;}
-	.wesport { width:100px;}
-	.logobrand {width:150px;}
-	margin-right:20px;	
-}
 
 .navbar-ws{
 	background-color:$lightblue;
@@ -197,6 +191,19 @@ div.mm-is-menu * {
 	.nav{
 
 		height:40px;
+
+		.brand{
+			height:inherit;
+			width:35%;
+			a {
+				height:inherit;
+				img { 
+					margin-top:3px;
+					height:80%;
+				}
+			}
+		}
+
 		li{
 			display: table-cell;
 			border-spacing:0px;
@@ -215,27 +222,94 @@ div.mm-is-menu * {
 		li a:link, li a:visited{ color:$backblue;}
 		li a:hover,li a:active{ color:$deepblue;}	
 
-		li.mainbutton{
-			background-color:$deepred;
-			padding-left: 35px; padding-right: 50px;			
-			a {
-				color:rgba(255,255,255,0.7);
+
+		li.dropdown {
+			padding-left: 35px; padding-right: 50px;
+			.dropdown-toggle {
+				color:rgba(255,255,255,0.8);
 				text-shadow:0 0 0 rgba(0,0,0,0);
 				span.ws-icon {
 					margin-right:5px;
-					color: rgba(255,255,255,0.4);
+					color: rgba(255,255,255,0.7);
 					@include rem(22);
-				}						
-			}			
-
+				}	
+			}
+			&.open .dropdown-toggle { background-color: transparent; color: rgba(255,255,255,0.8); }
+			ul.dropdown-menu {
+				margin:0px;
+				padding:0px;
+				@include border-radius(0);
+				border:0;
+				li {
+					display:block;
+					padding:20px 0px 20px 25px;
+					color:rgba(255,255,255,0.8);
+					span.ws-icon {
+						color:inherit;
+						margin-right:5px;
+						margin-top:-2px;
+						font-size:120%;
+					}
+					a{
+						display: inline;
+						font-size:80%;
+						color:inherit;
+						text-shadow:0 0 2px rgba(0,0,0,0.2);
+						&:hover,&:active {
+							background-color: transparent;
+							background-image: none;
+						}
+					}
+				}
+				//remove arrows
+				&::after,&::before {
+					display:none;
+				}
+			}
 		}
-		li a.mainbutton:hover, li a.mainbutton:active{ color:$lightblue; background-color:darken($deepred,5%);}		
 
-		li a.secondbutton{
-			color:$lightblue;
-			background-color:$deepblue;
-			padding:12px 25px;
+
+
+		li.dropdown.createbutton{
+			background-color:$deepred;
+			ul.dropdown-menu {
+				background-color:$deepred;
+
+				li:nth-child(1){ background-color:$red;}
+				li:nth-child(2){ background-color:$softred;}
+				li:nth-child(3){ background-color:$lightred;}
+				li:nth-child(4){ background-color:$softyellow;}
+			}
 		}
+
+
+		li.dropdown.accountbutton {
+			.dropdown-toggle{
+				color:$backblue;
+				img.nav-avatar {
+					@include border-radius(40px);
+				}
+				span.nav-arrow {
+					display: inline-block;
+					border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left:5px solid $backblue;	
+				}
+				span.nav-username {
+					color:$deepblue;
+				}
+			}
+			&.open {
+				background-color: $backblue;
+			}
+			ul.dropdown-menu {
+				background-color:$deepgreen;
+
+				li:nth-child(1){ background-color:$green;}
+				li:nth-child(2){ background-color:$softgreen;}
+				li:nth-child(3){ background-color:$lightgreen;}
+
+			}
+		}
+
 	}
 
 	.nav.lang-menu { display:none ; }
@@ -475,18 +549,36 @@ div.mm-is-menu * {
 
 
 /* Calendar Form */
-
-table.calendar-form {
-	
+.calendar-form {
+	height:150px;
 	width:100%;	
 	margin: 70px auto 0px auto;
+	position:relative;
+	
+
+	&.visible {				
+		table {
+			top:0;
+			@include opacity(1);
+		}
+	}
+
+	table {
+		width:100%;	
+		position:absolute;
+		top:-100px;
+		left:0;
+		@include opacity(0);
+		@include transition(all 0.8s ease-out);
+	}
+	
 }
 
 tr.calendar-form-main { 
-	height:100px;
+	height:auto;
 }
 td.calendar-form-options {
-	height:40px;
+	height:auto;
 }
 
 @mixin calendar-form-bottom-dotted($y:45){
@@ -552,59 +644,13 @@ tr.calendar-form-main,td.calendar-form-options {
 		height:40px;
 	}
 
-	button[type=submit] {
-		display:inline-block;
-		position: relative;
-		width:90px; 
-		height:90px; 
-		margin-left:40px;
-		border-radius:100px; 
-		background-color: rgba(0,0,0,0.20); 
-		border:0;
-		@include transition(all 0.1s ease-in-out);	
-
-		span {
-			position:absolute;
-			top:50%;
-			left:50%;
-		}
-		span.ws-icon {
-			margin-top:-20px;
-			margin-left:-20px;
-			@include rem(40); color:$lightblue;
-			@include transition(all 0.2s ease-in-out);	
-		}
-		span.shadow {			
-			display:block;
-			width:0;
-			height:0;
-			border-radius: 400px;
-			background-color: rgba(0,0,0,0.2);
-			@include transition(all 0.2s ease-in-out);	
-		}
-
-
-		&:hover {
-			background-color: rgba(0,0,0,0.15);
-			span.ws-icon { @include rotate(100deg); }					
-
-		}
-
-		&:active {
-			background-color: rgba(0,0,0,0.1);
-			span.ws-icon { @include rotate(720deg); }
-			span.shadow { width:150px; height:150px; margin-left:-75px; margin-top:-75px; background-color: rgba(0,0,0,0);}
-		}
-
-
-	}
-
 	
 }
 
 
+
 td.calendar-form-main-left { 
-	width:70%; 
+	width:65%; 
 	height:inherit; 
 	position: relative;	
 	text-align:right; 
@@ -678,6 +724,56 @@ td.calendar-form-main-left {
 	}
 }
 
+td.calendar-form-main-middle {
+
+	width:5%;
+
+	button[type=submit] {
+		display:inline-block;
+		position: relative;
+		width:90px; 
+		height:90px; 
+		margin-left:20px;
+		border-radius:100px; 
+		background-color: rgba(0,0,0,0.20); 
+		border:0;
+		@include transition(all 0.1s ease-in-out);	
+
+		span {
+			position:absolute;
+			top:50%;
+			left:50%;
+		}
+		span.ws-icon {
+			margin-top:-20px;
+			margin-left:-20px;
+			@include rem(40); color:$lightblue;
+			@include transition(all 0.2s ease-in-out);	
+		}
+		span.shadow {			
+			display:block;
+			width:0;
+			height:0;
+			border-radius: 400px;
+			background-color: rgba(0,0,0,0.2);
+			@include transition(all 0.2s ease-in-out);	
+		}
+
+
+		&:hover {
+			background-color: rgba(0,0,0,0.15);
+			span.ws-icon { @include rotate(100deg); }					
+
+		}
+
+		&:active {
+			background-color: rgba(0,0,0,0.1);
+			span.ws-icon { @include rotate(720deg); }
+			span.shadow { width:150px; height:150px; margin-left:-75px; margin-top:-75px; background-color: rgba(0,0,0,0);}
+		}
+	}
+}
+
 td.calendar-form-main-right { 
 	width:30%; 
 	padding-left:20px;
@@ -696,6 +792,7 @@ td.calendar-form-main-right {
 td.calendar-form-options {
 
 	position:relative;
+	padding-top:10px;
 
 	div#calendar-form-options-container {
 

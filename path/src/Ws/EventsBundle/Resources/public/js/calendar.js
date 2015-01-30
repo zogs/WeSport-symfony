@@ -6,11 +6,18 @@ $(document).ready(function(){
 		emptyText: "indifférent",
 		width: 130
 	});
+
 */
 
-	$('.calendar-form-options select').select2({	
-		placeholder: "indifférent"
-	});
+	$.when(
+		$('.calendar-form-options select').select2({	
+			placeholder: "indifférent"
+		})
+		)
+		.done(function(){
+			$("#calendar-form").addClass('visible');
+		});
+	
 
 	$('#calendar-form-options-toggle').click(function(){
 		$('#calendar-form-options-container').toggleClass('open');
@@ -345,7 +352,7 @@ $(document).ready(function(){
 					_newHidden = _newDays.find('.hidden');
 					_search_url = _newWeeks.attr('data-search-url');
 
-					/* seems useless ?
+					//do things? to pre-hidden events
 					_hidden = [];
 					for(var i=0; i<_newHidden.length; i++){
 						console.log(_newHidden[i]);
@@ -353,7 +360,7 @@ $(document).ready(function(){
 						_hidden[obj.attr('id')] = obj.offset().top;
 						
 					}				
-					 */
+					
 
 					 //begin slide animation
 					slideCalendar(direction);	  				

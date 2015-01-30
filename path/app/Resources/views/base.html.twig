@@ -57,85 +57,9 @@
         {# NAVBAR #}
 
         {% block navbar %}
-            <div class="navbar navbar-fixed-top navbar-ws">
-                <div class="desktop-menu" id="desktop-menu">
-                    {# knp_menu_render('main', {'template': 'MyPageBundle:Menu:main_menu.html.twig'}) #}
-                    <ul class="nav">
-                        <li>
-                            <a href="/" class="weSport" id="wsSportBrand" title="Accueil">
-                                <img src="{{ asset('bundles/wsstyle/img/LOGOBRAND.png') }}" alt="Cosporturage">        
-                            </a>
-                        </li>
+            
+            {% include '::menu.html.twig' %}
 
-                        <li><a href="{{ path('ws_calendar') }}">Le Calendrier</a></li>
-
-                        <li class="mainbutton">
-                            <a href="{{ path('ws_event_new') }} ">
-                                <span class="ws-icon ws-icon-plus-alt"></span>
-                                Ajouter
-                            </a>
-                        </li>
-
-                         {{ render(controller('MyPageBundle:Menu:TopMenu', {
-                            'max': 3
-                        })) }}
-                        
-                        <li>
-                            <a href="{{ path('ws_alerts_index') }}">Mes Alertes</a>
-                        </li>
-
-                        <li>
-                            <a href="{{ path('user_profil_edit', {action:'account' }) }}">Mon Compte</a>
-                        </li>
-
-                        <li>
-                            <a href="{{ path('blog_homepage')}}">Le Blog</a>
-
-                        </li>
-
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <li>
-                            <a href="{{path('sonata_admin_dashboard', {}) }}">-Admin.-</a>
-                        </li>
-                        {% endif %}
-
-                    </ul>
-
-                    <ul class="nav pull-right">
-                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                            <li>
-                                <a href="{{path('fos_user_profile_edit') }}">
-                                    <img src="{{ asset(app.user.avatar.getWebPath) }}" alt="" class="nav-avatar">                                   
-                                    <span class="nav-login">{{ app.user.username }}</span>
-                                </a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{ path('user_profil_edit', {action:'account' }) }}">Mon compte</a></li>
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <li><a href="{{ path('sonata_admin_dashboard') }}">Administration</a></li>
-                                    {% endif %}
-                                    <li class="divider"></li>
-                                    <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
-                                </ul>
-                            </li>
-                        {% else %}
-                        <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-                        <li><a class="secondbutton" href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
-                        {% endif %}
-                    </ul>
-                    <ul class="nav pull-right lang-menu">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Langue <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}"><i class="flag flag-fr"></i>Français</a></li>
-                                <li><a href="{{  path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))}}"><i class="flag flag-uk"></i>English</a></li>
-                            </ul>
-                        </li>                          
-                    </ul>                                                                
-                </div>
-            </div>
         {% endblock %}
 
 

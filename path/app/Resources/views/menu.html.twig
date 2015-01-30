@@ -1,0 +1,67 @@
+<div class="navbar navbar-fixed-top navbar-ws">
+                <div class="desktop-menu" id="desktop-menu">
+                    {# knp_menu_render('main', {'template': 'MyPageBundle:Menu:main_menu.html.twig'}) #}
+                    <ul class="nav">
+                        <li class="brand">
+                            <a href="/" title="Retour à l'accueil">
+                                <img src="{{ asset('bundles/wsstyle/img/LOGO.gif') }}" alt="Cosporturage">        
+                            </a>
+                        </li>
+
+                        <li><a href="{{ path('ws_calendar') }}">Le Calendrier</a></li>
+
+                        <li class="dropdown createbutton">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="ws-icon ws-icon-plus-alt"></span>
+                                Créer
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><span class="ws-icon ws-icon-volley"></span><a href="{{ path('ws_event_new') }}">une activité</a></li>
+                                <li><span class="ws-icon ws-icon-envelop"></span><a href="{{ path('ws_alerts_create') }}">une alerte</a></li>
+                                <li><span class="ws-icon ws-icon-home"></span><a href="{{ path('fos_user_registration_register') }}">un compte</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown accountbutton">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Bonjour
+                                <span class="nav-arrow"></span>
+                                <img src="{{ asset(app.user.avatar.getWebPath) }}" alt="" class="nav-avatar">
+                                <span class="nav-username">{{ app.user.username|capitalize }}</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><span class="ws-icon ws-icon-home"></span><a href="{{ path('user_profil_edit', {action:'account' }) }}">Mon compte</a></li>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <li><span class="ws-icon ws-icon-cog"></span><a href="{{ path('sonata_admin_dashboard') }}">Administration</a></li>
+                                {% endif %}
+                                <li><span class="ws-icon ws-icon-exit"></span><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                            </ul>
+                        </li>
+
+
+                         {{ render(controller('MyPageBundle:Menu:TopMenu', {
+                            'max': 3
+                        })) }}
+
+
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
+                            <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                            <li><a class="secondbutton" href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
+                        {% endif %}
+                    </ul>
+
+                    <ul class="nav pull-right lang-menu">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Langue <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}"><i class="flag flag-fr"></i>Français</a></li>
+                                <li><a href="{{  path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))}}"><i class="flag flag-uk"></i>English</a></li>
+                            </ul>
+                        </li>                          
+                    </ul>                                                                
+                </div>
+            </div>
