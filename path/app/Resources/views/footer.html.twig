@@ -1,0 +1,45 @@
+<footer class="footer-distributed">
+
+	<div class="footer-left">
+
+		<h3><img src="{{ asset('bundles/wsstyle/img/LOGOBRAND.png') }}" alt="Cosporturage"></h3>
+
+		<p class="footer-links">
+			<a href="{{ path('ws_calendar') }}">Calendrier</a>
+			·
+			{{ render(controller('MyPageBundle:Menu:getMenu', {'menu':'bottom','template':'dotted','max': 3})) }}
+
+			<a href="#">Faq</a>
+			·
+			<a href="#">Contact</a>
+		</p>
+
+		<p class="footer-company-name">Cosporturage &copy; 2015</p>
+
+		<div class="footer-icons">
+
+			<a target="_blank" rel="nofollow" title="Notre page facebook" href="https://www.facebook.com/pages/We-sport/642996032385245" >
+				<img src="{{ asset('bundles/myutils/img/socials/social_flatls_facebook.png') }}" alt=""/>
+			</a>
+			<a target="_blank" rel="nofollow" title="Nous suivre sur Twitter" href="https://twitter.com/weSportfr"  >
+				<img src="{{ asset('bundles/myutils/img/socials/social_flatls_twitter.png') }}" alt=""/>
+			</a>
+		</div>
+
+	</div>
+
+	<div class="footer-right">
+
+		<p>Contactez nous</p>
+
+		<form action="#" method="post">
+
+			<input type="text" name="email" placeholder="Email" />
+			<textarea name="message" placeholder="Message"></textarea>
+			<button>Envoyer</button>
+
+		</form>
+
+	</div>
+
+</footer>

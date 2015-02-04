@@ -34,11 +34,12 @@
                 'bundles/myutils/js/tagsinput/bootstrap-tagsinput.css'
                 'bundles/myutils/js/datetimepicker/jquery.datetimepicker.css'
                 'bundles/myutils/js/checkboxlist/ui.dropdownchecklist.standalone.css'
+                'bundles/myutils/templates/footer/css/footer-distributed-with-contact-form.css'   
                 'bundles/acmetwig/css/acme-bootstrap.css'
                 'bundles/acmetwig/css/default.css'
                 'bundles/wssports/css/font-icons/style.css'
                 'bundles/wsstyle/css/default.css'
-                'bundles/wsstyle/css/style.css'   
+                'bundles/wsstyle/css/style.css'
                 filter="cssrewrite"             
             %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -70,6 +71,13 @@
 
         </div>
 
+        {% block footer %}
+
+            {% include '::footer.html.twig' %}
+
+        {% endblock %}
+
+        {#
         <div class="footer container-fluid">
             <div class="container">
                 {{ render(controller('MyPageBundle:Menu:BottomMenu', {
@@ -77,7 +85,7 @@
                 })) }}
             </div>
         </div>
-
+        #}
 
         {% block javascripts %}
             {% javascripts

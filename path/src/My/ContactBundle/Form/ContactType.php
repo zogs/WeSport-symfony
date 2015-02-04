@@ -59,13 +59,13 @@ class ContactType extends AbstractType
 
         //second to fill the form must be > 2 s
         $now = new \Datetime('now');
-        $old = new \DateTime();
-        $old->createFromFormat('Y-m-d H:i',$data['date']);
+        $old = \DateTime::createFromFormat('Y-m-d H:i:s',$data['date']);
 
         $interval = $now->diff($old);
         $seconds = $interval->format('%s');
+
         if($seconds <=2){
-            throw new RobotUsingContactFormException('The form have been submitted too fast ( '.$_SERVER['REMOTE_ADDR'].' is probably a robot!)');
+            throw new RobotUsingContactFormException('The form have been submitted in '.$seconds.'s... Too fast for human, you are probably a robot ! (IP:'.$_SERVER['REMOTE_ADDR'].'))');
         }        
 
 

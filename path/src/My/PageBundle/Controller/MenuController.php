@@ -10,28 +10,21 @@ class MenuController extends Controller
 
     public function TopMenuAction(){
 
-
-    	$em = $this->getDoctrine()->getManager();
-
-        $pages = $em->getRepository('MyPageBundle:Page')->findByMenu('top');
-
-    	return $this->render('MyPageBundle:Menu:top.html.twig',array(
-    		'menuPages'=> $pages
-    		)
-    	);
+        return $this->getMenuAction('top','top',3);
     }
 
     public function BottomMenuAction(){
 
-
-        $em = $this->getDoctrine()->getManager();
-
-        $pages = $em->getRepository('MyPageBundle:Page')->findByMenu('bottom');
-
-        return $this->render('MyPageBundle:Menu:bottom.html.twig',array(
-            'menuPages'=> $pages
-            )
-        );
+        return $this->getMenuAction('bottom','bottom',10);
+       
     }
     
+    public function getMenuAction($menu = 'top',$template='top',$max=10)
+    {
+        $pages = $this->getDoctrine()->getManager()->getRepository('MyPageBundle:Page')->findByMenu($menu,$max);
+
+        return $this->render('MyPageBundle:Menu:'.$template.'.html.twig',array(
+            'pages' => $pages
+            ));
+    }
 }

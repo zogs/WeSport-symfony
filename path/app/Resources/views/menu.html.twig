@@ -22,6 +22,7 @@
                             </ul>
                         </li>
 
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == true %}
                         <li class="dropdown accountbutton">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 Bonjour
@@ -38,6 +39,7 @@
                                 <li><span class="ws-icon ws-icon-exit"></span><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
                             </ul>
                         </li>
+                        {% endif %}
 
 
                          {{ render(controller('MyPageBundle:Menu:TopMenu', {

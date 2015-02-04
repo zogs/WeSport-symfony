@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class PageRepository extends EntityRepository
 {
-	public function findByMenu($menu)
+	public function findByMenu($menu,$max = 10)
 	{
 		$qb = $this->_em->createQueryBuilder('p');
 	    $qb->select('p')
@@ -20,6 +20,7 @@ class PageRepository extends EntityRepository
 	    ->where($qb->expr()->eq('p.menu',':menu'))
 	    ;
 	    $qb->setParameter('menu',$menu);
+	    $qb->setMaxResults($max);
 
 	    return $qb->getQuery()->getResult();
 	}

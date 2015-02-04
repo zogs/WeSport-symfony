@@ -110,7 +110,7 @@ class UserControllerTest extends WebTestCase
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
 
-	public function testLoginBeforeActivation()
+	public function testLoginActivation()
 	{
 		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
 
@@ -123,7 +123,7 @@ class UserControllerTest extends WebTestCase
 
 		$crawler = $this->client->followRedirect();
 
-		$this->assertTrue($crawler->filter('.nav-login:contains("testname")')->count() == 1);
+		$this->assertTrue($crawler->filter('.nav-username:contains("testname")')->count() == 1);
 
 	}
 
