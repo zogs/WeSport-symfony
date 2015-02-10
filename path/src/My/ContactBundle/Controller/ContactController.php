@@ -25,9 +25,14 @@ class ContactController extends Controller
             
             $message = $form->getData();
             $mailer = $this->container->get('contact.mailer');
+            $flashbag = $this->container->get('flashbag');
             
-            $mailer->sendContactMessage($message);
-            $this->container->get('flashbag')->add("Bien reçu, nous vous répondrons dans les plus bref délais !");           
+            if($mailer->sendContactMessage($message)){
+                $flashbag->add("Bien reçu, nous vous répondrons dans les plus bref délais !");                           
+            }
+            else {
+                $flashbag->add('Erreur lors de l\'envoi... Vous pouvez écrire directement à contact@cosporturage.fr','error');
+            }            
         }
 
         return $this->render('MyContactBundle:Default:contact.html.twig',array(

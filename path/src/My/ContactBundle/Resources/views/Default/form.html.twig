@@ -1,4 +1,4 @@
-{{ form_start(form, {'class':'form form-ws','attr':{'class':'form form-ws'}} ) }}
+{{ form_start(form, {"action":path('my_contact'),'attr':{'class':'form form-ws'}} ) }}
 	   	
 	   	{% if form_errors(form) %}
 	   			{{ form_errors(form) }}

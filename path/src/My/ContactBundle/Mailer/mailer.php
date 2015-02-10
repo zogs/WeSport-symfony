@@ -31,7 +31,7 @@ class Mailer
 
         $body = $this->templating->render('MyContactBundle:Email:contact.html.twig', array('contact' => $contact));
 
-        $this->sendMessage($from, $this->recipients, $subject, $body);
+        return $this->sendMessage($from, $this->recipients, $subject, $body);
     }
 
     protected function sendMessage($from, $to, $subject, $body)
@@ -45,6 +45,6 @@ class Mailer
             ->setBody($body)
             ->setContentType('text/html');
 
-        $this->mailer->send($mail);
+        return $this->mailer->send($mail);
     }
 }
