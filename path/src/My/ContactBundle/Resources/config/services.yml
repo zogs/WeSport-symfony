@@ -1,6 +1,3 @@
-parameters:
-#    my_contact.example.class: My\ContactBundle\Example
-
 services:
 #    my_contact.example:
 #        class: %my_contact.example.class%
@@ -11,5 +8,5 @@ services:
             - { name: form.type, alias: contact_form }
 
     contact.mailer:
-        class: My\ContactBundle\Mailer\mailer
-        arguments: [@mailer,@templating]
+        class: My\ContactBundle\Mailer\Mailer
+        arguments: [@mailer,@templating,'%mailer.emails.contact%']

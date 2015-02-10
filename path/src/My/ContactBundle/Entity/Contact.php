@@ -32,8 +32,8 @@ class Contact {
     private $email;
 
 	/**
-    * @ORM\Column(name="date", type="date")
-	* @Assert\Date()
+    * @ORM\Column(name="date", type="datetime")
+	* @Assert\DateTime()
 	*/
 	private $date;
 

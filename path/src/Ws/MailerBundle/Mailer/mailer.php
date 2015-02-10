@@ -16,15 +16,12 @@ use My\CommentBundle\Entity\Comment;
 class Mailer
 {
     protected $mailer;
-
     protected $templating;
 
-    private $expediteur = array('contact@cosporturage.fr' => 'coSporturage.fr');
-
-    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating)
+    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, $sender)
     {
         $this->mailer = $mailer;
-
+        $this->expediteur = $sender;
         $this->templating = $templating;
     }
 

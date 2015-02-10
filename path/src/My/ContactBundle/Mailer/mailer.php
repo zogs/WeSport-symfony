@@ -7,19 +7,19 @@ use Symfony\Component\Templating\EngineInterface;
 class Mailer
 {
     protected $mailer;
-
     protected $templating;
+    protected $recipients;
 
-    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating)
+    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, $emails)
     {
         $this->mailer = $mailer;
-
         $this->templating = $templating;
+        $this->recipients = $emails;
     }
 
     public function sendTestMessage()
     {
-        $this->sendMessage('sfwesport@we-sport.fr', 'guichardsim@gmail.com', 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
+        $this->sendMessage('sfwesport@we-sport.fr', $this->recipients, 'test mailer', '<html><body><strong>Hello world</strong></body></html>');;
     }
 
     public function sendContactMessage($contact)
@@ -27,13 +27,11 @@ class Mailer
 
         $from = $contact->getEmail();
 
-        $to = 'guichardsim@gmail.com';
-
         $subject = $contact->getTitle();
 
         $body = $this->templating->render('MyContactBundle:Email:contact.html.twig', array('contact' => $contact));
 
-        $this->sendMessage($from, $to, $subject, $body);
+        $this->sendMessage($from, $this->recipients, $subject, $body);
     }
 
     protected function sendMessage($from, $to, $subject, $body)

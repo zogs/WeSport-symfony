@@ -11,14 +11,14 @@
         <p>
             <strong>{{contact.email }}</strong> a laisse le message précédant via le formulaire de contact :
             <br />
-            Date :{{ contact.date }} {{ contact.time }}
+            Date :{{ contact.date }}
             <br />
             Titre : {{ contact.title }}
             <br />
             User : 
             {% if contact.user.username is defined %}
                 <strong>{{ contact.user.username }}</strong>
-            {% elseif %}
+            {% else %}
                 <i>not registered</i>
             {% endif %}
             <br />
