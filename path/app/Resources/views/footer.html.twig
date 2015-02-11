@@ -32,15 +32,7 @@
 
 		<p>Contactez nous</p>
 
-		<form action="#" method="post">
-
-			<input type="text" name="email" placeholder="Email" />
-			<textarea name="message" placeholder="Message"></textarea>
-			<button>Envoyer</button>
-
-		</form>
-
-		 {{ render(controller('MyContactBundle:Contact:RenderForm')) }}
+		 {{ render(controller('MyContactBundle:Contact:embeddedForm')) }}
 
 	</div>
 

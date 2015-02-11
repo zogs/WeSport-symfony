@@ -1,0 +1,14 @@
+{{ form_start(form, {"action":path('my_contact'),'attr':{'class':''}} ) }}
+	   			
+		{% if app.user.email is defined %}
+		{{ form_row(form.email,{'attr':{'value':app.user.email}}) }}
+		{% else %}
+		{{ form_row(form.email) }}
+		{% endif %}
+		
+		{{ form_row(form.title) }}
+		{{ form_row(form.message) }}
+	    
+	    <button type="submit">Envoyer</button>
+
+{{ form_end(form) }}

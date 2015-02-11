@@ -35,18 +35,18 @@ class ContactController extends Controller
             }            
         }
 
-        return $this->render('MyContactBundle:Default:contact.html.twig',array(
+        return $this->render('MyContactBundle:Page:contact.html.twig',array(
             'user' => $this->getUser(),
             'form' => $form->createView(),
             ));
     }
 
-    public function renderFormAction(Request $request){
+    public function embeddedFormAction(Request $request){
 
         $contact = new Contact();
         $form = $this->createForm('contact_form',$contact);
 
-        return $this->render('MyContactBundle:Default:form.html.twig',array(
+        return $this->render('MyContactBundle:Form:form_embedded.html.twig',array(
             'form' => $form->createView()
             ));
     }

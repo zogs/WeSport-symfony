@@ -22,13 +22,25 @@ class ContactType extends AbstractType
     {
         $date = new \Datetime('now');
         $builder
-            ->add('email','email',array())
+            ->add('email','email',array(
+                'label' => "Votre email",
+                'attr' => array(
+                    'placeholder' => "Email",
+                    )
+                ))
             ->add('title','text',array(
-                'label' => 'Sujet de votre message',              
+                'label' => 'Sujet du message',     
+                'attr' => array(
+                    'placeholder' => "Sujet"
+                    )         
                 ))
             ->add('message','textarea',array(
-                'label'=>'Contenu de votre message',
+                'label'=>'Contenu du Message',
+                'attr' => array(
+                    'placeholder' => "Message",
+                    )
                 ))
+            //security field            
             ->add('date','hidden',array(
                 'data'=> $date->format('Y-m-d H:i:s')
                 ))
@@ -54,7 +66,7 @@ class ContactType extends AbstractType
 
         //the login field must be empty
         if(!empty($data['login'])) {
-            throw new RobotUsingContactFormException('The login trap field must be empty. Somebody is trying to submit the contact form the wrong way ( '.$_SERVER['REMOTE_ADDR'].' is probably a robot!)');
+            throw new RobotUsingContactFormException('The login trap field must be empty. Somebody is trying to submit the contact form the wrong way ( '.(isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : "-REMOTE_ADDR undefined-").' is probably a robot!)');
         }
 
         //second to fill the form must be > 2 s
@@ -65,7 +77,7 @@ class ContactType extends AbstractType
         $seconds = $interval->format('%s');
 
         if($seconds <=2){
-            throw new RobotUsingContactFormException('The form have been submitted in '.$seconds.'s... Too fast for human, you are probably a robot ! (IP:'.$_SERVER['REMOTE_ADDR'].'))');
+            throw new RobotUsingContactFormException('The form have been submitted in '.$seconds.'s... Too fast for human, you are probably a robot ! (IP:'.(isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : "-REMOTE_ADDR undefined-").'))');
         }        
 
 
