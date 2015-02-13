@@ -11,13 +11,13 @@
         Quelques petites statisques : <a href="{{ path('ws_statistic_update',{scope:'main'}) }}">Mettre à jour</a>
          <ul>
              <li>
-                 Nombre d'inscrit : <strong>{{ statistic.total_user_registered }}</strong>
+                 Nombre d'inscrit : <strong>{{ statistic.getTotalUserRegistered() }}</strong>
              </li>
              <li>
-                 Nombre de participations :<strong> {{ statistic.total_event_participation }}</strong>
+                 Nombre de participations :<strong> {{ statistic.getTotalEventParticipation() }}</strong>
              </li>
              <li>
-                 Nombre d'activités :<strong> {{ statistic.total_event_created }}</strong>
+                 Nombre d'activités :<strong> {{ statistic.getTotalEventCreated() }}</strong>
              </li>
          </ul>
     </p>

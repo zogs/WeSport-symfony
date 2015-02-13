@@ -77,7 +77,7 @@ class GlobalStat
      * Set name
      *
      * @param string $name
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setName($name)
     {
@@ -100,7 +100,7 @@ class GlobalStat
      * Set total_user_registered
      *
      * @param integer $totalUserRegistred
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setTotalUserRegistered($totalUserRegistered)
     {
@@ -123,7 +123,7 @@ class GlobalStat
      * Set total_event_created
      *
      * @param integer $totalEventCreated
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setTotalEventCreated($totalEventCreated)
     {
@@ -146,7 +146,7 @@ class GlobalStat
      * Set total_event_created_confirmed
      *
      * @param integer $totalEventCreatedConfirmed
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setTotalEventCreatedConfirmed($totalEventCreatedConfirmed)
     {
@@ -169,7 +169,7 @@ class GlobalStat
      * Set total_event_deleted
      *
      * @param integer $totalEventDeleted
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setTotalEventDeleted($totalEventDeleted)
     {
@@ -192,7 +192,7 @@ class GlobalStat
      * Set total_event_participation
      *
      * @param integer $totalEventParticipation
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setTotalEventParticipation($totalEventParticipation)
     {
@@ -215,7 +215,7 @@ class GlobalStat
      * Set total_event_participation_canceled
      *
      * @param integer $totalEventParticipationCanceled
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setTotalEventParticipationCanceled($totalEventParticipationCanceled)
     {
@@ -238,7 +238,7 @@ class GlobalStat
      * Set total_alert_create
      *
      * @param integer $totalAlertCreate
-     * @return GeneralStat
+     * @return GlobalStat
      */
     public function setTotalAlertCreate($totalAlertCreate)
     {

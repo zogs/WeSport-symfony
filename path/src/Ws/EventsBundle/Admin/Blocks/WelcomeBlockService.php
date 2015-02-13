@@ -43,7 +43,7 @@ class WelcomeBlockService extends BaseBlockService
         // merge settings
         $settings = array_merge($this->getDefaultSettings(), $blockContext->getSettings());
 
-        $statistic = $this->em->getRepository('WsStatisticBundle:GeneralStat')->findByName('main');
+        $statistic = $this->em->getRepository('WsStatisticBundle:GlobalStat')->findByName('main');
 
         return $this->renderResponse('MyUtilsBundle:Administration:block_welcome_admin.html.twig', array(
             'block'     => $blockContext->getBlock(),

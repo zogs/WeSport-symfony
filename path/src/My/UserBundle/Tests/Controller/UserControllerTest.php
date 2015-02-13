@@ -61,7 +61,7 @@ class UserControllerTest extends WebTestCase
 		);
 
 		$crawler = $this->client->followRedirect();
-
+		
 		$this->assertEquals('Ws\EventsBundle\Controller\CalendarController::loadAction',$this->client->getRequest()->attributes->get('_controller'));	
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
@@ -98,7 +98,7 @@ class UserControllerTest extends WebTestCase
 
 	}
 	*/
-	public function testActivationMail()
+	public function testActivation()
 	{
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname');
 
@@ -110,7 +110,7 @@ class UserControllerTest extends WebTestCase
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
 
-	public function testLoginActivation()
+	public function testLogin()
 	{
 		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
 
@@ -122,9 +122,15 @@ class UserControllerTest extends WebTestCase
 		$crawler = $this->client->submit($form);
 
 		$crawler = $this->client->followRedirect();
+		$this->assertTrue($crawler->filter('body:contains("Testname")')->count() == 1);
 
-		$this->assertTrue($crawler->filter('.nav-username:contains("testname")')->count() == 1);
+	}
 
+	public function testLogout()
+	{
+		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_logout'));
+		$crawler = $this->client->followRedirect();
+		$this->assertTrue($crawler->filter('body:contains("Testname")')->count() == 0);
 	}
 
 	public function testDelete()
@@ -135,7 +141,4 @@ class UserControllerTest extends WebTestCase
 
 		$this->assertNull($this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname'));
 	}
-
-	
-	
 }
