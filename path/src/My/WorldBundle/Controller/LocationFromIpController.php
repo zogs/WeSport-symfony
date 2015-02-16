@@ -31,8 +31,8 @@ class LocationFromIpController
     public function getLocationFromIp($ip = '193.52.250.230')
     {
     
-        include(getcwd()."/../src/My/WorldBundle/GeoIpDatabase/API/php-1.11/geoipcity.inc");
-        include(getcwd()."/../src/My/WorldBundle/GeoIpDatabase/API/php-1.11/geoipregionvars.php");
+        require_once(getcwd()."/../src/My/WorldBundle/GeoIpDatabase/API/php-1.11/geoipcity.inc");
+        require_once(getcwd()."/../src/My/WorldBundle/GeoIpDatabase/API/php-1.11/geoipregionvars.php");
 
         $gi = geoip_open(getcwd()."/../src/My/WorldBundle/GeoIpDatabase/Database/GeoLiteCity.dat",GEOIP_STANDARD);
 
