@@ -11,3 +11,9 @@ parameters:
     mailer_password: justdoit
     locale: fr
     secret: WeSportIsTheEasierWayToDoSport
+    world_database_driver: pdo_mysql
+    world_database_host: 127.0.0.1
+    world_database_port: null
+    world_database_name: world-database
+    world_database_user: root
+    world_database_password: null
