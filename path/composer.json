@@ -35,6 +35,7 @@
         "friendsofsymfony/comment-bundle": "dev-master" ,
         "phpunit/phpunit": "3.7.*",
         "yavin/symfony-init-controller": "dev-master",
+        "sonata-project/core-bundle": "dev-master",
         "sonata-project/admin-bundle": "dev-master",
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
         "sonata-project/jquery-bundle": "dev-master",
