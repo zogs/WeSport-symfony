@@ -7,19 +7,19 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
     world.form.type.autocompletecity:
         class: My\WorldBundle\Form\Type\CityToLocationType 
-        arguments: [@doctrine.orm.worlddb_entity_manager,@router]
+        arguments: [@doctrine.orm.entity_manager,@router]
         tags:
             - { name: form.type, alias: city_to_location_type }
 
     world.form.type.locationSelectType:
         class: My\WorldBundle\Form\Type\LocationSelectType
-        arguments: [@doctrine.orm.worlddb_entity_manager,@router]
+        arguments: [@doctrine.orm.entity_manager,@router]
         tags:
             - { name:form.type, alias: location_select }
 
     world.location_manager:
         class: My\WorldBundle\Manager\LocationManager
-        arguments: [@doctrine.orm.worlddb_entity_manager]
+        arguments: [@doctrine.orm.entity_manager]
 
     world.map_manager:
         class: My\WorldBundle\Geomapper\MapManager

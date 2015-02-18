@@ -97,23 +97,12 @@ doctrine:
                 user: root
                 password: null
                 host: 127.0.0.1
-            world_database:
-                driver:   "%world_database_driver%"
-                host:     "%world_database_host%"
-                port:     "%world_database_port%"
-                dbname:   "%world_database_name%"
-                user:     "%world_database_user%"
-                password: "%world_database_password%"
-                charset:  UTF8
-                logging: false
-                profiling: false
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"
         # path:     "%database_path%"
 
     orm:
-        #auto_generate_proxy_classes: "%kernel.debug%"
-        default_entity_manager: default
+        auto_generate_proxy_classes: "%kernel.debug%"
         entity_managers:
             default:
                 connection: default
@@ -134,10 +123,6 @@ doctrine:
                         cos: My\WorldBundle\DQL\Cos
                     datetime_functions:
                         DAYNAME: My\UtilsBundle\DQL\Dayname
-            worlddb:
-                connection: world_database
-                mappings:
-                    MyWorldBundle: ~
 
 
 # Doctrine Extension Bundle Configuration

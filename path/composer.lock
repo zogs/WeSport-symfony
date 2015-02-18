@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6bb855f1a868f86c26803c9ee77337c7",
+    "hash": "0cd5253fc26eb3a1a71a906d9907ff9d",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -3456,7 +3456,6 @@
                 "jquery",
                 "sonata"
             ],
-            "abandoned": true,
             "time": "2014-03-19 11:45:00"
         },
         {

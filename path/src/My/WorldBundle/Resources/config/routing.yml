@@ -23,7 +23,6 @@ my_world_city_view:
     defaults: { _controller: MyWorldBundle:City:view }
     requirements:
         _method: GET
-        city: \d+
 
 my_world_location_nearest:
     pattern: /location/near/{lat}/{lon}/{country}

@@ -12,7 +12,7 @@ class CityController extends Controller
 {
     public function autoCompleteAction($country,$prefix)
     {
-        $em = $this->getDoctrine()->getManager('worlddb');
+        $em = $this->getDoctrine()->getManager();
 
         $cities = $em->getRepository('MyWorldBundle:City')->findCitiesSuggestions(10,$prefix,$country);
 
@@ -49,10 +49,8 @@ class CityController extends Controller
             ));
     }
 
-    public function viewAction($city)
-    {      
-        $city = $this->getDoctrine()->getManager('worlddb')->getRepository('MyWorldBundle:City')->findOneById($city);
-
+    public function viewAction(City $city)
+    {        
         return $this->render('MyWorldBundle:City:view.html.twig',array(
             'city'=>$city
             ));

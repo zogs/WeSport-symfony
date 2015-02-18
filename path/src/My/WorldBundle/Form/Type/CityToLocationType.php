@@ -147,7 +147,7 @@ class CityToLocationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'My\WorldBundle\Entity\Location',            
+            'data_class' => 'My\WorldBundle\Entity\Location',
             'invalid_message' => 'Form AutoCompleteCityType Error',
             'cascade_validation' => false,
             'ajax_url' => $this->router->generate('my_world_autocompletecity'),
