@@ -160,6 +160,9 @@ fos_user:
             template: MyUserBundle:Registration:email.html.twig
         form:
             type: my_user_registration
+    profile:
+        form:
+            type: my_user_profile
     from_email:
         address: contact@cosporturage.fr
         sender_name: cosporturage.fr

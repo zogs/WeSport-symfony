@@ -24,6 +24,12 @@ services:
         tags:
             - { name: form.type, alias: my_user_registration }
 
+    my_user.profile.form.type:
+        class: My\UserBundle\Form\Type\ProfilEditionType
+        arguments: [@request_stack,@security.context]
+        tags:
+            - { name: form.type, alias: my_user_profile }
+
     user_avatar.form.type:
         class: My\UserBundle\Form\Type\AvatarType
         arguments: [@security.context]

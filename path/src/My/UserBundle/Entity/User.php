@@ -102,7 +102,7 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="text", length=6, nullable=true, name="lang")
      */
-    private $lang_prefered = '';
+    private $lang = '';
 
     public function __construct()
     {
@@ -354,26 +354,26 @@ class User extends BaseUser
     }
 
     /**
-     * Set lang_prefered
+     * Set lang
      *
-     * @param string $langPrefered
+     * @param string $lang
      * @return User
      */
-    public function setLangPrefered($langPrefered)
+    public function setLang($lang)
     {
-        $this->lang_prefered = $langPrefered;
+        $this->lang = $lang;
 
         return $this;
     }
 
     /**
-     * Get lang_prefered
+     * Get lang
      *
      * @return string 
      */
-    public function getLangPrefered()
+    public function getLang()
     {
-        return $this->lang_prefered;
+        return $this->lang;
     }
 
     

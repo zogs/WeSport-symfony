@@ -49,15 +49,12 @@ class UserController extends Controller
     public function editProfilAction($action)
     {
 
-        $user = $this->getUser();
-        $userManager = $this->container->get('fos_user.user_manager');
-
-        if($user === null){
+        if($this->getUser() === null){
             $this->get('flashbag')->add("Veuillez vous reconnecter",'info');           
             return $this->redirect($this->generateUrl("fos_user_security_login")); 
         }
 
-        $form = $this->createForm(new ProfilEditionType($action,$user,$userManager));   
+        $form = $this->createForm(new ProfilEditionType('profil',$this->container->get('security.context')));   
 
         if($this->getRequest()->isMethod('POST')){
 
@@ -65,7 +62,8 @@ class UserController extends Controller
             
             if($form->isValid()){
                 
-                $userManager->updateUser($user);
+                $user = $form->getData();
+                 $this->container->get('fos_user.user_manager')->updateUser($user);
 
                 $this->get('flashbag')->add("Vos informations ont été sauvegardé !");
 
@@ -78,7 +76,7 @@ class UserController extends Controller
 
 
         return $this->render('MyUserBundle:Profil:edit.html.twig',array(
-            'user'=>$user,
+            'user'=>$this->getUser(),
             'action'=>$action,
             'form'=>$form->createView(),
             )

@@ -1,5 +1,7 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
+{% if app.request.query.get('action') != null %} Action: {{ app.request.query.get('action') }} {% endif %}
+	
 <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
     {{ form_widget(form) }}
     <div>

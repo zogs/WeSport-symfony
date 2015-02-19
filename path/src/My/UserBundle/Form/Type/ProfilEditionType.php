@@ -8,56 +8,56 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use My\WorldBundle\Form\Type\LocationSelectType;
 
+use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 
-class ProfilEditionType extends AbstractType
+class ProfilEditionType extends BaseType
 {
     private $user;
     private $action;
-    private $userManager;
 
-    public function __construct($action, $user, $userManager)
+    public function __construct(RequestStack $requestStack, SecurityContext $security, $default_action = 'account')
     {
-        $this->user = $user;
-        $this->action = $action;
-        $this->userManager = $userManager;
+        $request = $requestStack->getCurrentRequest();
+        $this->action = ($request->query->get('action') != null)? $request->query->get('action') : $default_action;
+        $this->user = $security->getToken()->getUser();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-                
-        $user = $this->user;        
-        $action = $this->action;
+        $this->buildUserForm($builder, $options);       
         
         $builder
         ->add('action','hidden',array(
-            'data'=>$action,
+            'data'=>$this->action,
             'mapped' => false,
             ))
         ->add('id','hidden',array(
-            'data'=>$user->getId()
+            'data'=>$this->user->getId()
             ));
 
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function($event) use($user,$action) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function($event) {
 
             $form = $event->getForm();
 
-            if($action=='account'){
+            if($this->action=='account'){
 
                 $form->add('username','text',array(
                     'required'=> true,
                     'label'=> "Login",
-                    'data'=> $user->getUsername(),
+                    'data'=> $this->user->getUsername(),
                     'attr'=> array(
                         'data-icon'=> 'icon-user',
                         'data-url'=> '/url/to/check/login')
                     ))
                     ->add('email','text',array(
                         'label'=> "Email",
-                        'data'=> $user->getEmail(),
+                        'data'=> $this->user->getEmail(),
                         'attr'=> array(
                             'data-icon'=> 'icon-envelope',
                             'data-url'=> '/url/to/check/email')
@@ -73,12 +73,12 @@ class ProfilEditionType extends AbstractType
 
             }
 
-            if($action=='profil'){
+            if($this->action=='profil'){
 
                 $form->add('firstname','text',array(
                     'required'=>false,
                     'label'=>"Prénom",
-                    'data'=> $user->getFirstname(),
+                    'data'=> $this->user->getFirstname(),
                     'attr'=>array(
                         'data-icon'=>'icon-user',
                         'placeholder'=>'Votre prénom',
@@ -87,7 +87,7 @@ class ProfilEditionType extends AbstractType
                     ->add('lastname','text',array(
                         'required' => false,
                         'label' => 'Nom',
-                        'data' => $user->getLastname(),
+                        'data' => $this->user->getLastname(),
                         'attr'=> array(
                             'data-icon' => 'icon-user',
                             'placeholder'=>"Votre nom de famille",
@@ -96,7 +96,7 @@ class ProfilEditionType extends AbstractType
                     ->add('description','textarea',array(
                         'required' => false,
                         'label' => "Description",
-                        'data' => $user->getDescription(),
+                        'data' => $this->user->getDescription(),
                         'attr' => array(
                             'placeholder'=>"Décrivez vous en quelques mots ( 130 caractères max. )",
                             'rows'=>3,
@@ -107,7 +107,7 @@ class ProfilEditionType extends AbstractType
                         'label' => "Vous êtes...",
                         'multiple'=> false,
                         'expanded'=> false,
-                        'data' => $user->getGender(),
+                        'data' => $this->user->getGender(),
                         'choices'=>array(1=>' un homme',0=>' une femelle'),
                         'empty_value' => "Vous êtes...",
                         ))
@@ -115,32 +115,32 @@ class ProfilEditionType extends AbstractType
                     ->add('birthday','birthday',array(
                         'label' => "Birthday", 
                         'required'=> false,
-                        'data' => $user->getBirthday(),
+                        'data' => $this->user->getBirthday(),
                         'empty_value' => 'Votre anniversaire'  ,
                         'data' => new \DateTime('1996/06/18'),                
                         ))
 
                     ->add('location','location_select',array(
-                        'data'=>$user->getLocation()
+                        'data'=>$this->user->getLocation()
                         ))
                     ;                    
             }
 
-            if($action=='avatar'){
+            if($this->action=='avatar'){
 
                 $form->add('avatar','avatar_type',array(
-                    'data' => $user->getAvatar()
+                    'data' => $this->user->getAvatar()
                     ));
             }
 
-            if($action=='mailing'){
+            if($this->action=='mailing'){
 
                 $form->add('settings','ws_mailer_settings_type',array(
-                    'data' => $user->getSettings()
+                    'data' => $this->user->getSettings()
                     ));
             }
 
-            if($action=='password'){
+            if($this->action=='password'){
 
                 $form->add('oldpassword','password',array(
                     'label' => 'Ancien mot de passe',
@@ -176,7 +176,6 @@ class ProfilEditionType extends AbstractType
 
         
         $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
-
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
 
     }
@@ -225,6 +224,6 @@ class ProfilEditionType extends AbstractType
 
     public function getName()
     {
-        return 'my_profil_edition';
+        return 'my_user_profile';
     }
 }
