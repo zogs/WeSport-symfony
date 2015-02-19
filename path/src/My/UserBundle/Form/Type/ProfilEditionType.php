@@ -32,167 +32,45 @@ class ProfilEditionType extends BaseType
         $this->buildUserForm($builder, $options);       
         
         $builder
-        ->add('action','hidden',array(
-            'data'=>$this->action,
-            'mapped' => false,
-            ))
-        ->add('id','hidden',array(
-            'data'=>$this->user->getId()
-            ));
+            ->add('action','hidden',array(
+                'data'=>$this->action,
+                'mapped' => false,
+                ))
+            ->add('id','hidden',array(
+                'data'=>$this->user->getId()
+                ));
 
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function($event) {
-
-            $form = $event->getForm();
-
-            if($this->action=='account'){
-
-                $form->add('username','text',array(
-                    'required'=> true,
-                    'label'=> "Login",
-                    'data'=> $this->user->getUsername(),
-                    'attr'=> array(
-                        'data-icon'=> 'icon-user',
-                        'data-url'=> '/url/to/check/login')
-                    ))
-                    ->add('email','text',array(
-                        'label'=> "Email",
-                        'data'=> $this->user->getEmail(),
-                        'attr'=> array(
-                            'data-icon'=> 'icon-envelope',
-                            'data-url'=> '/url/to/check/email')
-                        ))
-                    ->add('lang','choice', array(
-                        'choices'=> array('fr'=>"Français",'en'=>"Anglais"),
-                        'label'=> "Langue de l'interface",
-                        'expanded'=> false,
-                        'multiple'=> false,
-                        'empty_value'=> "( Votre langue )",
-                        'attr'=> array('data-icon'=>'icon-book')
-                        ));
-
-            }
-
-            if($this->action=='profil'){
-
-                $form->add('firstname','text',array(
-                    'required'=>false,
-                    'label'=>"Prénom",
-                    'data'=> $this->user->getFirstname(),
-                    'attr'=>array(
-                        'data-icon'=>'icon-user',
-                        'placeholder'=>'Votre prénom',
-                        )
-                    ))
-                    ->add('lastname','text',array(
-                        'required' => false,
-                        'label' => 'Nom',
-                        'data' => $this->user->getLastname(),
-                        'attr'=> array(
-                            'data-icon' => 'icon-user',
-                            'placeholder'=>"Votre nom de famille",
-                        )
-                    ))
-                    ->add('description','textarea',array(
-                        'required' => false,
-                        'label' => "Description",
-                        'data' => $this->user->getDescription(),
-                        'attr' => array(
-                            'placeholder'=>"Décrivez vous en quelques mots ( 130 caractères max. )",
-                            'rows'=>3,
-                        )
-                    ))
-                    ->add('gender','choice',array(
-                        'required'=> false,
-                        'label' => "Vous êtes...",
-                        'multiple'=> false,
-                        'expanded'=> false,
-                        'data' => $this->user->getGender(),
-                        'choices'=>array(1=>' un homme',0=>' une femelle'),
-                        'empty_value' => "Vous êtes...",
-                        ))
-
-                    ->add('birthday','birthday',array(
-                        'label' => "Birthday", 
-                        'required'=> false,
-                        'data' => $this->user->getBirthday(),
-                        'empty_value' => 'Votre anniversaire'  ,
-                        'data' => new \DateTime('1996/06/18'),                
-                        ))
-
-                    ->add('location','location_select',array(
-                        'data'=>$this->user->getLocation()
-                        ))
-                    ;                    
-            }
-
-            if($this->action=='avatar'){
-
-                $form->add('avatar','avatar_type',array(
-                    'data' => $this->user->getAvatar()
-                    ));
-            }
-
-            if($this->action=='mailing'){
-
-                $form->add('settings','ws_mailer_settings_type',array(
-                    'data' => $this->user->getSettings()
-                    ));
-            }
-
-            if($this->action=='password'){
-
-                $form->add('oldpassword','password',array(
-                    'label' => 'Ancien mot de passe',
-                    'mapped' => false,
-                    'constraints' => new UserPassword(),
-                    'attr' => array(
-                        'placeholder' => 'Ancien',
-                        'data-icon' => 'lock',
-                        )
-                    ))
-                    ->add('plainPassword', 'repeated', array(
-                        'type' => 'password',                
-                        'options' => array('translation_domain' => 'FOSUserBundle'),
-                        'first_options' => array(
-                            'label' => 'Nouveau mot de passe',
-                            'attr'=> array(
-                                'placeholder' => 'Nouveau',
-                                'data-icon' => 'lock'
-                                ),                    
-                            ),
-                        'second_options' => array(
-                            'label' => 'Confirmer mot de passe',
-                            'attr'=> array(
-                                'placeholder' => 'Confirmer',
-                                'data-icon' => 'lock'
-                                ),                    
-                            ),
-                        'invalid_message' => 'fos_user.password.mismatch',
-
-                    ));
-            }
-        });
-
-        
-        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
+    }
 
+    public function onPreSetData(FormEvent $event)
+    {               
+        $form = $event->getForm();        
+        $form = $this->addGroupFields($form,$this->action); 
+
+    }
+        
+    public function onPreSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $form = $this->addGroupFields($form,$form->get('action')->getData());
+        
+        dump($event->getData());  
+        dump($form->get('location')->getData());
+        if($this->action=='password')
+            $this->updateUserPassword($event->getData());
     }
 
     public function onPostSubmit(FormEvent $event)
     {
-        $user = $event->getForm()->getData();
-
+        $user = $event->getData();
+        dump($event->getForm());
+        dump($user->getLocation());
+        exit();
         if($this->action=='avatar')
             $this->setAvatarFilename($user);
-
-    }
-
-    public function onPreSubmit(FormEvent $event)
-    {
-        if($this->action=='password')
-            $this->updateUserPassword($event->getData());
     }
 
     /**
@@ -211,7 +89,143 @@ class ProfilEditionType extends BaseType
     public function updateUserPassword($data)
     {        
         $this->user->setPlainPassword($data['plainPassword']['first']);
-    }       
+    }    
+
+    /**
+     * Add fields in function of the group action
+     */
+    public function addGroupFields($form,$action)
+    {
+        if($action=='account'){
+
+            $form->add('username','text',array(
+                'required'=> true,
+                'label'=> "Login",
+                'data'=> $this->user->getUsername(),
+                'attr'=> array(
+                    'data-icon'=> 'icon-user',
+                    'data-url'=> '/url/to/check/login')
+                ))
+                ->add('email','text',array(
+                    'label'=> "Email",
+                    'data'=> $this->user->getEmail(),
+                    'attr'=> array(
+                        'data-icon'=> 'icon-envelope',
+                        'data-url'=> '/url/to/check/email')
+                    ))                    
+                ;
+        }
+        else {
+            //if not account action
+            //hide USERNAME and EMAIL fields
+            $form
+                ->add('username','hidden')
+                ->add('email','hidden')
+            ;
+        }
+
+        if($action=='info'){
+
+            $form->add('firstname','text',array(
+                'required'=>false,
+                'label'=>"Prénom",
+                'data'=> $this->user->getFirstname(),
+                'attr'=>array(
+                    'data-icon'=>'icon-user',
+                    'placeholder'=>'Votre prénom',
+                    )
+                ))
+                ->add('lastname','text',array(
+                    'required' => false,
+                    'label' => 'Nom',
+                    'data' => $this->user->getLastname(),
+                    'attr'=> array(
+                        'data-icon' => 'icon-user',
+                        'placeholder'=>"Votre nom de famille",
+                    )
+                ))
+                ->add('description','textarea',array(
+                    'required' => false,
+                    'label' => "Description",
+                    'data' => $this->user->getDescription(),
+                    'attr' => array(
+                        'placeholder'=>"Décrivez vous en quelques mots ( 130 caractères max. )",
+                        'rows'=>3,
+                    )
+                ))
+                ->add('gender','choice',array(
+                    'required'=> false,
+                    'label' => "Vous êtes...",
+                    'multiple'=> false,
+                    'expanded'=> false,
+                    'data' => $this->user->getGender(),
+                    'choices'=>array(1=>' un homme',0=>' une femelle'),
+                    'empty_value' => "Vous êtes...",
+                    ))
+
+                ->add('birthday','birthday',array(
+                    'label' => "Birthday", 
+                    'required'=> false,
+                    'data' => ($this->user->getBirthday())? $this->user->getBirthday() : new \DateTime('1996/06/18'),
+                    'empty_value' => 'Votre anniversaire'  ,              
+                    ))
+
+                ->add('location','location_select',array(
+                    'data' => $this->user->getLocation()
+                    ))
+                
+                ;                    
+        }
+
+        if($action=='avatar'){
+
+            $form->add('avatar','avatar_type',array(
+                'data' => $this->user->getAvatar()
+                ));
+        }
+
+        if($action=='mailing'){
+
+            $form->add('settings','ws_mailer_settings_type',array(
+                'data' => $this->user->getSettings()
+                ));
+        }
+
+        if($action=='password'){
+
+            $form->add('oldpassword','password',array(
+                'label' => 'Ancien mot de passe',
+                'mapped' => false,
+                'constraints' => new UserPassword(),
+                'attr' => array(
+                    'placeholder' => 'Ancien',
+                    'data-icon' => 'lock',
+                    )
+                ))
+                ->add('plainPassword', 'repeated', array(
+                    'type' => 'password',                
+                    'options' => array('translation_domain' => 'FOSUserBundle'),
+                    'first_options' => array(
+                        'label' => 'Nouveau mot de passe',
+                        'attr'=> array(
+                            'placeholder' => 'Nouveau',
+                            'data-icon' => 'lock'
+                            ),                    
+                        ),
+                    'second_options' => array(
+                        'label' => 'Confirmer mot de passe',
+                        'attr'=> array(
+                            'placeholder' => 'Confirmer',
+                            'data-icon' => 'lock'
+                            ),                    
+                        ),
+                    'invalid_message' => 'fos_user.password.mismatch',
+
+                ));
+        }
+
+        return $form;
+    }   
 
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

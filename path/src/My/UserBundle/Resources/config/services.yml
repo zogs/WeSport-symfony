@@ -18,7 +18,7 @@ services:
             - { name: 'monolog.logger', channel: 'security' }
 
     #Form Type
-    acme_user.registration.form.type:
+    my_user.registration.form.type:
         class: My\UserBundle\Form\Type\RegistrationFormType
         arguments: [%fos_user.model.user.class%]
         tags:
@@ -48,8 +48,14 @@ services:
             - { name: form.type_extension, alias: file }
 
     #Event Listner
-    user_bundle.listener.init_registration:
+    user_bundle.listener.registration:
         class: My\UserBundle\EventListener\RegistrationListener
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag]
+        scope: container
+        tags:
+            - { name: kernel.event_subscriber }
+    user_bundle.listener.profile:
+        class: My\UserBundle\EventListener\ProfileListener
         arguments: [@doctrine.orm.entity_manager,@router,@flashbag]
         scope: container
         tags:

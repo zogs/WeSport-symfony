@@ -124,6 +124,8 @@ class LocationSelectType extends AbstractType
 
         //replace with the  object location
         $form->setData($location);
+
+        dump($location);
     }
 
     public function onPreSetData(FormEvent $event)

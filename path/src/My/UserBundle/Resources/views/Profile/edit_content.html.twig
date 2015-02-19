@@ -1,10 +1,71 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% if app.request.query.get('action') != null %} Action: {{ app.request.query.get('action') }} {% endif %}
-	
-<form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'profile.edit.submit'|trans }}" />
-    </div>
-</form>
+
+<form action="{{ path('fos_user_profile_edit') }}?action={{ action }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+
+
+	{{ form_errors(form) }}
+
+	{% if (action == '') or (action == 'account') %}
+		<div class="module-header">
+			<h2>Mon compte</h2>
+		</div>
+
+		{{ form_row(form.username) }}
+		{{ form_row(form.email) }}
+		
+
+	{% endif %}
+
+
+	{% if action == 'info' %}
+		<div class="module-header">
+			<h2>Mon Profil</h2>
+		</div>
+
+		{{ form_row(form.firstname) }}
+		{{ form_row(form.lastname) }}
+		{{ form_row(form.description) }}
+		{{ form_row(form.gender) }}
+		{{ form_row(form.birthday) }}
+		{{ form_row(form.location) }}
+
+	{% endif %}
+
+
+	{% if action == 'avatar' %}
+		<div class="module-header">
+			<h2>Mon image d'avatar</h2>
+		</div>
+
+		{{ form_row(form.avatar.file) }}
+		{{ form_row(form.avatar.updated) }}
+	{% endif %}
+
+	{% if action == 'mailing' %}
+		<div class="module-header">
+			<h2>Mes préférences mailing</h2>
+		</div>
+
+		{{ form_row(form.settings) }}
+		
+	{% endif %}
+
+
+	{% if action == 'password' %}
+		<div class="module-header">
+			<h2>Mon mot de passe</h2>
+		</div>
+
+		{{ form_row(form.oldpassword) }}
+		{{ form_row(form.plainPassword) }}
+
+	{% endif %}
+
+
+
+	<button class="btn btn-large btn-info" type="submit">{{ 'profile.edit.submit'|trans }}</button>
+
+{{ form_end(form) }}
+
+

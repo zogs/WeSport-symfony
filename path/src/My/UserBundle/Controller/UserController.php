@@ -54,7 +54,7 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl("fos_user_security_login")); 
         }
 
-        $form = $this->createForm(new ProfilEditionType('profil',$this->container->get('security.context')));   
+        $form = $this->createForm('my_user_profile');   
 
         if($this->getRequest()->isMethod('POST')){
 

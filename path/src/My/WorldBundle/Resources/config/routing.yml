@@ -3,7 +3,7 @@ my_world_homepage:
     defaults: { _controller: MyWorldBundle:Default:index }
 
 my_world_location_select_test:
-    pattern: /location/select/test
+    pattern: /location/select
     defaults: { _controller: MyWorldBundle:Location:formSelectLocation }
 
 my_world_location_select_nextlevel:
