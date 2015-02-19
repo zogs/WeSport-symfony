@@ -55,7 +55,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
 		$asso1 = new User();
 		$asso1->setUsername('asso1');
-		$asso1->setEmail('guichardsim+user2@gmail.com');
+		$asso1->setEmail('guichardsim+asso1@gmail.com');
 		$asso1->setType('asso');
 		$asso1->setEnabled(true);
 		$asso1->setPlainPassword('fatboy');
