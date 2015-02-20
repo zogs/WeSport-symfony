@@ -25,46 +25,26 @@ class StatesToLocationTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms ( call on initialize the form )
+     * Transforms an object (issue) to a string (number).
      *
-     * @param  
-     * @return 
+     * @param  Issue|null $issue
+     * @return string
      */
-    public function transform($entity)
-    {        
-        
-        if($entity === null || $entity == ''){
-            return null;
-        }
-
-        if(!is_object($entity)){
-            throw new UnexpectedTypeException($entity, 'object');
-        }
-
-        return $entity->getId();
+    public function transform($location)
+    {
+        return $location;
     }
 
     /**
-     * Reverse Transforms  ( call on handle the form )
+     * Transforms a string (number) to an object (issue).
      *
-     * @param  
-     *
-     * @return 
-     *
+     * @param  string $number
+     * @return Issue|null
      * @throws TransformationFailedException if object (issue) is not found.
      */
-    public function reverseTransform($location)
+    public function reverseTransform($array)
     {
-        
-        var_dump($location);
+        dump($array);
         exit();
-        if($location->getId()==0){
-            return null;
-        }
-
-        $location = $this->om->getRepository('MyWorldBundle:Location')->findOneById($location->getId());
-
-        return $location;
-        
     }
 }

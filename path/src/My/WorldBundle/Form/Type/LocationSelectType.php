@@ -12,6 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Doctrine\ORM\EntityManager;
 
+use My\WorldBundle\Form\DataTransformer\StatesToLocationTransformer;
+
 
 class LocationSelectType extends AbstractType
 {
@@ -41,8 +43,9 @@ class LocationSelectType extends AbstractType
         $countries = $em->getRepository('MyWorldBundle:Country')->findCountryList();
 
         $builder   
-                 
-            ->add('country','choice',array(
+            ->addModelTransformer(new StatesToLocationTransformer($this->em))
+
+                ->add('country','choice',array(
                 'choices'=>$countries,
                 'required'=>false,
                 'mapped'=>false,
@@ -89,13 +92,23 @@ class LocationSelectType extends AbstractType
                 'empty_value'=>'Votre ville',
                 'attr'=>array('class'=>'geo-select geo-select-city geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
-                ))                                                                     
+                )) 
+
         ;
 
         $this->options = $options;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
     }
+
+    public function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $location = $event->getData();        
+        $this->addGeoFields($form, $location);
+
+    }    
     
     /**
      *  Before persist, find and replace with the adequate Location
@@ -104,10 +117,14 @@ class LocationSelectType extends AbstractType
     {
         $form = $event->getForm();
         $data = $event->getData();
+        dump($data);
+        dump($event->getData());
 
+        /*
         //persist null if no country is submitted
         if(empty($data['country'])){
-            return $form->setData(null);
+            $form->setData(null);
+            return;
         }
 
         //find and replace country name by country id
@@ -119,26 +136,29 @@ class LocationSelectType extends AbstractType
         //find Location that fit the form data
         $location = $this->em->getRepository('MyWorldBundle:Location')->findLocationFromStates($data);
 
-        //add all relevant geo field to render view
+        //add all relevant geo field to render the form view
         $this->addGeoFields($form, $location);
 
         //replace with the  object location
-        $form->setData($location);
-
-        dump($location);
+        $event->setData($location);
+       dump($form);
+       dump($location);
+       */
     }
 
-    public function onPreSetData(FormEvent $event)
+    public function onPostSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        $location = $event->getData();        
-        $this->addGeoFields($form, $location);
-
-    }    
+        $data = $event->getData();
+        dump($form);
+        dump($data);
+        exit();
+    }
 
     public function addGeoFields(FormInterface $form, $location)
     {
         if($location == NULL) return;
+
         if($location->getCountry() != NULL) $this->addGeoField($form, $location, 'country', $location->getCountry()->getCode());                        
         if($location->getRegion() != NULL) $this->addGeoField($form, $location, 'region', $location->getRegion()->getId());            
         if($location->getDepartement() != NULL) $this->addGeoField($form, $location, 'departement', $location->getDepartement()->getId());            
@@ -151,7 +171,7 @@ class LocationSelectType extends AbstractType
     {        
         $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListFromLocationByLevel($location,$level);
         if(empty($list)) return;
-        
+
         $form->add($list['level'],'choice',array(
                 'choices'=>$list['list'],
                 'required'=>false,
@@ -167,11 +187,9 @@ class LocationSelectType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'invalid_message' => 'humm cest pas encore ça...',
             'data_class' => 'My\WorldBundle\Entity\Location',
-            'cascade_validation' => false,
-            'validation_groups' => false,
             'ajax_url' => $this->router->generate('my_world_location_select_nextlevel'),
+            'allow_extra_fields' => true,
         ));
     }
 

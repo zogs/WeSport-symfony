@@ -20,14 +20,19 @@ class LocationController extends Controller
 
     public function formSelectLocationAction(Request $request)
     {
-    	$location = null;
-    	$form = $this->createForm('location_select');
+    	$location = new Location();
+    	$form = $this->createForm('location_select',$location);
     	$form->handleRequest($request);
 
     	if($form->isValid()){
 
-		$location = $form->getData();    			
-    	}
+				
+                            dump($location);
+                            dump($form->getData());
+                            exit();
+            }
+            
+
 
     	return $this->render('MyWorldBundle:Form:test_location_select.html.twig',array(
     		'form' => $form->createView(),
@@ -71,7 +76,7 @@ class LocationController extends Controller
     {
         $helpers = array(
             'country'=>"Sélectionnez un pays",
-            'region'=>"Séléectionnez une région",
+            'region'=>"Sélectionnez une région",
             'departement'=>"Sélectionnez un département",
             'district'=>"Select a district",
             'division'=>"Select a division",

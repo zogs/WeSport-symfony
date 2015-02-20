@@ -119,6 +119,18 @@ class Location
     }
 
     /**
+     * Has country
+     *
+     * @return boolean
+     */
+    public function hasCountry()
+    {
+        if(isset($this->country)) return true;
+        return false;
+
+    }
+
+    /**
      * Set region
      *
      * @param string $region
@@ -139,6 +151,18 @@ class Location
     public function getRegion()
     {
             return $this->region;
+    }
+
+    /**
+     * Has region
+     *
+     * @return boolean
+     */
+    public function hasRegion()
+    {
+        if(isset($this->region)) return true;
+        return false;
+
     }
 
     /**
@@ -165,6 +189,18 @@ class Location
     }
 
     /**
+     * Has city
+     *
+     * @return boolean
+     */
+    public function hasDepartement()
+    {
+        if(isset($this->departement)) return true;
+        return false;
+
+    }
+
+    /**
      * Set district
      *
      * @param string $district
@@ -188,6 +224,17 @@ class Location
     }
 
     /**
+     * Has district
+     *
+     * @return boolean
+     */
+    public function hasDistrict()
+    {
+        if(isset($this->district)) return true;
+        return false;
+
+    }
+    /**
      * Set division
      *
      * @param string $division
@@ -209,7 +256,17 @@ class Location
     {
             return $this->division;
     }
+   /**
+     * Has division
+     *
+     * @return boolean
+     */
+    public function hasDivision()
+    {
+        if(isset($this->division)) return true;
+        return false;
 
+    }
     /**
      * Set city
      *
