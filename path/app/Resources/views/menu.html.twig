@@ -32,7 +32,7 @@
                             </a>
 
                             <ul class="dropdown-menu">
-                                <li><span class="ws-icon ws-icon-home"></span><a href="{{ path('user_profil_edit', {action:'account' }) }}">Mon compte</a></li>
+                                <li><span class="ws-icon ws-icon-home"></span><a href="{{ path('fos_user_profile_edit', {action:'account' }) }}">Mon compte</a></li>
                                 {% if is_granted('ROLE_ADMIN') %}
                                 <li><span class="ws-icon ws-icon-cog"></span><a href="{{ path('sonata_admin_dashboard') }}">Administration</a></li>
                                 {% endif %}

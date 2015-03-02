@@ -37,19 +37,19 @@ class LocationControllerTest extends WebTestCase
 		$london = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('London','UK');
 
 		$crawler = $this->client->request('POST',$this->router->generate('my_world_location_select_test'),array(
-			'location_select' => array(
+			'location_selector' => array(
 				'country' => $london->getCountry()->getCode(),
 				'region' => $london->getRegion()->getId(),
 				'departement' => $london->getDepartement()->getId(),
 				'district' => $london->getDistrict()->getId(),
 				'division' => $london->getDivision()->getId(),
 				'city' => $london->getCity()->getId(),
-				'_token' => $this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('location_select'),
+				'_token' => $this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('location_selector'),
 				)
 			));
 
-		$this->assertEquals('My\WorldBundle\Controller\LocationController::formSelectLocationAction',$this->client->getRequest()->attributes->get('_controller'));
-		$this->assertTrue($crawler->filter('span.sf-dump-num:contains("'.$london->getId().'")')->count() >= 1);	
+		$this->assertEquals('My\WorldBundle\Controller\LocationController::locationSelectAction',$this->client->getRequest()->attributes->get('_controller'));		
+		$this->assertTrue($crawler->filter('body:contains("'.$london->getId().'")')->count() >= 1);	
 		
 	}
 

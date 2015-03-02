@@ -42,8 +42,8 @@ class UserControllerTest extends WebTestCase
 				'username' => 'testname',
 				'email' => 'testemail@local.host',
 				'plainPassword' => array(
-					'first' => 'pa$$word',
-					'second' => 'pa$$word'),
+					'first' => 'pass',
+					'second' => 'pass'),
 				'birthday' => array(
 					'day' => 1,
 					'month' => 1,
@@ -86,7 +86,7 @@ class UserControllerTest extends WebTestCase
 
 		$form = $crawler->selectButton('Connexion')->form(array(
 			'_username' => 'testname',
-			'_password' => 'pa$$word',
+			'_password' => 'pass',
 			));
 
 		$crawler = $this->client->submit($form);
@@ -112,22 +112,63 @@ class UserControllerTest extends WebTestCase
 
 	public function testLogin()
 	{
-		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
-
-		$form = $crawler->selectButton('Connexion')->form(array(
-			'_username' => 'testname',
-			'_password' => 'pa$$word',
-			));
-
-		$crawler = $this->client->submit($form);
+		$this->logIn();
 
 		$crawler = $this->client->followRedirect();
 		$this->assertTrue($crawler->filter('body:contains("Testname")')->count() == 1);
 
 	}
 
+	private function logIn()
+	{
+		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
+		$form = $crawler->selectButton('Connexion')->form(array('_username' => 'testname','_password' => 'pass'));
+		$crawler = $this->client->submit($form);
+	}
+
+	public function testEditProfile()
+	{
+		$this->logIn();
+
+		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername('testname');
+		$loc_moloy = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('Moloy','FR');
+
+		$crawler = $this->client->request('GET',$this->router->generate('fos_user_profile_edit',array('action'=>'info')));
+		$form = $crawler->selectButton('Mettre à jour')->form(array(
+			'fos_user_profile_form[username]'=>$user->getUsername(),
+			'fos_user_profile_form[email]' => $user->getEmail(),
+			'fos_user_profile_form[action]'=>'info',
+			'fos_user_profile_form[id]'=>$user->getId(),
+			'fos_user_profile_form[firstname]' => 'my firstname',
+			'fos_user_profile_form[lastname]' => 'my lastname',
+			'fos_user_profile_form[description]' => 'my description',
+			'fos_user_profile_form[gender]' => 0,
+			'fos_user_profile_form[birthday]'=>array(
+				'day'=> '1',
+				'month'=> '1',
+				'year'=> '2001',
+				),
+			'fos_user_profile_form[location]'=> array(
+				'country'=>$loc_moloy->getCountry()->getCode(),
+				'region'=>$loc_moloy->getRegion()->getId(),
+				'departement'=>$loc_moloy->getDepartement()->getId(),
+				'district'=>'',
+				'division'=>'',
+				'city'=>$loc_moloy->getCity()->getId(),
+				),
+			));
+		$crawler = $this->client->submit($form);
+		$crawler = $this->client->followRedirect();
+
+		$this->assertEquals('FOS\UserBundle\Controller\ProfileController::editAction',$this->client->getRequest()->attributes->get('_controller'));	
+		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
+		
+
+	}
+
 	public function testLogout()
 	{
+		$this->logIn();
 		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_logout'));
 		$crawler = $this->client->followRedirect();
 		$this->assertTrue($crawler->filter('body:contains("Testname")')->count() == 0);

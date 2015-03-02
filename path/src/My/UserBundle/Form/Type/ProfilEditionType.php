@@ -55,10 +55,11 @@ class ProfilEditionType extends BaseType
     public function onPreSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        $form = $this->addGroupFields($form,$form->get('action')->getData());
+
+        $this->action = $form->get('action')->getData();
+
+        $form = $this->addGroupFields($form,$this->action);
         
-        dump($event->getData());  
-        dump($form->get('location')->getData());
         if($this->action=='password')
             $this->updateUserPassword($event->getData());
     }
@@ -66,9 +67,7 @@ class ProfilEditionType extends BaseType
     public function onPostSubmit(FormEvent $event)
     {
         $user = $event->getData();
-        dump($event->getForm());
-        dump($user->getLocation());
-        exit();
+
         if($this->action=='avatar')
             $this->setAvatarFilename($user);
     }
@@ -170,7 +169,7 @@ class ProfilEditionType extends BaseType
                     'empty_value' => 'Votre anniversaire'  ,              
                     ))
 
-                ->add('location','location_select',array(
+                ->add('location','location_selector',array(
                     'data' => $this->user->getLocation()
                     ))
                 

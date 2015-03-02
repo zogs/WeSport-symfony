@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use My\WorldBundle\Entity\City;
+use My\WorldBundle\Entity\Location;
 
 class CityController extends Controller
 {
@@ -34,16 +35,17 @@ class CityController extends Controller
 
     public function searchAction(Request $request)
     {        
-        $form = $this->createForm('city_to_location_type');
+        $location = new Location();
+        $form = $this->createForm('city_to_location_type',$location);
 
         $form->handleRequest($request);
 
         if($form->isValid()){
 
             $location = $form->getData();
-            return $this->redirect($this->generateUrl('my_world_city_view',array('city'=>$location->getCity()->getId())));
+            return $this->redirect($this->generateUrl('my_world_city_view',array('city'=>$location->getCity()->getId())));        
         }
-
+        
         return $this->render('MyWorldBundle:City:form.html.twig',array(
             'form' => $form->createView()
             ));

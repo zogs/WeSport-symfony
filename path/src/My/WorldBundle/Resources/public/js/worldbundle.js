@@ -86,7 +86,7 @@ $(document).ready(function() {
 			success: function(data){
 
 				parent.removeClass('geo-loading');
-				$('.geo-select-'+data.level).first().empty().append(data.options).select2().show();
+				$('select.geo-select-'+data.level).first().empty().append(data.options).select2().show();
 							
 			}
 		})

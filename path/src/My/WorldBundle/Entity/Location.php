@@ -68,6 +68,12 @@ class Location
         return false;
     }
 
+    public function isNull()
+    {
+        if(empty($this->id)) return true;
+        return false;
+    }
+
     public function __toString()
     {
         return strval($this->id);
@@ -119,6 +125,26 @@ class Location
     }
 
     /**
+     * Get country code
+     *
+     * @return string 
+     */
+    public function getCountryCode()
+    {
+            return (isset($this->country))? $this->country->getCode() : null;
+    }
+
+    /**
+     * Get country id
+     *
+     * @return string 
+     */
+    public function getCountryId()
+    {
+            return (isset($this->country))? $this->country->getId() : null;
+    }
+
+    /**
      * Has country
      *
      * @return boolean
@@ -141,6 +167,16 @@ class Location
         $this->region = $region;
 
         return $this;
+    }
+
+    /**
+     * Get region id
+     *
+     * @return integer 
+     */
+    public function getRegionId()
+    {
+            return (isset($this->region))? $this->region->getId() : null;
     }
 
     /**
@@ -187,6 +223,16 @@ class Location
     {
             return $this->departement;
     }
+    
+    /**
+     * Get departement id
+     *
+     * @return integer 
+     */
+    public function getDepartementId()
+    {
+            return (isset($this->departement))? $this->departement->getId() : null;
+    }
 
     /**
      * Has city
@@ -224,6 +270,16 @@ class Location
     }
 
     /**
+     * Get district id
+     *
+     * @return integer 
+     */
+    public function getDistrictId()
+    {
+            return (isset($this->district))? $this->district->getId() : null;
+    }
+
+    /**
      * Has district
      *
      * @return boolean
@@ -256,6 +312,17 @@ class Location
     {
             return $this->division;
     }
+
+    /**
+     * Get division id
+     *
+     * @return integer 
+     */
+    public function getDivisionId()
+    {
+            return (isset($this->division))? $this->division->getId() : null;
+    }
+
    /**
      * Has division
      *
@@ -309,11 +376,9 @@ class Location
      */
     public function getCityId()
     {
-        if(isset($this->city))
-            return $this->city->getId();
-        else
-            return 0;
+            return (isset($this->city))? $this->city->getId() : null;
     }
+
 
     public function setCityId()
     {

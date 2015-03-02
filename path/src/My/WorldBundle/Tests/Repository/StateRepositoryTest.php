@@ -16,7 +16,7 @@ class StateRepositoryTest extends WebTestCase
 	 */
 	public function setUp()
 	{	
-		$this->client = self::createClient(array(),array('PHP_AUTH_USER' => 'user1','PHP_AUTH_PW' => 'fatboy'));	
+		$this->client = self::createClient(array(),array('PHP_AUTH_USER' => 'user1','PHP_AUTH_PW' => 'pass'));	
 		$this->router = $this->client->getContainer()->get('router');
 		$this->em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
 		$this->repo = $this->em->getRepository('MyWorldBundle:State');

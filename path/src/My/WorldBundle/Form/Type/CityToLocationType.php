@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 use My\WorldBundle\Entity\Location;
 
@@ -23,6 +24,7 @@ class CityToLocationType extends AbstractType
     private $router;
     private $form_filled = false;
     private $options;
+    private $location = null;
 
 
     /**
@@ -60,6 +62,7 @@ class CityToLocationType extends AbstractType
                         'autocomplete' => "off"
                         )
                 ))
+                
             ;
 
         $this->options = $options;
@@ -69,21 +72,76 @@ class CityToLocationType extends AbstractType
     }
 
     /**
-     * OnPreSetData
-     *
-     *
+     * Pre-filled the form if Location is set
      */
     public function onPreSetData(FormEvent $event)
     {
         $form = $event->getForm();
         $location = $event->getData();
 
-        if(isset($location) && $location->exist()) {
+        $this->addFormFields($location,$form);      
+    }
 
-            //add Size parameter to input
+    
+
+
+    /**
+     * Find the Location object from the submitted data
+     * Add fields to form
+     * 
+     * @param FormEvent $event
+     */
+    public function onPreSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();   
+
+        $loc = null;
+        if(!empty($data['city_name'])){
+            $loc = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);
+        }  
+        elseif(!empty($data['city_id'])){
+            $loc = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
+        }          
+
+        $this->location = $loc;
+
+        $this->addFormFields($loc,$form);            
+    }
+    
+    /**
+     * Set the Location to the Form 
+     * Set a FormError if the city can't be find
+     * 
+     * @param FormEvent $event
+     */
+    public function onSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        
+        $event->setData($this->location);       
+
+        if(!$form->isEmpty()){
+            if(null == $this->location){
+                $form->get('city_name')->addError(new FormError("Cette ville ne semble pas exister ..."));
+            }
+        }
+
+    }
+
+    /**
+     * Add fields to the form depending to the Location
+     */
+    private function addFormFields($location,$form)
+    {
+        if(null == $location) return false;
+                
+        if($location instanceof Location && $location->exist()){
+            //add size parameter to ajust the length of the input
             $form->add('city_name','text',array(
                     'attr'=>array(
                         'class' => 'city-autocomplete',
+                        'data' => $location->getCity()->getName(),
                         'size' => strlen($location->getCity()->getName()),
                         'data-autocomplete-url' => $this->options['ajax_url'],
                         'data-template-empty' => '<div class="tt-city-noresult">'.$this->options['empty_html'].'</div>',
@@ -95,52 +153,6 @@ class CityToLocationType extends AbstractType
             ));
         }
     }
-
-
-    /**
-     * onPreSubmit
-     * 
-     * Find and fill the form with the Location object, with the city_id if defined, or the city_name is defined
-     * 
-     * @param FormEvent $event
-     */
-    public function onPreSubmit(FormEvent $event)
-    {
-        $form = $event->getForm();
-        $data = $event->getData();
-        
-        $location = null;
-
-        if(!empty($data['city_id']) || !empty($data['city_name'])){
-            $this->form_filled = true;
-            if(!empty($data['city_id'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['city_id']);
-            elseif(!empty($data['city_name'])) $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityName($data['city_name']);        
-        }
-        
-        $form->setData($location);        
-        return;
-    }
-    
-    /**
-     * onSubmit
-     * 
-     * Trigger a FormError if Location is not find
-     * 
-     * @param FormEvent $event
-     */
-    public function onSubmit(FormEvent $event)
-    {
-        $form = $event->getForm();
-        $data = $event->getData();
-        
-        if($this->form_filled){
-
-            if($data == null || $data->getId() == null){
-                $form->get('city_name')->addError(new FormError("Cette ville ne semble pas exister ..."));
-            }
-        }
-    }
-
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -156,6 +168,7 @@ class CityToLocationType extends AbstractType
             'header_html' => '',
             'trigger-length' =>3,
             'placeholder' => "Votre ville?",
+
 
         ));
     }

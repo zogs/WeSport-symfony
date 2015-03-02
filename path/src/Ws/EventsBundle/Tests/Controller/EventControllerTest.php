@@ -19,7 +19,7 @@ class EventControllerTest extends WebTestCase
 		
 		$this->client = self::createClient(array(),array(
 			'PHP_AUTH_USER' => 'user1',
-			'PHP_AUTH_PW' => 'fatboy',
+			'PHP_AUTH_PW' => 'pass',
 			));	
 
 

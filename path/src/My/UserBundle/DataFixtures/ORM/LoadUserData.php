@@ -26,7 +26,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$admin->setUsername('admin');
 		$admin->setEmail('guichardsim@gmail.com');
 		$admin->setEnabled(true);
-		$admin->setPlainPassword('fatboy');
+		$admin->setPlainPassword('pass');
 		$admin->setRoles(array('ROLE_SUPER_ADMIN','ROLE_ADMIN'));
 		$admin->setLocation($this->getReference('location_dijon'));
 		$admin->setAvatar($this->getReference('avatar_admin'));
@@ -42,7 +42,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$user1->setUsername('user1');
 		$user1->setEmail('guichardsim+user1@gmail.com');
 		$user1->setEnabled(true);
-		$user1->setPlainPassword('fatboy');
+		$user1->setPlainPassword('pass');
 		$user1->setRoles(array('ROLE_USER'));
 		$user1->setLocation($this->getReference('location_beaune'));
 		$user1->setAvatar($this->getReference('avatar_user1'));
@@ -58,7 +58,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$asso1->setEmail('guichardsim+asso1@gmail.com');
 		$asso1->setType('asso');
 		$asso1->setEnabled(true);
-		$asso1->setPlainPassword('fatboy');
+		$asso1->setPlainPassword('pass');
 		$asso1->setRoles(array('ROLE_USER','ROLE_ASSO'));
 		$asso1->setLocation($this->getReference('location_moloy'));
 		$asso1->setAvatar($this->getReference('avatar_asso1'));

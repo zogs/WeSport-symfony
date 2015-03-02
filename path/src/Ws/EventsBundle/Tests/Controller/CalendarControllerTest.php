@@ -15,7 +15,7 @@ class CalendarControllerTest extends WebTestCase
 	{
 		$this->client = static::createClient(array(),array(
 			'PHP_AUTH_USER' => 'user1',
-			'PHP_AUTH_PW' => 'fatboy',
+			'PHP_AUTH_PW' => 'pass',
 			));
 
 		$this->router = $this->client->getContainer()->get('router');

@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use My\WorldBundle\Entity\City;
 use My\WorldBundle\Entity\Location;
 
+use My\WorldBundle\Form\DataTransformer\StatesToLocationTransformer;
+
 class LocationController extends Controller
 {
     public function viewAction(Location $location)
@@ -18,26 +20,25 @@ class LocationController extends Controller
             ));
     }
 
-    public function formSelectLocationAction(Request $request)
+    public function locationSelectAction(Request $request)
     {
-    	$location = new Location();
-    	$form = $this->createForm('location_select',$location);
+
+    	$location = new Location();        
+
+        $form = $this->createForm('location_selector',$location);
+
     	$form->handleRequest($request);
 
     	if($form->isValid()){
-
-				
-                            dump($location);
-                            dump($form->getData());
-                            exit();
-            }
-            
-
-
-    	return $this->render('MyWorldBundle:Form:test_location_select.html.twig',array(
-    		'form' => $form->createView(),
-    		'location' => $location,
-    		));
+                
+              $location = $form->getData();
+        }
+        
+        return $this->render('MyWorldBundle:Form:test_location_select.html.twig',array(
+            'form' => $form->createView(),
+            'location' => $location,
+            ));
+    	
     }
 
 

@@ -10,12 +10,14 @@ services:
         arguments: [@doctrine.orm.entity_manager,@router]
         tags:
             - { name: form.type, alias: city_to_location_type }
+        
 
-    world.form.type.locationSelectType:
-        class: My\WorldBundle\Form\Type\LocationSelectType
+    world.form.type.locationSelectorType:
+        class: My\WorldBundle\Form\Type\LocationSelectorType
         arguments: [@doctrine.orm.entity_manager,@router]
         tags:
-            - { name:form.type, alias: location_select }
+            - { name:form.type, alias: location_selector }
+
 
     world.location_manager:
         class: My\WorldBundle\Manager\LocationManager

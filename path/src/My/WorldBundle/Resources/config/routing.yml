@@ -4,7 +4,9 @@ my_world_homepage:
 
 my_world_location_select_test:
     pattern: /location/select
-    defaults: { _controller: MyWorldBundle:Location:formSelectLocation }
+    defaults: { _controller: MyWorldBundle:Location:locationSelect }
+    requirements:
+        _method: GET|POST
 
 my_world_location_select_nextlevel:
     pattern: /location/levelchildren

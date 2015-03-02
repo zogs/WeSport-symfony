@@ -20,7 +20,7 @@ class AlertControllerTest extends WebTestCase
 	{
 		$this->client = static::createClient(array(),array(
 			'PHP_AUTH_USER' => 'user1',
-			'PHP_AUTH_PW' => 'fatboy',
+			'PHP_AUTH_PW' => 'pass',
 			));
 
 		$this->router = $this->client->getContainer()->get('router');
@@ -167,33 +167,32 @@ class AlertControllerTest extends WebTestCase
 	{
 		$client = static::createClient(array(),array(
 			'PHP_AUTH_USER' => 'admin',
-			'PHP_AUTH_PW' => 'fatboy',
+			'PHP_AUTH_PW' => 'pass',
 			));
 
 		//Try to send the daily alerts
 		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'daily')));
-		$this->assertTrue($crawler->filter('body:contains("daily alertes")')->count() == 1);
-		$this->assertTrue($crawler->filter('body:contains("-->")')->count() >= 1);
+		$this->assertTrue($crawler->filter('body:contains("daily alertes")')->count() >= 1);
+		
 
 	}
 
 	/**
 	 * Test if admin can send the alerts
 	 *
-	 
-	public function testSendingWeeklyAlerts()
+	
+	public function testSendingWeeklyAlerts()	
 	{
 		$client = static::createClient(array(),array(
 				'PHP_AUTH_USER' => 'admin',
-				'PHP_AUTH_PW' => 'fatboy',
+				'PHP_AUTH_PW' => 'pass',
 			));
 
 		//Try to send the weekly alerts
 		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'weekly')));
-		$this->assertTrue($crawler->filter('body:contains("weekly alertes")')->count() == 1);
-		$this->assertTrue($crawler->filter('body:contains("-->")')->count() >= 1);
+		$this->assertTrue($crawler->filter('body:contains("weekly alertes")')->count() >= 1);
 
 	}
-	
 	*/
+	
 }

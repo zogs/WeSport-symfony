@@ -109,6 +109,18 @@ class CountryRepository extends EntityRepository
 		return $code;		
 	}
 
+	public function findCountryIdFromCode($code)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select('partial c.{id,code,name,lang}')
+			->where(
+				$qb->expr()->eq('c.code',':code')
+				);
+		$qb->setParameter('code',$code);
+		$country = $qb->getQuery()->getSingleResult();
+
+		return $country->getId();
+	}
 
 
 }
