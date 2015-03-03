@@ -62,14 +62,6 @@ class Spot
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function createCountryCode()
-    {
-        $this->countryCode = $this->getLocation()->getCountry()->getCode();
-    }
-
-    /**
      * Get id
      *
      * @return integer 
@@ -215,6 +207,8 @@ class Spot
     public function setLocation(\My\WorldBundle\Entity\Location $location = null)
     {
         $this->location = $location;
+        //set country code
+        $this->countryCode = $location->getCountry()->getCode();
 
         return $this;
     }

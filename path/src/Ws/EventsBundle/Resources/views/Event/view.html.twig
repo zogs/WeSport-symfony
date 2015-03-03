@@ -44,8 +44,8 @@
 						</td>
 						<td class="cell-organizer">
 							<img src="{{ asset(event.organizer.avatar.getWebPath) }}" alt="" class="event-organizer-avatar"><br>
-							<strong><a href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></strong><br>
-							{% if event.organizer.age is not empty %}<small>{{ event.organizer.age}}</small>{% endif %}
+							<strong><a href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></strong><br>						
+							{% if event.organizer.hasAge %}<small>{{ event.organizer.age}} ans</small>{% endif %}
 							{% if event.organizer.type != 'person' %}<small>{{ event.organizer.type}}</small>{% endif %}
 							<small><a href="{{ event.organizer|link2user }}" rel="me author nofollow">- Voir la fiche -</a></small>
 						</td>

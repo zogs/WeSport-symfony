@@ -8,7 +8,7 @@ ws_statistic:
 
 my_utils:
     resource: "@MyUtilsBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /utils
 
 my_contact:
     resource: "@MyContactBundle/Resources/config/routing.yml"

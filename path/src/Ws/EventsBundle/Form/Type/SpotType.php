@@ -141,9 +141,10 @@ class SpotType extends AbstractType
         
         $spot = NULL;
 
-        //if location is defined, create new spot
-        if(!empty($data['location'])){            
+        dump($data);
 
+        //if location is defined, create new spot
+        if(!empty($data['location']) && (!empty($data['location']['city_id']) || !empty($data['location']['city_name']))){            
             //get location from city_id or city_name
             if(!empty($data['location']['city_id']))                
                 $location = $this->em->getRepository('MyWorldBundle:location')->findLocationByCityId($data['location']['city_id']);            
@@ -158,7 +159,7 @@ class SpotType extends AbstractType
             $spot->setName($data['name']);
             $spot->setAddress($data['address']);
             $spot->setLocation($location);
-            
+            dump($spot);
         }
         //else get spot from spot_id
         elseif(!empty($data['spot_id'])){

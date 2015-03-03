@@ -149,9 +149,9 @@ class User extends BaseUser
 
     public function getAge()
     {        
-        if(!empty($this->birthday))
-            return date('Y-m-d') - date($this->birthday);
-        return '';
+        $today = new \DateTime('now');
+        $age = $this->birthday->diff($today);            
+        return $age->format('%y');
     }
 
     /**

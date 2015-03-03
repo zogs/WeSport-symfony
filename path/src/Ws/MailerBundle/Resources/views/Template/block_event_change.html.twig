@@ -1,42 +1,42 @@
 {% if key=='title' %}
-	Le titre a changé: <strong>{{ change.post }}</strong>
+	Le titre a changé: <strong>{{ change.after }}</strong>
 {% endif  %}
 
 {% if key=='spot' %}
-	La ville a changé: <strong> {{ change.post.location.city.name }}</strong>
+	La ville a changé: <strong> {{ change.after.location.city.name }}</strong>
 {% endif  %}
 
 {% if key=='sport' %}
-	Le sport a changé: <strong> {{ change.post.name }}</strong>
+	Le sport a changé: <strong> {{ change.after.name }}</strong>
 {% endif  %}
 
 {% if key=='price' %}
-	Le prix passe de {{ change.pre }} à <strong>{{ change.post }} euros</strong>
+	Le prix passe de {{ change.before }} à <strong>{{ change.after }} euros</strong>
 {% endif  %}
 
 {% if key =='time' %}
-	L'heure passe de {{ change.pre|date('h:i') }} à <strong>{{ change.post|date('h:i') }}</strong>
+	L'heure passe de {{ change.before|date('h:i') }} à <strong>{{ change.after|date('h:i') }}</strong>
 {% endif %}
 
 {% if key == 'date' %}
-	L'activité aura lieu le <strong>{{ change.post|date('l d F') }}</strong> au lieu du {{ change.pre|date('l d F') }}
+	L'activité aura lieu le <strong>{{ change.after|date('l d F') }}</strong> au lieu du {{ change.before|date('l d F') }}
 {% endif %}
 
 {% if key == 'nbmin' %}
-	Le nombre minium passe de {{ change.pre }} à <strong>{{ change.post }}</strong>
+	Le nombre minium passe de {{ change.before }} à <strong>{{ change.after }}</strong>
 {% endif  %}
 
 {% if key == 'nbmax' %}
-	Le nombre maximum passe de {{ change.pre }} à <strong>{{ change.post }}</strong>
+	Le nombre maximum passe de {{ change.before }} à <strong>{{ change.after }}</strong>
 {% endif  %}
 
 {% if key=='phone' %}
-	Le numéro de contact a changé: <strong>{{ change.post }}</strong>
+	Le numéro de contact a changé: <strong>{{ change.after }}</strong>
 {% endif  %}
 
 {% if key=='description' %}
 	La description a changé:
 	<p>
-		<small>{{ change.post }}</small>
+		<small>{{ change.after }}</small>
 	</p>
 {% endif  %}
