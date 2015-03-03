@@ -59,12 +59,22 @@ class User extends BaseUser
     private $settings = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Alert", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Alert", mappedBy="user", cascade={"persist","remove"})
      */
     private $alerts;
 
     /**
-     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="inviter")
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Event", mappedBy="organizer", cascade={"persist","remove"})
+     */
+    private $events;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Serie", mappedBy="organizer", cascade={"persist","remove"})
+     */
+    private $series;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="inviter", cascade={"persist","remove"})
      */
     private $invitations;
 

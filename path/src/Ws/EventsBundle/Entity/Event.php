@@ -88,7 +88,7 @@ class Event
     private $participations;
 
      /**
-     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="event", cascade="persist")
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Invitation", mappedBy="event", cascade={"persist","remove"})
      */
     private $invitations;
 

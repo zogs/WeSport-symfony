@@ -1,0 +1,24 @@
+{% extends "::layout_centered.html.twig" %}
+
+{% block page_content %}
+
+
+<div class="head-sheet">
+	<h1 class="title-sheet">Vous voulez supprimer votre compte ?</h1>
+
+	{{ form_start(form, {'class':'form form-ws','attr':{'class':'form form-ws'}} ) }}
+	   	
+	   	{% if form_errors(form) %}
+	   			{{ form_errors(form) }}
+	   	{% endif %}
+
+		{{ form_row(form.confirm) }}
+	    
+	    <button type="submit" class="btn-ws">Confirmer</button>
+	    <p>&nbsp;</p>
+	
+	{{ form_end(form) }}
+
+</div>
+
+{% endblock page_content %}

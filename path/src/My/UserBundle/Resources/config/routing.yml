@@ -18,6 +18,10 @@ fos_user_change_password:
     prefix: /profile
 
 
+my_user_delete_me:
+    pattern: /my/account/delete
+    defaults: { _controller: MyUserBundle:User:delete }
+    
 user_profil_view:
     pattern: /user/{id}/{username}
     defaults: { _controller: MyUserBundle:User:viewProfil }

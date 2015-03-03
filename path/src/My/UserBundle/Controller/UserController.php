@@ -46,41 +46,39 @@ class UserController extends Controller
             ));
 
     }
-    public function editProfilAction($action)
+    
+    public function deleteAction(Request $request)
     {
+        $user = $this->getUser();
+        $form = $this->createFormBuilder($user)->add('confirm','choice',array(
+            'label' => 'Etes vous vraiment sûr ?',
+            'choices' => array(
+                'yes' => 'Oui, je veux supprimer mon compte et perdre tous mes supers pouvoirs',
+                'no' => "Non, je vais continuer à m'entrainer pour devenir plus fort !"),
+            'empty_value' => '',
+            'expanded' => false,
+            'multiple' => false,
+            'mapped' => false,
+            ))->getForm();
 
-        if($this->getUser() === null){
-            $this->get('flashbag')->add("Veuillez vous reconnecter",'info');           
-            return $this->redirect($this->generateUrl("fos_user_security_login")); 
+        $form->handleRequest($request);
+
+        if( ! $form->isValid()) return $this->render('MyUserBundle:Profile:delete.html.twig',array('form'=>$form->createView()));
+
+        if($form->get('confirm')->getData() == 'yes'){
+
+            $msg = "Tchao' ".ucfirst($user->getUsername())." et garde la motivation !";
+            if($user->getGender()=='f') $msg = "Bisous ".ucfirst($user->getUsername())." et continue le sport !";
+            $this->get('flashbag')->add($msg);
+
+            $this->get('fos_user.user_manager')->deleteUser($user);
+
+            return $this->redirect($this->generateUrl('ws_calendar'));
         }
 
-        $form = $this->createForm('my_user_profile');   
-
-        if($this->getRequest()->isMethod('POST')){
-
-            $form->handleRequest($this->getRequest());
-
-            if($form->isValid()){
-                
-                $user = $form->getData();
-                 $this->container->get('fos_user.user_manager')->updateUser($user);
-
-                $this->get('flashbag')->add("Vos informations ont été sauvegardé !");
-
-            } else {
-               
-                $this->get('flashbag')->add("Veuillez revoir vos informations...",'error');
-            }
-            
-        }
-
-
-        return $this->render('MyUserBundle:Profil:edit.html.twig',array(
-            'user'=>$this->getUser(),
-            'action'=>$action,
-            'form'=>$form->createView(),
-            )
-        );
+        return $this->render('MyUserBundle:Profile:delete.html.twig',array(
+            'form'=>$form->createView()
+            ));
     }
 
 }
