@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 use Ws\EventsBundle\Entity\Event as WsEvent;
 
-class ChangeEvent extends Event
+class EditEvent extends Event
 {
 	protected $event;
 	protected $user;

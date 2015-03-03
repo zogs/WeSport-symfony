@@ -10,7 +10,7 @@ final class WsEvents {
 
 	const EVENT_CANCEL = 'ws.event.cancel';
 
-	const EVENT_CHANGE = 'ws.event.cancel';
+	const EVENT_EDIT = 'ws.event.edit';
 
 	const EVENT_CONFIRM = 'ws.event.confirm';
 

@@ -15,7 +15,7 @@ use Ws\EventsBundle\Form\Type\InvitationType;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\DeleteEvent;
-use Ws\EventsBundle\Event\ChangeEvent;
+use Ws\EventsBundle\Event\EditEvent;
 use Ws\EventsBundle\Event\DeleteSerie;
 use Ws\EventsBundle\Event\ConfirmEvent;
 use Ws\EventsBundle\Event\ViewEvent;
@@ -95,7 +95,7 @@ class EventController extends Controller
 				$this->get('flashbag')->add('Votre activité a été modifié !','success');
 				
 				//throw CREATE_EVENTS
-				$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CHANGE, new ChangeEvent($event,$this->getUser()));
+				$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_EDIT, new EditEvent($event,$this->getUser()));
 
 				//redirect to update the event's displayed
 				return $this->redirect($this->generateUrl('ws_event_edit',array('event'=>$event->getId())));  

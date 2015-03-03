@@ -70,12 +70,23 @@ class EventType extends AbstractType
 			))
 	;
 
-		
+		$builder->addEventListener(FormEvents::PRE_SET_DATA, array($this,'onPreSetData'));
 		$builder->addEventListener(FormEvents::SUBMIT, array($this,'onSubmit'));
 		$builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'onPostSubmit'));
 	}
 
-	
+	/**
+	* Get the original Event
+	*
+	*/
+	public function onPreSetData(FormEvent $event)
+	{
+		$form = $event->getForm();
+		$data = $event->getData();
+
+		$this->pre_event = clone $data;
+	}
+
 	/**
 	* Validate the date field
 	*
@@ -97,31 +108,17 @@ class EventType extends AbstractType
 	*/
 	public function onPostSubmit(FormEvent $event)
 	{
-		
-		
-		//Detect eventualy modification using php Reflector class
-		//If its is a modified event
+		//Detect eventualy modification if its is a modified event
 		if(NULL != $this->pre_event){
-
-			$this->post_event = $event->getData();
-			$reflector = new \ReflectionClass($this->post_event);
-			$properties = $reflector->getProperties();
-			$changes = array();
-			foreach ($properties as $property) {			
-				$property->setAccessible(true);			
-				if($property->getValue($this->pre_event) != $property->getValue($this->post_event)){				
-					$changes[$property->getName()] = array(
-						'pre' => $property->getValue($this->pre_event),
-						'post' => $property->getValue($this->post_event)
-						);
-				}			
-			}
+			//get form data
+			$this->post_event = $event->getData();			
+			//get changes 
+			$changes = \My\UtilsBundle\Utils\Object::getChanges($this->pre_event,$this->post_event);
 			//set array of change to the event for future uses
 			$this->post_event->setChanges($changes);
+			//update form data
 			$event->setData($this->post_event);
-		}
-
-		
+		}	
 	}
 
 

@@ -11,7 +11,7 @@ use Ws\MailerBundle\Mailer\Mailer;
 use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\CreateEvents;
 use Ws\EventsBundle\Event\ViewEvent;
-use Ws\EventsBundle\Event\ChangeEvent;
+use Ws\EventsBundle\Event\EditEvent;
 use Ws\EventsBundle\Event\DeleteEvent;
 use Ws\StatisticBundle\Manager\StatisticManager;
 
@@ -38,7 +38,7 @@ class EventsListener implements EventSubscriberInterface
 		return array(
 			WsEvents::SERIE_CREATE => 'onNewEvents',
 			WsEvents::EVENT_VIEW => 'onViewEvent',
-			WsEvents::EVENT_CHANGE => 'onChangeEvent',
+			WsEvents::EVENT_EDIT => 'onEditEvent',
 			WsEvents::EVENT_CONFIRM => 'onConfirmEvent',
 			WsEvents::EVENT_DELETE => 'onDeleteEvent',
 		);
@@ -54,12 +54,12 @@ class EventsListener implements EventSubscriberInterface
 		//exit('viewEvent WIN');
 	}
 
-	public function onChangeEvent(ChangeEvent $event)
+	public function onEditEvent(EditEvent $event)
 	{
 		$ev = $event->getEvent();
 
 		$changes = $ev->getChanges();
-		
+
 		if(!empty($changes)){
 			$this->mailer->sendEventModificationToParticipants($ev);			
 		}
