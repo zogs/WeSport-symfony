@@ -1,3 +1,11 @@
+my_user_delete_me:
+    pattern: /profile/delete
+    defaults: { _controller: MyUserBundle:User:delete }
+
+my_user_request_activation_mail:
+    pattern: /activation/me
+    defaults: { _controller: MyUserBundle:User:requestActivationMail }
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -18,23 +26,12 @@ fos_user_change_password:
     prefix: /profile
 
 
-my_user_delete_me:
-    pattern: /my/account/delete
-    defaults: { _controller: MyUserBundle:User:delete }
-    
 user_profil_view:
     pattern: /user/{id}/{username}
     defaults: { _controller: MyUserBundle:User:viewProfil }
     requirements:
         id: \d+
 
-user_profil_edit:
-    pattern: /my/{action}
-    defaults: { _controller: MyUserBundle:User:editProfil, action: 'account' }
-
-my_user_request_activation_mail:
-    pattern: /user/request/activation 
-    defaults: { _controller: MyUserBundle:User:requestActivationMail }
 
 #admin
 admin_user_index:

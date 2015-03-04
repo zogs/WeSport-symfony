@@ -34,6 +34,7 @@ security:
         - { path: ^/\w\w/event/invitation, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w\w/event/alert/, role: ROLE_USER }
         - { path: ^/\w\w/event/alert/send, role: ROLE_ADMIN }
+        - { path: ^/\w\w/profile/, role: ROLE_USER }
         - { path: ^/\w\w/admin/, role: ROLE_ADMIN }
         - { path: ^/\w\w/flashbag/, role: ROLE_ADMIN }
         - { path: ^/\w\w/stats/, role: ROLE_ADMIN }

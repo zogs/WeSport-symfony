@@ -31,8 +31,8 @@ ws_serie_delete:
 ws_spot_index:
     pattern: /spot/index
     defaults: { _controller: WsEventsBundle:Spot:index }
-ws_spot_new:
-    pattern: /spot/new
+ws_spot_create:
+    pattern: /spot/create
     defaults: { _controller: WsEventsBundle:Spot:create }
 ws_spot_edit:
     pattern: /spot/edit/{spot}

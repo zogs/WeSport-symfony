@@ -17,7 +17,7 @@ class UserController extends Controller
 
     	$user->participate = $this->getDoctrine()->getRepository('WsEventsBundle:Participation')->findByUser($user);
 
-    	return $this->render('MyUserBundle:Profil:view.html.twig',array('user'=>$user));
+    	return $this->render('MyUserBundle:Profile:view.html.twig',array('user'=>$user));
     }
 
     public function requestActivationMailAction(Request $request)
@@ -65,20 +65,19 @@ class UserController extends Controller
 
         if( ! $form->isValid()) return $this->render('MyUserBundle:Profile:delete.html.twig',array('form'=>$form->createView()));
 
-        if($form->get('confirm')->getData() == 'yes'){
-
-            $msg = "Tchao' ".ucfirst($user->getUsername())." et garde la motivation !";
-            if($user->getGender()=='f') $msg = "Bisous ".ucfirst($user->getUsername())." et continue le sport !";
-            $this->get('flashbag')->add($msg);
-
-            $this->get('fos_user.user_manager')->deleteUser($user);
-
-            return $this->redirect($this->generateUrl('ws_calendar'));
+        if($form->get('confirm')->getData() == 'no'){
+            $this->get('flashbag')->add("Vous avez pris la bonne décision, le sport c'est la vie !");
+            return $this->render('MyUserBundle:Profile:edit.html.twig',array('action'=>'account'));
         }
 
-        return $this->render('MyUserBundle:Profile:delete.html.twig',array(
-            'form'=>$form->createView()
-            ));
+        $msg = "Salut ".ucfirst($user->getUsername())." et garde la pêche !";
+        if($user->getGender()=='f') $msg = "Bisou ".ucfirst($user->getUsername()).", à la prochaine et garde la motivation !";
+        $this->get('flashbag')->add($msg);
+
+        $this->get('fos_user.user_manager')->deleteUser($user);
+
+        return $this->redirect($this->generateUrl('ws_calendar'));
+
     }
 
 }

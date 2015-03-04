@@ -17,5 +17,11 @@ class SpotManager extends AbstractManager
 		return $spot;	
 	}
 
+	public function deleteSpot(Spot $spot)
+	{
+		$this->delete($spot,true);
+		return true;
+	}
+
 }
 ?>

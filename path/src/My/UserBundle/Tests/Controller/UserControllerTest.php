@@ -83,25 +83,7 @@ class UserControllerTest extends WebTestCase
 		$this->assertEquals('My\UserBundle\Controller\UserController::requestActivationMailAction',$this->client->getRequest()->attributes->get('_controller'));	
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
-	/*
-	public function testLoginBeforeActivation()
-	{
-		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
 
-		$form = $crawler->selectButton('Connexion')->form(array(
-			'_username' => 'testname',
-			'_password' => 'pass',
-			));
-
-		$crawler = $this->client->submit($form);
-
-		$crawler = $this->client->followRedirect();
-
-		dump($crawler->filter('body')->text());
-		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
-
-	}
-	*/
 	public function testActivation()
 	{
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername($this->username);
@@ -119,6 +101,8 @@ class UserControllerTest extends WebTestCase
 		$crawler = $this->client->request('GET',$this->router->generate('fos_user_security_login'));
 		$form = $crawler->selectButton('Connexion')->form(array('_username' => $this->username,'_password' => $this->password));
 		$crawler = $this->client->submit($form);
+		
+		return $crawler;
 	}
 
 	private function logOut()
@@ -149,7 +133,7 @@ class UserControllerTest extends WebTestCase
 		$this->editPassword('newpass');
 		$this->logOut();
 		$this->logIn();
-		$this->editPassword('pass');
+		$this->editPassword('password'); //reset password to the default one
 	}
 
 	public function editAvatar()
@@ -262,7 +246,7 @@ class UserControllerTest extends WebTestCase
 		
 	}
 
-	public function testLogout()
+	public function testLogOut()
 	{
 		$this->logIn();
 		$this->logOut();
@@ -273,16 +257,19 @@ class UserControllerTest extends WebTestCase
 
 	public function testDelete()
 	{
+		$crawler = $this->logIn();
+
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername($this->username);
 
 		$crawler = $this->client->request('GET',$this->router->generate('my_user_delete_me'));
-		$form = $crawler->filter('body form')->form(array(
+		
+		$form = $crawler->selectButton('Confirmer')->form(array(
 			'form[confirm]'=>'yes',
 			));
 		$crawler = $this->client->submit($form);
 		$crawler = $this->client->followRedirect();
 
-		$this->assertEquals('FOS\UserBundle\Controller\ProfileController::editAction',$this->client->getRequest()->attributes->get('_controller'));	
+		$this->assertEquals('Ws\EventsBundle\Controller\CalendarController::loadAction',$this->client->getRequest()->attributes->get('_controller'));	
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
 	}
 }

@@ -32,6 +32,33 @@ class SpotControllerTest extends WebTestCase
 		unset($this->client, $this->em);
 	}
 
+	public function testCreate()
+	{
+		$crawler = $this->client->request('GET',$this->router->generate('ws_spot_create'));
+		
+		$form = $crawler->filter("form[name=spot_type]")->form(array(
+			'spot_type[spot_slug]' => '',
+			'spot_type[location][city_name]' => 'Paris',
+			'spot_type[name]' => 'PhpUnit Automated Spot Test',
+			'spot_type[address]' => 'Test Adress',			
+			));
+
+		$crawler = $this->client->submit($form);
+
+		$crawler = $this->client->followRedirect();
+
+		$this->assertEquals('Ws\EventsBundle\Controller\SpotController::indexAction',$this->client->getRequest()->attributes->get('_controller'));
+	}
+
+	public function testDelete()
+	{
+		$spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneByName('PhpUnit Automated Spot Test');
+		
+		$this->client->getContainer()->get('ws_events.spot.manager')->deleteSpot($spot);
+
+		$this->assertNull($spot->getId());
+	}
+
 	public function testAutoComplete()
 	{
 		$string = 'beaune';
