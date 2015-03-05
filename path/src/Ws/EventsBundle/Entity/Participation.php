@@ -28,7 +28,7 @@ class Participation
     private $event;
 
     /**
-    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
+    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", inversedBy="participations")
     */
     private $user = null;
 

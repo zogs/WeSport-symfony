@@ -22,7 +22,7 @@ class Serie
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", inversedBy="series", fetch="EAGER")
      */
     private $organizer;
 

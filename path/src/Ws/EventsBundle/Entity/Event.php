@@ -25,7 +25,7 @@ class Event
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", inversedBy="events", fetch="EAGER")
      */
     private $organizer;
 
