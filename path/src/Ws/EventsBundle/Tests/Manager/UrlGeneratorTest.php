@@ -35,7 +35,7 @@ class UrlGeneratorTest extends KernelTestCase
 	}
 
 
-	public function getTestData()
+	public function getDataTest()
 	{
 		return $this->searchProvider->all();
 	}
@@ -43,7 +43,7 @@ class UrlGeneratorTest extends KernelTestCase
 	public function testCalendarGeneratorUrl()
 	{
 
-		foreach ($this->getTestData() as $key =>$search_to_test) {			
+		foreach ($this->getDataTest() as $key =>$search_to_test) {			
 
 			$url_to_test = $this->generator->setSearch($search_to_test)->getUrl();
 			
@@ -73,6 +73,4 @@ class UrlGeneratorTest extends KernelTestCase
 
 		}		
 	}
-
-
 }

@@ -15,7 +15,7 @@ class LoadParticipationData extends AbstractFixture implements OrderedFixtureInt
 	{
 		
 		$footballeur = new Participation();
-		$footballeur->setUser($this->getReference('user1'));
+		$footballeur->setUser($this->getReference('user_admin'));
 		$footballeur->setEvent($this->getReference('event_football'));
 		$manager->persist($footballeur);
 
