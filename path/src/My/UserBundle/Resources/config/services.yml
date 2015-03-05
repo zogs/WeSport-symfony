@@ -17,6 +17,15 @@ services:
         tags:
             - { name: 'monolog.logger', channel: 'security' }
 
+    #Provider
+    rkueny.oauth.user_provider:
+        class: My\UserBundle\Providers\OAuth\UserProvider
+        arguments: 
+            - @fos_user.user_manager
+            - { facebook: facebookId }
+
+
+
     #Form Type
     my_user.registration.form.type:
         class: My\UserBundle\Form\Type\RegistrationFormType

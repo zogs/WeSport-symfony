@@ -172,6 +172,18 @@ fos_user:
         email:
             template: MyUserBundle:Resetting:email.html.twig
 
+#Hwi Oauth 
+hwi_oauth:
+  firewall_name: main
+  resource_owners:
+    facebook:
+      type: facebook
+      client_id: %oauth.facebook.id%
+      client_secret: %oauth.facebook.secret%
+
+      
+
+#Fos Comment bundle
 fos_comment:
     db_driver: orm
     class:

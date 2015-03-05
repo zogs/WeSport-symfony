@@ -32,7 +32,7 @@
 				</div>
 
 				<div class="header-right user-info">
-					<span><strong>{{ user.age }}, inscrit depuis {{ user.registerSince|date('d/m/Y') }}</strong></span>
+					<span><strong>{% if user.hasBirthday %}{{ user.birthday|calculAge }}{% endif %}, inscrit depuis {{ user.registerSince|date('d/m/Y') }}</strong></span>
 					<span>? participations | ? organisations</span>
 					<span><i>
 						{% for r in user.location.allRegions %}

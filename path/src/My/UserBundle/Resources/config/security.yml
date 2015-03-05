@@ -34,3 +34,10 @@ security:
                 success_handler: logout_success.handler
             switch_user:  true
             entry_point: entry_point.user_login
+            oauth:
+                resource_owners:
+                  facebook: "/login/check-facebook"
+                login_path: /connect
+                failure_path: /connect
+                oauth_user_provider:
+                  service: rkueny.oauth.user_provider

@@ -27,6 +27,11 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $facebookId = null;
+
      /**
      * @ORM\Column(type="string", length=10)
      */
@@ -79,6 +84,11 @@ class User extends BaseUser
     private $invitations;
 
     /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Participation", mappedBy="user", cascade={"persist","remove"})
+     */
+    private $participations;
+
+    /**
      * @ORM\OneToOne(targetEntity="Ws\StatisticBundle\Entity\UserStat", cascade={"persist","remove"})
      */
     private $statistic = null;
@@ -113,6 +123,8 @@ class User extends BaseUser
      * @ORM\Column(type="text", length=6, nullable=true, name="lang")
      */
     private $lang = '';
+
+
 
     public function __construct()
     {
@@ -507,4 +519,192 @@ class User extends BaseUser
     }
 
 
+
+    /**
+     * Set facebookId
+     *
+     * @param integer $facebookId
+     * @return User
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * Get facebookId
+     *
+     * @return integer 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * Add alerts
+     *
+     * @param \Ws\EventsBundle\Entity\Alert $alerts
+     * @return User
+     */
+    public function addAlert(\Ws\EventsBundle\Entity\Alert $alerts)
+    {
+        $this->alerts[] = $alerts;
+
+        return $this;
+    }
+
+    /**
+     * Remove alerts
+     *
+     * @param \Ws\EventsBundle\Entity\Alert $alerts
+     */
+    public function removeAlert(\Ws\EventsBundle\Entity\Alert $alerts)
+    {
+        $this->alerts->removeElement($alerts);
+    }
+
+    /**
+     * Get alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlerts()
+    {
+        return $this->alerts;
+    }
+
+    /**
+     * Add events
+     *
+     * @param \Ws\EventsBundle\Entity\Event $events
+     * @return User
+     */
+    public function addEvent(\Ws\EventsBundle\Entity\Event $events)
+    {
+        $this->events[] = $events;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \Ws\EventsBundle\Entity\Event $events
+     */
+    public function removeEvent(\Ws\EventsBundle\Entity\Event $events)
+    {
+        $this->events->removeElement($events);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * Add series
+     *
+     * @param \Ws\EventsBundle\Entity\Serie $series
+     * @return User
+     */
+    public function addSeries(\Ws\EventsBundle\Entity\Serie $series)
+    {
+        $this->series[] = $series;
+
+        return $this;
+    }
+
+    /**
+     * Remove series
+     *
+     * @param \Ws\EventsBundle\Entity\Serie $series
+     */
+    public function removeSeries(\Ws\EventsBundle\Entity\Serie $series)
+    {
+        $this->series->removeElement($series);
+    }
+
+    /**
+     * Get series
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSeries()
+    {
+        return $this->series;
+    }
+
+    /**
+     * Add invitations
+     *
+     * @param \Ws\EventsBundle\Entity\Invitation $invitations
+     * @return User
+     */
+    public function addInvitation(\Ws\EventsBundle\Entity\Invitation $invitations)
+    {
+        $this->invitations[] = $invitations;
+
+        return $this;
+    }
+
+    /**
+     * Remove invitations
+     *
+     * @param \Ws\EventsBundle\Entity\Invitation $invitations
+     */
+    public function removeInvitation(\Ws\EventsBundle\Entity\Invitation $invitations)
+    {
+        $this->invitations->removeElement($invitations);
+    }
+
+    /**
+     * Get invitations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvitations()
+    {
+        return $this->invitations;
+    }
+
+    /**
+     * Add participations
+     *
+     * @param \Ws\EventsBundle\Entity\Participation $participations
+     * @return User
+     */
+    public function addParticipation(\Ws\EventsBundle\Entity\Participation $participations)
+    {
+        $this->participations[] = $participations;
+
+        return $this;
+    }
+
+    /**
+     * Remove participations
+     *
+     * @param \Ws\EventsBundle\Entity\Participation $participations
+     */
+    public function removeParticipation(\Ws\EventsBundle\Entity\Participation $participations)
+    {
+        $this->participations->removeElement($participations);
+    }
+
+    /**
+     * Get participations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getParticipations()
+    {
+        return $this->participations;
+    }
 }

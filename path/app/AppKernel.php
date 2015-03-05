@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
 
             //created
             new My\BlogBundle\MyBlogBundle(),
