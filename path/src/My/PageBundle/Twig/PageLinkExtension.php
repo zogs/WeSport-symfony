@@ -25,7 +25,7 @@ class PageLinkExtension extends \Twig_Extension
 
     public function pageLink(Page $page)
     {        
-        return $this->router->generate('MyPageBundle_view_slug',array('slug'=>$page->getSlug()));
+        return $this->router->generate('MyPageBundle_view',array('slug'=>$page->getSlug()));
     }
 
     public function getName()

@@ -1,3 +1,3 @@
 {% for page in pages %}
-	<li><a href="{{ path('MyPageBundle_view', {id:page.id}) }}">{{ page.title }}</a></li>
+	<li><a href="{{ page|link2page }}">{{ page.title }}</a></li>
 {% endfor %}

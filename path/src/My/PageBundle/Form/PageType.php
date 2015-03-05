@@ -19,7 +19,7 @@ class PageType extends AbstractType
             ->add('content')
             ->add('menu')
             ->add('isOnline')
-            ->add('position','text')
+            ->add('position',null,array('required'=>false,))
             ->add('icon')
         ;
     }

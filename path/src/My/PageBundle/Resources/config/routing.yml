@@ -1,18 +1,6 @@
-my_page_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: MyPageBundle:Default:index }
-
-MyPageBundle_view_slug:
+MyPageBundle_view:
     pattern: /page/{slug}
     defaults: { _controller: MyPageBundle:Page:view }
-
-MyPageBundle_view:
-    pattern: /page/view/{id}
-    defaults: { _controller: MyPageBundle:Default:view }
-    requirements:
-        id: \d+ 
-
-
 
 MyPageBundle_page:
     resource: "@MyPageBundle/Resources/config/routing/page.yml"
