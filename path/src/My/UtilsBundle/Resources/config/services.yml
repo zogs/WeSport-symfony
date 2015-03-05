@@ -9,3 +9,9 @@ services:
         class: My\UtilsBundle\Form\Type\TagsType
         tags:
             - { name: form.type, alias: tags }
+
+#Twig extension
+    utils.twig.age_calculator:
+        class: My\UtilsBundle\Twig\AgeCalculatorExtension
+        tags:
+            - { name: twig.extension }

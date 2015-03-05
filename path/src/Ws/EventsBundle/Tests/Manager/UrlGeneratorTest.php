@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 use Ws\EventsBundle\Manager\CalendarManager;
 use Ws\EventsBundle\Manager\CalendarUrlGenerator;
+use Ws\EventsBundle\Tests\Manager\DataSearchProvider;
 use Ws\EventsBundle\Entity\Search;
 
 class UrlGeneratorTest extends KernelTestCase
@@ -23,6 +24,7 @@ class UrlGeneratorTest extends KernelTestCase
 		$this->em = $this->container->get('doctrine')->getManager();
 		$this->extractor = new CalendarManager($this->container);
 		$this->generator = new CalendarUrlGenerator($this->container->get('router'));
+		$this->searchProvider = new DataSearchProvider($this->em);
 		$this->now = new \Datetime('now');
 	}
 
@@ -35,48 +37,13 @@ class UrlGeneratorTest extends KernelTestCase
 
 	public function getTestData()
 	{
-		$search1 = new Search();
-		$search1->setNbDays(1);
-		$search1->setPrice(5);
-		$search1->setType(array('asso','pro'));	
-		$search1->setTimeStart($this->now);	
-		$search1->setDayOfWeek(array('monday','wednesday'));
-		$search1->setLevel(array('beginner','average'));
-
-		$search2 = new Search();
-		$search2->setCountry($this->em->getRepository('MyWorldBundle:Country')->findCountryByName('France'));
-		$search2->setLocation($this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('Dijon'));
-		$search2->setSports($this->em->getRepository('WsSportsBundle:Sport')->findAll());
-		$search2->setArea(100);
-		$search2->setType(array('person','pro'));
-		$search2->setNbDays(4);
-		$search2->setTimeEnd($this->now);
-
-		$search3 = new Search();
-		$search3->setCountry($this->em->getRepository('MyWorldBundle:Country')->findCountryByName('France'));
-		$search3->setLocation($this->em->getRepository('MyWorldBundle:Location')->findLocationByCityName('Beaune'));
-		$search3->setSports($this->em->getRepository('WsSportsBundle:Sport')->findAll());
-		$search3->setArea(100);
-		$search3->setType(array('person','pro','asso'));
-		$search3->setNbDays(14);
-		$search3->setTimeEnd($this->now);
-		$search3->setPrice(50);
-		$search3->setTimeStart($this->now);	
-		$search3->setDayOfWeek(array('monday','wednesday','friday','sunday'));
-		$search3->setLevel(array('beginner','average','expert'));
-		$search3->setOrganizer($this->em->getRepository('MyUserBundle:User')->findOneByUsername('admin'));
-
-		return array(
-			$search1,
-			$search2,
-			$search3,
-			);
+		return $this->searchProvider->all();
 	}
 
 	public function testCalendarGeneratorUrl()
 	{
 
-		foreach ($this->getTestData() as $search_to_test) {			
+		foreach ($this->getTestData() as $key =>$search_to_test) {			
 
 			$url_to_test = $this->generator->setSearch($search_to_test)->getUrl();
 			

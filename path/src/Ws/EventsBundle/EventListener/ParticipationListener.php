@@ -12,23 +12,21 @@ use Ws\EventsBundle\Event\WsEvents;
 use Ws\EventsBundle\Event\AddParticipant;
 use Ws\EventsBundle\Event\CancelParticipant;
 use Ws\StatisticBundle\Manager\StatisticManager;
-
+use Ws\EventsBundle\Manager\EventManager;
 
 class ParticipationListener implements EventSubscriberInterface
 {
-	protected $em;
-	protected $router;
 	protected $flashbag;
 	protected $mailer;
 	protected $statistic;
+	protected $manager;
 
-	public function __construct(EntityManager $em, Router $router, Flashbag $flashbag, Mailer $mailer, StatisticManager $statistic)
+	public function __construct(Flashbag $flashbag, Mailer $mailer, StatisticManager $statistic,EventManager $manager)
 	{
-		$this->em = $em;
-		$this->router = $router;
 		$this->flashbag = $flashbag;
 		$this->mailer = $mailer;
 		$this->statistic = $statistic;
+		$this->manager = $manager;
 	}
 
 	static public function getSubscribedEvents()
@@ -44,6 +42,12 @@ class ParticipationListener implements EventSubscriberInterface
 		$wsevent = $event->getEvent();
 		$participant = $event->getParticipant();
 
+		//confirm event if nb min is reached
+		if($wsevent->countParticipation() == $wsevent->getNbMin()){
+			$this->manager->confirmEvent($wsevent);
+		}
+
+
 		$this->mailer->sendParticipationAddedToAdmin($wsevent,$participant);
 
 		$this->statistic->fromEvent($event)->update();
@@ -53,6 +57,11 @@ class ParticipationListener implements EventSubscriberInterface
 	{
 		$wsevent = $event->getEvent();
 		$participant = $event->getParticipant();
+
+		//unconfirm event if nb min is reached
+		if($wsevent->countParticipation() < $wsevent->getNbMin()){
+			$this->manager->unconfirmEvent($wsevent);
+		}
 
 		$this->mailer->sendParticipationCanceledToAdmin($wsevent,$participant);
 

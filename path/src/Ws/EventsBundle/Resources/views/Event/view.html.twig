@@ -45,7 +45,7 @@
 						<td class="cell-organizer">
 							<img src="{{ asset(event.organizer.avatar.getWebPath) }}" alt="" class="event-organizer-avatar"><br>
 							<strong><a href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></strong><br>						
-							{% if event.organizer.hasAge %}<small>{{ event.organizer.age}} ans</small>{% endif %}
+							{% if event.organizer.hasBirthday %}<small>{{ event.organizer.birthday|calculAge }} ans</small>{% endif %}
 							{% if event.organizer.type != 'person' %}<small>{{ event.organizer.type}}</small>{% endif %}
 							<small><a href="{{ event.organizer|link2user }}" rel="me author nofollow">- Voir la fiche -</a></small>
 						</td>
@@ -64,7 +64,7 @@
 									{% for p in event.participations %}
 
 										{% if p.user is not null %}	
-											<li class="event-participant" class="tooltitop" data-toggle="tooltip" title="{{ p.user.username }} {% if p.user.hasAge %}({{ p.user.age }} ans){% endif %}">
+											<li class="event-participant" class="tooltitop" data-toggle="tooltip" title="{{ p.user.username }} {% if p.user.hasBirthday %}({{ p.user.birthday|calculAge }} ans){% endif %}">
 												<a href="{{ p.user|link2user }}" rel="me nofollow"><img src="{{ asset(p.user.avatar.getWebPath) }}" alt="">
 												</a>
 											</li>

@@ -47,7 +47,6 @@ class CalendarManager extends AbstractManager
 		);
 
 	private $flashbag;
-	private $serializer;
 	private $urlGenerator;
 	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time');
 
@@ -59,7 +58,6 @@ class CalendarManager extends AbstractManager
 		$this->params = $this->default;
 		$this->search = new Search();
 		$this->urlGenerator = $container->get('calendar.url.generator');
-		$this->serializer = $container->get('jms_serializer');
 		$this->flashbag = $container->get('flashbag');
 		$this->response = new Response();		
 	}
@@ -269,24 +267,7 @@ class CalendarManager extends AbstractManager
 	{				
 		return $this->search;
 	}
-
-	public function getSerializedSearch()
-	{		
-		return $this->serializer->serialize($this->search,'json');
-	}
-
-	public function setSerializedSearch($json)
-	{
-		exit('to be tested');
-		$data = json_decode($json);
-		foreach ($data as $key => $value) {
-			if($key=='country') $data->$key = new Country((array)$value);
-			if($key=='city') $data->$key = new City((array)$value);
-			if($key=='organizer') $data->$key = new User((array)$value);
-			
-		}
-		$this->search = (array)$data;
-	}	
+	
 
 	public function prepareParams()
 	{

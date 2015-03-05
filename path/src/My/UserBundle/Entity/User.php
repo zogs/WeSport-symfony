@@ -151,19 +151,6 @@ class User extends BaseUser
         return false;
     }
 
-    public function hasAge()
-    {
-        if(!empty($this->birthday)) return true;
-        return false;
-    }
-
-    public function getAge()
-    {        
-        $today = new \DateTime('now');
-        $age = $this->birthday->diff($today);            
-        return $age->format('%y');
-    }
-
     /**
      * @ORM\PrePersist
      */
@@ -292,6 +279,16 @@ class User extends BaseUser
     public function getBirthday()
     {
         return $this->birthday;
+    }
+
+    /**
+     * Has birthday
+     *
+     * @return Boolean
+     */
+    public function hasBirthday()
+    {
+        return (isset($this->birthday))? true : false;
     }
 
     /**

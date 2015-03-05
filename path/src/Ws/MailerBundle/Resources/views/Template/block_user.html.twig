@@ -14,10 +14,10 @@
 				<br>
 				{% if user.isPerson %}
 					<strong>Age:</strong>
-					{% if user.age != '' %}
-						{{ user.age }}
+					{% if user.hasBirthday %}
+						{{ user.birthday|calculAge }}
 					{% else %}
-						<small>N'a pas renseigné son age</small>
+						<small>N'a pas renseigné(e) son age</small>
 					{% endif %}
 
 					<br>
@@ -28,7 +28,7 @@
 						{% elseif user.gender == 'h' %} 
 							un garçon 
 						{% else %}
-							<small>N'a pas renseigné son genre</small>
+							<small>N'a pas renseigné(e) son genre</small>
 						{% endif %}
 					{% endif %}
 					<br>

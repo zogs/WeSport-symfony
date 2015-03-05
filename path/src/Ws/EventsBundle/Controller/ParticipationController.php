@@ -29,31 +29,17 @@ class ParticipationController extends Controller
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
-		if($this->get('ws_events.manager')->isNotParticipating($event,$this->getUser())){
+		if($this->get('ws_events.manager')->isParticipating($event,$this->getUser())){
+			$this->get('flashbag')->add("Il semble que vous participiez déjà ;)",'warning');
+			return $this->redirect($this->generateUrl('ws_event_view',array('sport'=>$event->getSport(),'slug'=>$event->getSlug(),'event'=>$event->getId())));
+		}	
 
-			$this->get('ws_events.manager')->saveParticipation($event,$this->getUser(),true);
-			$this->get('flashbag')->add("C'est parti! Amusez-vous bien.");	
+		$this->get('flashbag')->add("C'est parti ! Amusez-vous bien.");	
+		$this->get('ws_events.manager')->saveParticipation($event,$this->getUser(),true);
 
-			//confirm event if nb min is reached
-			if($event->countParticipation() == $event->getNbMin()){
-				$this->get('ws_events.manager')->confirmEvent($event);
-			}	
+		$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));
 
-			//throw event
-			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_ADD, new AddParticipant($event,$this->getUser()));
-
-		} else {
-			$this->get('flashbag')->add("Il semble que vous participiez déjà",'warning');
-		}
-
-		return $this->redirect($this->generateUrl(
-			'ws_event_view',array(
-				'sport'=>$event->getSport(),
-				'slug'=>$event->getSlug(),
-				'event'=>$event->getId()
-				)
-			)
-		);
+		return $this->redirect($this->generateUrl('ws_event_view',array('sport'=>$event->getSport(),'slug'=>$event->getSlug(),'event'=>$event->getId())));
 	}
 
 	/**
@@ -69,27 +55,16 @@ class ParticipationController extends Controller
 			throw new AccessDeniedHttpException('Invalid CSRF token.');
 		}
 
-		if($this->get('ws_events.manager')->isParticipating($event,$this->getUser())){
-
-			$this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
+		if($this->get('ws_events.manager')->isNotParticipating($event,$this->getUser())){
 			$this->get('flashbag')->add("Ok... une prochaine fois peut être !",'info');
-
-			//confirm event if nb min is reached
-			if($event->countParticipation() < $event->getNbMin()){
-				$this->get('ws_events.manager')->unconfirmEvent($event);
-			}
-
-			//throw event
-			$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));  
+			return $this->redirect($this->generateUrl('ws_event_view',array('sport'=>$event->getSport(),'slug'=>$event->getSlug(),'event'=>$event->getId())));
 		}
 
-		return $this->redirect($this->generateUrl(
-			'ws_event_view',array(
-				'sport'=>$event->getSport(),
-				'slug'=>$event->getSlug(),
-				'event'=>$event->getId()
-				)
-			)
-		);
+		$this->get('flashbag')->add("Ok... une prochaine fois peut être !",'info');
+		$this->get('ws_events.manager')->deleteParticipation($event,$this->getUser(),true);
+
+		$this->get('event_dispatcher')->dispatch(WsEvents::PARTICIPANT_CANCEL, new CancelParticipant($event,$this->getUser()));  
+		
+		return $this->redirect($this->generateUrl('ws_event_view',array('sport'=>$event->getSport(),'slug'=>$event->getSlug(),'event'=>$event->getId())));
 	}
 }

@@ -1,6 +1,5 @@
 <?php
 
-// src/Acme/DemoBundle/Twig/AcmeExtension.php
 namespace Ws\EventsBundle\Twig;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

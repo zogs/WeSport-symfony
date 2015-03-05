@@ -52,12 +52,11 @@ class ParticipationControllerTest extends WebTestCase
 
 	public function tryAdd($event)
 	{
-		$this->client->request('GET',$this->router->generate('ws_participation_add',array('event'=>$event->getId(),'token'=>$this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('participation_add'))));
+		$crawler = $this->client->request('GET',$this->router->generate('ws_participation_add',array('event'=>$event->getId(),'token'=>$this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('participation_add'))));
 
 		$this->assertEquals("Ws\EventsBundle\Controller\ParticipationController::addAction",$this->client->getRequest()->attributes->get('_controller'));
 
 		$crawler = $this->client->followRedirect();
-
 		$this->assertEquals("Ws\EventsBundle\Controller\EventController::viewAction",$this->client->getRequest()->attributes->get('_controller'));
 		$this->assertTrue($crawler->filter('.event-title:contains("'.$event->getTitle().'")')->count() >= 1);
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);

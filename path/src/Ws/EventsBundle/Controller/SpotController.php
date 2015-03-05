@@ -14,7 +14,7 @@ class SpotController extends Controller
 		public function indexAction()
 		{
 
-			$spots = $this->getDoctrine()->getEntityManager()->getRepository('WsEventsBundle:Spot')->findAll();
+			$spots = $this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Spot')->findAll();
 
 			return $this->render('WsEventsBundle:Spot:index.html.twig',array(
 				'spots' => $spots
