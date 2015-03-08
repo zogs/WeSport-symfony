@@ -1,27 +1,25 @@
 .calendar-form {
-	height:150px;
+	height:100px;
 	width:100%;	
-	margin: 70px auto 0px auto;
+	margin: 0px auto 0px auto;
 	position:relative;
-	
-
-	&.visible {				
-		table {
-			top:0;
-			@include opacity(1);
-		}
-	}
+	border:1px solid red;	
 
 	table {
 		width:100%;	
 		position:absolute;
-		top:-100px;
+		top:0px;
 		left:0;
 		@include opacity(0);
 		@include transition(all 0.8s ease-out);
 	}
-	
+	  
 }
+
+
+
+
+
 
 tr.calendar-form-main { 
 	height:auto;

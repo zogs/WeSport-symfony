@@ -9,6 +9,7 @@ $(document).ready(function(){
 
 */
 
+/*
 	$.when(
 		$('.calendar-form-options select').select2({	
 			placeholder: "indifférent"
@@ -17,7 +18,7 @@ $(document).ready(function(){
 		.done(function(){
 			$("#calendar-form").addClass('visible');
 		});
-	
+	*/
 
 	$('#calendar-form-options-toggle').click(function(){
 		$('#calendar-form-options-container').toggleClass('open');

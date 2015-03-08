@@ -19,6 +19,21 @@
 		
 		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
 			<div class="calendar-form" id="calendar-form">
+
+				<div class="calendar-submit">
+					<button type="submit">
+						<span class="shadow"></span>
+						<span class="ws-icon ws-icon-loupe"></span>
+					</button>											
+				</div>
+
+				<div class="calendar-links">
+					<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong></a><br>
+					<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong></a><br>
+					<a href="javascript:;" id="calendar-form-options-toggle" class="btn-link"><strong>Plus d'options ?</strong></a><br>
+				</div>
+
+
 				<table>
 					<tr class="calendar-form-main" >					
 						<td class="calendar-form-main-left">
@@ -27,11 +42,12 @@
 							{{ form_row(form.sports,{
 								'label': "Je veux du ",							
 							}) }}
-						
 
+						</td>							
+
+						<td class="calendar-form-main-right">
 							{# dans ma Ville #}
-							{% if form.location.city_name.vars.data is not null %}{% set label = "dans ma ville "%}{% else %}{% set label = "dans ma "%}{% endif %}
-							{{ form_row(form.location.city_id) }}
+							{% if form.location.city_name.vars.data is not null %}{% set label = "à "%}{% else %}{% set label = "à "%}{% endif %}							
 							{{ form_row(form.location.city_name,{
 								'label': label,
 								'required':false,
@@ -41,27 +57,17 @@
 									}
 							}) }}	
 
-							{{ form_row(form._token) }}
-						</td>
-
-						<td class="calendar-form-main-middle">
-							<button type="submit">
-								<span class="shadow"></span>
-								<span class="ws-icon ws-icon-loupe"></span>
-							</button>															
-						</td>
 							
-
-						<td class="calendar-form-main-right">
-							<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong> la recherche</a><br>
-							<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong> pour cette recherche</a><br>
-							<a href="javascript:;" id="calendar-form-options-toggle" class="btn-link"><strong>Plus d'options ?</strong> </a><br>
+							
 						</td>
 					</tr>
+
+
 					<tr>
 						<td colspan="3" class="calendar-form-options">
 							<div id="calendar-form-options-container" class="{% if search.hasArea or search.hasType or search.hasLevel or search.price %}open {% endif %}">
-								
+								{{ form_row(form._token) }}
+								{{ form_row(form.location.city_id) }}
 								{{ form_row(form.area,{
 									'label':"Dans un rayon de ",														
 									'attr': {
@@ -94,6 +100,8 @@
 						</td>
 					</tr>
 				</table>
+
+				
 				
 			</div>
 			
