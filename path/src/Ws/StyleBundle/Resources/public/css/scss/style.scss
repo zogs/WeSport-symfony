@@ -1,14 +1,13 @@
-
 @import "compass/css3";
 
 //Mixins
-@import "mixins";
+@import "../includes/mixins";
 
 //Fonts
-@import "fonts";
+@import "../includes/fonts";
 
 //Fields
-@import "fields";
+@import "../includes/fields";
 
 $lightblue:#95b9c4;
 $deepblue:#296272;
@@ -55,7 +54,6 @@ $fontgrey:#9e9e34;
     
 } 
 */
-
 .disable-select {
   -webkit-user-select: none;  
   -moz-user-select: none;    

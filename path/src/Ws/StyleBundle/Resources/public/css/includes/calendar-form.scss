@@ -1,0 +1,306 @@
+.calendar-form {
+	height:150px;
+	width:100%;	
+	margin: 70px auto 0px auto;
+	position:relative;
+	
+
+	&.visible {				
+		table {
+			top:0;
+			@include opacity(1);
+		}
+	}
+
+	table {
+		width:100%;	
+		position:absolute;
+		top:-100px;
+		left:0;
+		@include opacity(0);
+		@include transition(all 0.8s ease-out);
+	}
+	
+}
+
+tr.calendar-form-main { 
+	height:auto;
+}
+td.calendar-form-options {
+	height:auto;
+}
+
+@mixin calendar-form-bottom-dotted($y:45){
+	background-image:url(../img/dotted.png);
+	background-repeat: repeat-x;
+	background-position-y: unquote($y +'px');
+	background-size:8px 5px;
+}
+@mixin calendar-form-text-shadow(){
+	@include long-shadow(text,#3f6672,5,false,false,right); 
+}
+@mixin calendar-form-text-main(){
+	font-family: 'Harlow';
+	@include rem(40);
+	@include calendar-form-text-shadow();
+}
+@mixin calendar-form-text-options(){
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	@include rem(16);
+	@include calendar-form-text-shadow();
+}
+
+tr.calendar-form-main,td.calendar-form-options {
+	label {		
+		display: inline-block;
+		color:white;
+		cursor: pointer;
+		margin:0;
+		@include calendar-form-text-main();
+
+		.ws-icon {
+			color:$darkblue;
+			@include rem(40);
+		}
+	}
+
+	input,select {
+		min-width: 200px;
+		height:auto;
+		display:inline-block;
+		padding:0 0 0 0;
+		@include calendar-form-text-main();
+		color:$lightblue;	
+		line-height:130%;
+		background: transparent;
+		border: 0px solid transparent;
+		outline: none;
+		@include box-shadow(0 0 0 0 rgba(0,0,0,0));
+		@include border-radius(0);
+		
+		@include placeholder {
+			color: #8db3be;
+		}
+	}
+
+	select option {
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		color:black;
+	}
+
+	select#calendar_search_sports {
+		option { display:none; }
+		height:40px;
+	}
+
+	
+}
+
+
+
+td.calendar-form-main-left { 
+	width:65%; 
+	height:inherit; 
+	position: relative;	
+	text-align:right; 
+	
+	.tt-dropdown-menu {
+		width:300px;
+	}
+	.twitter-typeahead {
+		top: -20px;
+		margin-left: 10px;
+		input:focus {
+			outline: none;
+		}
+		@include calendar-form-bottom-dotted();
+	}
+
+	.city-autocomplete {
+		width:auto;
+	}
+
+	.select2-container {
+		min-width:180px;		
+		@include calendar-form-bottom-dotted(47);
+		.select2-choices {
+			height: 60px !important;
+			border:0;
+			background:transparent;	
+			overflow: visible;	
+			&:focus { outline: none;}
+
+			.select2-search-field{				
+				input {
+					width:50px;
+					min-width:0px;
+					@include calendar-form-text-main();
+					color: #8db3be !important;
+				}
+			}
+			.select2-search-choice {
+				color: $lightblue;
+				font-transform:lowercase;
+				background-color: transparent;
+				background-image:none;
+				border:0;
+				box-shadow:0 0 0;
+				margin:0;
+				padding: 2px 5px;
+				@include calendar-form-text-shadow();
+				.sport-name { display:none;}
+				.ws-icon {
+					color:$lightblue;
+					@include rem(40);
+					@include calendar-form-text-shadow();
+				}
+				.select2-search-choice-close {
+					top:35%;
+					left:40%;
+					visibility: hidden;	
+					@include opacity(0.5);
+					background: url('../img/select2.png') right top no-repeat;		
+				}
+				&:hover .select2-search-choice-close {
+					visibility: visible;
+					@include opacity(1);
+					&:hover {
+						background-position: right -11px;
+					}
+				}
+			}
+		}	
+	}
+}
+
+td.calendar-form-main-middle {
+
+	width:5%;
+
+	button[type=submit] {
+		display:inline-block;
+		position: relative;
+		width:90px; 
+		height:90px; 
+		margin-left:20px;
+		border-radius:100px; 
+		background-color: rgba(0,0,0,0.20); 
+		border:0;
+		@include transition(all 0.1s ease-in-out);	
+
+		span {
+			position:absolute;
+			top:50%;
+			left:50%;
+		}
+		span.ws-icon {
+			margin-top:-20px;
+			margin-left:-20px;
+			@include rem(40); color:$lightblue;
+			@include transition(all 0.2s ease-in-out);	
+		}
+		span.shadow {			
+			display:block;
+			width:0;
+			height:0;
+			border-radius: 400px;
+			background-color: rgba(0,0,0,0.2);
+			@include transition(all 0.2s ease-in-out);	
+		}
+
+
+		&:hover {
+			background-color: rgba(0,0,0,0.15);
+			span.ws-icon { @include rotate(100deg); }					
+
+		}
+
+		&:active {
+			background-color: rgba(0,0,0,0.1);
+			span.ws-icon { @include rotate(720deg); }
+			span.shadow { width:150px; height:150px; margin-left:-75px; margin-top:-75px; background-color: rgba(0,0,0,0);}
+		}
+	}
+}
+
+td.calendar-form-main-right { 
+	width:30%; 
+	padding-left:20px;
+	height:inherit; 
+
+	table { height:inherit; }
+	a:link,a:active,a:visited {
+		color:white;
+	}
+	a:hover {
+		color:white;
+		text-decoration:underline;
+	}
+}
+
+td.calendar-form-options {
+
+	position:relative;
+	padding-top:10px;
+
+	div#calendar-form-options-container {
+
+		position:relative;
+		top:50px;
+		@include transition(all 0.5s ease-in-out);		
+		&.open {
+			top:0px;
+		}
+	}
+
+	text-align:center;
+	label,input,select {
+		@include calendar-form-text-options();
+		width:auto;
+	}
+
+	.select2-container,.select2-container-multi {
+		margin:0;
+		
+		.select2-choice,.select2-choices {
+			padding-right:20px;
+			background:transparent;
+			border:0px solid transparent;
+			.select2-chosen {
+				text-align:left;
+				@include calendar-form-text-options();
+				color: $lightblue !important;
+				margin-right:0; //!
+				@include box-shadow(0 0 0);
+			}
+			.select2-arrow {
+				display:none;
+			}	
+			.select2-search-field input[type=text]{ 
+				width:100px;
+			    min-width: 0;
+			    @include calendar-form-text-options();
+			    color: $lightblue !important;
+
+				    
+			}
+			.select2-search-choice {
+				margin-top:5px;
+				border:0;
+				background: transparent;
+				@include calendar-form-text-options();
+				color: $lightblue !important; 
+				@include box-shadow(0 0 0);
+			}	
+		}
+	}
+	.select2-dropdown-open {
+		.select2-choice {
+				@include box-shadow(0 0 0);			
+		}
+	}			
+}
+
+
+
+	
