@@ -34,8 +34,8 @@ class ParticipationControllerTest extends WebTestCase
 
 	public function testParticipations()
 	{
-		$events = $this->em->getRepository('WsEventsBundle:Event')->findByTitle('Petit match entre amis');
-		$event = $events[0];
+		$event = $this->em->getRepository('WsEventsBundle:Event')->findOneByTitle('Petit match entre amis');
+
 
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername('user1');
 
@@ -47,6 +47,7 @@ class ParticipationControllerTest extends WebTestCase
 		else {
 			$this->tryAdd($event);
 			$this->tryCancel($event);
+			$this->tryAdd($event);
 		}	
 	}
 
@@ -60,20 +61,7 @@ class ParticipationControllerTest extends WebTestCase
 		$this->assertEquals("Ws\EventsBundle\Controller\EventController::viewAction",$this->client->getRequest()->attributes->get('_controller'));
 		$this->assertTrue($crawler->filter('.event-title:contains("'.$event->getTitle().'")')->count() >= 1);
 		$this->assertTrue($crawler->filter('.alert-success')->count() >= 1);
-	}
-
-	public function tryReAdd($event)
-	{
-		$this->client->request('GET',$this->router->generate('ws_participation_add',array('event'=>$event->getId(),'token'=>$this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('participation_add'))));
-
-		$this->assertEquals("Ws\EventsBundle\Controller\ParticipationController::addAction",$this->client->getRequest()->attributes->get('_controller'));
-
-		$crawler = $this->client->followRedirect();
-
-		$this->assertEquals("Ws\EventsBundle\Controller\EventController::viewAction",$this->client->getRequest()->attributes->get('_controller'));
-		$this->assertTrue($crawler->filter('.event-title:contains("'.$event->getTitle().'")')->count() >= 1);
-		$this->assertTrue($crawler->filter('.alert-warning')->count() >= 1);
-	}
+	}	
 
 	public function tryCancel($event)
 	{
@@ -87,17 +75,5 @@ class ParticipationControllerTest extends WebTestCase
 		$this->assertTrue($crawler->filter('.event-title:contains("'.$event->getTitle().'")')->count() >= 1);
 		$this->assertTrue($crawler->filter('.alert-info')->count() >= 1);
 	}
-
-	public function tryReCancel($event)
-	{
-		$this->client->request('GET',$this->router->generate('ws_participation_cancel',array('event'=>$event->getId(),'token'=>$this->client->getContainer()->get('form.csrf_provider')->generateCsrfToken('participation_cancel'))));
-
-		$this->assertEquals("Ws\EventsBundle\Controller\ParticipationController::cancelAction",$this->client->getRequest()->attributes->get('_controller'));
-
-		$crawler = $this->client->followRedirect();
-
-		$this->assertEquals("Ws\EventsBundle\Controller\EventController::viewAction",$this->client->getRequest()->attributes->get('_controller'));
-		$this->assertTrue($crawler->filter('.event-title:contains("'.$event->getTitle().'")')->count() >= 1);
-		$this->assertTrue($crawler->filter('.alert-info')->count() == 0);
-	}
+	
 }

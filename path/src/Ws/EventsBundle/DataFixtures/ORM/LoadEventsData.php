@@ -23,7 +23,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$event1->setSerie($this->getReference('serie1'));
 		$event1->setSport($this->getReference('sport_football'));
 		$event1->setDescription("Venez faire un petit 4contre4 :)");
-		$event1->setOrganizer($this->getReference('user_admin'));
+		$event1->setOrganizer($this->getReference('user1'));
 		$event1->setSpot($this->getReference('spot_parc_beaune'));
 		$event1->setLocation($this->getReference('location_beaune'));
 		$event1->setNbmin(5);

@@ -62,12 +62,13 @@ class InvitationControllerTest extends WebTestCase
 		$this->assertSame(200, $this->client->getResponse()->getStatusCode()); // Test if response is OK
 		$this->assertSame('application/json', $this->client->getResponse()->headers->get('Content-Type')); // Test if Content-Type is valid application/json
 		$this->assertNotEmpty($this->client->getResponse()->getContent()); // Test that response is not empty
-		$this->assertRegExp('/id/',$this->client->getResponse()->getContent());
+		$this->assertRegExp('/id/',$this->client->getResponse()->getContent()); //Test that response contain at least one {id,mail}
 	}
 
 	public function testResend()
 	{
 		$invitation = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByContent("Texte de l'invitation de test");
+		if(null == $invitation) return;
 		$invited = $invitation->getInvited();
 		$invited = $invited[0];
 
@@ -97,6 +98,7 @@ class InvitationControllerTest extends WebTestCase
 	public function testConfirm()
 	{
 		$invitation = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByContent("Texte de l'invitation de test");
+		if(null == $invitation) return;
 		$invited = $invitation->getInvited();
 		$invited = $invited[0];
 
@@ -110,6 +112,7 @@ class InvitationControllerTest extends WebTestCase
 	public function testDeny()
 	{
 		$invitation = $this->em->getRepository('WsEventsBundle:Invitation')->findOneByContent("Texte de l'invitation de test");
+		if(null == $invitation) return;
 		$invited = $invitation->getInvited();
 		$invited = $invited[1];
 

@@ -985,12 +985,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "058a4635ac9b80a5b1997df28a754e64b1425a1d"
+                "reference": "1ac14fac3ced533047d8feae8edc7c283d5b8a67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/058a4635ac9b80a5b1997df28a754e64b1425a1d",
-                "reference": "058a4635ac9b80a5b1997df28a754e64b1425a1d",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/1ac14fac3ced533047d8feae8edc7c283d5b8a67",
+                "reference": "1ac14fac3ced533047d8feae8edc7c283d5b8a67",
                 "shasum": ""
             },
             "require": {
@@ -1035,7 +1035,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2015-02-19 08:13:05"
+            "time": "2015-01-19 02:26:02"
         },
         {
             "name": "doctrine/orm",
@@ -1111,86 +1111,39 @@
             "time": "2014-12-16 13:45:01"
         },
         {
-            "name": "facebook/php-sdk",
-            "version": "v3.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/facebookarchive/facebook-php-sdk.git",
-                "reference": "6714042fa2f5979d4c64c7d11fb4bcab16bdf6cb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/facebookarchive/facebook-php-sdk/zipball/6714042fa2f5979d4c64c7d11fb4bcab16bdf6cb",
-                "reference": "6714042fa2f5979d4c64c7d11fb4bcab16bdf6cb",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache2"
-            ],
-            "authors": [
-                {
-                    "name": "Facebook",
-                    "homepage": "https://github.com/facebook/facebook-php-sdk/contributors"
-                }
-            ],
-            "description": "Facebook PHP SDK",
-            "homepage": "https://github.com/facebook/facebook-php-sdk",
-            "keywords": [
-                "facebook",
-                "sdk"
-            ],
-            "abandoned": "facebook/php-sdk-v4",
-            "time": "2013-11-19 23:11:14"
-        },
-        {
             "name": "friendsofsymfony/comment-bundle",
             "version": "dev-master",
             "target-dir": "FOS/CommentBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSCommentBundle.git",
-                "reference": "052052767ea7cd83137e1dde2618e7244b380731"
+                "reference": "2363b47b6a6fe967a89f323253be9bd3a7508653"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/052052767ea7cd83137e1dde2618e7244b380731",
-                "reference": "052052767ea7cd83137e1dde2618e7244b380731",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/2363b47b6a6fe967a89f323253be9bd3a7508653",
+                "reference": "2363b47b6a6fe967a89f323253be9bd3a7508653",
                 "shasum": ""
             },
             "require": {
                 "friendsofsymfony/rest-bundle": "~1.0",
                 "jms/serializer-bundle": "~0.11",
                 "php": ">=5.3.2",
-                "symfony/form": "~2.3",
-                "symfony/framework-bundle": "~2.3",
-                "symfony/security-bundle": "~2.3",
-                "symfony/twig-bundle": "~2.3",
-                "symfony/validator": "~2.3",
-                "symfony/yaml": "~2.3"
+                "symfony/form": "~2.1",
+                "symfony/framework-bundle": "~2.1",
+                "symfony/security-bundle": "~2.1",
+                "symfony/twig-bundle": "~2.1",
+                "symfony/validator": "~2.1",
+                "symfony/yaml": "~2.1"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.1",
                 "doctrine/orm": "~2.3",
                 "friendsofsymfony/user-bundle": "~1.1",
                 "ornicar/akismet-bundle": "dev-master",
-                "symfony/assetic-bundle": "~2.3",
-                "symfony/browser-kit": "~2.3",
-                "symfony/css-selector": "~2.3",
+                "symfony/assetic-bundle": "~2.1",
+                "symfony/browser-kit": "~2.1",
+                "symfony/css-selector": "~2.1",
                 "symfony/expression-language": "~2.4"
             },
             "suggest": {
@@ -1233,68 +1186,7 @@
                 "forum",
                 "threads"
             ],
-            "time": "2015-02-23 10:36:20"
-        },
-        {
-            "name": "friendsofsymfony/facebook-bundle",
-            "version": "1.3.0",
-            "target-dir": "FOS/FacebookBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfSymfony/FOSFacebookBundle.git",
-                "reference": "593a4ced83a7c2f96c563a54eb6a3261bbab2e14"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSFacebookBundle/zipball/593a4ced83a7c2f96c563a54eb6a3261bbab2e14",
-                "reference": "593a4ced83a7c2f96c563a54eb6a3261bbab2e14",
-                "shasum": ""
-            },
-            "require": {
-                "facebook/php-sdk": "3.2.*",
-                "php": ">=5.3.2",
-                "symfony/http-foundation": "~2.2",
-                "symfony/security": "~2.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*",
-                "symfony/framework-bundle": "~2.2",
-                "symfony/security-bundle": "~2.2",
-                "symfony/twig-bundle": "~2.2"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "FOS\\FacebookBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kris Wallsmith",
-                    "email": "kris.wallsmith@gmail.com",
-                    "homepage": "http://kriswallsmith.net/"
-                },
-                {
-                    "name": "FriendsOfSymfony Community",
-                    "homepage": "https://github.com/friendsofsymfony/FOSFacebookBundle/contributors"
-                }
-            ],
-            "description": "Integrate the Facebook Platform into your Symfony2 application.",
-            "homepage": "http://friendsofsymfony.github.com",
-            "keywords": [
-                "facebook"
-            ],
-            "abandoned": "hwi/oauth-bundle",
-            "time": "2013-12-11 20:21:13"
+            "time": "2014-07-31 22:54:27"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
@@ -1743,12 +1635,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSI18nRoutingBundle.git",
-                "reference": "eda6c5ff06c9100e5cad143b8a74224e0038a97c"
+                "reference": "6f69173307fdb45f2d2878d0ca8baca67c8e09dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSI18nRoutingBundle/zipball/eda6c5ff06c9100e5cad143b8a74224e0038a97c",
-                "reference": "eda6c5ff06c9100e5cad143b8a74224e0038a97c",
+                "url": "https://api.github.com/repos/schmittjoh/JMSI18nRoutingBundle/zipball/6f69173307fdb45f2d2878d0ca8baca67c8e09dd",
+                "reference": "6f69173307fdb45f2d2878d0ca8baca67c8e09dd",
                 "shasum": ""
             },
             "require": {
@@ -1789,8 +1681,10 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
-                    "email": "schmittjoh@gmail.com"
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh",
+                    "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
             "description": "This bundle allows you to create i18n routes.",
@@ -1800,7 +1694,7 @@
                 "routing",
                 "translation"
             ],
-            "time": "2015-02-20 16:41:04"
+            "time": "2014-03-22 05:31:08"
         },
         {
             "name": "jms/metadata",
@@ -3172,12 +3066,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "c95da3745edf48ccf9fbe05cd0089bd6ad3ba905"
+                "reference": "41ecba8f2cd207be217035f9439a6219917cfd0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/c95da3745edf48ccf9fbe05cd0089bd6ad3ba905",
-                "reference": "c95da3745edf48ccf9fbe05cd0089bd6ad3ba905",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/41ecba8f2cd207be217035f9439a6219917cfd0d",
+                "reference": "41ecba8f2cd207be217035f9439a6219917cfd0d",
                 "shasum": ""
             },
             "require": {
@@ -3245,7 +3139,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2015-02-25 09:28:13"
+            "time": "2015-02-15 19:53:26"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -3378,12 +3272,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "680aee93dc40ddd6b004afd8c21c3024413be21c"
+                "reference": "bad98809010882201eec051dbae1adef6a24e954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/680aee93dc40ddd6b004afd8c21c3024413be21c",
-                "reference": "680aee93dc40ddd6b004afd8c21c3024413be21c",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/bad98809010882201eec051dbae1adef6a24e954",
+                "reference": "bad98809010882201eec051dbae1adef6a24e954",
                 "shasum": ""
             },
             "require": {
@@ -3435,7 +3329,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2015-02-25 09:30:16"
+            "time": "2015-02-15 18:22:51"
         },
         {
             "name": "sonata-project/datagrid-bundle",
@@ -3725,7 +3619,6 @@
                 "jquery",
                 "sonata"
             ],
-            "abandoned": true,
             "time": "2014-03-19 11:45:00"
         },
         {

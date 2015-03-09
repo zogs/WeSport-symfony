@@ -18,7 +18,7 @@ class LoadInvitationData extends AbstractFixture implements OrderedFixtureInterf
 
 		$invit = new Invitation();
 		$invit->setEvent($this->getReference('event_football'));
-		$invit->setInviter($this->getReference('user_admin'));
+		$invit->setInviter($this->getReference('user1'));
 		$invit->setName('Liste d\'invitation de test 1');
 		$invit->setDate($today);
 		$invit->setContent('Salut, viens participer à notre activité c\'est trop cool');

@@ -37,7 +37,7 @@ security:
             oauth:
                 resource_owners:
                   facebook: "/login/check-facebook"
-                login_path: /connect
-                failure_path: /connect
+                login_path: /oauth-connect
+                failure_path: /oauth-connect
                 oauth_user_provider:
                   service: rkueny.oauth.user_provider

@@ -129,15 +129,14 @@ class InvitationController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		//check if the invited person is already participating
+		//if invited is already participating
 		if(NULL != $em->getRepository('WsEventsBundle:Participation')->findParticipation($invited->getInvitation()->getEvent(),$invited->getUser(),$invited)){		
-			//delete invited
-			//in order to avoid double participation
-			$em->getRepository('WsEventsBundle:Invited')->removeInvited($invited);
 			//display message
 			$message = "Bravo ".$invited->getUser()->getUsername().", vous participez à cette activité ! <a href=".$this->generateUrl('fos_user_security_login').">Connectez-vous</a> pour discuter.";
+			//delete invited in order to avoid double participation
+			$em->getRepository('WsEventsBundle:Invited')->removeInvited($invited);
 		}
-		//if not
+		//if invited not participati
 		else {
 			//confirm participaiton
 			$em->getRepository('WsEventsBundle:Invited')->confirmParticipation($invited);
