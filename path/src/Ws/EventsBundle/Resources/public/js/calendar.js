@@ -9,19 +9,20 @@ $(document).ready(function(){
 
 */
 
-/*
+
 	$.when(
-		$('.calendar-form-options select').select2({	
-			placeholder: "indifférent"
+		$('#calendar-form-options select').select2({	
+			placeholder: "indifférent",
 		})
 		)
 		.done(function(){
 			$("#calendar-form").addClass('visible');
 		});
-	*/
+	
 
 	$('#calendar-form-options-toggle').click(function(){
-		$('#calendar-form-options-container').toggleClass('open');
+		$(this).find('.ws-icon').toggleClass('ws-icon-arrow-right').toggleClass('ws-icon-arrow-down');
+		$('#calendar-form-options').toggleClass('open');
 	});
 
 	

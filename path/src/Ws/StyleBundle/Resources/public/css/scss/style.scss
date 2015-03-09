@@ -211,6 +211,12 @@ div.mm-is-menu * {
 			padding:0 20px;
 			height:inherit;
 			@include rem(16);
+			letter-spacing: 2px;
+			border-bottom: 0px solid $brightblue;
+			@include transition(all 0.1s ease-in-out);	
+			&:hover {
+				border-bottom-width: 3px;
+			}
 		}
 		li a{
 			font-family: 'Hobo';			
@@ -218,9 +224,10 @@ div.mm-is-menu * {
 			padding:0px;
 			text-transform: uppercase;
 			text-shadow: 0 0 0 rgba(255, 255, 255, 0.15);
+			
 		}
 		li a:link, li a:visited{ color:$brightblue;}
-		li a:hover,li a:active{ color:$lightblue;}	
+		li a:hover,li a:active{ color:$brightblue; }	
 
 
 		li.dropdown {
@@ -549,23 +556,20 @@ div.mm-is-menu * {
 
 
 /* Calendar Form */
-.calendar-form {
-	position:relative;
-	height:70px;
-	width:100%;	
-	margin: 0px auto 140px auto;
-	background-color: $lightblue;	
-	z-index:2000; //>1030
-	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+.calendar-search-form{
+	position: absolute;
+	top:40px;
+	height:200px;
+	width:100%;
 
-	table {
-		width:100%;	
-		height:inherit;
-		position:absolute;
-		top:0px;
-		left:0;		
-		@include transition(all 0.8s ease-out);
-	}	 
+}
+.calendar-form-bar {
+	height:auto;
+	width:100%;	
+	background-color: $lightblue;	
+	z-index:2000; //>1030	
+	box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
 }
 
 
@@ -577,14 +581,14 @@ div.mm-is-menu * {
 	margin-left:-65px;	
 	border-radius: 200px;
 	background-color: $lightblue;
-	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);	
+	box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);	
 	&:after {
 		content:'';
 		position: absolute;
-		top:-10px;
+		top:0px;
 		left:-10px;
 		width:150px;
-		height:80px;
+		height:72px;
 		background-color: $lightblue;		
 		z-index:1;
 	}
@@ -649,12 +653,57 @@ div.mm-is-menu * {
 	}
 }
 
+.calendar-form-rows {
 
-tr.calendar-form-main { 
-	height:inherit;
 }
-td.calendar-form-options {
-	height:auto;
+
+.calendar-form-row-main { 
+	height:inherit;
+	vertical-align: middle;
+	height:62px;
+	line-height: 40px;
+	padding-top:10px;
+
+	label {
+		position:relative;
+		top:7px;
+	}
+}
+
+.calendar-form-cell-left {
+	float:left;
+	height:inherit;
+	width:50%; 
+	padding-right:80px;	
+	text-align:right; 
+}
+
+.calendar-form-cell-right {
+	float:right;
+	height:inherit;
+	width: 50%;
+	padding-left:80px;
+	text-align: left;
+}
+
+a.calendar-action:link,a.calendar-action:active,a.calendar-action:visited {
+	@include rem(10);
+	color:white;
+	margin:0 10px;
+
+	span.ws-icon {
+		color:white;
+		@include rem(14);
+		margin-right:5px;
+	}
+}
+a.calendar-action:hover {
+	color:white;
+	text-decoration:none;
+}
+
+.calendar-form-row-options {
+	height:40px;
 	display:none;
 }
 
@@ -676,19 +725,15 @@ td.calendar-form-options {
 	@include rem(34);
 	@include calendar-form-text-shadow();
 }
-@mixin calendar-form-text-options(){
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	@include rem(16);
-	@include calendar-form-text-shadow();
-}
 
-tr.calendar-form-main,td.calendar-form-options {
+
+.calendar-form-row-main,.calendar-form-row-options {
 	label {		
 		display: inline-block;
 		color:white;
 		cursor: pointer;
 		margin:0;
-		height:50px;
+		height:inherit;
 
 		color:darken($backblue,10%);
 		@include calendar-form-text-main();
@@ -701,21 +746,22 @@ tr.calendar-form-main,td.calendar-form-options {
 
 	input,select {
 		min-width: 300px;
-		height:50px;
+		height:45px;
 		display:inline-block;
+		margin: 0;
 		padding:0 0 0 10px;
 		@include calendar-form-text-main();
 		color:$darkblue;	
 		line-height:130%;
 		background: darken($lightblue,2%) url('../img/lines/Lines3.png'); background-size: 60px;		
+		box-shadow: inset 3px 3px 10px 1px rgba(0, 0, 0, 0.1);
 		border: 1px solid $brightblue;
 		outline: none;
-		text-transform: lowercase;
-		@include box-shadow(0 0 0 0 rgba(0,0,0,0));
-		@include border-radius(0);
+		text-transform: lowercase;		
+		@include border-radius(0);		
 		
 		@include placeholder {
-			color: #8db3be;
+			color: $darkblue;
 		}
 	}
 
@@ -734,20 +780,19 @@ tr.calendar-form-main,td.calendar-form-options {
 
 
 
-td.calendar-form-main-left { 
-	width:50%; 
-	padding-right:5%;
-	height:inherit; 
-	position: relative;	
-	text-align:right; 
+.calendar-form-row-main .calendar-form-cell-left { 
 	
+	label {
+		margin-right:10px;
+	}
 
 	.select2-container {
+		height:45px;
 		min-width:300px;
 		padding-left:10px;	
 		background: darken($lightblue,2%) url('../img/lines/Lines3.png'); background-size: 60px;		
 		border:1px solid $brightblue;
-		height:50px;
+		box-shadow: inset 3px 3px 10px 1px rgba(0, 0, 0, 0.1);
 		
 		.select2-choices {
 			height: 50px !important;
@@ -800,16 +845,12 @@ td.calendar-form-main-left {
 	}
 }
 
-td.calendar-form-main-right { 
+.calendar-form-row-main .calendar-form-cell-right { 
 	width:50%; 
-	padding-left:5%;
+	padding-left:80px;
 	height:inherit; 
 	text-align:left;
 
-	label {
-		position: relative;
-		top:20px;
-	}
 
 	.tt-dropdown-menu {
 		width:300px;
@@ -831,29 +872,33 @@ td.calendar-form-main-right {
 
 }
 
-td.calendar-form-options {
+@mixin calendar-form-text-options(){
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	@include rem(12);
+	letter-spacing: 1px;
+	font-weight: bold;
+	@include calendar-form-text-shadow();
+}
+.calendar-form-row-options {
 
-	position:relative;
-	padding-top:10px;
+	display: none;
 
-	div#calendar-form-options-container {
-
-		position:relative;
-		top:50px;
-		@include transition(all 0.5s ease-in-out);		
-		&.open {
-			top:0px;
-		}
+	&.open {
+		display: block;
 	}
 
-	text-align:center;
+	@include transition(all 0.5s ease-in-out);		
+	position:relative;
+
 	label,input,select {
 		@include calendar-form-text-options();
 		width:auto;
+		margin:0 0 0 10px;
 	}
 
 	.select2-container,.select2-container-multi {
 		margin:0;
+		min-width:120px;		
 		
 		.select2-choice,.select2-choices {
 			padding-right:20px;
@@ -862,7 +907,7 @@ td.calendar-form-options {
 			.select2-chosen {
 				text-align:left;
 				@include calendar-form-text-options();
-				color: $lightblue !important;
+				color: $darkblue !important;
 				margin-right:0; //!
 				@include box-shadow(0 0 0);
 			}
@@ -873,7 +918,7 @@ td.calendar-form-options {
 				width:100px;
 			    min-width: 0;
 			    @include calendar-form-text-options();
-			    color: $lightblue !important;
+			    color: $darkblue !important;
 
 				    
 			}
@@ -882,9 +927,20 @@ td.calendar-form-options {
 				border:0;
 				background: transparent;
 				@include calendar-form-text-options();
-				color: $lightblue !important; 
+				color: $darkblue !important; 
 				@include box-shadow(0 0 0);
 			}	
+			.select2-search-field {
+				height:20px;
+				
+
+				input[type=text]{
+					margin-top:-8x;
+					min-width:80px;
+					height:24px;
+				}
+
+			}
 		}
 	}
 	.select2-dropdown-open {
@@ -904,7 +960,8 @@ td.calendar-form-options {
 	//background-image:url(../img/fresque.jpg);
 	//background-repeat: repeat-y;
 	//background-size:100% 100%;
-	position:relative;
+	position:absolute;
+	margin-top:180px;
 	@extend %clearfix;
 }
 

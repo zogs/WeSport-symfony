@@ -17,8 +17,8 @@
 
 	{% block search_calendar %}
 		
-		<form id="calendar-search" action="{{ path('ws_calendar_update') }}" method="POST">
-			<div class="calendar-form" id="calendar-form">
+		<form id="calendar-search" class="calendar-search-form" action="{{ path('ws_calendar_update') }}" method="POST">
+			<div class="calendar-form-bar" id="calendar-form">
 
 				<div class="calendar-submit">
 					<button type="submit">
@@ -27,45 +27,36 @@
 					</button>											
 				</div>
 
-				<div class="calendar-links">
-					<a href="{{ path('ws_calendar_reset') }}"><strong>Réinitialiser</strong></a><br>
-					<a class="btn-link" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><strong>Créer une alerte</strong></a><br>
-					<a href="javascript:;" id="calendar-form-options-toggle" class="btn-link"><strong>Plus d'options ?</strong></a><br>
-				</div>
-
-
-				<table>
-					<tr class="calendar-form-main" >					
-						<td class="calendar-form-main-left">
-
+				<div class="calendar-form-rows">
+					<div class="calendar-form-row-main" >					
+						<div class="calendar-form-cell-left">
+							
 							{# Je veux du Sports #}
-							{{ form_row(form.sports,{
-								'label': "Je veux du ",							
-							}) }}
+							{{ form_label(form.sports,"Je veux du") }}
+							{{ form_widget(form.sports) }}
 
-						</td>							
+						</div>							
 
-						<td class="calendar-form-main-right">
+						<div class="calendar-form-cell-right">
 							{# dans ma Ville #}
-							{% if form.location.city_name.vars.data is not null %}{% set label = "à "%}{% else %}{% set label = "à "%}{% endif %}							
-							{{ form_row(form.location.city_name,{
-								'label': label,
+							{% if form.location.city_name.vars.data is not null %}{% set label = "à "%}{% else %}{% set label = "à "%}{% endif %}	
+							{{ form_label(form.location.city_name,label)}}						
+							{{ form_widget(form.location.city_name,{
 								'required':false,
 								'attr':{
 										'placeholder':"ville",
 										'class': "city-autocomplete auto-adjust-width",
 									}
-							}) }}	
+							}) }}
 
-							
-							
-						</td>
-					</tr>
+							<a class="calendar-action" href="javascript:;" id="calendar-form-options-toggle"><span class="ws-icon {% if search.hasArea or search.hasType or search.hasLevel or search.price %}ws-icon-arrow-down{% else %}ws-icon-arrow-right{% endif %}"></span><strong>Plus d'options </strong></a>
+							<a class="calendar-action" href="{{ path('ws_alerts_create')}}?url={{ search.url }}"><span class="ws-icon ws-icon-envelop"></span><strong>M'envoyer par Email</strong></a>	
+							<a class="calendar-action" href="{{ path('ws_calendar_reset') }}"><span class="ws-icon ws-icon-close"></span><strong>Réinitialiser</strong></a>
+						</div>
+					</div>
 
-
-					<tr>
-						<td colspan="3" class="calendar-form-options">
-							<div id="calendar-form-options-container" class="{% if search.hasArea or search.hasType or search.hasLevel or search.price %}open {% endif %}">
+					<div class="calendar-form-row-options {% if search.hasArea or search.hasType or search.hasLevel or search.price %}open{% endif %}" id="calendar-form-options">
+						<div class="calendar-form-cell-left">							
 								{{ form_row(form._token) }}
 								{{ form_row(form.location.city_id) }}
 								{{ form_row(form.area,{
@@ -80,9 +71,10 @@
 									'attr': {
 										'data-placeholder':"indifférent"
 									}
-								})}}
-
-								{{ form_row(form.level,{
+								})}}															
+						</div>
+						<div class="calendar-form-cell-right">
+							{{ form_row(form.level,{
 									'label':"d'un niveau ",
 									'attr' : {
 										'data-placeholder':"indifférent"
@@ -96,15 +88,11 @@
 									}
 								})}}
 								
-							</div>
-						</td>
-					</tr>
-				</table>
-
-				
-				
+						</div>
+					</div>
+				</div>
 			</div>
-			
+		</form>	
 	{% endblock %}
 
 
@@ -281,7 +269,7 @@
 	</div>
 
 
-	</form>
+	
 
 
 {% endblock %}
