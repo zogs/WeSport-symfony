@@ -15,3 +15,7 @@ services:
         class: My\UtilsBundle\Twig\AgeCalculatorExtension
         tags:
             - { name: twig.extension }
+    utils.twig.giphy:
+        class: My\UtilsBundle\Twig\GiphyExtension
+        tags:
+            - { name: twig.extension }
