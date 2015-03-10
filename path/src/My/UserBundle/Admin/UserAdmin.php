@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 use My\UserBundle\Entity\User;
 
@@ -60,7 +61,19 @@ class UserAdmin extends Admin
             ->add('location',null,array('associated_property'=>'city.name'))
             ->add('register_since')
             ->add('lastLogin')
+            ->add('_action','actions',array(
+                'actions'=>array(
+                    'edit' => array(),                    
+                    'impersonate'=>array('template'=>'MyUserBundle:Admin:templates/list__action_impersonate.html.twig'),
+                    'delete'=> array(),
+                    )
+                ))
         ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('impersonate', '../../../../admin/user/switch_to/'.$this->getRouterIdParameter());
     }
 
 }

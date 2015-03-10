@@ -34,6 +34,11 @@ user_profil_view:
 
 
 #admin
-admin_user_index:
+admin_user_index: # useful??
     pattern: /admin/user/index
     defaults: { _controller: MyUserBundle:Admin:index }
+my_user_admin_switch_to_user:
+    pattern: /admin/user/switch_to/{user}
+    defaults: { _controller: MyUserBundle:Admin:switchToUser }
+    requirements:
+        user: \d+

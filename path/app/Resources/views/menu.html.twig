@@ -35,6 +35,9 @@
                                 <li><span class="ws-icon ws-icon-cog"></span><a href="{{ path('sonata_admin_dashboard') }}">Administration</a></li>
                                 {% endif %}
                                 <li><span class="ws-icon ws-icon-exit"></span><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <li><a href="{{ path('sonata_admin_dashboard', {'_switch_user': '_exit'}) }}">Stop incarnation</a></li>
+                                {% endif %} 
                             </ul>
                         </li>
                         {% endif %}
@@ -58,9 +61,14 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Langue <b class="caret"></b></a>
                             <ul class="dropdown-menu">
+                            {% if app.request.get('_route_params') is not null %}
                                 <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}"><i class="flag flag-fr"></i>Français</a></li>
                                 <li><a href="{{  path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))}}"><i class="flag flag-uk"></i>English</a></li>
+                            {% else %}
+                                <li>Route params _locale is missing, the lang menu can not be displayed...</li>
+                            {% endif %}
                             </ul>
+                            
                         </li>                          
                     </ul>                                                                
                 </div>

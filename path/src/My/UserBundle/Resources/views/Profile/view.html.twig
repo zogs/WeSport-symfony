@@ -10,6 +10,11 @@
 						<h1>
 							{{ user.username }}
 						</h1>
+						{# incarner #}
+						{% if is_granted('ROLE_ALLOWED_TO_SWITH') %}
+							<a class="btn btn-small" href="?_switch_to={{ user.username }}">Incarner</a>
+						{% endif %}
+
 						{% if user.asso %} 
 							<span class="label ws-label ws-label-grey tooltiptop" data-toggle="tooltip" title="Association"><i>A</i></span>
 						{% endif %}
