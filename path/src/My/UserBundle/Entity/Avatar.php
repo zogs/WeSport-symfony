@@ -51,7 +51,7 @@ class Avatar
 
     public function setDefaultAvatar()
     {
-        return 'defaults/default'.rand(1,10).'.gif';
+        return 'defaults/default_'.rand(1,10).'.gif';
     }
 
     public function isDefaultAvatar()
