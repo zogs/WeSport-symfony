@@ -17,13 +17,15 @@ services:
         tags:
             - { name: 'monolog.logger', channel: 'security' }
 
-    #Provider
-    rkueny.oauth.user_provider:
+    #OAuth
+    my_user.oauth.user_provider:
         class: My\UserBundle\Providers\OAuth\UserProvider
         arguments: 
             - @fos_user.user_manager
             - { facebook: facebookId }
-
+    my_user.oauth.success_handler:
+        class: My\UserBundle\Service\OAuthSuccessHandler
+        arguments: [@router,@security.context,@flashbag]
 
 
     #Form Type

@@ -36,8 +36,9 @@ security:
             entry_point: entry_point.user_login
             oauth:
                 resource_owners:
-                  facebook: "/login/check-facebook"
+                  facebook: "/%locale%/login/check-facebook"
                 login_path: /oauth-connect
                 failure_path: /oauth-connect
                 oauth_user_provider:
-                  service: rkueny.oauth.user_provider
+                  service: my_user.oauth.user_provider
+                success_handler: my_user.oauth.success_handler
