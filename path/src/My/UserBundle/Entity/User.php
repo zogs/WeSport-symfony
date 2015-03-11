@@ -69,6 +69,11 @@ class User extends BaseUser
     private $alerts;
 
     /**
+     * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Search", mappedBy="organizer", cascade={"remove"})
+     */
+    private $searched;
+
+    /**
      * @ORM\OneToMany(targetEntity="Ws\EventsBundle\Entity\Event", mappedBy="organizer", cascade={"persist","remove"})
      */
     private $events;

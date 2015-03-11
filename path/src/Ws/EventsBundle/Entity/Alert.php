@@ -34,8 +34,8 @@ class Alert
     private $email;
 
     /**
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", cascade={"all"}, fetch="EAGER")
-    * @ORM\JoinColumn(name="search_id")
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Search", fetch="EAGER")
+    * @ORM\JoinColumn(name="search_id", onDelete="SET NULL")
     */
     private $search;
 

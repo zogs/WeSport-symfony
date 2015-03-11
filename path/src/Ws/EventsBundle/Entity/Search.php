@@ -36,9 +36,9 @@ class Search
 
      /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    * @ORM\JoinColumn(name="user_id")
+    * @ORM\JoinColumn(name="user_id", nullable=true, onDelete="SET NULL")
     */
-    private $user;
+    private $user = null;
 
     /**
     * @ORM\Column(name="date", type="string", nullable=true)
@@ -108,7 +108,7 @@ class Search
     private $visibility;
 
     /**
-    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
+    * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User", inversedBy="searched")
     * @ORM\JoinColumn(name="organizer_id", nullable=true)
     */
     private $organizer = null;
