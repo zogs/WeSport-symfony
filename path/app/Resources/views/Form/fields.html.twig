@@ -13,7 +13,9 @@
         	{{ form_widget(form) }}  
         	
             {% if form.vars.valid == false %}
-                <div class="help-inline help-error">{{ form_errors(form) }}</div>      	
+                <div class="help-inline help-error">{{ form_errors(form) }}</div>      
+            {% else %}	
+                <div class="helper help-inline help-error hide"></div>
             {% endif %}
         </div>        
     </div>

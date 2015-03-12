@@ -31,7 +31,7 @@ services:
     #Form Type
     my_user.registration.form.type:
         class: My\UserBundle\Form\Type\RegistrationFormType
-        arguments: [%fos_user.model.user.class%]
+        arguments: [%fos_user.model.user.class%,@router]
         tags:
             - { name: form.type, alias: my_user_registration }
 

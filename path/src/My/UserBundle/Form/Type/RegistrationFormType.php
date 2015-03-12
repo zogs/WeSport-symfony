@@ -5,18 +5,25 @@ namespace My\UserBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Routing\Router;
 
 use My\WorldBundle\Form\Type\LocationSelectType;
 
 class RegistrationFormType extends BaseType
 {
+    private $router;
+
+    public function __construct($class, Router $router)
+    {
+        parent::__construct($class);
+        $this->router = $router;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         //parent::buildForm($builder, $options);
 
         // add your custom field
-
-
         $builder
         ->add('type','choice',array(
                 'choices'=>array(
@@ -32,7 +39,8 @@ class RegistrationFormType extends BaseType
             'label'=>"Nom d'utilisateur",
             'attr'=>array(
                 'placeholder'=>"Nom d'utilisateur",  
-                'data-icon' => 'user'          
+                'data-icon' => 'user', 
+                'data-url-checker' =>$this->router->generate('my_user_login_checker'),       
                 ),
             ))
 

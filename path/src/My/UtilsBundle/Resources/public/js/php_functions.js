@@ -314,3 +314,22 @@ function stripslashes(str) {
     str=str.replace(/\\\\/g,'\\');
     return str;
 }
+
+//Find all characters in a string
+//@param string to find in
+//@param string of characters to find
+//@return string o characters or null
+function hasCharacters(string,chars){
+        finded = false;
+        console.log(string);
+        console.log(chars);
+        chars = escapeRegExp(chars);
+        console.log(chars);
+        var pattern = new RegExp("["+chars+"]","g");
+        var finded = string.match(pattern);
+        return finded;
+ }
+ //Escape string characters for RegExp traitement
+ function escapeRegExp(str) {
+  return str.replace(/[-\/\\^$*#+?.()|[\]{}]/g, '\\$&');
+}

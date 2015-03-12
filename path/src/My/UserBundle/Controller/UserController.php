@@ -4,6 +4,7 @@ namespace My\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use My\UserBundle\Form\Type\ProfilEditionType;
 
@@ -78,6 +79,22 @@ class UserController extends Controller
 
         return $this->redirect($this->generateUrl('ws_calendar'));
 
+    }
+
+    public function checkUsernameAction(Request $request)
+    {
+        $username = $request->query->get('username');
+        
+        $errors = array();
+        if(null != $this->get('fos_user.user_manager')->findUserByUsername($username)){
+            $errors = array('error'=>$this->get('translator')->trans('form.username.taken',array(),'MyUserBundle'));
+        }
+
+        $response = new Response();
+        $response->setContent(json_encode($errors));
+        $response->headers->set('Content-Type','application/json');
+        
+        return $response;
     }
 
 }
