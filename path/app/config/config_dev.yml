@@ -1,5 +1,6 @@
 imports:
     - { resource: config.yml }
+    - { resource: emails.yml }
 
 framework:
     router:
@@ -13,10 +14,56 @@ web_profiler:
 
 monolog:
     handlers:
+
+        #log toutes les info pendant 3 jours
         main:
-            type:   stream
-            path:   "%kernel.logs_dir%/%kernel.environment%.log"
-            level:  debug
+            type: rotating_file
+            max_files: 3
+            path: %kernel.logs_dir%/%kernel.environment.all.log
+            level: info
+
+        #log toutes les connexions pendant 15 jours
+        login:
+            type: rotating_file
+            max_files: 15
+            path : %kernel.logs_dir%/%kernel.environment.authentification.log
+            level: info
+            channels: security
+
+        #log toutes les erreurs pendant 7 jours
+        main_error:
+            type: fingers_crossed
+            action_level: error
+            handler: streamed_error
+        streamed_error:
+            type: rotating_file
+            max_files: 7
+            path: %kernel.logs_dir%/%kernel.environment.errors.log
+            level: info
+
+        #log toutes les erreurs critiques pednant 7 jours et envoi un email aux responsables
+        main_critical:
+            type: fingers_crossed
+            action_level: critical
+            handler: grouped_critical
+        grouped_critical:
+            type: group
+            members: [streamed_critical, buffered_critical]
+        streamed_critical:
+            type: rotating_file
+            max_files: 7
+            path: %kernel.logs_dir%/%kernel.environment.criticals.log
+            level: info
+        buffered_critical:
+            type: buffer
+            handler: swift_critical
+        swift_critical:
+            type: swift_mailer
+            from_email: logger@cosporturage.fr
+            to_email: %mailer.emails.debug%
+            subject: Une erreur critique est survenue !
+            level: info
+
         console:
             type:   console
             bubble: false
