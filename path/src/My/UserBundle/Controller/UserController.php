@@ -5,6 +5,8 @@ namespace My\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 use My\UserBundle\Form\Type\ProfilEditionType;
 
@@ -87,7 +89,7 @@ class UserController extends Controller
         
         $errors = array();
         if(null != $this->get('fos_user.user_manager')->findUserByUsername($username)){
-            $errors = array('error'=>$this->get('translator')->trans('form.username.taken',array(),'MyUserBundle'));
+            $errors = array('error'=>$this->get('translator')->trans('form.error.username.taken',array(),'MyUserBundle'));
         }
 
         $response = new Response();
@@ -96,5 +98,21 @@ class UserController extends Controller
         
         return $response;
     }
+
+    public function checkEmailAction(Request $request)
+    {
+        $email = $request->query->get('email');
+
+        $errors = array();
+        if(null != $this->get('fos_user.user_manager')->findUserByEmail($email)){
+            $errors = array('error'=>$this->get('translator')->trans('form.error.email.taken',array(),'MyUserBundle'));
+        }
+
+        $response = new JsonResponse();
+        return $response->setData($errors);
+        
+    }
+
+    
 
 }

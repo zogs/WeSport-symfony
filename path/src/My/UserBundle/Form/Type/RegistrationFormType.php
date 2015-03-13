@@ -48,7 +48,8 @@ class RegistrationFormType extends BaseType
             'label'=>'E-mail de contact',
             'attr'=> array(                 
                     'placeholder'=>"E-mail de contact", 
-                    'data-icon' => 'envelope'                   
+                    'data-icon' => 'envelope',
+                    'data-url-checker' =>$this->router->generate('my_user_email_checker'),                          
                 ),
                 
             ))

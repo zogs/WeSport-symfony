@@ -29,6 +29,10 @@ my_user_login_checker:
     pattern: /check/username
     defaults: { _controller: MyUserBundle:User:checkUsername }
 
+my_user_email_checker:
+    pattern: /check/email
+    defaults: { _controller: MyUserBundle:User:checkEmail }
+
 user_profil_view:
     pattern: /user/{id}/{username}
     defaults: { _controller: MyUserBundle:User:viewProfil }

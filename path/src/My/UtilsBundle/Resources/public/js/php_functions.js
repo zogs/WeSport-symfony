@@ -321,10 +321,7 @@ function stripslashes(str) {
 //@return string o characters or null
 function hasCharacters(string,chars){
         finded = false;
-        console.log(string);
-        console.log(chars);
         chars = escapeRegExp(chars);
-        console.log(chars);
         var pattern = new RegExp("["+chars+"]","g");
         var finded = string.match(pattern);
         return finded;
