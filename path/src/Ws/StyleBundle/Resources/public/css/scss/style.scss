@@ -95,16 +95,15 @@ body{
 }
 
 .page-container {  
-	background-color:$deepblue; 
-	padding:20px 5px 20px 5px; 
+	padding:0;
 	z-index:1;
 
 	.perspective {
 		position:absolute;		
-		width:102%;
-		height:500px;
-		top:0;
-		left:-1%;		
+		width:101%;
+		height:1000px;
+		top:70px;
+		left:-0.5%;		
 		perspective:500px;
 		-webkit-perspective: 500px;
 		.shape {
@@ -112,6 +111,7 @@ body{
 			height:100%;
 			background-color:$deepblue;
 			transform: rotateX(-2deg);
+
 		}
 	}
 	/*
@@ -561,31 +561,32 @@ div.mm-is-menu * {
 
 /* Calendar Form */
 .calendar-search-form{
-	position: absolute;
-	top:40px;
-	height:200px;
+	position:relative;
+	margin:140px 0 0 0;	
 	width:100%;
 
 }
 .calendar-form-bar {
+	position: relative;
 	height:auto;
 	width:100%;	
 	background-color: $lightblue;	
-	z-index:2000; //>1030	
-	box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
-	overflow: hidden;
+	border-top:5px solid rgba(58, 95, 105, 0.08);	
 }
 
 
 .calendar-submit {
 	position:absolute;
+	top:-30px;
 	left:50%;
 	width:130px;
 	height:130px;
 	margin-left:-65px;	
+	z-index:100;
 	border-radius: 200px;
 	background-color: $lightblue;
-	box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);	
+	box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+	/*	
 	&:after {
 		content:'';
 		position: absolute;
@@ -595,7 +596,7 @@ div.mm-is-menu * {
 		height:72px;
 		background-color: $lightblue;		
 		z-index:1;
-	}
+	}*/
 	button[type=submit] {
 		position:relative;
 		top:50%;
@@ -658,7 +659,7 @@ div.mm-is-menu * {
 }
 
 .calendar-form-rows {
-
+	padding-top:10px;
 }
 
 .calendar-form-row-main { 
@@ -666,8 +667,7 @@ div.mm-is-menu * {
 	vertical-align: middle;
 	height:62px;
 	line-height: 40px;
-	padding-top:10px;
-
+	border-bottom: 1px solid rgba(255, 255, 255, 0.30);
 	label {
 		position:relative;
 		top:7px;
@@ -707,8 +707,10 @@ a.calendar-action:hover {
 }
 
 .calendar-form-row-options {
-	height:40px;
-	display:none;
+	position:absolute;
+	width:100%;
+	padding:0 10%;
+	z-index:1000;
 }
 
 @mixin calendar-form-bottom-dotted($y:42){
@@ -878,22 +880,29 @@ a.calendar-action:hover {
 
 @mixin calendar-form-text-options(){
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	@include rem(12);
+	@include rem(14);
 	letter-spacing: 1px;
 	font-weight: bold;
-	@include calendar-form-text-shadow();
+	text-shadow:0 0 0 #000;
 }
 .calendar-form-row-options {
 
-	display: none;
-
+	@include transition(all 0.5s ease-in-out);		
+	top:60px;
+	@include opacity(0);
 	&.open {
-		display: block;
+		top:80px;
+		@include opacity(1);
 	}
 
-	@include transition(all 0.5s ease-in-out);		
-	position:relative;
-
+	.option-field {
+		display:inline-block;
+	}
+	
+	label {
+		color:$lightblue;
+		cursor: default;
+	}
 	label,input,select {
 		@include calendar-form-text-options();
 		width:auto;
@@ -911,7 +920,7 @@ a.calendar-action:hover {
 			.select2-chosen {
 				text-align:left;
 				@include calendar-form-text-options();
-				color: $darkblue !important;
+				color: $backblue !important;
 				margin-right:0; //!
 				@include box-shadow(0 0 0);
 			}
@@ -922,7 +931,7 @@ a.calendar-action:hover {
 				width:100px;
 			    min-width: 0;
 			    @include calendar-form-text-options();
-			    color: $darkblue !important;
+			    color: $backblue !important;
 
 				    
 			}
@@ -931,7 +940,7 @@ a.calendar-action:hover {
 				border:0;
 				background: transparent;
 				@include calendar-form-text-options();
-				color: $darkblue !important; 
+				color: $backblue !important; 
 				@include box-shadow(0 0 0);
 			}	
 			.select2-search-field {
@@ -964,8 +973,7 @@ a.calendar-action:hover {
 	//background-image:url(../img/fresque.jpg);
 	//background-repeat: repeat-y;
 	//background-size:100% 100%;
-	position:absolute;
-	margin-top:180px;
+	position:relative;
 	@extend %clearfix;
 }
 
@@ -1114,6 +1122,7 @@ a.calendar-action:hover {
 	padding:0 0 0 50px;
 	color:#FFF;
 	font-size:12px;
+	border-bottom:3px solid rgba(0,0,0,0.1);
 	//@include long-shadow(text,#152e35,50,false,false,right);
 	table { height:100%; width:100%; text-align:left; vertical-align: middle;}
 	p { margin:0; padding:0; line-height: 20px; }
@@ -1442,6 +1451,7 @@ a.calendar-action:hover {
 			 		.colomn-date{
 			 			position:relative;
 
+
 			 			&:after{
 			 				content:'PAST';
 			 				color:#CDCDCD;
@@ -1602,6 +1612,7 @@ a.calendar-action:hover {
 		text-align: center;
 		@include text-shadow(0 0 5px #666);
 		color:white;
+		border-top:3px solid rgba(0,0,0,0.1);
 
 		strong {
 			text-transform: uppercase;
@@ -1625,7 +1636,7 @@ a.calendar-action:hover {
 
 		tr.events-week { text-align:center;/*height:100%; min-height:1000px;*/}
 
-		td { vertical-align: top;/*height:1000px; min-height:1000px;*/ }
+		td { vertical-align: top; border-right: 1px solid rgba(0, 0, 0, 0.04)/*height:1000px; min-height:1000px;*/ }
 		td.colomn-1 { background-color: $red; }
 		td.colomn-2 { background-color: $softred; }
 		td.colomn-3 { background-color: $lightred; }
@@ -1915,11 +1926,23 @@ a.calendar-action:hover {
 	}
 }
 
-.page_content {
-	background-color:#FFF;
-	position:relative;
+.page_content {	
 	@extend %clearfix;
+
+	.fresque {
+		display:none;
+	}
 }
+
+.white-sheet {
+	position:relative;
+	top:50px;
+	background-color:#FFF;
+	border:10px solid $darkblue;
+
+}
+
+
 .calendar-return {
 
 	position:absolute;
@@ -2652,8 +2675,25 @@ table.list-table {
 
 .viewevent{
 	.content-header {
+		position: relative;
 		background-color: #efefef;
 		padding:5px 0px 25px 10px;
+
+		.header-logo {
+			position:absolute;
+			left:50%;			
+			margin-left:-70px;
+			top:-50px;
+			border-radius: 200px;
+			background-color:white;
+			padding:25px;
+			box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.05), 0 0 20px 1px rgba(0, 0, 0, 0.1);
+			
+			.ws-icon {
+				color:rgba(0,0,0,0.9);
+				@include rem(80);
+			}
+		}
 
 		table.event-header {
 			width:100%;
@@ -2666,25 +2706,25 @@ table.list-table {
 				td { text-align:left; font-family: Arial,sans-serif; color: $deepblue; padding-top:6px; padding-bottom:5px; }
 				td.cell-day { @include rem(60); font-weight:bold; }
 				td.cell-date { @include rem(18); font-transform:uppercase; }				
-				td.cell-time span { @include rem(20); color:white; background-color: $deepblue; font-weight: bold; padding:4px 10px; }
+				td.cell-time span.time { @include rem(22); color:white; background-color: $deepblue; font-weight: bold; padding:4px 10px; }
+				td.cell-time span.ws-icon { @include rem(25); color: $darkblue; margin-left:5px;}
 				td.cell-city { @include rem(18); color:$deepgrey; font-weight: bold; }
 			}
 			td.cell-title {
-				table { width:100% ; }
-				td.cell-title-icon { text-align:left; width:100px;}
-				span.event-sport-icon { color:#000; @include rem(80); background-color:#FFF; padding: 10px; border-radius: 100px; }
+				padding-top:22px;
+				table { width:100% ; }				
 				td.cell-title-name { text-align:left; padding-left:10px;}
-				h1.event-title{	display: inline; font-family: 'Boogaloo',Helvetica,Arial; color:$lightblue; font-weight: normal; @include rem(26); }
+				h1.event-title{	display: inline; font-family: 'Boogaloo',Helvetica,Arial; color:$darkblue; font-weight: normal; @include rem(26); }
 				h1.event-title.big { @include rem(50) }
 			}
 			td.cell-organizer {
 				width:180px;
 				padding-top:20px;
 				img.event-organizer-avatar { width:80px; height:80px; border-radius:100px; }
-				a:link,a:visited,a:active { text-decoration:none; color:inherit; }
+				a:link,a:visited,a:active { text-decoration:none; color:$lightblue; }
 				a:hover { text-decoration:underline; }
-				strong { font-weight: bold; color:$deepgrey; @include rem(16); }
-				small { font-size: 80%; color: $deepgrey; }
+				strong { font-weight: bold; @include rem(16); }
+				small { font-size: 80%; color: $deepblue; }
 			}
 		}	
 	}
@@ -2727,11 +2767,11 @@ table.list-table {
 				span.ws-icon { color: #a3d179; }
 			}
 			li.event-pending {
-				background-color: #b4b4b4;
+				background-color: #DDD9D9;
 				color:white;
 				font-weight: bold;
 				padding:10px 12px;
-				span.ws-icon { color:#e0dede; }
+				span.ws-icon { color:white; @include rem(20); }
 			}
 			li.event-finished {
 				background-color: $softred;
@@ -2755,8 +2795,12 @@ table.list-table {
 			label,a {
 				display:block;					
 				float:right;					
+				padding:10px 20px;
+				color:white;
 				font-weight: bold;
-				color:$deepgrey;
+				background-color: $darkblue;
+				border-radius: 5px;
+				box-shadow: 0 2px 0px 2px rgba(207, 223, 228, 1);
 				small { font-weight: normal; @include rem(11); }
 			}
 
@@ -2782,7 +2826,7 @@ table.list-table {
 			input#checkbox-joined + span:after {
 				content: ' ';
 				position: absolute;
-				background: #CCC;
+				background: $lightblue;
 				top: 0;
 				left: 0;
 				width: 100%;
@@ -2863,7 +2907,7 @@ table.list-table {
 	h2 { background-color: #a1d5b7;}
 	div.section-content {
 		background-color: #e2f8eb;
-		height:120px;
+		height:170px;
 	}
 }
 

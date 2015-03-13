@@ -8,6 +8,9 @@
 		<div class="white-sheet">
 			
 			<div class="content-header">
+				<div class="header-logo">
+					<span class="ws-icon ws-icon-{{ event.sport.icon }}"></span>
+				</div>
 				<table class="event-header">
 					<tr>
 						<td class="cell-meta">
@@ -23,7 +26,10 @@
 									</td>										
 								</tr>
 								<tr>
-									<td class="cell-time"><span>{{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</span></td>
+									<td class="cell-time">
+										<span class="time">{{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</span>
+										<span class="ws-icon ws-icon-{{ event.sport.icon }}"></span>
+									</td>
 								</tr>
 								<tr>
 									<td class="cell-city">à {{ event.spot.location.city.name|capitalize }}</td>
@@ -32,10 +38,7 @@
 						</td>
 						<td class="cell-title">
 							<table>
-								<tr>
-									<td class="cell-title-icon">
-										<span class="ws-icon event-sport-icon ws-icon-large ws-icon-{{ event.sport.icon }}"></span>
-									</td>
+								<tr>									
 									<td class="cell-title-name">
 										<h1 class="event-title {% if event.title|length < 30 %}big{% endif %}">{{ event.title }}</h1>							
 									</td>
@@ -135,9 +138,9 @@
 							</td>
 							<td class="join-event">
 								{% if event.isUserParticipate(app.user) == true %}
-									<a href="{{ path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">J'y vais <input type="checkbox" id="checkbox-joined" checked="checked"><span></span></a>								
+									<a href="{{ path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">Je participe <input type="checkbox" id="checkbox-joined" checked="checked"><span></span></a>								
 								{% else %}
-									<a href="{{ path('ws_participation_add',{event:event.id,token:csrf_token('participation_add')}) }}">J'y vais <input type="checkbox" id="checkbox-joined"><span></span></a>
+									<a href="{{ path('ws_participation_add',{event:event.id,token:csrf_token('participation_add')}) }}">Participer <input type="checkbox" id="checkbox-joined"><span></span></a>
 								{% endif %}
 							</td>
 						</tr>

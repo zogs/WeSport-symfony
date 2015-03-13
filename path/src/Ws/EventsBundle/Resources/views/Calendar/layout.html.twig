@@ -59,34 +59,45 @@
 						<div class="calendar-form-cell-left">							
 								{{ form_row(form._token) }}
 								{{ form_row(form.location.city_id) }}
-								{{ form_row(form.area,{
-									'label':"Dans un rayon de ",														
+
+							<div class="option-field">
+								<label>Organisé par </label>
+								{{ form_widget(form.type,{
+									'attr': {
+										'data-placeholder':"indifférent"
+									}
+								})}}			
+							</div>		
+
+							<div class="option-field">
+								<label>dans un rayon de</label>
+								{{ form_widget(form.area,{														
 									'attr': {
 											'data-placeholder':"indifférent"
 									}
 								})}}
+							</div>
 
-								{{ form_row(form.type,{
-									'label':"organisé par ",
-									'attr': {
-										'data-placeholder':"indifférent"
-									}
-								})}}															
 						</div>
 						<div class="calendar-form-cell-right">
-							{{ form_row(form.level,{
-									'label':"d'un niveau ",
+
+							<div class="option-field">
+								<label>d'un niveau</label>
+								{{ form_widget(form.level,{
 									'attr' : {
 										'data-placeholder':"indifférent"
 									}
 								})}}
+							</div>	
 
-								{{ form_row(form.price,{
-									'label':"d'un prix ",				
+							<div class="option-field">
+								<label>d'un prix</label>
+								{{ form_widget(form.price,{			
 									'attr': {
 											'data-placeholder':"indifférent"
 									}
 								})}}
+							</div>
 								
 						</div>
 					</div>
