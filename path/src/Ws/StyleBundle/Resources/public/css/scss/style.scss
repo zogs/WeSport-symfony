@@ -1,13 +1,13 @@
 @import "compass/css3";
 
 //Mixins
-@import "../includes/mixins";
+@import "includes/mixins";
 
 //Fonts
-@import "../includes/fonts";
+@import "includes/fonts";
 
 //Fields
-@import "../includes/fields";
+@import "includes/fields";
 
 $brightblue:#c2defa;
 $lightblue:#95b9c4;
@@ -1934,10 +1934,11 @@ a.calendar-action:hover {
 	}
 }
 
+$bg-color-white-sheet:#efefef;
 .white-sheet {
 	position:relative;
-	top:50px;
-	background-color:#FFF;
+	top:55px;
+	background-color:$bg-color-white-sheet;
 	border:10px solid $darkblue;
 
 }
@@ -2673,27 +2674,42 @@ table.list-table {
 ==== Event View
 ======*/
 
+
+
 .viewevent{
+
+	.header-logo {
+		position:absolute;
+		left:50%;			
+		margin-left:-70px;
+		top:-50px;
+		border-radius: 200px;
+		background-color:$bg-color-white-sheet;
+		padding:25px;
+		border: 5px solid rgb(226,226,226);			
+		&:before{
+			content:'';
+			position: absolute;
+			display: block;
+			width: 120%; height:120%;
+			z-index:-10;
+			border-radius: 200px;
+			top:-15px;
+			left:-10%;
+			background: rgba(58, 95, 105, 1);
+		}
+		.ws-icon {
+			color:rgba(0,0,0,0.9);
+			@include rem(80);
+			@include long-shadow(text,rgb(226,226,226),3,false,false,right); 
+
+			
+		}	
+	}
+
 	.content-header {
 		position: relative;
-		background-color: #efefef;
-		padding:5px 0px 25px 10px;
-
-		.header-logo {
-			position:absolute;
-			left:50%;			
-			margin-left:-70px;
-			top:-50px;
-			border-radius: 200px;
-			background-color:white;
-			padding:25px;
-			box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.05), 0 0 20px 1px rgba(0, 0, 0, 0.1);
-			
-			.ws-icon {
-				color:rgba(0,0,0,0.9);
-				@include rem(80);
-			}
-		}
+		padding:5px 0px 25px 10px;		
 
 		table.event-header {
 			width:100%;
@@ -2739,9 +2755,12 @@ table.list-table {
 		}
 	}
 	.section-participation {
-		h2 { background-color: #cccbcb; }
-		div.section-content {
-			background-color: #e8e7e7;
+		h2 { 
+			// background-color: #DFA7A7; 
+			@include filter-gradient(#dfa7a7, #dfa7a7, horizontal); // IE6-9
+			@include background-image(linear-gradient(left, rgba(223,167,167,1) 0%,rgba(223,167,167,0.50) 50%,rgba(223,167,167,1) 100%));
+			}
+		div.section-content {			
 			padding:10px 12px;
 
 			table:first-child{
@@ -2802,6 +2821,16 @@ table.list-table {
 				border-radius: 5px;
 				box-shadow: 0 2px 0px 2px rgba(207, 223, 228, 1);
 				small { font-weight: normal; @include rem(11); }
+
+				&.userIsParticipating {
+
+					background-color: $green;
+					box-shadow: 0 2px 0px 2px $darkgreen;
+
+					span:after {
+						background: #C7F0B8;
+					}
+				}
 			}
 
 			input[type="checkbox"] {
@@ -2882,14 +2911,21 @@ table.list-table {
 	}
 }
 .section-info { 
-	h2 { background-color: #bad1d8;}
+	h2 { 
+		// background-color: #bad1d8;
+		@include filter-gradient(#bad1d8, #bad1d8, horizontal); // IE6-9
+		@include background-image(linear-gradient(left, rgba(186,209,216,1) 0%,rgba(186,209,216,0.5) 50%,rgba(186,209,216,1) 100%));
+	}
 	div.section-content {
-		background-color: #eceff0;
 		padding:5px 20px 0px 20px;
 		@include rem(12); color: grey;
 		table {
 			width:100%;
 			height:100%;
+			td.cell-description {
+				@include rem(14);
+				font-style: italic;
+			}
 			td {
 				vertical-align: top;
 				ul {
@@ -2904,15 +2940,22 @@ table.list-table {
 	}
 }
 .section-map { 
-	h2 { background-color: #a1d5b7;}
+	h2 { 
+		// background-color: #a1d5b7;
+		@include filter-gradient(#a1d5b7, #a1d5b7, horizontal); // IE6-9
+		@include background-image(linear-gradient(left, rgba(161,213,183,1) 0%,rgba(161,213,183,0.5) 50%,rgba(161,213,183,1) 100%));
+	}
 	div.section-content {
-		background-color: #e2f8eb;
 		height:170px;
 	}
 }
 
 .section-invitations {
-	h2 { background-color: #cccbcb;}
+	h2 { 
+		// background-color: #cccbcb;
+		@include filter-gradient(#fedbba, #fedbba, horizontal); // IE6-9
+		@include background-image(linear-gradient(left, rgba(254,219,186,1) 0%,rgba(254,219,186,0.5) 50%,rgba(254,219,186,1) 100%));
+	}
 	div.section-content {
 
 		table {
@@ -2928,7 +2971,11 @@ table.list-table {
 }
 
 .section-comment { 
-	h2 { background-color: #fedbba;}
+	h2 { 
+		// background-color: #fedbba;
+		@include filter-gradient(#fedbba, #fedbba, horizontal); // IE6-9
+		@include background-image(linear-gradient(left, rgba(254,219,186,1) 0%,rgba(254,219,186,0.5) 50%,rgba(254,219,186,1) 100%));
+	}
 	h3 { @include rem(14); color: $deepgrey; margin:0; }
 	div.section-content {
 		height:auto;

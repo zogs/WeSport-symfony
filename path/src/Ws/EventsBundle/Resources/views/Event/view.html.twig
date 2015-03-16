@@ -7,10 +7,11 @@
 		<div class="fresque"></div>
 		<div class="white-sheet">
 			
+			<div class="header-logo">
+				<span class="ws-icon ws-icon-{{ event.sport.icon }}"></span>
+			</div>
+
 			<div class="content-header">
-				<div class="header-logo">
-					<span class="ws-icon ws-icon-{{ event.sport.icon }}"></span>
-				</div>
 				<table class="event-header">
 					<tr>
 						<td class="cell-meta">
@@ -28,7 +29,7 @@
 								<tr>
 									<td class="cell-time">
 										<span class="time">{{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</span>
-										<span class="ws-icon ws-icon-{{ event.sport.icon }}"></span>
+										<span class="ws-icon ws-icon-calendar"></span>
 									</td>
 								</tr>
 								<tr>
@@ -58,7 +59,7 @@
 			
 			<div class="section section-participation">
 				<h2>{{ event.participations|length }} participants</h2>
-				<div class="section-content {% if event.isUserParticipate(app.user) == true %}section-green{% endif %}">
+				<div class="section-content">
 					<table>
 						<tr>
 							<td>
@@ -138,9 +139,10 @@
 							</td>
 							<td class="join-event">
 								{% if event.isUserParticipate(app.user) == true %}
-									<a href="{{ path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">Je participe <input type="checkbox" id="checkbox-joined" checked="checked"><span></span></a>								
+									<a class="userIsParticipating" href="{{ path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">J'y vais <input type="checkbox" id="checkbox-joined" checked="checked"><span></span></a>
+									<a href="{{path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">Annuler</a>								
 								{% else %}
-									<a href="{{ path('ws_participation_add',{event:event.id,token:csrf_token('participation_add')}) }}">Participer <input type="checkbox" id="checkbox-joined"><span></span></a>
+									<a href="{{ path('ws_participation_add',{event:event.id,token:csrf_token('participation_add')}) }}">J'y vais <input type="checkbox" id="checkbox-joined"><span></span></a>
 								{% endif %}
 							</td>
 						</tr>
@@ -153,7 +155,7 @@
 				<div class="section-content">
 					<table>
 						<tr>
-							<td>
+							<td class="description">
 								{% if event.description is not null %}
 									{{ event.description }}
 								{% else %}
