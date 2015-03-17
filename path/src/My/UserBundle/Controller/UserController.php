@@ -16,11 +16,16 @@ class UserController extends Controller
     {
     	$user = $this->getDoctrine()->getRepository('MyUserBundle:User')->findOneById($id);
 
-    	$user->organize = $this->getDoctrine()->getRepository('WsEventsBundle:Serie')->findByOrganizer($user);
+    	$organize = $this->getDoctrine()->getRepository('WsEventsBundle:Serie')->findByOrganizer($user);
 
-    	$user->participate = $this->getDoctrine()->getRepository('WsEventsBundle:Participation')->findByUser($user);
+    	$participate = $this->getDoctrine()->getRepository('WsEventsBundle:Participation')->findByUser($user);
 
-    	return $this->render('MyUserBundle:Profile:view.html.twig',array('user'=>$user));
+    	return $this->render('MyUserBundle:Profile:view.html.twig',
+            array(
+                'user'=>$user,
+                'organize'=> $organize,
+                'participate'=> $participate,
+                ));
     }
 
     public function requestActivationMailAction(Request $request)

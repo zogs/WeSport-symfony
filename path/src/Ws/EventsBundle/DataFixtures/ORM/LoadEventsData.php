@@ -89,7 +89,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$today = new \DateTime();
 		$event3->setDate($today); 
 		$event3->setTime($today);
-		$event3->setSerie($this->getReference('serie1'));
+		$event3->setSerie($this->getReference('serie4'));
 		$event3->setSport($this->getReference('sport_football'));
 		$event3->setDescription("Venez faire un petit 4contre4 :)");
 		$event3->setOrganizer($this->getReference('user1'));
@@ -108,7 +108,7 @@ class LoadEventsData extends AbstractFixture implements OrderedFixtureInterface
 		$today = new \DateTime();
 		$event4->setDate($today); 
 		$event4->setTime($today);
-		$event4->setSerie($this->getReference('serie1'));
+		$event4->setSerie($this->getReference('serie5'));
 		$event4->setSport($this->getReference('sport_football'));
 		$event4->setDescription("Venez faire un petit 4contre4 :)");
 		$event4->setOrganizer($this->getReference('user1'));
