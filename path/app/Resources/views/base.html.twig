@@ -39,7 +39,8 @@
                 'bundles/acmetwig/css/default.css'
                 'bundles/wssports/css/font-icons/style.css'
                 'bundles/wsstyle/css/style.css'
-                filter="cssrewrite"             
+                filter="cssrewrite,?yui_css"      
+                output="css/compiled/base.css"       
             %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}  
@@ -97,7 +98,8 @@
                 '@WsEventsBundle/Resources/public/js/*.js'
                 '@WsSportsBundle/Resources/public/js/*.js'
                 '@MyWorldBundle/Resources/public/js/*.js'
-
+                output="js/compiled/base.js"
+                filter='?yui_js'
             %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
