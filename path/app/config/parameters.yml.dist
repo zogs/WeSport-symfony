@@ -11,3 +11,5 @@ parameters:
     mailer_password: justdoit
     locale: fr
     secret: WeSportIsTheEasierWayToDoSport
+    oauth.facebook.id: 153720748148187
+    oauth.facebook.secret: 7a181d394b1f1dab0054176f9031a637
