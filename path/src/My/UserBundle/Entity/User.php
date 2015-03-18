@@ -178,7 +178,7 @@ class User extends BaseUser
 
 
     /**
-     * @ORM\preUpdate
+     * @ORM\PreUpdate
      */
     public function countProfileUpdated()
     {
