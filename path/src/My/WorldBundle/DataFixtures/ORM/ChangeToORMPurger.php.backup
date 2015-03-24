@@ -11,8 +11,7 @@ private $preservedTables = array(
         'world_cities',
         'world_country',
         'world_regions',
-        'world_states',
-        'world_location');
+        'world_states');
 
 //add this statement to purge method
 //in the last foreach loop
