@@ -3,7 +3,7 @@
 		<span><strong>{{ (alert.frequency)|trans({},'WsEventsBundle_alert')|capitalize }}</strong></span>		
 
 		{# jusqu'au 14 septembre #}
-		<span> jusqu'au <strong>{{ alert.dateStop|date('d/m/Y') }}</strong></span>
+		<span> jusqu'au <strong>{{ alert.dateStop | localizeddate('long','none') }}</strong></span>
 
 		{# à l'adresse email #}
 		<span> à l'adresse <strong>{{ alert.email }}</strong></span>

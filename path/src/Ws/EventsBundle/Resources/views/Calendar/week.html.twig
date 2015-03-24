@@ -6,10 +6,10 @@
 				{% if date|date('Y-m-d') == 'now'|date('Y-m-d') %}
 				<strong>Aujourd'hui</strong>
 				{% else %}
-				<strong>{{ date|date('l') }}</strong>
+				<strong>{{ date | localizeddate('full','none',null,null,'eeee') }}</strong>
 				{% endif %}
 				<br>
-				<span>{{ date|date('j M') }}</span>
+				<span>{{ date | localizeddate('full','none',null,null,'dd MMMM') }}</span>
 			</div>
 
 			{% for k,event in events %}

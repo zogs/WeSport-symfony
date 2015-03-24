@@ -32,7 +32,7 @@
 							{{ event.spot.location.city.name }}
 						</td>
 						<td>
-							{{ event.date|date('d-m-Y') }} à {{ event.time|date('h\\hi') }}
+							{{ event.date|localizeddate('long','none') }} à {{ event.time|date('h\\hi') }}
 						</td>						
 					</tr>
 

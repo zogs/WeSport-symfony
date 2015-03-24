@@ -20,8 +20,8 @@
 									<td class="cell-meta">
 										<table>
 											<tr>
-												<td class="cell-day">{{ event.date|date('j') }}</td>
-												<td class="cell-date">{{ event.date|date('l') }} <br> {{ event.date|date('F') }}</td>				
+												<td class="cell-day">{{ event.date|localizeddate('full','none',null,null,'dd') }}</td>
+												<td class="cell-date">{{ event.date|localizeddate('full','none',null,null,'eeee') }} <br> {{ event.date|localizeddate('full','none',null,null,'MMMM') }}</td>				
 											</tr>
 										</table>
 									</td>										
@@ -164,8 +164,8 @@
 							</td>							
 							<td>
 								<ul>
-								<li><span class="ws-icon ws-icon-calendar"></span> {{ event.date|date('l j F Y') }}</li>
-								<li><span class="ws-icon ws-icon-alarm"></span> {{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</li>
+								<li><span class="ws-icon ws-icon-calendar"></span> {{ event.date|localizeddate('full','none') }}</li>
+								<li><span class="ws-icon ws-icon-alarm"></span>à {{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</li>
 								<li><span class="ws-icon ws-icon-{{ event.sport.icon }}"></span> {{ event.sport.name|capitalize }}</li>
 								<li><span class="ws-icon ws-icon-star2"></span> {{ event.level|trans({},'WsEventsBundle_event')|capitalize }}</li>
 								{% if event.price > 0 %}

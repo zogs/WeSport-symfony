@@ -19,7 +19,7 @@
 {% endif %}
 
 {% if key == 'date' %}
-	L'activité aura lieu le <strong>{{ change.after|date('l d F') }}</strong> au lieu du {{ change.before|date('l d F') }}
+	L'activité aura lieu le <strong>{{ change.after|localizeddate('full','none') }}</strong> au lieu du {{ change.before|localizeddate('full','none') }}
 {% endif %}
 
 {% if key == 'nbmin' %}
