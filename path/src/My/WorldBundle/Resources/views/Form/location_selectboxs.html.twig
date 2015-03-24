@@ -3,12 +3,13 @@
         {% set url = path('my_world_nextlevel') %}
 
 		 {{form_widget(form.id, {'id':'location_id_field'}) }}
-         
-         {{form_widget(form.country, {'id': 'country_select_field','attr':{'data-geo-level':'country','data-ajax-url':url,'style':'width:100%'}}) }}
-         {{form_widget(form.region, {'id': 'region_select_field','attr':{'data-geo-level':'region','data-ajax-url':url,'style':'width:100%'}}) }}
-         {{form_widget(form.departement, {'id': 'departement_select_field','attr':{'data-geo-level':'departement','data-ajax-url':url,'style':'width:100%'}}) }}
-         {{form_widget(form.district, {'id': 'district_select_field','attr':{'data-geo-level':'district','data-ajax-url':url,'style':'width:100%'}}) }}
-         {{form_widget(form.division, {'id': 'division_select_field','attr':{'data-geo-level':'division','data-ajax-url':url,'style':'width:100%'}}) }}
-         {{form_widget(form.city, {'id': 'city_select_field','attr':{'data-geo-level':'city','data-ajax-url':url,'style':'width:100%'}}) }}
+        
+         {% include 'MyWorldBundle:Form:location_selectbox.html.twig' with {form:form.country, level:'country'} %}
+         {% include 'MyWorldBundle:Form:location_selectbox.html.twig' with {form:form.region, level:'region'} %}
+         {% include 'MyWorldBundle:Form:location_selectbox.html.twig' with {form:form.departement, level:'departement'} %}
+         {% include 'MyWorldBundle:Form:location_selectbox.html.twig' with {form:form.district, level:'district'} %}
+         {% include 'MyWorldBundle:Form:location_selectbox.html.twig' with {form:form.division, level:'division'} %}
+         {% include 'MyWorldBundle:Form:location_selectbox.html.twig' with {form:form.city, level:'city'} %}
+
      {% endspaceless %}
 {% endblock location_selectboxs_widget %}

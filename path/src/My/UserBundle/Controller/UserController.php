@@ -93,7 +93,7 @@ class UserController extends Controller
         $username = $request->query->get('username');
         
         $errors = array();
-        if(null != $this->get('fos_user.user_manager')->findUserByUsername($username)){
+        if(null != $this->get('fos_user.user_manager')->findUserByUsername(strtolower($username))){
             $errors = array('error'=>$this->get('translator')->trans('form.error.username.taken',array(),'MyUserBundle'));
         }
 

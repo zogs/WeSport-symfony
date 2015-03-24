@@ -5,16 +5,17 @@
 
 	<div class="register">
 		<div class="fresque"></div>
-		<div class="head-sheet"><h1 class="title-sheet">INSCRIPTION</h1></div>
+		<div class="white-sheet">
+			<div class="head-sheet"><h1 class="title-sheet">INSCRIPTION</h1></div>
 
-		{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+			{% include "FOSUserBundle:Registration:register_content.html.twig" %}
 
-		<form class="form-wp form-facebook">
-			<p class="intro">Ou en 1 clic avec Facebook!</p>
-			<p class="btn-facebook">
-				<a rel="nofollow" href="" target="_self"><img src="{{ asset('bundles/wsstyle/img/register_with_facebook.png') }}" alt="S'incrire avec Facebook"/></a>		
-				{{ render(url('hwi_oauth_connect')) }}							
-			</p>
-		</form>
+			<form class="form-wp form-facebook">
+				<p class="intro">Ou en 1 clic avec Facebook!</p>
+				<p class="btn-facebook">
+					<a rel="nofollow" href="{{ url('hwi_oauth_connect') }}" target="_self"><img src="{{ asset('bundles/wsstyle/img/register_with_facebook.png') }}" alt="S'incrire avec Facebook"/></a>										
+				</p>
+			</form>
+		</div>
 	</div>
 {% endblock page_content %}

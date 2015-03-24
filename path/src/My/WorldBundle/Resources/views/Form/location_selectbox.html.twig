@@ -1,0 +1,5 @@
+{% if form.vars.data is not null %}
+	{{form_widget(form, {'id': level~'_select_field','attr':{'data-geo-level':level,'data-ajax-url':url,'style':'width:100%'}}) }}
+{% else %}
+	{{ form_widget(form, {'id': level~'_select_field','attr':{'class':'hide','data-geo-level':level,'data-ajax-url':url,'style':'width:100%'}}) }}
+{% endif %}

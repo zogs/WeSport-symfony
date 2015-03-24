@@ -8,7 +8,7 @@ user:
         asso: associations
         pro: profesionnels
 form:
-    errors:
+    error:
         username:
             taken: "Ce nom est déjà pris"
         email:

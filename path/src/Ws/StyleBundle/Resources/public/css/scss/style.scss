@@ -1934,13 +1934,14 @@ a.calendar-action:hover {
 	}
 }
 
-$bg-color-white-sheet:#efefef;
+$bg-color-white-sheet:#fff;
 .white-sheet {
 	position:relative;
 	top:55px;
 	background-color:$bg-color-white-sheet;
 	border:10px solid $darkblue;
 
+	@extend %clearfix;
 }
 
 
@@ -2146,16 +2147,40 @@ $bg-color-white-sheet:#efefef;
 	p.btn-facebook{
 		margin-bottom:50px;
 	}
-}
 
-.form-facebook {
+	.control-radio{
+		display: inline;
+		margin-right:10px;
+		label {
+			display:inline;
+		}
+	}
+
+	#control-location .control-group {	
+		margin:0;
+		.controls {
+			width:100%;
+
+			.select2-container {
+				margin-bottom:10px;
+				@include border-radius(4px); @include box-shadow(0 0 0 4px #E2E2E2);
+			}
+		}
+
+	}
+
+	.form-facebook {
 		float:left;
 		width:49%;
 		border:0;
 		padding-bottom:50px;
 		text-align: center;
 		img{ width:185px;}
+	}
+
 }
+
+
 
 
 /*=== table form ===*/
@@ -4250,17 +4275,7 @@ h1.title-sheet{
 	}
 }
 
-.form-register{
-	.control-radio{
-		display: block;
-		width:100%;
-	}
-}
 
-.form-facebook{
-	width:100%;
-	float:left;
-}
 
 .createEvent{
 	.col_large{
