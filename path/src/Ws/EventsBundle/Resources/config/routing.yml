@@ -59,11 +59,6 @@ ws_calendar_reset:
     defaults: { _controller: WsEventsBundle:Calendar:reset}
     requirements:         
         _method: GET
-ws_calendar:
-    pattern: /calendar/{date}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{level}/{organizer}
-    defaults: { _controller: WsEventsBundle:Calendar:load, date:null, city:null, sports:null, type:null, nbdays:null, time:null, price:null, level:null, organizer:null }
-    requirements:         
-        _method: GET
 ws_calendar_update:
     pattern: /calendar/update
     defaults: { _controller:WsEventsBundle:Calendar:update }

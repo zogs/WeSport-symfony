@@ -1,5 +1,5 @@
 blog_homepage:
-    pattern:  /
+    pattern:  /blog
     defaults: { _controller: MyBlogBundle:Default:index }
 
 blog_ajouter:
