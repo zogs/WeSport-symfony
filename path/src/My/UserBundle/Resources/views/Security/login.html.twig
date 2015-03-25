@@ -5,83 +5,21 @@
 
 
 {% block page_content %}
-	
 
-
-<div class="head-sheet">
+<div class="connexion">
 	<div class="fresque"></div>
-	<h1 class="title-sheet">CONNEXION</h1>
+	<div class="white-sheet">
+		<div class="head-sheet"><h1 class="title-sheet">CONNEXION</h1></div>
 
-	<form class="form form-ws label-hidden w50 fleft form-register" action="{{ path("fos_user_security_check") }}" method="post">
+		{% include "MyUserBundle:Security:login_form.html.twig"  %}
 
-	{% if error %}
-	    <div class="alert alert-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>    
-	{% endif %}
-
-	
-	    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />	
-
-		<p class="intro"></p>
-
-		<div class="control-group">
-	    	<label class="control-label" for="username">{{ 'security.login.username'|trans }}</label>
-	    	<div class="controls">
-	    		<i class="icon-form icon-user"></i>
-	    		<input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="Nom d'utilisateur" />    		
-	    	</div>
-			
-		</div>
-
-		<div class="control-group">
-			<label class="control-label" for="password">{{ 'security.login.password'|trans }}</label>
-			<div class="controls">
-				<i class="icon-form icon-lock"></i>
-				<input type="password" id="password" name="_password" required="required" placeholder="Mot de passe" />			
-			</div>
-			
-		</div>
-
-		<div class="control-group" style="margin-top:10px">
-		    <label class="control-label"></label>		
-		    <div class="controls">
-		    	<label for="remember_me" class="radio">
-		    		<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-		    		<span>{{ 'security.login.remember_me'|trans }}</span>
-		    	</label>
-		    </div>
-		</div>
-
-		<div class="control-group control-submit">	  
-			<label class="control-label"></label>	  		    
-		    <button type="submit" id="_submit" name="_submit" class="btn-ws btn-ws-submit" >{{ 'security.login.submit'|trans }}</button>
-		    <p class="help help-center">
-				<a href="{{ path("fos_user_registration_register") }}"><strong>Pas encore inscrit ?</strong></a>	    			
-			</p>	
-			<p class="help help-center">
-				<a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié ?</a>	    			
-			</p>
-		</div>
-
-		{% if app.request.get('_route') != app.request.headers.get('referer') %}   
-		    <input type="hidden" name="_target_path" value="{{ app.request.headers.get('referer') }}" />   
-		{% endif %}
-		
-	    
-	</form>
-
-	<form class="form-wp form-facebook">
-			<p class="intro">Se connecter via Facebook</p>
+		<form class="form-wp form-facebook">
+			<p class="intro">Ou en 1 clic avec Facebook!</p>
 			<p class="btn-facebook">
-				<a rel="nofollow" href="" target="_self"><img src="{{ asset('bundles/wsstyle/img/register_with_facebook.png') }}" alt="S'incrire avec Facebook"/></a>		
-				{{ render(url('hwi_oauth_connect')) }}							
+				<a rel="nofollow" href="{{ url('hwi_oauth_connect') }}" target="_self"><img src="{{ asset('bundles/wsstyle/img/register_with_facebook.png') }}" alt="S'incrire avec Facebook"/></a>										
 			</p>
 		</form>
-
-
-	<div class="fresque"></div>
-</div>
-
-
-
+	</div>
+</div>	
 
 {% endblock page_content %}

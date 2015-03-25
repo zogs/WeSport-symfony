@@ -2015,7 +2015,6 @@ $bg-color-white-sheet:#fff;
 		
 		input.inline,select.inline { float:left; margin-right:12px;}
 
-		.geo-select{ margin-bottom:18px;}
 	}
 
 	.control-error .controls input,
@@ -2059,6 +2058,19 @@ $bg-color-white-sheet:#fff;
 	.control-submit{
 		width:100%;
 		margin:0;		
+	}
+}
+
+.geo-select {
+
+	&.hide{
+		display:none;
+	}
+
+	.select2-choice {
+		.select2-arrow {
+			margin:0;
+		}
 	}
 }
 
@@ -2128,7 +2140,7 @@ $bg-color-white-sheet:#fff;
 	.form-register{
 		margin:0;
 		padding:0;
-		padding-bottom:15px;
+		padding-bottom:100px;
 		border-right:1px solid #DDD;
 		overflow:visible;
 

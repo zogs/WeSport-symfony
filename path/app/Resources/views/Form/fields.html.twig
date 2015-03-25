@@ -1,6 +1,6 @@
 {% block form_row %}
     {% spaceless %}
-    <div class="control-group {% if form.vars.valid == false %}control-error{% endif %}" id="control-{{ form.vars.name }}">      	
+    <div class="control-group {% if form.vars.valid == false %}control-error{% endif %} {% if form.vars.attr.class is defined %}{% if 'hide' in form.vars.attr.class %}hide{% endif %}{% endif %}" id="control-{{ form.vars.name }}">      	
         {{ form_label(form, form.vars.label ,{ 'label_attr' : {'class':'control-label'} }) }}
         <div class="controls">
             {% for key,value in form.vars.attr %}
