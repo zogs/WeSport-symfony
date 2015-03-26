@@ -74,7 +74,7 @@
 											</li>
 										{% elseif p.invited is not null %}
 											<li class="event-participant" class="tooltitop" data-toggle="tooltip" title="invité(e) non-enregistré">
-												<img src="{{ asset('bundles/myuser/images/avatars/defaults/default'~random(10)~'.gif') }}" alt="">
+												<img src="{{ asset('bundles/myuser/images/avatars/defaults/default_'~random(10)~'.gif') }}" alt="invité(e) non-inscrit">
 											</li>											
 										{% endif %}
 									{% endfor %}
