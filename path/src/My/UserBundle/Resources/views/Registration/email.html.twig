@@ -1,7 +1,7 @@
 {% extends 'WsMailerBundle:Template:personal.html.twig' %}
 
 {% block title %}
-    <strong>{% if user is not null %} {{ user.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
+    <strong>{% if user is not null %}Bonjour {{ user.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
     Votre inscription est presque terminé !
 {% endblock title %}
 
@@ -10,17 +10,15 @@
         <tbody>
             <tr height="100">
                 <td>
-                    <a href="{{ confirmationUrl }}" style="font-weigt:bold;font-size:110%;">Oui, vous n'avez plus qu'à cliquer sur ce lien!</a>
+                    <a href="{{ confirmationUrl }}" style="font-weigt:bold;font-size:110%;">Voila, vous n'avez plus qu'à cliquer sur ce lien !</a>
                 </td>
             </tr>
             <tr>
                 <td>
                     <i>
-                    Merci de votre intèrêt, <br>
                     On espère que vous trouverez plein d'activité et beaucoup de fun :) <br>
                     - Simon et Pierre Simon - <br>
-                    <br>
-                    <strong>L'équipe coSporturage </strong>    
+                    L'équipe coSporturage  
                     </i>                           
                 </td>
             </tr>

@@ -139,10 +139,11 @@
 							</td>
 							<td class="join-event">
 								{% if event.isUserParticipate(app.user) == true %}
-									<a class="userIsParticipating" href="{{ path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">J'y vais <input type="checkbox" id="checkbox-joined" checked="checked"><span></span></a>
-									<a href="{{path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">Annuler</a>								
+									<a class="participation participating" href="{{ path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">J'y vais <input type="checkbox" id="checkbox-joined" checked="checked"><span></span></a>
+									<br>
+									<a class="btn-link btn-small cancel" href="{{path('ws_participation_cancel',{event:event.id,token:csrf_token('participation_cancel')}) }}">Annuler</a>								
 								{% else %}
-									<a href="{{ path('ws_participation_add',{event:event.id,token:csrf_token('participation_add')}) }}">Je veux y aller <input type="checkbox" id="checkbox-joined"><span></span></a>
+									<a class="participation" href="{{ path('ws_participation_add',{event:event.id,token:csrf_token('participation_add')}) }}">Je veux y aller <input type="checkbox" id="checkbox-joined"><span></span></a>
 								{% endif %}
 							</td>
 						</tr>
