@@ -19,9 +19,12 @@ class AgeCalculatorExtension extends \Twig_Extension
         );
     }
 
-    public function calculAge(\Datetime $datetime)
+    public function calculAge($datetime)
     {        
-        return $this->today->diff($datetime)->format('%y');
+        if($datetime instanceof \Datetime)
+            return $this->today->diff($datetime)->format('%y');
+        else
+            return 'unknown';
     }
 
     public function getName()
