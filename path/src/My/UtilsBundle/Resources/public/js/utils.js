@@ -68,4 +68,11 @@ $(document).ready(function() {
 		minWidth:250,
 	});
 
+
+	/*
+		Tooltip bootstrap
+	*/	
+	$('.tooltiptop').tooltip( { delay: { show: 200, hide: 100 }} );
+	$('.tooltipbottom').tooltip( { placement : 'bottom', delay: { show: 200, hide: 100 }} );
+
 });
