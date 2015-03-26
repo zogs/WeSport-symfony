@@ -52,7 +52,7 @@ class AlertController extends Controller
 					
 					if($this->get('ws_events.alert.manager')->saveAlert($alert)){
 
-						$this->get('flashbag')->add("C'est bon :) N'oubliez pas de regarder vos mails!",'success');
+						$this->get('flashbag')->add("C'est parti, maintenant y'a plus qu'a attendre !",'success');
 
 						$this->get('event_dispatcher')->dispatch(WsEvents::ALERT_NEW, new CreateAlert($alert,$this->getUser())); 	
 	
