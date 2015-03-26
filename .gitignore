@@ -6,7 +6,7 @@ app/phpunit.xml
 ##########
 ##SASS
 ##########
-.sass-cache/*
+.sass-cache
 
 
 #################
