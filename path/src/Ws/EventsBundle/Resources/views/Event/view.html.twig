@@ -28,7 +28,7 @@
 								</tr>
 								<tr>
 									<td class="cell-time">
-										<span class="time">{{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</span>
+										<span class="time">{{ event.time|localizeddate('none','full',null,null,"HH'h'mm") }}</span>
 										<span class="ws-icon ws-icon-calendar"></span>
 									</td>
 								</tr>
@@ -166,7 +166,7 @@
 							<td>
 								<ul>
 								<li><span class="ws-icon ws-icon-calendar"></span> {{ event.date|localizeddate('full','none') }}</li>
-								<li><span class="ws-icon ws-icon-alarm"></span>à {{ event.time|date('h',"Europe/Paris") }}h{{ event.time|date('i',"Europe/Paris") }}</li>
+								<li><span class="ws-icon ws-icon-alarm"></span>à {{ event.time|localizeddate('none','full',null,null,"HH'h'mm") }}</li>
 								<li><span class="ws-icon ws-icon-{{ event.sport.icon }}"></span> {{ event.sport.name|capitalize }}</li>
 								<li><span class="ws-icon ws-icon-star2"></span> {{ event.level|trans({},'WsEventsBundle_event')|capitalize }}</li>
 								{% if event.price > 0 %}

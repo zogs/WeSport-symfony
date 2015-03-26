@@ -58,9 +58,9 @@
 								
 								<td>
 									{% if invited.dateResponse is sameas(null) %}
-										<small>envoyé le {{ invited.date|localizeddate("full","full") }}</small>										
+										<small>envoyé le {{ invited.date|localizeddate("full","long") }}</small>										
 									{% else %}
-										<small>répondu le {{ invited.dateResponse|localizeddate("full","full") }}</small>
+										<small>répondu le {{ invited.dateResponse|localizeddate("full","long") }}</small>
 									{% endif %}
 								</td>
 

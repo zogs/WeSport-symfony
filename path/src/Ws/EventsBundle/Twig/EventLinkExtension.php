@@ -25,7 +25,7 @@ class EventLinkExtension extends \Twig_Extension
     public function eventLink(Event $event)
     {
 
-        return $this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug()));
+        return $this->router->generate('ws_event_view',array('event'=>$event->getId(),'slug'=>$event->getSlug()),true);
     }
 
     public function getName()

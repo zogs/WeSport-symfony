@@ -29,7 +29,7 @@
             <tr>
                 <td>
                     <strong>... plus {{ events|length - nb_displayed }} autres</strong> qui sont visibles sur coSporturage 
-                        <a href="{{ path('ws_calendar',{
+                        <a href="{{ url('ws_calendar',{
                                                                 date:'now',
                                                                 city: url_params.city,
                                                                 sports: url_params.sports,

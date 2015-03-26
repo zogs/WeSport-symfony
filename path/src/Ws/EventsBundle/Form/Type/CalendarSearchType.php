@@ -80,7 +80,7 @@ class CalendarSearchType extends AbstractType
                 ))->addModelTransformer(new TimeToDatetimeTransformer('H:i'))
             )
             ->add('dayofweek','choice',array(
-                'choices'=>array('Monday'=>'monday','Tuesday'=>'tuesday','Wednesday'=>'wednesday','Thursday'=>'thursday','Friday'=>'vendredi','Saturday'=>'saturday','Sunday'=>'sunday'),
+                'choices'=>array('Monday'=>'days.day.monday','Tuesday'=>'days.day.tuesday','Wednesday'=>'days.day.wednesday','Thursday'=>'days.day.thursday','Friday'=>'days.day.friday','Saturday'=>'days.day.saturday','Sunday'=>'days.day.sunday'),
                 'multiple'=>true,
                 'expanded'=>false,
                 'required'=>false,   
