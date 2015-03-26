@@ -3,7 +3,8 @@ services:
 #        class: %my_contact.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
     page.form.contact:
-        class: My\ContactBundle\Form\ContactType        
+        class: My\ContactBundle\Form\ContactType    
+        arguments: [@security.context]    
         tags:
             - { name: form.type, alias: contact_form }
 

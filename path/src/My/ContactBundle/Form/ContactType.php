@@ -9,12 +9,20 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Security\Core\SecurityContext;
 
 use My\ContactBundle\Exception\RobotUsingContactFormException;
 
 class ContactType extends AbstractType
 {
-        /**
+
+    private $user;
+
+    public function __construct(SecurityContext $security)
+    {
+        $this->user = $security->getToken()->getUser();
+    }
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -54,6 +62,7 @@ class ContactType extends AbstractType
 
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+        $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
     }
 
     /*
@@ -80,6 +89,17 @@ class ContactType extends AbstractType
             throw new RobotUsingContactFormException('The form have been submitted in '.$seconds.'s... Too fast for human, you are probably a robot ! (IP:'.(isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : "-REMOTE_ADDR undefined-").'))');
         }        
 
+
+    }
+
+    public function onSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        if( null !== $this->user) {
+            $data->setUser($this->user);
+        }
 
     }
     

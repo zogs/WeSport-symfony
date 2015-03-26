@@ -26,12 +26,12 @@ class ContactController extends Controller
             $message = $form->getData();
             $mailer = $this->container->get('contact.mailer');
             $flashbag = $this->container->get('flashbag');
-            
+
             if($mailer->sendContactMessage($message)){
-                $flashbag->add("Bien reçu, nous vous répondrons dans les plus bref délais !");                           
+                $flashbag->add("Merci pour votre message, nous allons regarder ça avec attention !");                           
             }
             else {
-                $flashbag->add('Erreur lors de l\'envoi... Vous pouvez écrire directement à contact@cosporturage.fr','error');
+                $flashbag->add("Arf, on dirait que ça ne marche pas pour l'instant :/ ... Mais vous pouvez directement nous écrire contact@cosporturage.fr si vous voulez !",'error');
             }            
         }
 
