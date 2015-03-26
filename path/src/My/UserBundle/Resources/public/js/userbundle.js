@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	$("#fos_user_registration_form_username").change(function(){
+	$("#fos_user_registration_form_username,#fos_user_profile_form_username").change(function(){
 
 		var input = $(this);
 		var control = input.parent().parent();
@@ -40,7 +40,7 @@ $(document).ready(function() {
 		return;
 	});
 
-	$("#fos_user_registration_form_email").change(function(){
+	$("#fos_user_registration_form_email,#fos_user_profile_form_email").change(function(){
 
 		var input = $(this), 
 		control = input.parent().parent(), 
