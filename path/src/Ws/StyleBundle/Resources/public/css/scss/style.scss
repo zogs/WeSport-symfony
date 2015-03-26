@@ -2859,26 +2859,25 @@ table.list-table {
 
 		td.join-event {
 
-			label,a {
+			a.participation {
 				display:block;					
 				float:right;					
 				padding:10px 20px;
 				color:white;
 				font-weight: bold;
 				background-color: $darkblue;
-				border-radius: 5px;
+				border-radius: 4px;
 				box-shadow: 0 2px 0px 2px rgba(207, 223, 228, 1);
 				small { font-weight: normal; @include rem(11); }
 
-				&.userIsParticipating {
-
-					background-color: $green;
-					box-shadow: 0 2px 0px 2px $darkgreen;
-
+				
+				&.participating {
+					background-color: #538942;
+					box-shadow: 0 0 0 0 white;					
 					span:after {
 						background: #C7F0B8;
 					}
-				}
+				}				
 			}
 
 			input[type="checkbox"] {
