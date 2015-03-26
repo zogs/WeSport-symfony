@@ -161,7 +161,7 @@ class Spot
      */
     public function getFullAddress()
     {
-        return $this->address.', '.$this->location->getCity()->getName().', '.$this->location->getCountry()->getName();;
+        return $this->name.', '.$this->address.', '.$this->location->getCity()->getName().', '.$this->location->getCountry()->getName();
     }
 
     /**
