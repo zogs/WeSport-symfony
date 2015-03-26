@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Page
  *
- * @ORM\Table()
+ * @ORM\Table(name="pages")
  * @ORM\Entity(repositoryClass="My\PageBundle\Entity\PageRepository")
  */
 class Page implements Translatable
