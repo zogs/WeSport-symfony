@@ -8,3 +8,7 @@ services:
     ws_table_converter:
         class: Ws\ConvertSQLBundle\Converter\Converter
         arguments: [@doctrine.dbal.oldwesport_connection,@doctrine.orm.entity_manager,@service_container]
+
+    ws_table_purger:
+        class: Ws\ConvertSQLBundle\Converter\Purger
+        arguments: [@doctrine.orm.entity_manager]

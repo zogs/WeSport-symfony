@@ -1,18 +1,18 @@
 ws_convert_sql_index:
     path:     /index
-    defaults: { _controller: WsConvertSQLBundle:Default:index }
+    defaults: { _controller: WsConvertSQLBundle:Convert:index }
 
 ws_convert_sql_convert_one:
     path:     /one
-    defaults: { _controller: WsConvertSQLBundle:Default:convertOne }
+    defaults: { _controller: WsConvertSQLBundle:Convert:convertOne }
     requirements:
         _method: GET
 
 ws_convert_sql_convert_all:
     path:     /all
-    defaults: { _controller: WsConvertSQLBundle:Default:convertAll }
+    defaults: { _controller: WsConvertSQLBundle:Convert:convertAll }
 
 ws_convert_sql_purge:
     path:     /purge
-    defaults: { _controller: WsConvertSQLBundle:Default:purge }
+    defaults: { _controller: WsConvertSQLBundle:Convert:purge }
 

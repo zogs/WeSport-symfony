@@ -4,7 +4,8 @@ namespace Ws\ConvertSQLBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class DefaultController extends Controller
+
+class ConvertController extends Controller
 {
 	public function indexAction()
 	{
@@ -31,10 +32,12 @@ class DefaultController extends Controller
     {
    
        $converter = $this->get('ws_table_converter');
+       $purger = $this->get('ws_table_purger');
+
+       $purger->purge();
 
        $converter->importYml(__DIR__.'/../Resources/config/mapping/tables.yml');
-
-       $results = $converter->purge()->convertAll();
+       $results = $converter->convertAll();
 
         if(!empty($results['success'])) $this->get('flashbag')->add("Bravo, ".count($results['success'])." entités créés! ",'success');              
         if(!empty($results['errors'])) $this->get('flashbag')->add("Il y a eu ".count($results['errors'])." erreurs...",'warning');
@@ -45,14 +48,13 @@ class DefaultController extends Controller
 
     public function PurgeAction()
     {
-    	$converter = $this->get('ws_table_converter');
+      $purger = $this->get('ws_table_purger');
+      $purger->purge();
 
-    	$converter->purge();
-
-      $database = $converter->getPurger()->getObjectManager()->getConnection()->getDatabase();
-
-      $this->get('flashbag')->add('La base de donnée <strong><i>'.$database.'</i></strong> à été purgé','info');
+      $this->get('flashbag')->add('La base de donnée <strong><i>'.$purger->getDatabase().'</i></strong> à été purgé','success');
 
     	return $this->redirect($this->generateUrl('ws_convert_sql_index'));
     }
+
+
 }

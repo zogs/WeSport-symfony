@@ -5,7 +5,6 @@ namespace Ws\ConvertSQLBundle\Converter;
 use Symfony\Component\Yaml\Parser;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 class Converter
 {
@@ -14,14 +13,12 @@ class Converter
 	private $container;	
 	private $config;
 	private $yaml;
-	private $purger;
 
 	public function __construct($db,EntityManager $em,Container $container)
 	{
 		$this->db = $db;
 		$this->em = $em;
 		$this->container = $container;
-		$this->purger = new ORMPurger($em);
 		$this->yaml = new Parser();
 	}
 
@@ -37,18 +34,6 @@ class Converter
 		}
 
 		$this->config = $config;
-	}
-
-	public function purge()
-	{
-		$this->purger->purge();
-
-		return $this;
-	}
-
-	public function getPurger()
-	{
-		return $this->purger;
 	}
 
 	public function convertAll()

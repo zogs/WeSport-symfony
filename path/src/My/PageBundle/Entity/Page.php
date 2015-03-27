@@ -96,6 +96,16 @@ class Page implements Translatable
     }
 
     /**
+     * Set id
+     *
+     * @return integer 
+     */
+    public function setId($id)
+    {
+        return $this;
+    }
+
+    /**
      * Set title
      *
      * @param string $title
