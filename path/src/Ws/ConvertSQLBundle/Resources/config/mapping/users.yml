@@ -12,7 +12,7 @@ relations:
     username: login
     firstname: prenom
     description: descr
-    lang_prefered: lang
+    lang: lang
     email_canonical: email
     username_canonical: login
     confirmation_token: codeactiv

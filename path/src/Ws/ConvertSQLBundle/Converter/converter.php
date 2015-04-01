@@ -66,6 +66,73 @@ class Converter
 		return array('success'=>$success,'errors'=>$errors);	
 	}
 
+
+	public function convert($entityName,$fieldName)
+	{
+		$errors = array();
+		$success = array();
+			
+		//get ancien results from the previous database
+		$stmt = $this->db->prepare("SELECT * FROM ".$fieldName);
+		$stmt->execute();
+		$old_entries = $stmt->fetchAll();
+
+
+		$config = $this->config['entities'][$entityName];
+
+		//loop for each entry
+		foreach ($old_entries as $entry) {
+			
+			$entity = $this->mapEntity($config,$entry);
+
+
+			try
+			{
+				//presist new entity
+				$this->em->persist($entity);
+
+				//set IdGeneratorType to null in order to keep id from previous database
+				$metadata = $this->em->getClassMetaData(get_class($entity));
+				$metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+				//flush
+				$this->em->flush();	
+							
+			}
+			catch(\Doctrine\DBAL\DBALException $e)
+			{
+				$errorMsg = $e->getMessage();
+				
+				//because the EntityManager close when there is a Exception, we need to reopen it
+				// reset the EM and all aias
+				$this->container->set('doctrine.orm.entity_manager', null);
+				$this->container->set('doctrine.orm.default_entity_manager', null);
+				// get a fresh EM
+				$this->em = $this->container->get('doctrine.orm.entity_manager');
+
+
+				//If the error is about a forbidden duplicate content, dont save it and continue the loop
+				if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
+				    $errors[] = array(
+				    	'type'=>'Duplicate',
+				    	'msg' => $errorMsg,
+				    	'class'=>get_class($entity),
+				    	'entity'=>$entity);
+				    continue;
+				}
+
+				//throw error if no condition continues the loop
+				throw($e);
+
+			}
+
+			//implement success
+			$success[] = get_class($entity);
+		}
+
+		return array('success'=>$success,'errors'=>$errors);			
+		
+	}
+
 	private function mapEntity($config,$entry)
 	{
 		$class = $config['class'];
@@ -113,7 +180,7 @@ class Converter
 				}
 			}
 			else{
-				$value = $entry[$field];
+				$value = $entry[$field];				
 			}			
 
 			$setter = $this->formatSetter($property);
@@ -123,70 +190,6 @@ class Converter
 		return $entity;
 	}
 
-	public function convert($entityName,$fieldName)
-	{
-		$errors = array();
-		$success = array();
-			
-		//get ancien results from the previous database
-		$stmt = $this->db->prepare("SELECT * FROM ".$fieldName);
-		$stmt->execute();
-		$old_entries = $stmt->fetchAll();
-
-
-		$config = $this->config['entities'][$entityName];
-
-		//loop for each entry
-		foreach ($old_entries as $entry) {
-			
-			$entity = $this->mapEntity($config,$entry);
-
-			try
-			{
-				//presist new entity
-				$this->em->persist($entity);
-				//set IdGeneratorType to null in order to keep id from previous database
-				$metadata = $this->em->getClassMetaData(get_class($entity));
-				$metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
-				//flush
-				$this->em->flush();		
-
-							
-			}
-			catch(\Doctrine\DBAL\DBALException $e)
-			{
-				$errorMsg = $e->getMessage();
-				
-				//because the EntityManager close when there is a Exception, we need to reopen it
-				// reset the EM and all aias
-				$this->container->set('doctrine.orm.entity_manager', null);
-				$this->container->set('doctrine.orm.default_entity_manager', null);
-				// get a fresh EM
-				$this->em = $this->container->get('doctrine.orm.entity_manager');
-
-
-				//If the error is about a forbidden duplicate content, dont save it and continue the loop
-				if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
-				    $errors[] = array(
-				    	'type'=>'Duplicate',
-				    	'msg' => $errorMsg,
-				    	'class'=>get_class($entity),
-				    	'entity'=>$entity);
-				    continue;
-				}
-
-				//throw error if no condition continues the loop
-				throw($e);
-
-			}
-
-			//implement success
-			$success[] = get_class($entity);
-		}
-
-		return array('success'=>$success,'errors'=>$errors);			
-		
-	}
 
 	private function mapField($entry,$config)
 	{

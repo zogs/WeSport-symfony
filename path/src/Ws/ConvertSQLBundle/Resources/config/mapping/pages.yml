@@ -8,8 +8,6 @@ relations:
     menu: 
         type: string
         value: top
-    position: 0    
-    date:
-        type: date
-        field: date
-        format: "Y-m-d h:i:s"
+    position: 
+        type: integer
+        value: 0  
