@@ -238,6 +238,9 @@ sonata_admin:
         blocks:
             -
                 position: left
+                type: sonata.block.service.welcome        
+            -
+                position: left
                 type: sonata.block.service.recent_events
             -
                 position: left
@@ -245,9 +248,7 @@ sonata_admin:
             #-
             #    position: left
             #    type: sonata.admin.block.admin_list
-            -
-                position: right
-                type: sonata.block.service.welcome           
+               
             -
                 position: right
                 type: sonata.block.service.coming_events 
