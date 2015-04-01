@@ -16,11 +16,11 @@ use My\ContactBundle\Exception\RobotUsingContactFormException;
 class ContactType extends AbstractType
 {
 
-    private $user;
+    private $security;
 
     public function __construct(SecurityContext $security)
     {
-        $this->user = $security->getToken()->getUser();
+        $this->security = $security;
     }
     /**
      * @param FormBuilderInterface $builder
@@ -97,8 +97,8 @@ class ContactType extends AbstractType
         $form = $event->getForm();
         $data = $event->getData();
 
-        if( null !== $this->user) {
-            $data->setUser($this->user);
+        if( $this->security->isGranted('ROLE_USER')) {
+            $data->setUser($this->security->getToken()->getUser());
         }
 
     }

@@ -752,7 +752,7 @@ class Event
      */
     public function getType()
     {
-        return self::$valuesAvailable['level'][$this->type];
+        return self::$valuesAvailable['type'][$this->type];
     }
 
     /**

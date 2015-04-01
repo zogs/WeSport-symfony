@@ -81,13 +81,19 @@ class Converter
 		$config = $this->config['entities'][$entityName];
 
 		//loop for each entry
-		foreach ($old_entries as $entry) {
+		foreach ($old_entries as $k => $entry) {
 			
-			$entity = $this->mapEntity($config,$entry);
-
 
 			try
 			{
+				//map the new entity with the data of the old entry
+				$entity = $this->mapEntity($config,$entry);	
+
+				dump($entry);
+				dump($entity);
+				
+				exit();
+
 				//presist new entity
 				$this->em->persist($entity);
 
@@ -96,9 +102,14 @@ class Converter
 				$metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
 				//flush
 				$this->em->flush();	
+				//stock success
+				$success[] = get_class($entity);
+				//performance tricks
+				$entity = null;				
+				if($k % 10 === 0) $this->em->clear();//clear memory every 100 entity
 							
 			}
-			catch(\Doctrine\DBAL\DBALException $e)
+			catch(\Exception $e)
 			{
 				$errorMsg = $e->getMessage();
 				
@@ -110,23 +121,18 @@ class Converter
 				$this->em = $this->container->get('doctrine.orm.entity_manager');
 
 
-				//If the error is about a forbidden duplicate content, dont save it and continue the loop
+				//If the error is about a forbidden duplicate content, stock the msg and continue the loop
 				if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
-				    $errors[] = array(
-				    	'type'=>'Duplicate',
-				    	'msg' => $errorMsg,
-				    	'class'=>get_class($entity),
-				    	'entity'=>$entity);
-				    continue;
+
+					$errorMsg = 'Duplicate entity for "'.get_class($entity).'" with ID='.$entity->getId();
+
 				}
-
-				//throw error if no condition continues the loop
-				throw($e);
-
+				
+				//stock the error msg
+				$errors[] = $errorMsg;
+				
 			}
 
-			//implement success
-			$success[] = get_class($entity);
 		}
 
 		return array('success'=>$success,'errors'=>$errors);			
@@ -138,51 +144,52 @@ class Converter
 		$class = $config['class'];
 		$relations =  $config['relations'];
 
+		//create the new entity
 		$entity = new $class;
 
 		foreach ($relations as $property => $field) {
 			
-			if(is_array($field)) {
+			//the field is directly mapped by a old field
+			if( ! is_array($field)){
+				$value = $entry[$field];	
+			}
+			//or by a special operation
+			else {
 
+				//the type of mapping is missing
 				if(empty($field['type'])) {
 
 					throw new \Exception('The type need to be define for the '.ucfirst($property).' property of '.$class.' in '.get_class($class).'.yml');
-
 				}
-
+				//field is mapped by a caller
 				elseif($field['type'] == 'call'){
 
 					$class = $field['class'];
 					$caller = new $class($this->container,$entry,$entity);
-
 					$method = $field['method'];
-					$value = $caller->$method();
+					$parameters = (isset($field['parameters']))? $field['parameters'] : array();
 
-					if('continue'==$value) {
-						$errors[] = array(
-				    	'type'=>'Avoided',
-				    	'msg' => 'Caller return an instruction to jump this record',
-				    	'class'=>get_class($entity),
-				    	'entity'=>$entity);
-				    	continue;
+					//call the method 
+					$value = call_user_func_array(array($caller,$method), $parameters);
+
+					if('skip'===$value) {
+
+						throw new \Exception('A record have been avoided. Try to convert an instance of "'.get_class($entity).'" with ID='.$entity->getId());						
 					}
 				}
-
+				//field is mapped by a entity
 				elseif($field['type'] == 'entity') {
 
 					$conf = $relations[$property];
 					$value = $this->mapEntity($conf,$entry);
 				}
-				
+				//field is mapped by a commun type
 				else {
-
 					$value = $this->mapField($entry,$field);
 				}
-			}
-			else{
-				$value = $entry[$field];				
-			}			
+			}		
 
+			//set the field to the entity
 			$setter = $this->formatSetter($property);
 			$entity->$setter($value);
 		}

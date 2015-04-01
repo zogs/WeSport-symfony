@@ -52,3 +52,16 @@ relations:
         type: call
         class: Ws\ConvertSQLBundle\Caller\EventsCaller
         method: setSpot
+        parameters:
+            fields:
+                CC1: CC1
+                ADM1: ADM1
+                ADM2: ADM2
+                ADM3: ADM3
+                ADM2: ADM4
+                city: cityID
+    location:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\EventsCaller
+        method: setLocation
+

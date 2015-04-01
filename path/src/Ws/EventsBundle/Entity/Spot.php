@@ -58,7 +58,9 @@ class Spot
      */
     public function createSlug()
     {        
-        $this->slug = $this->getLocation()->getCity()->getName().' '.$this->getName().' '.$this->getAddress();        
+        $this->slug = $this->getLocation()->getCity()->getName().' ';
+        $this->slug .= $this->getName().' ';
+        $this->slug .= $this->getAddress();        
     }
 
     /**
@@ -204,7 +206,7 @@ class Spot
      * @param \My\WorldBundle\Entity\Location $location
      * @return Spot
      */
-    public function setLocation(\My\WorldBundle\Entity\Location $location = null)
+    public function setLocation(\My\WorldBundle\Entity\Location $location)
     {
         $this->location = $location;
         //set country code

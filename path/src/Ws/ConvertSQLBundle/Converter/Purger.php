@@ -14,6 +14,11 @@ class Purger
 		$this->purger = new ORMPurger($em);
 	}
 
+	public function setManager(EntityManager $em)
+	{
+		$this->purger = new ORMPurger($em);
+	}
+
 	public function purge()
 	{
 		return $this->purger->purge();

@@ -16,7 +16,7 @@
             Titre : {{ contact.title }}
             <br />
             User : 
-            {% if contact.user is defined %}
+            {% if contact.user is not null %}
                 <strong>{{ contact.user.username }}</strong>, {{ contact.user.gender }} {{ contact.user.birthday|calculAge }} ans, <i>id:{{ contact.user.id }}</i>
             {% else %}
                 <i>not registered</i>

@@ -27,7 +27,7 @@ class EventsCaller extends LocationCaller
 
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneById($this->entry['user_id']);
 
-		if(NULL==$user) return 'continue';
+		if(NULL===$user) return 'skip';
 
 		return $user;
 	}
@@ -75,13 +75,27 @@ class EventsCaller extends LocationCaller
 		return $this->entity->getSerie()->getOccurences();
 	}
 
-	public function setSpot()
-	{
+	public function setSpot($location_fields)
+	{		
 		$spot = new \Ws\EventsBundle\Entity\Spot();
 
 		$spot->setAddress($this->entry['address']);
-		$spot->setLocation($this->findLocationFromData());
+		
+		$location = $this->findLocationFromData($location_fields);
+		if($location === null) return 'skip';
+		if($location->hasCity() === false) return 'skip';
+		
+		$spot->setLocation($location);
 
 		return $spot;
+	}
+
+	public function setLocation()
+	{
+		if($this->entity->getSpot() !== null && $this->entity->getSpot()->getLocation() !== null){
+			return $this->entity->getSpot()->getLocation();
+		}
+
+		return 'skip';
 	}
 }

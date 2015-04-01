@@ -42,11 +42,10 @@ class ConvertCommand extends ContainerAwareCommand
     {
     	if(!empty($this->errors)){
         	foreach ($this->errors as $key => $error) {
-        		$str = 'Error n°'.$key.' ';
-        		$str .= $error['type'].' : '.$error['class'].' : '.$error['msg'];
+        		$str = 'Error n°'.$key.': '.$error;        		
         		$output->writeln($str);
         	}
-        	$output->writeln();
+        	$output->writeln('');
         	$output->writeln(count($this->errors).' errors...');
         } 	
     }
