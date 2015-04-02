@@ -101,6 +101,9 @@ doctrine:
                 user: root
                 password: null
                 host: 127.0.0.1
+                charset: UTF8
+                logging: false
+                profiling: false
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"
         # path:     "%database_path%"

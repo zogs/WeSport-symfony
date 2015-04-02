@@ -27,41 +27,11 @@ class EventsCaller extends LocationCaller
 
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneById($this->entry['user_id']);
 
-		if(NULL===$user) return 'skip';
+		if(NULL===$user) return '_skip_';
 
 		return $user;
 	}
-
-	public function setSerie()
-	{
-		$serie = new \Ws\EventsBundle\Entity\Serie();
-
-		if(empty($this->entry['serie_id'])) return $serie;
-
-		$db = $this->container->get('doctrine.dbal.oldwesport_connection');
-		$stmt = $db->prepare('SELECT * FROM events_serie WHERE serie_id='.$this->entry['serie_id'].' LIMIT 1');
-		$stmt->execute();
-		$old = $stmt->fetch();
-
-		if(!empty($old)){
-		
-			$serie->setStartDate($this->formatDate($old['startdate'],'Y-m-d'));
-			$serie->setEndDate($this->formatDate($old['enddate'],'Y-m-d'));
-			$serie->setOccurences($old['count']);
-			$serie->setType($this->entity->getType());
-			$serie->setDateDepot($this->entity->getDateDepot());
-			$serie->setMonday($old['Monday']);
-			$serie->setTuesday($old['Tuesday']);
-			$serie->setWednesday($old['Wednesday']);
-			$serie->setThursday($old['Thursday']);
-			$serie->setFriday($old['Friday']);
-			$serie->setSaturday($old['Saturday']);
-			$serie->setSunday($old['Sunday']);
-			$serie->setOrganizer($this->entity->getOrganizer());
-		}
-
-		return $serie;
-	}
+	
 
 	public function setSport()
 	{
@@ -82,8 +52,8 @@ class EventsCaller extends LocationCaller
 		$spot->setAddress($this->entry['address']);
 		
 		$location = $this->findLocationFromData($location_fields);
-		if($location === null) return 'skip';
-		if($location->hasCity() === false) return 'skip';
+		if($location === null) return '_skip_';
+		if($location->hasCity() === false) return '_skip_';
 		
 		$spot->setLocation($location);
 
@@ -96,6 +66,6 @@ class EventsCaller extends LocationCaller
 			return $this->entity->getSpot()->getLocation();
 		}
 
-		return 'skip';
+		return '_skip_';
 	}
 }

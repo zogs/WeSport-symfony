@@ -29,7 +29,7 @@ class AbstractCaller {
 		$this->entry = $entry;
 	}
 
-	protected function formatDate($date,$format)
+	protected function createDatetimeFrom($date,$format)
 	{
 		$r = new \DateTime();
 		$r->createFromFormat($format,$date);

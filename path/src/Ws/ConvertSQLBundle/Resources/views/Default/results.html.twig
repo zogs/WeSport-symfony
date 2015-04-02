@@ -19,10 +19,7 @@
 	<tbody>
 	{% for error in errors %}
 		<tr>
-			<td>{{ error.type }}</td>
-			<td>{{ error.class }}</td>
-			<td>{{ error.msg }}</td>
-			<td>{{ error.entity.id }}</td>
+			<td>{{ error }}</td>			
 		</tr>
 	{% endfor %}
 </table>

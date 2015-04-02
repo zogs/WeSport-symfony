@@ -42,7 +42,7 @@ class ConvertCommand extends ContainerAwareCommand
     {
     	if(!empty($this->errors)){
         	foreach ($this->errors as $key => $error) {
-        		$str = 'Error n°'.$key.': '.$error;        		
+        		$str = 'Error '.$key.': '.$error;        		
         		$output->writeln($str);
         	}
         	$output->writeln('');
@@ -53,15 +53,21 @@ class ConvertCommand extends ContainerAwareCommand
     protected function displaySuccess(OutputInterface $output)
     {
 		if(!empty($this->success)) {
+            $output->writeln('');
 			$output->writeln('Bravo, '.count($this->success).' entities created !');
 		}    	
     }
         
-    protected function executeTable(OutputInterface $ouput, $table)
+    protected function executeTable(OutputInterface $output, $table)
     {
     	if($table){
+
+            $progress = $this->getHelperSet()->get('progress');
+
+
 	        $converter = $this->getContainer()->get('ws_table_converter');
 			$converter->importYml(__DIR__.'/../Resources/config/tables.yml');   
+            $converter->setOutput($output);
 
 			$results = $converter->convertOne($table);  
 

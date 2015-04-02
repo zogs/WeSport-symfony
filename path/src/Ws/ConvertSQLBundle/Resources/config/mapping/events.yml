@@ -16,18 +16,18 @@ relations:
     level:
         type: integer
         value: 0
-    time: 
-        type: datetime
-        field: time
-        format: "h:i:s"
     date:
         type: date
         field: date
         format: "Y-m-d"
+    time: 
+        type: datetime
+        field: time
+        format: "H:i:s"
     date_depot: 
         type: date
         field: date_depot
-        format: "Y-m-d h:i:s"
+        format: "Y-m-d H:i:s"
     type: 
         type: call
         class: Ws\ConvertSQLBundle\Caller\EventsCaller
@@ -37,17 +37,15 @@ relations:
         class: Ws\ConvertSQLBundle\Caller\EventsCaller
         method: setOrganizer
     serie: 
-        type: call
-        class: Ws\ConvertSQLBundle\Caller\EventsCaller
-        method: setSerie
+        type: value
+        value: null
     sport: 
         type: call
         class: Ws\ConvertSQLBundle\Caller\EventsCaller
         method: setSport
     occurence:
-        type: call
-        class: Ws\ConvertSQLBundle\Caller\EventsCaller
-        method: setOccurence
+        type: integer
+        value: 1
     spot:
         type: call
         class: Ws\ConvertSQLBundle\Caller\EventsCaller

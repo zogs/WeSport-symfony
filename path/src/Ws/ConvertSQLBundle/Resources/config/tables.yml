@@ -6,3 +6,4 @@ tables:
     sports: sports_i18n
     events: events
     participations: sporters
+    series: events_serie

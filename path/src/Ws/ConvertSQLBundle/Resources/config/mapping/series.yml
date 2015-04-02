@@ -1,0 +1,35 @@
+class: Ws\EventsBundle\Entity\Serie
+repository: Ws\EventsBundle\Repository\SerieRepository
+relations:
+    id: serie_id
+    organizer:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\SeriesCaller
+        method: getOrganizer
+    type:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\SeriesCaller
+        method: getType
+    events:
+        type: callback
+        class: Ws\ConvertSQLBundle\Caller\SeriesCaller
+        method: setEvents
+    occurences: count
+    startDate: 
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\SeriesCaller
+        method: getStartDate        
+    endDate:
+        type: call
+        class: Ws\ConvertSQLBundle\Caller\SeriesCaller
+        method: getEndDate
+    monday: Monday
+    tuesday: Tuesday
+    wednesday: Wednesday
+    thursday: Thursday
+    friday: Friday
+    saturday: Saturday
+    sunday: Sunday
+    date_depot: 
+        type: value
+        value: null

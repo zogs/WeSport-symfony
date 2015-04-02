@@ -25,9 +25,9 @@ relations:
         class: Ws\ConvertSQLBundle\Caller\UsersCaller
         method: setRoles
     last_login:
-        field: date_lastlogin
         type: datetime
-        format: "Y-m-d h:i:s"
+        field: date_lastlogin
+        format: "Y-m-d H:i:s"
     birthday:
         field: birthdate
         type: datetime
@@ -39,7 +39,7 @@ relations:
     register_since: 
         field: date_signin
         type: datetime
-        format: "Y-m-d h:i:s"
+        format: "Y-m-d H:i:s"
     avatar:
         type: entity
         class: My\UserBundle\Entity\Avatar

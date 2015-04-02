@@ -5,6 +5,9 @@ namespace Ws\ConvertSQLBundle\Converter;
 use Symfony\Component\Yaml\Parser;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Console\Helper\ProgressHelper;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class Converter
 {
@@ -13,6 +16,7 @@ class Converter
 	private $container;	
 	private $config;
 	private $yaml;
+	private $output = null;
 
 	public function __construct($db,EntityManager $em,Container $container)
 	{
@@ -20,6 +24,11 @@ class Converter
 		$this->em = $em;
 		$this->container = $container;
 		$this->yaml = new Parser();
+	}
+
+	public function setOutput(OutputInterface $output)
+	{
+		$this->output = $output;
 	}
 
 	public function importYml($path)
@@ -76,24 +85,27 @@ class Converter
 		$stmt = $this->db->prepare("SELECT * FROM ".$fieldName);
 		$stmt->execute();
 		$old_entries = $stmt->fetchAll();
+		$nb_entries = count($old_entries);
 
 
 		$config = $this->config['entities'][$entityName];
 
+		//progress bar for command line
+		if($this->output){
+			$progressBar = new ProgressBar($this->output,$nb_entries);
+			$progressBar->start();
+			$frequency = ($nb_entries < 100)? 1 : 100;
+			$progressBar->setRedrawFrequency(100);
+		}
+
+
 		//loop for each entry
 		foreach ($old_entries as $k => $entry) {
 			
-
 			try
 			{
 				//map the new entity with the data of the old entry
 				$entity = $this->mapEntity($config,$entry);	
-
-				dump($entry);
-				dump($entity);
-				
-				exit();
-
 				//presist new entity
 				$this->em->persist($entity);
 
@@ -102,16 +114,21 @@ class Converter
 				$metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
 				//flush
 				$this->em->flush();	
+				//trigger callback
+				$this->triggerCallback($entity,$entry);
+				//advance progressBar
+				if($this->output) $progressBar->advance();
 				//stock success
 				$success[] = get_class($entity);
-				//performance tricks
-				$entity = null;				
+				//each 10 we flush everything						
 				if($k % 10 === 0) $this->em->clear();//clear memory every 100 entity
 							
 			}
 			catch(\Exception $e)
 			{
-				$errorMsg = $e->getMessage();
+				$errorMsg = $e->getMessage();				
+				//$errorMsg .= ' - file: '.$e->getFile();
+				//$errorMsg .= ' - line: '.$e->getLine();
 				
 				//because the EntityManager close when there is a Exception, we need to reopen it
 				// reset the EM and all aias
@@ -124,19 +141,43 @@ class Converter
 				//If the error is about a forbidden duplicate content, stock the msg and continue the loop
 				if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
 
-					$errorMsg = 'Duplicate entity for "'.get_class($entity).'" with ID='.$entity->getId();
+					$errorMsg = 'SQLERROR: '.$errorMsg;
 
 				}
+
+				//advance progressBar
+				if($this->output) $progressBar->advance();
+
+				
 				
 				//stock the error msg
-				$errors[] = $errorMsg;
-				
+				$errors[] = $errorMsg;				
 			}
+
+			
 
 		}
 
+		if($this->output) $progressBar->finish();
+
 		return array('success'=>$success,'errors'=>$errors);			
 		
+	}
+
+	private function triggerCallback($entity,$entry)
+	{
+		if (null != $this->callback) {
+			
+			$class = $this->callback['class'];
+			$method = $this->callback['method'];
+			$parameters = $this->callback['parameters'];
+			
+			$caller = new $class($this->container,$entry,$entity);
+			//call the method 
+			call_user_func_array(array($caller,$method), $parameters);
+		}
+
+		return $this->callback = null;
 	}
 
 	private function mapEntity($config,$entry)
@@ -159,7 +200,7 @@ class Converter
 				//the type of mapping is missing
 				if(empty($field['type'])) {
 
-					throw new \Exception('The type need to be define for the '.ucfirst($property).' property of '.$class.' in '.get_class($class).'.yml');
+					throw new \Exception('The type need to be define for the "'.ucfirst($property).'" property of '.$class);
 				}
 				//field is mapped by a caller
 				elseif($field['type'] == 'call'){
@@ -172,10 +213,19 @@ class Converter
 					//call the method 
 					$value = call_user_func_array(array($caller,$method), $parameters);
 
-					if('skip'===$value) {
+					if('_skip_'===$value) {
 
-						throw new \Exception('A record have been avoided. Try to convert an instance of "'.get_class($entity).'" with ID='.$entity->getId());						
+						throw new \Exception('A record have been avoided : "'.get_class($entity).'" with ID='.$entity->getId());						
 					}
+				}
+				//stock callback
+				elseif ($field['type'] == 'callback') {
+					$this->callback = array(
+						'class' => $field['class'],
+						'method' => $field['method'],
+						'parameters' => (isset($field['parameters']))? $field['parameters'] : array()
+						);
+					$value = '_noset_';
 				}
 				//field is mapped by a entity
 				elseif($field['type'] == 'entity') {
@@ -189,7 +239,10 @@ class Converter
 				}
 			}		
 
-			//set the field to the entity
+			//dont set the field if we decided to
+			if($value==='_noset_') continue;
+
+			//set the field fo the entity
 			$setter = $this->formatSetter($property);
 			$entity->$setter($value);
 		}
@@ -202,24 +255,36 @@ class Converter
 	{
 		$type = $config['type'];
 
-		if($type == 'datetime' || $type == 'date'){
-
-			$date = new \DateTime();
-			$date->createFromFormat($config['format'],$entry[$config['field']]);
-			return $date;
+		if($type === 'datetime' || $type === 'date'){
+			
+			$format = $config['format'] ;
+			$date = $entry[$config['field']] ;
+			
+			return \DateTime::createFromFormat($format,$date);
 		}
 
-		if($type == 'integer'){
+		if($type === 'integer'){
 			if(is_integer($config['value'])) return $config['value'];
-			else return null;			
+			throw new \Exception('a "value" parameter is needed for "integer" type and must be an integer');		
 		}
 
-		if($type == 'string'){
+		if($type === 'string'){
 			if(is_string($config['value'])) return $config['value'];
-			else return null;
+			throw new \Exception('a "value" parameter is needed for "string" type');
+			
 		}
 
-		return $value;
+		if($type === 'boolean'){
+			if(is_string($config['value']) && $config['value'] === 'true') return true;
+			if(is_string($config['value']) && $config['value'] === 'false') return false;
+			throw new \Exception('a "value" parameter" is needed for "boolean" type, and must be "true" or "false"');
+		}
+
+		if($type === 'value' && isset($config['value'])){
+			return $config['value'];
+		}
+
+		return null;
 	}
 	private function formatPropertyName($name)
 	{

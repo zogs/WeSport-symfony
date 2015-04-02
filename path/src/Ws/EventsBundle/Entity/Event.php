@@ -73,9 +73,10 @@ class Event
     private $location;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", inversedBy="events", fetch="EAGER", cascade={"persist"})     
+     * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", inversedBy="events", fetch="EAGER", cascade={"persist"}) 
+     * @ORM\Column(name="serie", nullable=true)    
      */
-    private $serie;
+    private $serie = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ws\SportsBundle\Entity\Sport", fetch="EAGER")
