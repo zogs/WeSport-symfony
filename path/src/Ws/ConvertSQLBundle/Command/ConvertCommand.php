@@ -66,7 +66,7 @@ class ConvertCommand extends ContainerAwareCommand
 
 
 	        $converter = $this->getContainer()->get('ws_table_converter');
-			$converter->importYml(__DIR__.'/../Resources/config/tables.yml');   
+			$converter->importConfig();   
             $converter->setOutput($output);
 
 			$results = $converter->convertOne($table);  

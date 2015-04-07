@@ -7,7 +7,7 @@ relations:
     isOnline: valid
     menu: 
         type: string
-        value: top
+        value: bottom
     position: 
         type: integer
         value: 0  

@@ -141,6 +141,15 @@ class Serie
     }
 
     /**
+     * toString
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'serie_'.$this->id;
+    }
+
+    /**
      * Set nboccurence
      *
      * @param integer $nboccurence

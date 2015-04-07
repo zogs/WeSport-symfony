@@ -2,8 +2,8 @@ tables:
     #param_id: table_name
     blog: posts
     pages: pages_i18n
-    users: users
     sports: sports_i18n
+    users: users
     events: events
-    participations: sporters
     series: events_serie
+    participants: sporters

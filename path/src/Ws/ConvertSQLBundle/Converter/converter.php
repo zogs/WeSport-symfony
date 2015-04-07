@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\NullOutput;
 
 class Converter
 {
@@ -16,7 +17,8 @@ class Converter
 	private $container;	
 	private $config;
 	private $yaml;
-	private $output = null;
+	private $output;
+	private $callback = null;
 
 	public function __construct($db,EntityManager $em,Container $container)
 	{
@@ -24,35 +26,57 @@ class Converter
 		$this->em = $em;
 		$this->container = $container;
 		$this->yaml = new Parser();
+		$this->output = new NullOutput();
 	}
 
+	/**
+	 * set output interface for command line tool
+	 *
+	 * @param OutputInfergace $output
+	 */
 	public function setOutput(OutputInterface $output)
 	{
 		$this->output = $output;
 	}
 
-	public function importYml($path)
-	{
-		
+	/**
+	 * import the main config file
+	 *
+	 * @param string $path the relative path to the yml conf file
+	 * @return class $this
+	 */
+	public function importConfig($path = null)
+	{		
+		$path = (isset($path))? $path : __DIR__.'/../Resources/config/tables.yml';
 
-		$config = $this->yaml->parse(file_get_contents($path));
+		$mainConfig = $this->yaml->parse(file_get_contents($path));
 
-		foreach ($config['tables'] as $entityName => $fieldName) {
+		foreach ($mainConfig['tables'] as $entityName => $tableName) {
 			
-			$config['entities'][$entityName] = $this->yaml->parse(file_get_contents(__DIR__.'/../Resources/config/mapping/'.$entityName.'.yml'));
+			$mainConfig['entities'][$entityName] = $this->yaml->parse(file_get_contents(__DIR__.'/../Resources/config/mapping/'.$entityName.'.yml'));
 		}
 
-		$this->config = $config;
+		$this->mainConfig = $mainConfig;
+
+		return $this;
 	}
 
+	/**
+	 * start conversion for all the tables defined in the conf file
+	 *
+	 * @return array of success and errors
+	 */
 	public function convertAll()
 	{
 		$errors = array();
 		$success = array();
 
-		foreach ($this->config['tables'] as $entityName => $fieldName)
+		foreach ($this->mainConfig['tables'] as $entityName => $tableName)
 		{
-			$results = $this->convert($entityName,$fieldName);
+			$this->output->writeln('Start processing '.ucfirst($entityName).' entities...');
+			$results = $this->convert($entityName,$tableName);
+			$this->output->writeln('');
+			$this->output->writeln('End processing '.ucfirst($tableName).' entities !');
 
 			$errors = array_merge($errors,$results['errors']);
 			$success = array_merge($success,$results['success']);
@@ -61,14 +85,23 @@ class Converter
 		return array('success'=>$success,'errors'=>$errors);		
 	}
 
+	/**
+	 * start conversion for a entity name
+	 *
+	 * @param string $entityName 
+	 * @return array of success and errors
+	 */
 	public function convertOne($entityName)
 	{
 		$errors = array();
 		$success = array();
 
-		$fieldName = $this->config['tables'][$entityName];
+		$tableName = $this->mainConfig['tables'][$entityName];
 
-		$results = $this->convert($entityName,$fieldName);
+		$this->output->writeln('Start processing '.ucfirst($entityName).' entities...');
+		$results = $this->convert($entityName,$tableName);
+		$this->output->writeln('');
+		$this->output->writeln('End processing '.ucfirst($tableName).' entities !');
 
 		$errors = array_merge($errors,$results['errors']);
 		$success = array_merge($success,$results['success']);
@@ -76,29 +109,42 @@ class Converter
 	}
 
 
-	public function convert($entityName,$fieldName)
+	/**
+	 * do the conversion between standard sql data and doctrine entities
+	 *
+	 * @param string $entityName
+	 * @param string $tableName
+	 */
+	private function convert($entityName,$tableName)
 	{
 		$errors = array();
 		$success = array();
 			
-		//get ancien results from the previous database
-		$stmt = $this->db->prepare("SELECT * FROM ".$fieldName);
+		//get entries of the previous database table
+		$stmt = $this->db->prepare("SELECT * FROM ".$tableName);
 		$stmt->execute();
 		$old_entries = $stmt->fetchAll();
 		$nb_entries = count($old_entries);
 
+		//get config of the fields to convert
+		$config = $this->mainConfig['entities'][$entityName];
 
-		$config = $this->config['entities'][$entityName];
+		//set progress bar for command line
+		$progressBar = new ProgressBar($this->output,$nb_entries);
+		$progressBar->setFormat(' %current%/%max% [%bar%] %percent%% %elapsed% Eta:%remaining% Mem:%memory%');		
+		$f = 100;
+		if($nb_entries >= 50000) $f = floor($nb_entries/1000);
+		if($nb_entries <= 50000) $f = floor($nb_entries/100);
+		if($nb_entries <= 1000) $f = floor($nb_entries/10);
+		if($nb_entries <= 100) $f = 1;
+		$this->output->writeln($nb_entries.' entries : refreshing every '.$f.'- ');
+		$progressBar->setRedrawFrequency($f);
+		$progressBar->start();
 
-		//progress bar for command line
-		if($this->output){
-			$progressBar = new ProgressBar($this->output,$nb_entries);
-			$progressBar->start();
-			$frequency = ($nb_entries < 100)? 1 : 100;
-			$progressBar->setRedrawFrequency(100);
-		}
+		//set off SQLlogger for performance
+		$this->em->getConnection()->getConfiguration()->setSQLLogger(null);
 
-
+		
 		//loop for each entry
 		foreach ($old_entries as $k => $entry) {
 			
@@ -106,30 +152,36 @@ class Converter
 			{
 				//map the new entity with the data of the old entry
 				$entity = $this->mapEntity($config,$entry);	
-				//presist new entity
-				$this->em->persist($entity);
-
 				//set IdGeneratorType to null in order to keep id from previous database
 				$metadata = $this->em->getClassMetaData(get_class($entity));
 				$metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+
+				//presist new entity				
+				$this->em->persist($entity);
 				//flush
 				$this->em->flush();	
 				//trigger callback
-				$this->triggerCallback($entity,$entry);
+				if($this->callback) $this->triggerCallback($entity,$entry);
 				//advance progressBar
-				if($this->output) $progressBar->advance();
+				$progressBar->advance();
 				//stock success
 				$success[] = get_class($entity);
-				//each 10 we flush everything						
-				if($k % 10 === 0) $this->em->clear();//clear memory every 100 entity
+				//clear memory once in a time			
+				if($k % 20 === 0) {
+					$this->em->clear();//clear memory every 10 entity
+				}				
 							
 			}
 			catch(\Exception $e)
 			{
-				$errorMsg = $e->getMessage();				
-				//$errorMsg .= ' - file: '.$e->getFile();
-				//$errorMsg .= ' - line: '.$e->getLine();
 				
+
+				$errorMsg = $e->getMessage();				
+				$errorMsg .= ' - file: '.$e->getFile();
+				$errorMsg .= ' - line: '.$e->getLine();
+				
+				//$this->output->writeln($errorMsg);
+
 				//because the EntityManager close when there is a Exception, we need to reopen it
 				// reset the EM and all aias
 				$this->container->set('doctrine.orm.entity_manager', null);
@@ -138,47 +190,38 @@ class Converter
 				$this->em = $this->container->get('doctrine.orm.entity_manager');
 
 
-				//If the error is about a forbidden duplicate content, stock the msg and continue the loop
+				//If the error is about a SQL error
 				if (strpos($errorMsg,'SQLSTATE[23000]') !== false) {
-
 					$errorMsg = 'SQLERROR: '.$errorMsg;
-
 				}
 
 				//advance progressBar
-				if($this->output) $progressBar->advance();
+				$progressBar->advance();
 
-				
-				
 				//stock the error msg
-				$errors[] = $errorMsg;				
+				$errors[] = $errorMsg;	
+		
 			}
-
-			
-
 		}
 
-		if($this->output) $progressBar->finish();
+		$progressBar->finish();
 
 		return array('success'=>$success,'errors'=>$errors);			
 		
 	}
 
 	private function triggerCallback($entity,$entry)
-	{
-		if (null != $this->callback) {
-			
-			$class = $this->callback['class'];
-			$method = $this->callback['method'];
-			$parameters = $this->callback['parameters'];
-			
-			$caller = new $class($this->container,$entry,$entity);
-			//call the method 
-			call_user_func_array(array($caller,$method), $parameters);
-		}
+	{		
+		$class = $this->callback['class'];
+		$method = $this->callback['method'];
+		$parameters = $this->callback['parameters'];
+		
+		$caller = new $class($this->container,$entry,$entity);
+		//call the method 
+		call_user_func_array(array($caller,$method), $parameters);
 
 		return $this->callback = null;
-	}
+	}	
 
 	private function mapEntity($config,$entry)
 	{

@@ -18,7 +18,7 @@ class ConvertController extends Controller
 
 		$converter = $this->get('ws_table_converter');
 
-		$converter->importYml(__DIR__.'/../Resources/config/tables.yml');
+		$converter->importConfig();
 
 		$results = $converter->convertOne($doctrineEntityName);
 
@@ -36,7 +36,7 @@ class ConvertController extends Controller
 
        $purger->purge();
 
-       $converter->importYml(__DIR__.'/../Resources/config/tables.yml');
+       $converter->importConfig();
        $results = $converter->convertAll();
 
         if(!empty($results['success'])) $this->get('flashbag')->add("Bravo, ".count($results['success'])." entités créés! ",'success');              

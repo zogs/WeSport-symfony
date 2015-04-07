@@ -74,7 +74,7 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="Ws\EventsBundle\Entity\Serie", inversedBy="events", fetch="EAGER", cascade={"persist"}) 
-     * @ORM\Column(name="serie", nullable=true)    
+     * @ORM\JoinColumn(name="serie", nullable=true)    
      */
     private $serie = null;
 
