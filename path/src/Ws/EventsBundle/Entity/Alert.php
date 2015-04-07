@@ -150,7 +150,7 @@ class Alert
     /**
      * Set email
      *
-     * @param boolean $email
+     * @param string $email
      * @return Alert
      */
     public function setEmail($email)
@@ -167,8 +167,8 @@ class Alert
      */
     public function getEmail()
     {
-        if(null!= $this->email) return $this->email;
-        elseif(null!=$this->getUser()) return $this->getUser()->getEmail();
+        if($this->email) return $this->email;
+        if($this->getUser() instanceof User) return $this->getUser()->getEmail();
     }
 
     /**

@@ -81,12 +81,16 @@ body{
 	/*The Helvetica/Arial-based sans serif */  
 	//font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif; 
 }
+form {
+	margin: 0 0 0 0;
+}
 .container { position:relative;}
 .container-fluid { padding-right:0; padding-left:0;}
 
 .mainContainer {
 	background: $backblue url('../img/lines/Lines5.png'); background-size: 7px;
 	margin-top:40px;
+	min-height: 100%;
 	padding-top:0;
 	padding-bottom:200px;
 	@include box-shadow(0 0 30px 0 rgba(0,0,0,0.4));
@@ -417,7 +421,7 @@ div.mm-is-menu * {
 
 .fresque {
 	width:100%;
-	height:10px;
+	height:20px;
 	background-color:white;
 	background-image:url(../img/fresque.jpg);
 	background-repeat: repeat-y;
@@ -454,6 +458,18 @@ div.mm-is-menu * {
 .ws-icon-halo{
 	background-color:white;
 	@include border-radius(100px);
+}
+/*
+======= AVATARS
+*/
+img.user-avatar-mini {
+	width: 20px; height: 20px; border-radius:20px;
+}
+img.user-avatar {
+	width: 30px; height: 30px; border-radius:30px;
+}
+img.user-avatar-big {
+	width: 60px; height: 60px; border-radius:60px;
 }
 /*
 ======= ALERTS
@@ -1930,7 +1946,7 @@ a.calendar-action:hover {
 	@extend %clearfix;
 
 	.fresque {
-		display:none;
+		//display:none;
 	}
 }
 
@@ -2211,6 +2227,10 @@ table.form-table {
 			border-bottom:1px solid rgba(0,0,0,0.05);
 			td { text-align:left;}
 		}
+		tr.form-row-hidden {
+			display: none;
+			td { display:none;}
+		}
 		tr.form-row:nth-child(1) { background-color: #f8edec }
 		tr.form-row:nth-child(2) { background-color: #fffcf3 }
 		tr.form-row:nth-child(3) { background-color: #ececec }
@@ -2310,142 +2330,136 @@ table.list-table {
 }
 
 /*==== Alert Create======*/
-.create-alert {
 
-	%alert-label-font {
-		@extend %form-label-font;
-	}
-	%alert-input-font {
-		color:#AAA;
-	}
+%alert-label-font { @extend %form-label-font; }
+%alert-input-font { color:#AAA; }
+
+table.form-table {
 	
+	tr.form-row {
 
-	table.form-table {
-		
-		tr.form-row {
+		td {
+			vertical-align: middle;
+			padding:20px 6%;
+		}
 
-			td {
-				vertical-align: middle;
-				padding:20px 6%;
+		td.cell-hidden { display:none; }
+		td.cell-submit {
+			text-align:center;
+			padding-top:30px;
+			padding-bottom:100px;
+		}
+	}
+
+	div.field-inline {
+
+		display:inline-block;
+		width:auto;
+		margin:10px 5px;
+
+		label,input,select {
+			display: inline-block;
+			width:auto;
+			margin:0 5px;
+		}
+		label {
+			@extend %alert-label-font;
+		}
+		input,select {
+			height:40px;
+			line-height: 100%;
+			padding: 3px 3px 2px 10px;
+			border-radius: 0px;
+			border: 1px solid #D8D7D7;
+			@extend %alert-input-font;
+		}
+		div input, div select {
+			height:auto; padding:0; border:0px solid #000;
+		}
+
+
+		/* --specific fields-- */
+		&.field-price {
+			input { width:70px;}
+		}
+		&.field-level {
+			select { width:200px;}
+		}
+		&.field-sports {
+			.select2-container {
+				width: 300px;
 			}
+		}
+		&.field-city_name {
+			.twitter-typeahead {
+				top:-10px;
+				.tt-dropdown-menu {
+					left:3px;
+					margin-top:0;
+				}
+			}
+		}
+		&.field-timestart,&.field-timeend {
+			input { width:60px; position:relative; }
+			input:after {
+				content:'h';
+				position:absolute;
+				right:-5px;
+				top:50%;
 
-			td.cell-hidden { display:none; }
-			td.cell-submit {
-				text-align:center;
-				padding-top:30px;
-				padding-bottom:200px;
 			}
 		}
 
-		div.field-inline {
-
-			display:inline-block;
-			width:auto;
-			margin:10px 5px;
-
-			label,input,select {
-				display: inline-block;
-				width:auto;
-				margin:0 5px;
-			}
-			label {
-				@extend %alert-label-font;
-			}
-			input,select {
+		/*--css plugins--*/
+		.ui-dropdownchecklist {
+			height:40px;
+			.ui-dropdownchecklist-selector {
 				height:40px;
-				line-height: 100%;
-				padding: 3px 3px 2px 10px;
-				border-radius: 0px;
-				border: 1px solid #D8D7D7;
+				padding:10px 10px 0 10px;
+			}
+			.ui-dropdownchecklist-text {
 				@extend %alert-input-font;
 			}
-			div input, div select {
-				height:auto; padding:0; border:0px solid #000;
+			.ui-state-hover {
+				background-color: #3875D7;
+				.ui-dropdownchecklist-text { color:#FFF; }
 			}
-
-
-			/* --specific fields-- */
-			&.field-price {
-				input { width:70px;}
-			}
-			&.field-level {
-				select { width:200px;}
-			}
-			&.field-sports {
-				.select2-container {
-					width: 300px;
-				}
-			}
-			&.field-city_name {
-				.twitter-typeahead {
-					top:-10px;
-					.tt-dropdown-menu {
-						left:3px;
-						margin-top:0;
-					}
-				}
-			}
-			&.field-timestart,&.field-timeend {
-				input { width:60px; position:relative; }
-				input:after {
-					content:'h';
-					position:absolute;
-					right:-5px;
-					top:50%;
-
-				}
-			}
-
-			/*--css plugins--*/
-			.ui-dropdownchecklist {
-				height:40px;
-				.ui-dropdownchecklist-selector {
-					height:40px;
-					padding:10px 10px 0 10px;
-				}
-				.ui-dropdownchecklist-text {
+		}
+		.twitter-typeahead {
+			width:300px;
+			input[type=text] { width:100% }
+		}
+		.select2-container {				
+			.select2-choices {
+				height: 40px !important;
+				border: 1px solid #D8D7D7;
+				background-image:none;
+				.select2-search-choice {
+					background-color:#FFF;
+					background-image: none;
+					border-radius:5px;
+					padding:0 8px 0 12px;
+					border:1px dotted #D0D0D0;
 					@extend %alert-input-font;
-				}
-				.ui-state-hover {
-					background-color: #3875D7;
-					.ui-dropdownchecklist-text { color:#FFF; }
-				}
-			}
-			.twitter-typeahead {
-				width:300px;
-				input[type=text] { width:100% }
-			}
-			.select2-container {				
-				.select2-choices {
-					height: 40px !important;
-					border: 1px solid #D8D7D7;
-					background-image:none;
-					.select2-search-choice {
-						background-color:#FFF;
-						background-image: none;
-						border-radius:5px;
-						padding:0 8px 0 12px;
-						border:1px dotted #D0D0D0;
-						@extend %alert-input-font;
-						div {
-							margin:2px 0;
-						}
-						.ws-icon-small {
-							@include rem(25);
-						}
-
+					div {
+						margin:2px 0;
 					}
-					.select2-search-choice-close {
-						top:8px;
-						@include opacity(0.8);
+					.ws-icon-small {
+						@include rem(25);
 					}
-				}
 
+				}
+				.select2-search-choice-close {
+					top:8px;
+					@include opacity(0.8);
+				}
 			}
 
 		}
+
 	}
 }
+
 
 /*=== Twitter Typeahead ===*/
 

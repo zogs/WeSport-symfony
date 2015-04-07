@@ -24,19 +24,19 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 	public function onAuthenticationSuccess(Request $request, TokenInterface $token)
 	{
 		if ($this->security->isGranted('ROLE_SUPER_ADMIN')){
-			$response = new RedirectResponse($this->router->generate('sonata_admin_dashboard'));	
+			//return $response = new RedirectResponse($this->router->generate('sonata_admin_dashboard'));	
 		}
-		elseif ($this->security->isGranted('ROLE_USER')){
+
+		if ($this->security->isGranted('ROLE_USER')){
 
 			if($referer_url = $request->request->get('_target_path')){
 				
-				$response = new RedirectResponse($referer_url);
+				return $response = new RedirectResponse($referer_url);
 			}
 			else {
-				$response = new RedirectResponse($this->router->generate('ws_calendar'));
+				return $response = new RedirectResponse($this->router->generate('ws_calendar'));
 			}			
 		}
 
-		return $response;
 	}
 }

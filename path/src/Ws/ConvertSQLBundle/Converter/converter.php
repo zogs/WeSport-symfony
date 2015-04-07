@@ -71,6 +71,7 @@ class Converter
 		$errors = array();
 		$success = array();
 
+		$this->output->writeln('Start processing all tables...');
 		foreach ($this->mainConfig['tables'] as $entityName => $tableName)
 		{
 			$this->output->writeln('Start processing '.ucfirst($entityName).' entities...');
@@ -81,6 +82,8 @@ class Converter
 			$errors = array_merge($errors,$results['errors']);
 			$success = array_merge($success,$results['success']);
 		}
+		$this->output->writeln('End processing all tables !');
+		$this->output->writeln('');
 
 		return array('success'=>$success,'errors'=>$errors);		
 	}
@@ -102,6 +105,7 @@ class Converter
 		$results = $this->convert($entityName,$tableName);
 		$this->output->writeln('');
 		$this->output->writeln('End processing '.ucfirst($tableName).' entities !');
+		$this->output->writeln('');
 
 		$errors = array_merge($errors,$results['errors']);
 		$success = array_merge($success,$results['success']);

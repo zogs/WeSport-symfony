@@ -502,7 +502,7 @@ class Search
         return false;
     }
 
-    public function setOrganizer(User $organizer)
+    public function setOrganizer(User $organizer = null)
     {
         $this->organizer = $organizer;
     }

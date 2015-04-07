@@ -1,0 +1,51 @@
+{% extends '::layout_centered.html.twig' %}
+{% form_theme form 'WsEventsBundle:Form:block-form-alert.html.twig' %}
+
+{% block page_content %}
+
+    <div class="followOrganizer">
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                   Vous allez suivre <img class="user-avatar-big" src="{{ asset(organizer.avatar.getWebPath) }}" alt="{{ organizer.username }}" title="{{ organizer.username }}"> {{ organizer.username }}
+                </h1>
+            </div>
+
+	        {{ form_start(form) }}
+	        {{ form_errors(form) }}
+	        <table class="form-table">
+	        	<tr class="form-row">
+	                <td>
+	                    {{ form_row(form.frequency,{
+	                        'label': "Je recevrai les alertes "
+	                    }) }}
+	                    {{ form_row(form.duration,{
+	                        'label': "pendant "
+	                    }) }}
+	                    {{ form_row(form.email,{
+	                        'label': " à l'adresse "
+	                    }) }}                        
+	                </td>
+	            </tr>
+	            <tr class="form-row-hidden">
+	            	<td class="cell-hidden">
+	            		{{ form_rest(form) }}
+	            	</td>
+	            </tr>
+	            <tr class="form-row">
+	                <td class="cell-submit">
+	                	
+	                    <input type="submit" value="Confirmer" class="btn-ws">
+	                </td>
+	            </tr>
+	        </table>
+	        {{ form_end(form) }}
+                   
+	        <div class="clearfix"></div>
+	        <div class="fresque"></div>
+	    
+	    </div>
+	</div>
+    
+{% endblock %}
+

@@ -13,6 +13,7 @@ use Ws\SportsBundle\Form\Type\SelectSportType;
 use Ws\EventsBundle\Manager\CalendarManager;
 use Ws\EventsBundle\Form\Type\SerieType;
 use Ws\EventsBundle\Form\Type\CalendarSearchType;
+use My\UserBundle\Entity\User;
 
 class AlertType extends AbstractType
 {
@@ -30,14 +31,13 @@ class AlertType extends AbstractType
         $builder
             ->add('email','text',array(
                 'required' => true,
-                'mapped' => true,
                 ))
             ->add('frequency','choice',array(
                 'choices'=>array('daily'=>'daily','weekly'=>'weekly'),
                 'expanded'=> false,
                 'multiple'=> false,
                 'required'=> true,
-                'data' => 'daily',  
+                'empty_data' => 'daily',  
                 'translation_domain' => 'WsEventsBundle_alert',              
                 ))
             ->add('duration','choice',array(
@@ -46,8 +46,7 @@ class AlertType extends AbstractType
                 'expanded'=> false,
                 'multiple'=> false,
                 'required'=> true,
-                'mapped'=> false,
-                'data'=> 3,
+                'empty_data'=> 3,
                 ))
             ->add('search','calendar_search')
             ;
@@ -60,22 +59,26 @@ class AlertType extends AbstractType
     {
         $form = $event->getForm();
 
-        if(!empty($this->user)){
+        if($this->user instanceof User){
+
             $form->add('email','text',array(
                 'required' => true,
                 'mapped' => true,
                 'data' => $this->user->getEmail()
                 ));
-        }
+        }        
     }
 
      public function onPostSubmit(FormEvent $event)
     {
         $form = $event->getForm();
         $alert = $event->getData();
-    
-        //Set the current user 
-        $alert->setUser($this->user);
+
+        if( $this->user instanceof User) {
+            //Set the current user 
+            $alert->setUser($this->user);
+            
+        }
 
     }
     public function getName()
@@ -86,7 +89,7 @@ class AlertType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
-            'invalid_message' => 'humm les alertes cest pas encore ça...',
+            'invalid_message' => "Oups, ça s'était pas prévu, il y a une erreur dans le formulaire...",
 	        'data_class' => 'Ws\EventsBundle\Entity\Alert',
             'cascade_validation' => true,
 	    ));

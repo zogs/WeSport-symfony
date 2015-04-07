@@ -19,19 +19,25 @@ class ConvertCommand extends ContainerAwareCommand
         $this
             ->setName('database:convert')
             ->setDescription('Converti une table SQL en table Doctrine')
-            ->addArgument('table', InputArgument::REQUIRED, 'Which table ?')
-            //->addOption('yell', null, InputOption::VALUE_NONE, 'Si définie, la tâche criera en majuscules')
+            ->addArgument('table', InputArgument::OPTIONAL, 'Which table ?')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'Convert all tables')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $table = $input->getArgument('table');
         
-        if($table){
-        	$this->executeTable($output,$table);
-        }
+        if(true == $input->getOption('all')){
 
+            $this->executeAllTables($output);
+
+        }
+        else {
+            $table = $input->getArgument('table');
+            if($table){
+            	$this->executeOneTable($output,$table);
+            }            
+        }
 
         $this->displayErrors($output);
         $this->displaySuccess($output);
@@ -58,12 +64,9 @@ class ConvertCommand extends ContainerAwareCommand
 		}    	
     }
         
-    protected function executeTable(OutputInterface $output, $table)
+    protected function executeOneTable(OutputInterface $output, $table)
     {
     	if($table){
-
-            $progress = $this->getHelperSet()->get('progress');
-
 
 	        $converter = $this->getContainer()->get('ws_table_converter');
 			$converter->importConfig();   
@@ -75,5 +78,17 @@ class ConvertCommand extends ContainerAwareCommand
 			if(!empty($results['success'])) $this->success = array_merge($this->success,$results['success']);
         }
         
+    }
+
+    protected function executeAllTables(OutputInterface $output)
+    {
+        $converter = $this->getContainer()->get('ws_table_converter');
+        $converter->importConfig();   
+        $converter->setOutput($output);
+
+        $results = $converter->convertAll();  
+
+        if(!empty($results['errors'])) $this->errors = array_merge($this->errors,$results['errors']);   
+        if(!empty($results['success'])) $this->success = array_merge($this->success,$results['success']);
     }
 }
