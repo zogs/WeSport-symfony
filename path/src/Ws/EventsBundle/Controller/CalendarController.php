@@ -49,7 +49,7 @@ class CalendarController extends Controller implements InitControllerInterface
 			'area' => 50,
 			));
 		$manager->setAutoLocation(true);
-		$session->set('autoLocationed',true);
+		$session->set('autoLocationed',$location->getCity()->getName());
 
 	}
 

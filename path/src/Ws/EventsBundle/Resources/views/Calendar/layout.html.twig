@@ -4,13 +4,6 @@
 
 {% block body %}
 
-	{% block autolocation %}
-		
-		{% include 'WsEventsBundle:Calendar:autolocation.html.twig' with {'search':search}  %}
-
-	{% endblock %}
-
-
 	{% block flash %}
 	    {{ flashbag_all() }}
 	{% endblock %}
@@ -38,6 +31,11 @@
 						</div>							
 
 						<div class="calendar-form-cell-right">
+
+							{% block autolocation %}		
+								{% include 'WsEventsBundle:Calendar:autolocation.html.twig' with {'search':search}  %}
+							{% endblock %}
+
 							{# dans ma Ville #}
 							{% if form.location.city_name.vars.data is not null %}{% set label = "à "%}{% else %}{% set label = "à "%}{% endif %}	
 							{{ form_label(form.location.city_name,label)}}						
