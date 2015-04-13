@@ -22,17 +22,22 @@ ws_event_edit:
         event: \d+
         _method: GET|POST
 
-#ORGANIZER
-ws_event_follow_organizer:
-    pattern: /organizer/follow/{organizer}
-    defaults: { _controller: WsEventsBundle:Organizer:follow }
+#FOLLOW
+ws_event_follow_create:
+    pattern: /follow/{organizer}
+    defaults: { _controller: WsEventsBundle:Follow:create }
     requirements:
         organizer: \d+
-ws_event_follow_organizer_confirm:
-    pattern: /organizer/follow/confirm/{user}
-    defaults: { _controller: WsEventsBundle:Organizer:followConfirmed }
+ws_event_follow_edit:
+    pattern: /follow/edit/{follow}
+    defaults: { _controller: WsEventsBundle:Follow:edit }
     requirements:
-        user: \d+
+        follow: \d+  
+ws_event_follow_delete:
+    pattern: /follow/delete/{follow}
+    defaults: { _controller: WsEventsBundle:Follow:delete }
+    requirements:
+        follow: \d+       
 
 #SERIE
 ws_serie_delete:

@@ -459,6 +459,12 @@ div.mm-is-menu * {
 	background-color:white;
 	@include border-radius(100px);
 }
+.ws-icon-success{
+	color: $green;
+}
+.ws-icon-white {
+	color:white;
+}
 /*
 ======= AVATARS
 */
@@ -2129,16 +2135,24 @@ $bg-color-white-sheet:#fff;
 }
 	
 .btn-ws-small{
-	padding:5px 15px;
-	@include rem(12);
-	@include box-shadow(1px 1px 0 0 $lightblue,2px 2px 0 0 $lightblue,3px 3px 0 0 $lightblue);
+	padding:5px 12px;
+	@include rem(14);
+	@include box-shadow(0 1px 0 1px $lightblue,0 2px 0 2px $lightblue);
 }	
+.btn-ws-mini {
+	padding:3px 10px;
+	@include rem(12);
+	@include box-shadow(0 1px 0 1px $lightblue,0 2px 0 2px $lightblue);
+}
+
 .btn-ws-success{
-	background-color: $green;
+	background-color: #538942;
+	color:white;	
+}
+.btn-ws-neutral{
+	background-color: #D3D3D3;
 	color:white;
 }	
-
-
 .btn-ws-submit-clicked{
 	position:relative;
 	&:after{
@@ -2150,6 +2164,38 @@ $bg-color-white-sheet:#fff;
 		background-position: 50%;
 	}
 }
+
+.label-ws {
+	padding:10px 30px;
+	margin:0; 
+	color:#FFF; 
+	border:0px solid #000; 
+	font-weight:bold; 
+	@include border-radius(3px); 	
+	@include rem(18);
+	background-color:$deepblue;
+}	
+.label-ws:hover,.label-ws:active {
+	text-decoration:none;
+	color:white;
+}
+.label-ws-small{
+	padding:5px 12px;
+	@include rem(14);	
+}
+.label-ws-mini{
+	padding:3px 10px;
+	@include rem(12);	
+}	
+.label-ws-success{
+	background-color: #538942;
+	color:white;	
+}
+.label-ws-neutral{
+	background-color: #D3D3D3;
+	color:white;
+}	
+
 
 .register,.connexion {
 
@@ -2368,7 +2414,7 @@ table.form-table {
 		input,select {
 			height:40px;
 			line-height: 100%;
-			padding: 3px 3px 2px 10px;
+			padding: 3px 30px 2px 10px;
 			border-radius: 0px;
 			border: 1px solid #D8D7D7;
 			@extend %alert-input-font;
@@ -2788,10 +2834,10 @@ table.form-table {
 				width:180px;
 				padding-top:20px;
 				img.event-organizer-avatar { width:80px; height:80px; border-radius:100px; }
-				a:link,a:visited,a:active { text-decoration:none; color:$lightblue; }
-				a:hover { text-decoration:underline; }
+				a.username:link,a.username:visited,a.username:active { text-decoration:none; color:$lightblue; }
+				a.username:hover { text-decoration:underline; }
 				strong { font-weight: bold; @include rem(16); }
-				small { font-size: 80%; color: $deepblue; }
+				small { font-size: 80%; color: $deepgrey; }
 			}
 		}	
 	}

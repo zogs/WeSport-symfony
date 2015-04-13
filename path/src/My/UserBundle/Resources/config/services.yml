@@ -16,7 +16,9 @@ services:
         arguments: [@router,@security.context]
         tags:
             - { name: 'monolog.logger', channel: 'security' }
-
+    #Security
+    my_user.password_encoder:
+        class: My\UserBundle\Security\MyPasswordEncoder
     #OAuth
     my_user.oauth.user_provider:
         class: My\UserBundle\Providers\OAuth\UserProvider

@@ -12,7 +12,7 @@ class AlertManager extends AbstractManager
 	protected $em;
 
 	
-	public function saveAlert($alert)
+	public function saveAlert(Alert $alert)
 	{		
 		$start = new \DateTime();
 		$alert->setDateStart($start);
@@ -24,36 +24,36 @@ class AlertManager extends AbstractManager
 
 		$alert->getSearch()->setAlert($alert);
 
-		$this->save($alert,true);
+		$this->save($alert);
 		return true;	
 	}
 
-	public function extendAlert($alert,$nbmonth)
+	public function extendAlert(Alert $alert,$nbmonth)
 	{
 		$stop = new \DateTime('+'.$nbmonth.' month');
 		$alert->setDateStop($stop);
 		$alert->setActive(true);
 
-		$this->save($alert,true);
+		$this->save($alert);
 		return true;
 	}	
 
-	public function deleteAlert($alert)
+	public function deleteAlert(Alert $alert)
 	{
-		$this->delete($alert,true);
+		$this->delete($alert);
 		return true;
 	}
 
-	public function disableAlert($alert)
+	public function disableAlert(Alert $alert)
 	{
 		$alert->setActive(false);
-		return $this->save($alert,true);
+		return $this->save($alert);
 	}
 
-	public function enableAlert($alert)
+	public function enableAlert(Alert $alert)
 	{
 		$alert->setActive(true);
-		return $this->save($alert,true);
+		return $this->save($alert);
 	}
 
 	public function saveAlerted(Alert $alert, $events)

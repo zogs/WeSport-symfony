@@ -66,6 +66,10 @@ services:
         class: Ws\EventsBundle\Manager\SpotManager
         arguments: [@service_container]
 
+    ws_events.follow.manager:
+        class: Ws\EventsBundle\Manager\FollowManager
+        arguments: [@service_container]
+
     #Twig
     ws_events.twig.eventlink:
         class: Ws\EventsBundle\Twig\EventLinkExtension

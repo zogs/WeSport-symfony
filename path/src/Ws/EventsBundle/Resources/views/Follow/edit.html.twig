@@ -1,0 +1,32 @@
+{% extends '::layout_centered.html.twig' %}
+
+
+{% block page_content %}
+
+    <div class="followOrganizer">
+        <div class="white-sheet">           
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                   Vous suivez actuellement <img class="user-avatar-big" src="{{ asset(follow.organizer.avatar.getWebPath) }}" alt="{{ follow.organizer.username }}" title="{{ follow.organizer.username }}"> {{ follow.organizer.username }}
+                </h1>
+            </div>
+
+            <table class="form-table">
+            	<tr class="form-row">
+            		<td>
+            			<a class="btn-ws" href="{{ app.request.headers.get('referer') }}"><span class="ws-icon ws-icon-arrow-left ws-icon-white"></span> Retour</a>
+            			<a class="btn-ws" href="{{ path('ws_event_follow_delete',{follow:follow.id}) }}">Annuler</a>
+            		</td>
+            	</tr>
+            </table>
+
+	        
+                   
+	        <div class="clearfix"></div>
+	        <div class="fresque"></div>
+	    
+	    </div>
+	</div>
+    
+{% endblock %}
+

@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="users_followed")
  * @ORM\Entity
  */
-class Follower 
+class Follow 
 {
     /**
      * @ORM\Id @ORM\GeneratedValue
@@ -23,18 +23,18 @@ class Follower
 
     /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id", onDelete="CASCADE")
+    * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id")
     */
     private $organizer;
 
     /**
     * @ORM\ManyToOne(targetEntity="My\UserBundle\Entity\User")
-    * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
     */
     private $user;
 
      /**
-    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert")    
+    * @ORM\OneToOne(targetEntity="Ws\EventsBundle\Entity\Alert", cascade={"persist","remove"})    
     * @ORM\JoinColumn(name="alert_id")
     */
     private $alert;

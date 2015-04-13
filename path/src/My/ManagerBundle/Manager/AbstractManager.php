@@ -47,7 +47,7 @@ abstract class AbstractManager
     /**
      * {@inheritDoc}
      */
-    public function save($object, $flush = false)
+    public function save($object, $flush = true)
     {
 
         $this->em->persist($object);
@@ -63,7 +63,7 @@ abstract class AbstractManager
     /**
      * {@inheritDoc}
      */
-    public function delete($object, $flush = false)
+    public function delete($object, $flush = true)
     {
 
         $this->em->remove($object);

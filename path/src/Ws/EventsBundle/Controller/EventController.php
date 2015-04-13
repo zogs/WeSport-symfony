@@ -202,6 +202,8 @@ class EventController extends Controller
 	public function viewAction(Event $event)
 	{
 		
+		//get google map
+		//located on the Event address
 		$gmap = $this->get('world.gmap');
 		$gmap->setSize('100%','100%');
 		$gmap->setLang($this->getRequest()->getLocale());
@@ -211,6 +213,9 @@ class EventController extends Controller
 		$gmap->setZoom(12);
 		$gmap->generate();
 		$gmap = $gmap->getGoogleMap();
+
+		//find if the current User follow this organizer
+		$event->followed = $this->get('ws_events.follow.manager')->isEventFollowed($event);
 
 		//throw event		
 		$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_VIEW, new ViewEvent($event,$this->getUser()));

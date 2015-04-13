@@ -46,11 +46,16 @@
 						</td>
 						<td class="cell-organizer">
 							<img src="{{ asset(event.organizer.avatar.getWebPath) }}" alt="" class="event-organizer-avatar"><br>
-							<strong><a href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></strong><br>						
-							{% if event.organizer.hasBirthday %}<small>{{ event.organizer.birthday|calculAge }} ans</small>{% endif %}
-							{% if event.organizer.type != 'person' %}<small>{{ event.organizer.type}}</small>{% endif %}
-							<br><a class="btn-ws" href="{{ path('ws_event_follow_organizer',{organizer:event.organizer.id}) }}">Suivre</a>
-							<br><small><a href="{{ event.organizer|link2user }}" rel="me author nofollow">- Voir la fiche -</a></small>
+							<strong><a class="username" href="{{ event.organizer|link2user }}" rel="me author nofollow">{{ event.organizer.username|capitalize }}</a></strong>				
+							{% if event.organizer.hasBirthday %}- <small>{{ event.organizer.birthday|calculAge }} ans</small>{% endif %}
+							{% if event.organizer.type != 'person' %}- <small>{{ event.organizer.type}}</small>{% endif %}
+							{% if event.followed %}
+							<br><a class="label-ws label-ws-small label-ws-neutral" href="{{ path('ws_event_follow_edit',{follow:event.followed.id}) }}">
+								<span class="ws-icon ws-icon-checkmark ws-icon-white"></span> Suivre</a>
+							{% else %}
+							<br><a class="btn-ws btn-ws-small" href="{{ path('ws_event_follow_create',{organizer:event.organizer.id}) }}">Suivre</a>
+							{% endif %}
+							
 						</td>
 					</tr>
 				</table>	
