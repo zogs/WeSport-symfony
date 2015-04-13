@@ -1,5 +1,5 @@
-{{ form_start(form, {"action":path('my_contact'),'attr':{'class':''}} ) }}
-	   			
+{{ form_start(form, {"action":path('my_contact'),'attr':{'class':'footer-form'}} ) }}
+	   	<h4>Contactez nous <span class="ws-icon ws-icon-smiley3"></span> </h4>	
 		{% if app.user.email is defined %}
 		{{ form_row(form.email,{'attr':{'value':app.user.email}}) }}
 		{% else %}

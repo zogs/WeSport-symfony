@@ -1,12 +1,8 @@
 {% if search.autoLocation is defined and search.autoLocation is not null %}
-	<div class="flash">
-		<div class="ws-alert alert-info">
-			<span class="flash-icon"><span class="ws-icon-info }}"></span></span>
-            <p>
-	            Nous avons détecté votre ville <strong>{{ search.location.city.name }}</strong> et affiché les activités à {{ search.area }}km à la ronde ! 
-	            <a href="{{ path('ws_calendar_reset') }}">Annuler </a>
-            </p>
-            <button class="close" data-dismiss="alert"><span class="ws-icon-close"></span></button>
-		</div>
+	<div class="autolocation-calendar">
+		<span class="ws-icon-info"></span> 		
+		Nous avons détecté votre ville  <strong>{{ search.location.city.name }}</strong> et affiché les activités à {{ search.area }}km à la ronde !  
+		<a class="nop" href="{{ path('ws_calendar_reset') }}">Non merci. </a>
+            		<a class="close" href="" onclick="$(this).parent().fadeOut(200); return false"><span class="ws-icon-close"></span></a>
 	</div>			
 {% endif %}
