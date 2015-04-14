@@ -71,12 +71,11 @@ $(document).ready(function() {
 	============================================================*/	
 	$('.geo-select-ajax').change(function(){
 
-		var parent = $(this);
-		var url = parent.attr('data-ajax-url');
-		var level = parent.attr('data-geo-level');
-		var value = parent.val();
-		parent.addClass('geo-loading');
-		//parent.parent('.control-group').next('.control-group .controls .geo-select').empty().hide();
+		var select = $(this);
+		var url = select.attr('data-ajax-url');
+		var level = select.attr('data-geo-level');
+		var value = select.val();
+		select.addClass('geo-loading');
 
 		$.ajax({
 			type: 'GET',
@@ -85,8 +84,9 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function(data){
 
-				parent.removeClass('geo-loading');
-				$('select.geo-select-'+data.level).first().empty().append(data.options).select2().show();
+				select.removeClass('geo-loading');
+				$('select.geo-select-'+data.level).first().empty().append(data.options).removeClass('hide').select2().show();
+				$('#control-'+data.level).removeClass('hide').nextAll('.control-group').addClass('hide');				
 							
 			}
 		})

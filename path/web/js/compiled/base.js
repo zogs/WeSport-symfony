@@ -8511,10 +8511,17 @@ $(document).ready(function() {
 		minWidth:250,
 	});
 
+
+	/*
+		Tooltip bootstrap
+	*/	
+	$('.tooltiptop').tooltip( { delay: { show: 200, hide: 100 }} );
+	$('.tooltipbottom').tooltip( { placement : 'bottom', delay: { show: 200, hide: 100 }} );
+
 });
 $(document).ready(function() {
 
-	$("#fos_user_registration_form_username").change(function(){
+	$("#fos_user_registration_form_username,#fos_user_profile_form_username").change(function(){
 
 		var input = $(this);
 		var control = input.parent().parent();
@@ -8554,7 +8561,7 @@ $(document).ready(function() {
 		return;
 	});
 
-	$("#fos_user_registration_form_email").change(function(){
+	$("#fos_user_registration_form_email,#fos_user_profile_form_email").change(function(){
 
 		var input = $(this), 
 		control = input.parent().parent(), 
@@ -9701,12 +9708,11 @@ $(document).ready(function() {
 	============================================================*/	
 	$('.geo-select-ajax').change(function(){
 
-		var parent = $(this);
-		var url = parent.attr('data-ajax-url');
-		var level = parent.attr('data-geo-level');
-		var value = parent.val();
-		parent.addClass('geo-loading');
-		//parent.parent('.control-group').next('.control-group .controls .geo-select').empty().hide();
+		var select = $(this);
+		var url = select.attr('data-ajax-url');
+		var level = select.attr('data-geo-level');
+		var value = select.val();
+		select.addClass('geo-loading');
 
 		$.ajax({
 			type: 'GET',
@@ -9715,8 +9721,9 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function(data){
 
-				parent.removeClass('geo-loading');
-				$('select.geo-select-'+data.level).first().empty().append(data.options).select2().show();
+				select.removeClass('geo-loading');
+				$('select.geo-select-'+data.level).first().empty().append(data.options).removeClass('hide').select2().show();
+				$('#control-'+data.level).removeClass('hide').nextAll('.control-group').addClass('hide');				
 							
 			}
 		})

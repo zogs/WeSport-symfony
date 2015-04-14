@@ -1,14 +1,14 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 
-<form action="{{ path('fos_user_profile_edit') }}?action={{ action }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+<form action="{{ path('fos_user_profile_edit') }}?action={{ action }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit form-ws">
 
 
 	{{ form_errors(form) }}
 
 	{% if (action == '') or (action == 'account') %}
 		<div class="module-header">
-			<h2>Mon compte</h2>
+			<h5>Mon compte</h5>
 		</div>
 
 		{{ form_row(form.username) }}
@@ -20,7 +20,7 @@
 
 	{% if action == 'info' %}
 		<div class="module-header">
-			<h2>Mon Profil</h2>
+			<h5>Mon Profil</h5>
 		</div>
 
 		{{ form_row(form.firstname) }}
@@ -35,7 +35,7 @@
 
 	{% if action == 'avatar' %}
 		<div class="module-header">
-			<h2>Mon image d'avatar</h2>
+			<h5>Mon image d'avatar</h5>
 		</div>
 
 		{{ form_row(form.avatar.file) }}
@@ -44,7 +44,7 @@
 
 	{% if action == 'mailing' %}
 		<div class="module-header">
-			<h2>Mes préférences mailing</h2>
+			<h5>Mes préférences mailing</h5>
 		</div>
 
 		{{ form_row(form.settings) }}
@@ -54,7 +54,7 @@
 
 	{% if action == 'password' %}
 		<div class="module-header">
-			<h2>Mon mot de passe</h2>
+			<h5>Mon mot de passe</h5>
 		</div>
 
 		{{ form_row(form.oldpassword) }}
@@ -64,7 +64,7 @@
 
 
 
-	<button class="btn btn-large btn-info" type="submit">{{ 'profile.edit.submit'|trans }}</button>
+	<button class="btn-ws" type="submit">{{ 'profile.edit.submit'|trans }}</button>
 
 {{ form_end(form) }}
 
