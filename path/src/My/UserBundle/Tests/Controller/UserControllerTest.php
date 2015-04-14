@@ -261,7 +261,7 @@ class UserControllerTest extends WebTestCase
 
 		$user = $this->em->getRepository('MyUserBundle:User')->findOneByUsername($this->username);
 
-		$crawler = $this->client->request('GET',$this->router->generate('my_user_delete_me'));
+		$crawler = $this->client->request('GET',$this->router->generate('fos_user_profile_edit',array('action'=>'delete')));
 		
 		$form = $crawler->selectButton('Confirmer')->form(array(
 			'form[confirm]'=>'yes',

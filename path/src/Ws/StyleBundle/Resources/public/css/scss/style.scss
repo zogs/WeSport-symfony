@@ -90,7 +90,7 @@ form {
 .mainContainer {
 	background: $backblue url('../img/lines/Lines5.png'); background-size: 7px;
 	margin-top:40px;
-	min-height: 100%;
+	min-height: 800px;
 	padding-top:0;
 	padding-bottom:200px;
 	@include box-shadow(0 0 30px 0 rgba(0,0,0,0.4));
@@ -2050,20 +2050,32 @@ $bg-color-white-sheet:#fff;
 			margin-left:auto; 
 			margin-right: auto;
 			label.checkbox { width:auto;}	
-		}
-		input[type=text],input[type=password],input[type=email],select { color:#888; padding-top:7px; padding-bottom:7px; line-height:100%; border:1px solid #CCCCCC; @include border-radius(4px); @include box-shadow(0 0 0 4px #E2E2E2);}
-		input[type=text]:focus,input[type=password]:focus,input[type=email]:focus,select:focus{ @include box-shadow(0 0 0 3px $softred); }
-		
-		input.inline,select.inline { float:left; margin-right:12px;}
+			input[type=text],input[type=password],input[type=email],textarea,select { color:#888; padding-top:7px; padding-bottom:7px; line-height:100%; border:1px solid #CCCCCC; @include border-radius(4px); @include box-shadow(0 0 0 4px #E2E2E2);}
+			input[type=text]:focus,input[type=password]:focus,input[type=email]:focus,select:focus{ @include box-shadow(0 0 0 3px $softred); }
+			textarea { height:100px; font-size:100%; }
+			input.inline,select.inline { float:left; margin-right:12px;}
 
+			div.select2-container {
+				margin:0; 
+				a.select2-choice {
+					border:1px solid #CCCCCC; @include border-radius(4px); @include box-shadow(0 0 0 4px #E2E2E2);
+				}
+			}
+		}
 	}
 
 	.control-error .controls input,
+	.control-error .controls input[type=text],
+	.control-error .controls input[type=password],
+	.control-error .controls input[type=email],
 	.control-error .controls select,
 	.control-error .controls textarea {
 		border-color: #820200; box-shadow:0 0 0 4px rgba(130, 2, 0, 0.2);
 	}
-	.control-success .controls input,
+	.control-success .controls input[type=text],
+	.control-success .controls input[type=text],
+	.control-success .controls input[type=password],
+	.control-success .controls input[type=email],
 	.control-success .controls select,
 	.control-success .controls textarea {
 		border-color: rgb(35,135,77); box-shadow:0 0 0 4px rgba(35,135,77, 0.2);
@@ -3980,64 +3992,93 @@ div.col_large {
 /*=======
 == ACCOUNT
 =======*/
-#account{	
-	.col_small{ 
-		.module { padding:10px 5%;}
-		.profil {
-			.useravatar { margin-right:5px;}
-			.username { font-weight:bold; text-transform: capitalize;}
-		}	
-		.menu{
+.page-account{	
+	.col_small{ 	
+		ul.menu-action {
+			list-style:none;
+			margin:0;
 			padding:0;
-			ul{
-				list-style:none;
-				margin:0;
-				padding:0;
-				li{
-					@include rem(16);
-					padding:10px 0 10px 5%;
-					border-bottom:1px solid #CCC;
+			li{
+				@include rem(16);
+				padding:10px 0 10px 5%;
+				border-bottom:1px solid #CCC;
 
-					i.icon { margin-right:5px;}
-					a{ color:$deepblue;}
-				}
-				li:last-child { border-bottom:0;}
-				li:hover { background-color: #FFF; 
-					a{color:$darkblue;}
+				a{ 
+					display: inline-block;
+					width:90%;
+					color:$deepblue; 
+				 }
+				i[class^="icon-"] { 
+					display: inline-block;
+					width:5%;
+					margin-right:2%; 
+					color: $deepblue; 
 				}
 			}
-		}	
+			li:last-child { border-bottom:0;}
+			li:hover { background-color: #EEE; 
+			}
+			li.selected {
+				font-weight: bold;
+				background-color: #EEE;
+				border:1px solid #DDD;
+			}
+		}		
 	}
 	.col_large{ 
-		padding:10px;
-		.module { padding:10px 1%;}
-		#account-form {
-			padding-left:20px;
-			padding-right:20px;
-			label {
-				width:20%;
-			}
-			label.checkbox{
-				width:auto;
-				float:none;
-			}	
-			input[type=submit] { float:right;}		
-		}
-		#account-form.form-mailing{
-			.controls{ width:100%;}
-		}	
-	}
-	
-	.module {
-		background-color:$lightgrey;
-		@include border-radius(4px);
-		@include box-shadow(0 0 0 #000);
-	}
 
-	.col_small,.col_large { padding-top:40px;}
+	}	
+
+	form.profile-edit {
+		padding-top:5px;
+
+		#control-birthday{
+			.controls select { width:30%; margin-right:3%;}
+		}
+
+		#control-location {
+			> label { display:none; }
+			> .controls {
+				width:100%;
+
+			}
+		}
+
+		#control-settings {
+			&>label { display:none; }
+			&>.controls { 
+				width:100%;
+				label {
+					width:100%;
+					text-align:left;
+					margin:0;
+				}
+				.controls {
+					label {
+						width:auto;
+						display:inline;
+						margin-right:15px;
+					}
+				}								
+			}
+		}
+
+		#control-file {
+			.controls img { width: 60%; }
+		}
+		input[type=submit],button[type=submit] {
+			margin-left: 20%;
+		}
+	}
 	
 }
 
+
+/*
+===========
+==== CONTACT
+===========
+*/
 .contact {
 
 	.form-contact{

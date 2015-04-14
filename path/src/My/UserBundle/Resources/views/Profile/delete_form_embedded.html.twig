@@ -1,0 +1,14 @@
+	{{ form_start(form, {'class':'form form-ws','attr':{'class':'form form-ws'}} ) }}
+	   	
+	   	{% if form_errors(form) %}
+	   			{{ form_errors(form) }}
+	   	{% endif %}
+
+		{{ form_row(form.confirm) }}
+	    
+	    <button type="submit" class="btn-ws" style="margin-left:20%">Confirmer</button>
+	    <p>&nbsp;</p>
+	
+	{{ form_end(form) }}
+
+</div>

@@ -39,7 +39,7 @@ services:
 
     my_user.profile.form.type:
         class: My\UserBundle\Form\Type\ProfilEditionType
-        arguments: [@request_stack,@security.context]
+        arguments: [@request_stack,@security.context,@router]
         tags:
             - { name: form.type, alias: my_user_profile }
 

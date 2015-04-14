@@ -40,7 +40,8 @@ class LocationSelectorType extends AbstractType
                 'choices'=>$this->em->getRepository('MyWorldBundle:Country')->findCountryList('code'),
                 'required'=>false,
                 'mapped'=>false,
-                'empty_value'=>'Votre pays',
+                'label' => 'world.city.label',
+                'empty_value'=> 'world.country.placeholder',
                 'attr'=>array('class'=>'geo-select geo-select-country geo-select-ajax','data-geo-level'=>'country','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
 
                 ))
@@ -48,7 +49,8 @@ class LocationSelectorType extends AbstractType
                 'choices'=>array(),
                 'required'=>false,
                 'mapped'=>false,
-                'empty_value'=>'Votre région',
+                'label' => 'world.city.label',
+                'empty_value'=> 'world.region.placeholder',
                 'attr'=>array('class'=>'geo-select geo-select-region geo-select-ajax hide','data-geo-level'=>'region','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
@@ -56,7 +58,8 @@ class LocationSelectorType extends AbstractType
                 'choices'=>array(),
                 'required'=>false,
                 'mapped'=>false,
-                'empty_value'=>'Votre Département',
+                'label' => 'world.city.label',
+                'empty_value'=> 'world.departement.placeholder',
                 'attr'=>array('class'=>'geo-select geo-select-departement geo-select-ajax hide','data-geo-level'=>'departement','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
@@ -64,7 +67,8 @@ class LocationSelectorType extends AbstractType
                 'choices'=>array(),
                 'required'=>false,
                 'mapped'=>false,
-                'empty_value'=>'Votre district',
+                'label' => 'world.city.label',
+                'empty_value'=> 'world.district.placeholder',
                 'attr'=>array('class'=>'geo-select geo-select-district geo-select-ajax hide','data-geo-level'=>'district','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
@@ -72,7 +76,8 @@ class LocationSelectorType extends AbstractType
                 'choices'=>array(),
                 'required'=>false,
                 'mapped'=>false,
-                'empty_value'=>'Votre division',
+                'label' => 'world.city.label',
+                'empty_value'=> 'world.division.placeholder',
                 'attr'=>array('class'=>'geo-select geo-select-division geo-select-ajax hide','data-geo-level'=>'division','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))
@@ -80,7 +85,8 @@ class LocationSelectorType extends AbstractType
                 'choices'=>array(),
                 'required'=>false,
                 'mapped'=>false,
-                'empty_value'=>'Votre ville',
+                'label' => 'world.city.label',
+                'empty_value'=> 'world.city.placeholder',
                 'attr'=>array('class'=>'geo-select geo-select-city geo-select-ajax hide','data-geo-level'=>'city','data-icon'=>'globe','data-ajax-url'=>$options['ajax_url'],'style'=>"width:100%"),
                 
                 ))             
@@ -101,6 +107,7 @@ class LocationSelectorType extends AbstractType
 
         //dynamilcaly fill fields     
         $this->addGeoFields($form, $location);
+
     }    
     
 
@@ -157,13 +164,18 @@ class LocationSelectorType extends AbstractType
         $list = $this->em->getRepository('MyWorldBundle:Location')->findStatesListFromLocationByLevel($location,$level);
         if(empty($list)) return;
 
-        $form->add($list['level'],'choice',array(
-                'choices'=>$list['list'],
+        $level = $list['level']; //level can be different from the one passed to the function, so we prefer to get the level that is returned
+        $choices = $list['list']; //choices of the select input
+
+        $form->add($level,'choice',array(
+                'choices'=>$choices,
                 'required'=>false,
                 'mapped'=>false,
-                'empty_value'=>'Votre '.$list['level'],
-                'attr'=>array('class'=>'geo-select geo-select-'.$list["level"].' geo-select-ajax','data-geo-level'=>$list["level"],'data-icon'=>'globe','data-ajax-url'=>$this->options['ajax_url'],'style'=>"width:100%"),
-                'data'=>$value
+                'empty_value'=>'Votre '.$level,
+                'attr'=>array('class'=>'geo-select geo-select-'.$level.' geo-select-ajax','data-geo-level'=>$level,'data-icon'=>'globe','data-ajax-url'=>$this->options['ajax_url'],'style'=>"width:100%"),
+                'data'=>$value,
+                'label' => 'world.'.$level.'.label',
+                'empty_value'=> 'world.'.$level.'.placeholder',
                 ));
     }
     /**
@@ -173,7 +185,8 @@ class LocationSelectorType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'My\WorldBundle\Entity\Location',
-            'ajax_url' => $this->router->generate('my_world_location_select_nextlevel'),            
+            'ajax_url' => $this->router->generate('my_world_location_select_nextlevel'), 
+            'translation_domain' => 'MyWorldBundle'           
         ));
     }
 

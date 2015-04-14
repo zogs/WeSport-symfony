@@ -11,5 +11,7 @@ form:
     error:
         username:
             taken: "Ce nom est déjà pris"
+            itsyours: "Ceci est déjà votre login !"
         email:
             taken: "Cet email est déjà pris"
+            itsyours: "Ceci est déjà votre email de contact"

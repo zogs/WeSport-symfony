@@ -2,6 +2,7 @@
 
 namespace My\UserBundle\Form\Type;
 
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -19,12 +20,14 @@ class ProfilEditionType extends BaseType
 {
     private $user;
     private $action;
+    private $router;
 
-    public function __construct(RequestStack $requestStack, SecurityContext $security, $default_action = 'account')
+    public function __construct(RequestStack $requestStack, SecurityContext $security, Router $router, $default_action = 'account')
     {
+        $this->router = $router;
+        $this->user = $security->getToken()->getUser();
         $request = $requestStack->getCurrentRequest();
         $this->action = ($request->query->get('action') != null)? $request->query->get('action') : $default_action;
-        $this->user = $security->getToken()->getUser();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -103,14 +106,14 @@ class ProfilEditionType extends BaseType
                 'data'=> $this->user->getUsername(),
                 'attr'=> array(
                     'data-icon'=> 'icon-user',
-                    'data-url'=> '/url/to/check/login')
+                    'data-url-checker'=> $this->router->generate('my_user_login_checker'))
                 ))
                 ->add('email','text',array(
                     'label'=> "Email",
                     'data'=> $this->user->getEmail(),
                     'attr'=> array(
                         'data-icon'=> 'icon-envelope',
-                        'data-url'=> '/url/to/check/email')
+                        'data-url-checker'=> $this->router->generate('my_user_email_checker'))
                     ))                    
                 ;
         }
@@ -148,25 +151,25 @@ class ProfilEditionType extends BaseType
                     'label' => "Description",
                     'data' => $this->user->getDescription(),
                     'attr' => array(
-                        'placeholder'=>"Décrivez vous en quelques mots ( 130 caractères max. )",
+                        'placeholder'=>"Décrivez vous en quelques mots !",
                         'rows'=>3,
                     )
                 ))
                 ->add('gender','choice',array(
                     'required'=> false,
-                    'label' => "Vous êtes...",
+                    'label' => "Sexe",
                     'multiple'=> false,
                     'expanded'=> false,
                     'data' => $this->user->getGender(),
-                    'choices'=>array(1=>' un homme',0=>' une femelle'),
-                    'empty_value' => "Vous êtes...",
+                    'choices'=>array(1=>' Homme',0=>' Femme'),
+                    'empty_value' => "Je suis...",
                     ))
 
                 ->add('birthday','birthday',array(
-                    'label' => "Birthday", 
+                    'label' => "Anniversaire", 
                     'required'=> false,
                     'data' => ($this->user->getBirthday())? $this->user->getBirthday() : new \DateTime('1996/06/18'),
-                    'empty_value' => 'Votre anniversaire'  ,              
+                    'empty_value' => ''  ,              
                     ))
 
                 ->add('location','location_selector',array(

@@ -1,6 +1,6 @@
 my_user_delete_me:
-    pattern: /profile/delete
-    defaults: { _controller: MyUserBundle:User:delete }
+    pattern: /profile/delete/{template}
+    defaults: { _controller: MyUserBundle:User:delete, template: 'delete' }
 
 my_user_request_activation_mail:
     pattern: /activation/me

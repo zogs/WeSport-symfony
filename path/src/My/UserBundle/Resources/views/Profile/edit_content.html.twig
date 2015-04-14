@@ -1,27 +1,23 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
+{% if action != 'delete' %}
 
-<form action="{{ path('fos_user_profile_edit') }}?action={{ action }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit form-ws">
+<form action="{{ path('fos_user_profile_edit') }}?action={{ action }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit form-ws profile-edit">
 
 
 	{{ form_errors(form) }}
 
 	{% if (action == '') or (action == 'account') %}
-		<div class="module-header">
-			<h5>Mon compte</h5>
-		</div>
 
 		{{ form_row(form.username) }}
 		{{ form_row(form.email) }}
 		
+		<button class="btn-ws" type="submit">{{ 'profile.edit.submit'|trans }}</button>
 
 	{% endif %}
 
 
 	{% if action == 'info' %}
-		<div class="module-header">
-			<h5>Mon Profil</h5>
-		</div>
 
 		{{ form_row(form.firstname) }}
 		{{ form_row(form.lastname) }}
@@ -30,42 +26,43 @@
 		{{ form_row(form.birthday) }}
 		{{ form_row(form.location) }}
 
+		<button class="btn-ws" type="submit">{{ 'profile.edit.submit'|trans }}</button>
+
 	{% endif %}
 
 
 	{% if action == 'avatar' %}
-		<div class="module-header">
-			<h5>Mon image d'avatar</h5>
-		</div>
+
 
 		{{ form_row(form.avatar.file) }}
 		{{ form_row(form.avatar.updated) }}
+
+		<button class="btn-ws" type="submit">{{ 'profile.edit.submit'|trans }}</button>
+
 	{% endif %}
 
 	{% if action == 'mailing' %}
-		<div class="module-header">
-			<h5>Mes préférences mailing</h5>
-		</div>
 
 		{{ form_row(form.settings) }}
+
+		<button class="btn-ws" type="submit">{{ 'profile.edit.submit'|trans }}</button>
 		
 	{% endif %}
 
 
 	{% if action == 'password' %}
-		<div class="module-header">
-			<h5>Mon mot de passe</h5>
-		</div>
 
 		{{ form_row(form.oldpassword) }}
 		{{ form_row(form.plainPassword) }}
 
+		<button class="btn-ws" type="submit">{{ 'profile.edit.submit'|trans }}</button>
+
 	{% endif %}
-
-
-
-	<button class="btn-ws" type="submit">{{ 'profile.edit.submit'|trans }}</button>
 
 {{ form_end(form) }}
 
+{% elseif action == 'delete' %}
+
+		{{ render(controller('MyUserBundle:User:delete',{ 'template':'delete_form_embedded'})) }}
+{% endif %}
 

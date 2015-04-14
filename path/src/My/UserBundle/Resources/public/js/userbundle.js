@@ -9,26 +9,30 @@ $(document).ready(function() {
 
 		//check for forbidden characters
 		if(chars = hasCharacters(input.val()," @,.;:\\/!?&$£*§~#|)(}{][")){
-			control.toggleClass('control-error');
-			helper.toggleClass('hide').empty().html("Les caractères suivants ne sont pas autorisés : "+chars);
+			control.addClass('control-error');
+			helper.removeClass('hide').empty().html("Les caractères suivants ne sont pas autorisés : "+chars);
 			return;
 		} else {
-			control.toggleClass('control-error');
-			helper.toggleClass('hide').empty();
+			control.removeClass('control-error');
+			helper.addClass('hide').empty();
 		}
 
+		console.log('Checking if username is available...');
 
 		$.ajax({
 			type: 'GET',
 			url: url,
 			data: {username : input.val() },
-			success: function(data){					
-				if(data.error){						
+			success: function(data){	
+				console.log('Result:');				
+				if(data.error){	
+					console.log('-> username is taken');					
 					control.removeClass('control-success');					
 					control.addClass('control-error');
 					helper.removeClass('hide').empty().html( data.error );
 				}
 				else {
+					console.log('-> username is available');
 					control.removeClass('control-error');
 					control.addClass('control-success');	
 					helper.addClass('hide').empty();					

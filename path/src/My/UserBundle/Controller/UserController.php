@@ -55,31 +55,32 @@ class UserController extends Controller
 
     }
     
-    public function deleteAction(Request $request)
+    public function deleteAction($template = 'delete')
     {
         $user = $this->getUser();
         $form = $this->createFormBuilder($user)->add('confirm','choice',array(
-            'label' => 'Etes vous vraiment sûr ?',
+            'label' => 'Vous êtes',
+            'empty_value' => '...vraiment sûr ?',
             'choices' => array(
-                'yes' => 'Oui, je veux supprimer mon compte et perdre tous mes supers pouvoirs',
-                'no' => "Non, je vais continuer à m'entrainer pour devenir plus fort !"),
-            'empty_value' => '',
+                'yes' => 'Oui, je veux supprimer mon compte définitivement et perdre tous mes supers pouvoirs...',
+                'no' => "Non, je vais continuer à m'entrainer pour devenir plus fort!!"),
             'expanded' => false,
             'multiple' => false,
             'mapped' => false,
-            ))->getForm();
+            ))
+            ->setAction($this->generateUrl('my_user_delete_me'))
+            ->getForm();
 
-        $form->handleRequest($request);
+        $form->handleRequest($this->getRequest());
 
-        if( ! $form->isValid()) return $this->render('MyUserBundle:Profile:delete.html.twig',array('form'=>$form->createView()));
-
+        if( ! $form->isValid()) return $this->render('MyUserBundle:Profile:'.$template.'.html.twig',array('form'=>$form->createView()));
+        
         if($form->get('confirm')->getData() == 'no'){
-            $this->get('flashbag')->add("Vous avez pris la bonne décision, le sport c'est la vie !");
-            return $this->render('MyUserBundle:Profile:edit.html.twig',array('action'=>'account'));
+            $this->get('flashbag')->add("C'est la bonne décision, le sport c'est la vie :)");
+            return $this->redirect($this->generateUrl('fos_user_profile_edit'));
         }
 
-        $msg = "Salut ".ucfirst($user->getUsername())." et garde la pêche !";
-        if($user->getGender()=='f') $msg = "Bisou ".ucfirst($user->getUsername()).", à la prochaine et garde la motivation !";
+        $msg = "Adieu ".ucfirst($user->getUsername()).", et garde la pêche !";
         $this->get('flashbag')->add($msg);
 
         $this->get('fos_user.user_manager')->deleteUser($user);
@@ -89,30 +90,33 @@ class UserController extends Controller
     }
 
     public function checkUsernameAction(Request $request)
-    {
-        $username = $request->query->get('username');
-        
+    {        
         $errors = array();
-        if(null != $this->get('fos_user.user_manager')->findUserByUsername(strtolower($username))){
+        if(null != $user = $this->get('fos_user.user_manager')->findUserByUsername(strtolower($request->query->get('username')))){
             $errors = array('error'=>$this->get('translator')->trans('form.error.username.taken',array(),'MyUserBundle'));
+        }
+
+        if($this->getUser() != null && $user == $this->getUser()){
+            $errors = array('error'=>$this->get('translator')->trans('form.error.username.itsyours',array(),'MyUserBundle'));
         }
 
         $response = new Response();
         $response->setContent(json_encode($errors));
-        $response->headers->set('Content-Type','application/json');
-        
+        $response->headers->set('Content-Type','application/json'); 
         return $response;
     }
 
     public function checkEmailAction(Request $request)
-    {
-        $email = $request->query->get('email');
-
+    {       
         $errors = array();
-        if(null != $this->get('fos_user.user_manager')->findUserByEmail($email)){
+        if(null != $user = $this->get('fos_user.user_manager')->findUserByEmail($request->query->get('email'))){
             $errors = array('error'=>$this->get('translator')->trans('form.error.email.taken',array(),'MyUserBundle'));
         }
 
+        if($this->getUser() != null && $user == $this->getUser()){
+            $errors = array('error'=>$this->get('translator')->trans('form.error.email.itsyours',array(),'MyUserBundle'));
+        }
+        
         $response = new JsonResponse();
         return $response->setData($errors);
         

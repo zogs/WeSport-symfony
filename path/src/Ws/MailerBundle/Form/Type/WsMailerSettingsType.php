@@ -24,37 +24,69 @@ class WsMailerSettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('event_confirmed','checkbox',array(
+            ->add('event_confirmed','choice',array(
                 'label'=>"Recevoir un mail quand l'activité est confirmée",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 )) 
-            ->add('event_canceled','checkbox',array(
+            ->add('event_canceled','choice',array(
                 'label'=>"Recevoir un mail quand l'activité est annulée",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 )) 
-            ->add('event_changed','checkbox',array(
+            ->add('event_changed','choice',array(
                 'label'=>"Recevoir un mail quand l'activité est modifiée",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 )) 
-            ->add('event_opinion','checkbox',array(
+            ->add('event_opinion','choice',array(
                 'label'=>"Recevoir un mail aprés l'événement pour donner son avis",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 )) 
-            ->add('event_user_question','checkbox',array(
+            ->add('event_user_question','choice',array(
                 'label'=>"Recevoir un mail quand quelqu'un pose une question",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 )) 
-            ->add('event_organizer_answer','checkbox',array(
+            ->add('event_organizer_answer','choice',array(
                 'label'=>"Recevoir un mail quand l'organisateur répond à votre question",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 )) 
-            ->add('event_add_participation','checkbox',array(
+            ->add('event_add_participation','choice',array(
                 'label'=>"Recevoir un mail quand il y a un nouvel inscrit à une activité",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 )) 
-            ->add('event_cancel_participation','checkbox',array(
+            ->add('event_cancel_participation','choice',array(
                 'label'=>"Recevoir un mail quand quelqu'un annule sa participation",
                 'required' => false,
+                'choices' => array('1'=>'Oui','0'=>'Non'),
+                'empty_value'  => false,
+                'multiple' => false,
+                'expanded' => true,
                 ))
                 ->addModelTransformer(new WsMailingSettingsToSettingsTransformer($this->user))                 
     		;
