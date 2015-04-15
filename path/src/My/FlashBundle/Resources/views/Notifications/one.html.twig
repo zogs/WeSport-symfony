@@ -1,0 +1,22 @@
+{# list of icons #}
+{% set icons = {'success':'checkmark','info':'info','warning':'spam','error':'blocked','danger':'blocked'} %}
+
+<div class="ws-alert type-{{ type }} {% if animated == true %}animate-hide{% endif %}">
+	<div class="alert-container">
+		<div class="alert-content">
+			<table>
+				<tr>
+					<td>
+						<span class="alert-message">
+							<span class="alert-icon ws-icon-{{ icons[type] }} "></span>
+							{{ message|raw }}
+						</span>        							
+					</td>
+				</tr>
+			</table>	
+			<button class="close" onclick="javascript: $(this).parent().fadeOut(500);"><span class="ws-icon-close"></span></button>
+			<div class="alert-progress"></div>		
+			
+		</div>
+	</div>
+</div>

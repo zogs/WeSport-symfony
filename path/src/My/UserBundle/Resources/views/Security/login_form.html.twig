@@ -1,11 +1,7 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-<form class="form form-ws label-hidden w50 fleft form-register" action="{{ path("fos_user_security_check") }}" method="post">
-
-	{% if error %}
-	    <div class="ws-alert"><div class="alert-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div></div>    
-	{% endif %}
+<form class="form form-ws label-hidden w50 fleft form-register" action="{{ path("fos_user_security_check") }}" method="post">	
 
 	
 	    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />	

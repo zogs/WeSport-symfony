@@ -1,23 +1,7 @@
-{# list of icons #}
-{% set icons = {'success':'checkmark','info':'info','warning':'spam','error':'blocked','danger':'blocked'} %}
-
 <div class="flash">
 {% for type,messages in notifications %}
 	{% for message in messages %}
-		<div class="ws-alert alert-{{ type }} ">
-			<table>
-				<tr>
-					<td>
-						<span class="alert-message">
-							<span class="alert-icon ws-icon-{{ icons[type] }} "></span>
-							{{ message|raw }}
-						</span>        							
-					</td>
-				</tr>
-			</table>	
-			<button class="close" onclick="javascript: $(this).parent().fadeOut(500);"><span class="ws-icon-close"></span></button>
-			<div class="alert-progress"></div>
-		</div>
+		{% include 'MyFlashBundle:Notifications:one.html.twig' with {'type':type, 'message':message, 'animated':true } %}
 	{% endfor %}
 {% endfor %}	
 </div>
