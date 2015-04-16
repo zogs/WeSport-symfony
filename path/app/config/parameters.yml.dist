@@ -9,6 +9,8 @@ parameters:
     mailer_host: smtp.we-sport.fr
     mailer_user: contact@we-sport.fr
     mailer_password: justdoit
+    mailer_port: 587
+    mailer_encryption: tls
     locale: fr
     secret: WeSportIsTheEasierWayToDoSport
     oauth.facebook.id: 153720748148187

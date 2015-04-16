@@ -314,6 +314,9 @@ div.mm-is-menu * {
 		form { display:none;}
 		li.dropdown {			
 			b.caret { margin-top:-3px; vertical-align: middle; border-top:8px solid rgba(255,255,255,0.8) !important; border-right:8px solid transparent; border-left:8px solid transparent;}
+			ul.dropdown-menu {
+				margin-right: 40px;
+			}
 		}
 
 		li.social-btn {
@@ -478,7 +481,7 @@ img.user-avatar-big {
 	height:100%;
 	min-height: 60px;
 	margin-top:-1px;
-	border-bottom:1px solid rgba(0,0,0,0.2);
+	background-color: transparent;
 
 	.alert-container {
 		width:100%; height:100%;
@@ -615,7 +618,9 @@ img.user-avatar-big {
 		width: 100%;
 		height: 100%;
 		background: url('../img/FOND.png'); 
-		background-size: auto;
+		background-size: 700px;
+		background-position-y: 10px;
+		background-repeat-y: no-repeat;
 		@include opacity(0.5);
 	}
 }
@@ -2517,7 +2522,7 @@ table.form-table {
 			}
 		}
 		&.field-timestart,&.field-timeend {
-			input { width:60px; position:relative; }
+			input { width:100px; position:relative; }
 			input:after {
 				content:'h';
 				position:absolute;
@@ -4316,6 +4321,10 @@ div.col_large {
 	}
 	.footer-form {
 		width: 52%;
+
+		label.control-label {
+			margin-top: 15px;
+		}
 	}
 	h4 {
 		color: white;

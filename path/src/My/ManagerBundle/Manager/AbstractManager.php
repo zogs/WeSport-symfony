@@ -84,7 +84,13 @@ abstract class AbstractManager
         $this->em->flush();
     }
 
-
+    /**
+     * Convenience method providing access to the entity manager clear method
+     */
+    public function clear()
+    {
+        $this->em->clear();
+    }
 
     /**
      * Set entity manager. Setter for dependency injection

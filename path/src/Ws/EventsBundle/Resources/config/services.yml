@@ -108,6 +108,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    #Service
+    ws_events.alerter:
+        class: Ws\EventsBundle\Service\Alerter
+        arguments: [@ws_events.alert.manager,@ws_mailer,@doctrine.orm.entity_manager]        
+
     #Enable Init Method for all the controller that implements InitControllerInterface
     symfony.controller.subscriber.init:
         class: Yavin\Symfony\Controller\InitControllerSubscriber

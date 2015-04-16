@@ -17,12 +17,14 @@ class Mailer
 {
     protected $mailer;
     protected $templating;
+    protected $calendar_url_generator;
 
-    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, $sender)
+    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, CalendarUrlGenerator $generator, $sender)
     {
         $this->mailer = $mailer;
         $this->expediteur = $sender;
         $this->templating = $templating;
+        $this->calendar_url_generator = $generator;
     }
 
     public function sendTestMessage()
@@ -180,7 +182,7 @@ class Mailer
             return false;
     }
 
-    public function sendAlertMessage(Alert $alert, CalendarUrlGenerator $generator, $events)
+    public function sendAlertMessage(Alert $alert, $events)
     {
         $email = $alert->getEmail();
 
@@ -189,7 +191,7 @@ class Mailer
         $body = $this->templating->render('WsMailerBundle:Alerts:alert.html.twig',array(
             'alert'=>$alert,
             'events'=>$events,
-            'url_params' => $generator->setSearch($alert->getSearch())->getUrlParams(true),
+            'url_params' => $this->calendar_url_generator->setSearch($alert->getSearch())->getUrlParams(true),
             ));
 
         if($this->sendMessage($this->expediteur,$email,$subject,$body))

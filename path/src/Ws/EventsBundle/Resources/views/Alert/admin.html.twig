@@ -2,31 +2,27 @@
 
 {% block page_content %}
 
-    <div class="adminAlert">
-        <div class="white-sheet">           
+    <div class="white-sheet alert-admin">          
             <div class="head-sheet">        
                 <h1 class="title-sheet">
                    ADMIN
                 </h1>
             </div>
 
-            <p>{{ alerts|length }} {{ type }} alertes</p>
-            <p>{{ sended|length }} emails envoyés, {{ nb_events }} activités proposés</p>
-            <p>{{ expired|length }} expiration</p>
+            <p>{{ results.alerts|length }} {{ type }} alertes</p>
+            <p>{{ results.sended|length }} emails envoyés</p>
+            <p>{{ results.expired|length }} expiration</p>
             
             <table>
-            {% for send in sended %}
+            {% for send in results.sended %}
               <tr>
                 <td>
-                    {{send.alert.email}} --> {{ send.events|length }} événements
+                    {{ send.alert }} --> {{ send.nbevents }} activités proposés
                 </td>
               </tr>
             {% endfor %}
             </table>
 
-                   
-        
-        <div class="clearfix"></div>    
     </div>
     
 {% endblock %}

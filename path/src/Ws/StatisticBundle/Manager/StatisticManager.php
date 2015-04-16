@@ -78,6 +78,7 @@ class StatisticManager extends AbstractManager
 
 			if(!$logic instanceof StatLogic) throw new \Exception("Logic must be a StatLogic class", 1);
 		
+
 			$stat = $this->getStat($logic->getContext(),$logic->getEvent());
 
 			$conf = $this->importConf($logic->getContext());			
@@ -85,7 +86,7 @@ class StatisticManager extends AbstractManager
 			$method = String::camelize($field,true);
 			$setMethod = 'set'.$method;
 			$getMethod = 'get'.$method;
-
+			
 			if(method_exists($stat,$setMethod) && method_exists($stat,$getMethod)){
 			
 				$before = $stat->$getMethod();		
@@ -95,7 +96,8 @@ class StatisticManager extends AbstractManager
 				$this->save($stat,true);
 
 			} else {
-				throw new \Exception("The Event named \"".$field."\" is not matching any field property of the context ".ucfirst($logic->getContext()."... Also Setter and Getter must be defined"), 1);
+
+				throw new \Exception("The event named \"".$field."\" is not matching any field property in the file Ws/StatisticBundle/Resources/config/fields/".$logic->getContext().".yml ... (also setter and getter must be defined in the stat entity)");
 			}
 			
 		}
@@ -119,7 +121,9 @@ class StatisticManager extends AbstractManager
 	 */
 	public function getUserStat(User $user)
 	{
-		return $this->em->getRepository('WsStatisticBundle:UserStat')->find($user);
+		$stat = $user->getStatistic();
+
+		return $stat;
 	}
 
 	/**

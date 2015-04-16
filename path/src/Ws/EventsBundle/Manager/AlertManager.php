@@ -62,7 +62,8 @@ class AlertManager extends AbstractManager
 		$alert->setNbEvents($alert->getNbEvents()+count($events));
 
 		//set to inactive if needed
-		if($alert->getDateStop() < new \DateTime('now')){
+		$now = new \DateTime('now');
+		if($alert->getDateStop()->format('U') < $now->format('U')){
 			$alert->setActive(false);
 		}
 

@@ -41,8 +41,8 @@ class CreateEvents extends Event implements EventStatisticInterface
 	public function getStatLogics()
 	{
 		return array(			
-			new StatLogic('global',$this,+1),
 			new StatLogic('user',$this,+1),
+			new StatLogic('global',$this,+1),
 			);
 	}
 }

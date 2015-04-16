@@ -82,7 +82,8 @@ class AlertController extends Controller
 		$user = $this->getUser();
 
 		$alerts = $this->getDoctrine()->getRepository('WsEventsBundle:Alert')->findByUser($user);
-
+		dump($_SERVER);
+		exit();
 		return $this->render('WsEventsBundle:Alert:index.html.twig',array(
 			'alerts'=>$alerts,
 			));
@@ -153,57 +154,53 @@ class AlertController extends Controller
 		//only ROLE_ADMIN can perform this
 		if($this->get('security.context')->isGranted('ROLE_ADMIN') === false) throw new AccessDeniedException('Only administrators can perform this action');
 
+		$alerter = $this->get('ws_events.alerter');
 
-		$em = $this->getDoctrine()->getManager();
-		$mailer = $this->get('ws_mailer');
-		$manager = $this->get('ws_events.alert.manager');
-		$generator = $this->get('calendar.url.generator');
-		$repo = $em->getRepository('WsEventsBundle:Event');		
-		$sended = array();
-		$expired = array();
-		$nb_events = 0;
-
-		//find daily or monthly alerts
-		$alerts = $em->getRepository('WsEventsBundle:Alert')->findAlerts($type);
-
-		//for each alert		
-		foreach ($alerts as $k => $alert) {
-
-			//find all events matching the alert		
-			$events = $repo->findEvents($alert->getSearch());
-
-			if(!empty($events)){
-				//mail the new events to the user
-				$mailer->sendAlertMessage($alert,$generator,$events);
-				//save which events have been alerted
-				$manager->saveAlerted($alert,$events);			
-
-				$sended[] = array('alert'=>$alert,'events'=>$events);
-				$nb_events += count($events);
-			}
-
-			//disactive outdated alerts
-			$now = new \DateTime('now');
-			if($alert->getDateStop()->format('Ymd') >= $now->format('Ymd')){
-				$manager->disableAlert($alert);
-				//inform the user this alert is outdated
-				$mailer->sendExpiredAlertmessage($alert);
-
-				$expired[] = $alert;
-			}
-		}
-
-		$manager->flush();
+		$results = $alerter->send($type);
 	
 		return $this->render('WsEventsBundle:Alert:admin.html.twig',array(
-			'expired'=>$expired,
-			'sended'=>$sended,
-			'alerts'=>$alerts,
-			'nb_events'=>$nb_events,
+			'results'=>$results,
 			'type'=>$type,
 			));
 	}
 
+	public function sendUserAlertsAction($username)
+	{
+		//only ROLE_ADMIN can perform this
+		if($this->get('security.context')->isGranted('ROLE_ADMIN') === false) throw new AccessDeniedException('Only administrators can perform this action');
+
+		$em = $this->getDoctrine()->getManager();
+
+		if(is_numeric($username)) $user = $em->getRepository('MyUserBundle:User')->findById($username);
+		elseif(is_string($username)) $user = $em->getRepository('MyUserBundle:User')->findByUsername($username);
+		if( !$user ) throw new \Exception("User is not defined", 1);
+	
+
+		$alerts = $em->getRepository('WsEventsBundle:Alert')->findByUser($user);
+		$alerter = $this->get('ws_events.alerter');
+		$results = $alerter->sendAlerts($alerts);
+	
+		return $this->render('WsEventsBundle:Alert:admin.html.twig',array(
+			'results'=>$results,
+			'type'=>'user:'.$user->getUsername(),
+			));
+	}
+
+	public function sendMyAlertsAction()
+	{
+		$user = $this->getUser();
+
+		if( !$user ) throw new \Exception("You must be connected to perform this action", 1);
+		
+		$alerts = $this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Alert')->findByUser($user);
+		$alerter = $this->get('ws_events.alerter');
+		$results = $alerter->sendAlerts($alerts);
+	
+		return $this->render('WsEventsBundle:Alert:admin.html.twig',array(
+			'results'=>$results,
+			'type'=>'user:'.$user->getUsername(),
+			));
+	}
 
 	
 }

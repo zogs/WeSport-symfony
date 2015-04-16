@@ -166,11 +166,18 @@ ws_alerts_extend:
         _method: GET
         month: \d+
         alert: \d+
-ws_alerts_mailing:
+ws_alerts_send_alerts:
     pattern: /alert/send/{type}
     defaults: { _controller: WsEventsBundle:Alert:sendAlerts, type: daily }
     requirements:
         type: daily|weekly
+ws_alerts_send_user_alerts:
+    pattern: /alert/send/user/{username}
+    defaults: { _controller: WsEventsBundle:Alert:sendUserAlerts }
+ws_alerts_send_my_alerts:
+    pattern: /alert/send/my/alerts
+    defaults: { _controller: WsEventsBundle:Alert:sendMyAlerts }
+    
 
 #===========
 #  Admin

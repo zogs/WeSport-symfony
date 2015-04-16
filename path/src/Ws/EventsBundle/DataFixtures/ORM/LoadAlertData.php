@@ -50,6 +50,7 @@ class LoadAlertData extends AbstractFixture implements OrderedFixtureInterface
 		$search2->setTimeEnd($today);
 		$search2->setLevel(array('beginner','average','expert'));
 
+
 		$alert2 = new Alert();
 		$alert2->setUser($this->getReference('user1'));
 		$alert2->setEmail($this->getReference('user1')->getEmail());
