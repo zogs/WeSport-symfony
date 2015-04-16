@@ -1,0 +1,11 @@
+services:
+    sonata.admin.my.cron:
+        class: My\CronBundle\Admin\CronAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "System", label: "Cron" }
+        arguments:
+            - ~
+            - My\CronBundle\Entity\CronTask
+            - ~
+        calls:
+            - [ setTranslationDomain, [AcmeDemoBundle]]

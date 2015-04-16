@@ -1,4 +1,3 @@
-
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix: /oauth-login
@@ -71,6 +70,11 @@ user_bundle:
 blog_bundle:
     resource: "@MyBlogBundle/Resources/config/routing.yml"
     prefix:   /blog
+
+my_cron:
+    resource: "@MyCronBundle/Resources/config/routing.yml"
+    prefix:   /cron
+
 
 accueil:
     resource: "@MyBlogBundle/Resources/config/routing.yml"

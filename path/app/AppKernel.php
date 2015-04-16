@@ -54,6 +54,7 @@ class AppKernel extends Kernel
             new My\UtilsBundle\MyUtilsBundle(),
             new Ws\StatisticBundle\WsStatisticBundle(),
             new Ws\ConvertSQLBundle\WsConvertSQLBundle(),
+            new My\CronBundle\MyCronBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
