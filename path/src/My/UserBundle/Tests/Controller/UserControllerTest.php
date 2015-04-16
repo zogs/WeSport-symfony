@@ -1,6 +1,6 @@
 <?php
 
-namespace Ws\EventsBundle\Test\Controller;
+namespace My\UserBundle\Test\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

@@ -9,9 +9,8 @@
 			·
 			{{ render(controller('MyPageBundle:Menu:getMenu', {'menu':'bottom','template':'dotted','max': 3})) }}
 
-			<a href="#">Faq</a>
 			·
-			<a href="#">Contact</a>
+			<a href="{{ path('my_contact') }}">Contact</a>
 		</p>
 
 		<p class="footer-company-name">Cosporturage &copy; 2015</p>

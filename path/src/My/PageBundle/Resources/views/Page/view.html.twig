@@ -2,19 +2,31 @@
 
 {% block page_content %}
 	
+
+<div class="white-sheet page-generic page-{{ page.slug }}">
 	<div class="head-sheet">
 		<h1 class="title-sheet">
+			<img src="{{ asset('bundles/myuser/images/avatars/defaults/default_1.gif') }}" alt="" class="user-avatar-big"/>
 			{{ page.title }}	
 		</h1>
 	</div>
 
-	<div class="page-content page-{{ page.slug }}">
+	<div class="content">
 		{{ page.content|raw }}		
+		
 	</div>	
 
-	{% if is_granted('ROLE_ADMIN') %}
-	<p>id:{{ page.id }} locale:{{ app.request.get('_locale') }}</p>
-	<p><a href="{{path('page_edit',{id: page.id}) }}">Editer cette page</a></p>
-	{% endif %}
+	<div class="admin">
+		{% if is_granted('ROLE_ADMIN') %}
+		<p>page: {{ page.title }}</p>
+		<p>id:{{ page.id }}</p>
+		<p>locale:{{ app.request.get('_locale') }}</p>
+		<p>menu: {{ page.menu }} - position: {{ page.position }}</p>
+		<p>icon: {{ page.icon }}</p>
+
+		<p><a href="../../{{ app.request.get('_locale') }}/admin/my/page/page/{{ page.id }}/edit">Editer cette page</a></p>
+		{% endif %}		
+	</div>
+</div>
 
 {% endblock %}
