@@ -8,3 +8,13 @@ services:
     statistic.manager:
         class: Ws\StatisticBundle\Manager\StatisticManager
         arguments: [@service_container]
+
+    daily_statistic.manager:
+        class: Ws\StatisticBundle\Manager\DailyStatisticManager
+        arguments: [@service_container]
+
+    statistic.mailer:
+        class: Ws\StatisticBundle\Mailer\Mailer
+        arguments: [@mailer,@templating,'%mailer.sender.noreply%']
+        tags:
+            - { name: statistic_mailer, alias: statistic_mailer }

@@ -129,6 +129,9 @@ doctrine:
                         cos: My\WorldBundle\DQL\Cos
                     datetime_functions:
                         DAYNAME: My\UtilsBundle\DQL\Dayname
+                        DAY: My\UtilsBundle\DQL\Day
+                        MONTH: My\UtilsBundle\DQL\Month
+                        YEAR: My\UtilsBundle\DQL\Year
 
 
 # Doctrine Extension Bundle Configuration

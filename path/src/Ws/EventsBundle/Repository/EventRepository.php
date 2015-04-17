@@ -299,5 +299,41 @@ class EventRepository extends EntityRepository
 				 ->getSingleScalarResult();
 	}
 
+	public function findEventsInFuturDays($nbdays) {
+
+		$nbdays = (is_numeric($nbdays))? $nbdays : 0;
+
+		$qb = $this->createQueryBuilder('e');
+
+		$qb->select('e')
+		->where($qb->expr()->gte('e.date','CURRENT_DATE()'))
+		->andWhere($qb->expr()->lte('e.date',"DATE_ADD(CURRENT_DATE(), $nbdays, 'day')"))
+		->andWhere('e.online = 1')
+		;
+
+		$res = $qb->getQuery()->getResult();
+
+		return $res;
+	}
+
+	public function findEventsDeposedToday() {
+
+		$now = new \DateTime('now');
+		return $this->findEventsDeposedByDate($now);
+	}
+
+
+	public function findEventsDeposedByDate(\DateTime $date) {
+
+		$qb = $this->createQueryBuilder('e');
+
+		$qb->select('e')
+		->andWhere('DAY(e.date_depot) = DAY(:day)')
+		->setParameter('day',$date)
+		;
+		
+		return $qb->getQuery()->getResult();
+	}
+
 
 }

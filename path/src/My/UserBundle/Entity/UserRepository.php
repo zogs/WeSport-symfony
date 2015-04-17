@@ -31,4 +31,16 @@ class UserRepository extends EntityRepository
 
 		return $user;
 	}
+
+	public function findRegistrationLastFewDays($days) {
+
+		$qb = $this->createQueryBuilder('u');
+
+		$qb->select('u')
+		->where($qb->expr()->lte('u.register_since','CURRENT_DATE()'))
+		->andWhere($qb->expr()->gte('u.register_since',"DATE_SUB(CURRENT_DATE(), $days, 'day')"))
+		;
+
+		return $qb->getQuery()->getResult();
+	}
 }

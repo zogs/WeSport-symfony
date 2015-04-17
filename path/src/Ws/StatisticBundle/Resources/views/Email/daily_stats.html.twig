@@ -1,0 +1,23 @@
+{% extends 'WsMailerBundle:Template:personal.html.twig' %}
+
+{% block title %}
+    
+{% endblock title %}
+
+{% block content %}
+    <p>
+            <strong>Hello boys,</strong>
+        </p>
+        <p>
+            <strong>Today we had:</strong>
+            <ul>
+                <li>{{ stats.registration }} registration</li>
+                <li>{{ stats.events_deposed }} events deposed</li>
+                <li>{{ stats.events_planned }} events planned ( {{ stats.events_confirmed }} confirmed )</li>  
+            </ul>
+        </p>
+
+        <p>
+            <strong>May the sport be with you !</strong>
+        </p>
+{% endblock content %}
