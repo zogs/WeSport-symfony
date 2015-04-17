@@ -88,7 +88,7 @@ form {
 .container-fluid { padding-right:0; padding-left:0;}
 
 .mainContainer {
-	background: $backblue url('../img/lines/Lines5.png'); background-size: 7px;
+	background: $backblue url('../images/lines/Lines5.png'); background-size: 7px;
 	margin-top:0px;
 	min-height: 800px;
 	padding-top:0;
@@ -398,7 +398,7 @@ div.mm-is-menu * {
 	width:100%;
 	height:20px;
 	background-color:white;
-	background-image:url(../img/fresque.jpg);
+	background-image:url(../images/fresque.jpg);
 	background-repeat: repeat-y;
 	background-size:100% 1px;
 	$fresque_colors : $deepred 5%,$red 15%,$softred 30%,$lightred 45%,$softyellow 60%,$lightgreen 75%,$softgreen 85%,$green 95%,$deepgreen 100%;	
@@ -617,7 +617,7 @@ img.user-avatar-big {
 		position:absolute;
 		width: 100%;
 		height: 100%;
-		background: url('../img/FOND.png'); 
+		background: url('../images/FOND.png'); 
 		background-size: 700px;
 		background-position-y: 10px;
 		background-repeat-y: no-repeat;
@@ -773,7 +773,7 @@ a.calendar-action:hover {
 
 @mixin calendar-form-bottom-dotted($y:42){
 	/*
-	background-image:url(../img/dotted.png);
+	background-image:url(../images/dotted.png);
 	background-repeat: repeat-x;
 	background-position-y: unquote($y +'px');
 	background-size:6px 3px;
@@ -817,7 +817,7 @@ a.calendar-action:hover {
 		@include calendar-form-text-main();
 		color:$darkblue;	
 		line-height:130%;
-		background: darken($lightblue,2%) url('../img/lines/Lines3.png'); background-size: 60px;		
+		background: darken($lightblue,2%) url('../images/lines/Lines3.png'); background-size: 60px;		
 		box-shadow: inset 3px 3px 10px 1px rgba(0, 0, 0, 0.1);
 		border: 1px solid $brightblue;
 		outline: none;
@@ -854,7 +854,7 @@ a.calendar-action:hover {
 		height:45px;
 		min-width:300px;
 		padding-left:10px;	
-		background: darken($lightblue,2%) url('../img/lines/Lines3.png'); background-size: 60px;		
+		background: darken($lightblue,2%) url('../images/lines/Lines3.png'); background-size: 60px;		
 		border:1px solid $brightblue;
 		box-shadow: inset 3px 3px 10px 1px rgba(0, 0, 0, 0.1);
 		
@@ -895,7 +895,7 @@ a.calendar-action:hover {
 					left:40%;
 					visibility: hidden;	
 					@include opacity(0.5);
-					background: url('../img/select2.png') right top no-repeat;		
+					background: url('../images/select2.png') right top no-repeat;		
 				}
 				&:hover .select2-search-choice-close {
 					visibility: visible;
@@ -1050,7 +1050,7 @@ a.calendar-action:hover {
 
 
 .calendar {	
-	//background-image:url(../img/fresque.jpg);
+	//background-image:url(../images/fresque.jpg);
 	//background-repeat: repeat-y;
 	//background-size:100% 100%;
 	position:relative;
@@ -1809,7 +1809,7 @@ a.calendar-action:hover {
 			position:absolute;
 			bottom:-25px; right:0;	
 			width:110px; height:55px;		
-			background-image: url('../img/calendar_event_virgule.gif');
+			background-image: url('../images/calendar_event_virgule.gif');
 			background-repeat: no-repeat;	
 			background-position:bottom right;
 			*/	
@@ -1822,7 +1822,7 @@ a.calendar-action:hover {
 			position:absolute;
 			left:0px; top:-13px;	
 			width:80px; height:80px;		
-			background-image:url('../img/calendar_event_sport_rounded.gif');
+			background-image:url('../images/calendar_event_sport_rounded.gif');
 			background-repeat: no-repeat;
 			background-size:50px;	
 			*/	
@@ -1833,8 +1833,9 @@ a.calendar-action:hover {
 		display:none;
 		position:absolute;
 		top:0; left:0; right:0; bottom:0;		
-		background:rgba(255,255,255,0.6) url('../img/ajax-loader.gif') no-repeat;
+		background:rgba(255,255,255,0.6) url('../images/ajax-loader.gif') no-repeat;
 		background-position: 50%;
+		
 	}
 	
 	.events.hidden {
@@ -2032,7 +2033,7 @@ $bg-color-white-sheet:#fff;
 	left:-20px;
 	width:50px;
 	height:50px;
-	background-image:url(../img/fresque.jpg);
+	background-image:url(../images/fresque.jpg);
 	background-repeat: repeat-y;
 	background-size:100% 1px;
 	@include border-left-radius(5px);
@@ -2236,7 +2237,7 @@ $bg-color-white-sheet:#fff;
 		position:absolute;
 		width:100%; height:100%;
 		top:0; left:0;
-		background:$deepblue url('../img/ajax-loader-deepblue.gif') no-repeat;
+		background:$deepblue url('../images/ajax-loader-deepblue.gif') no-repeat;
 		background-position: 50%;
 	}
 }

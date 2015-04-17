@@ -61,7 +61,6 @@ assetic:
     use_controller: false
     bundles: 
         - "FOSCommentBundle"
-        - "AcmeTwigBundle"
         - "WsSportsBundle"
         - "WsEventsBundle"
         - "WsStyleBundle"

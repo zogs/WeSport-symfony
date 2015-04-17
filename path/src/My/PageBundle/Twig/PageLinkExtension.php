@@ -1,6 +1,5 @@
 <?php
 
-// src/Acme/DemoBundle/Twig/AcmeExtension.php
 namespace My\PageBundle\Twig;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

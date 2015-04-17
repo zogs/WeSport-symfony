@@ -223,7 +223,7 @@ form {
 
 /* line 90, scss/style.scss */
 .mainContainer {
-  background: #679eb0 url("../img/lines/Lines5.png");
+  background: #679eb0 url("../images/lines/Lines5.png");
   background-size: 7px;
   margin-top: 0px;
   min-height: 800px;
@@ -632,7 +632,7 @@ div.mm-is-menu * {
   width: 100%;
   height: 20px;
   background-color: white;
-  background-image: url(../img/fresque.jpg);
+  background-image: url(../images/fresque.jpg);
   background-repeat: repeat-y;
   background-size: 100% 1px;
   background-image: -webkit-gradient(linear, to right, to left, color-stop(5%, #bf4e48), color-stop(5%, #e98161), color-stop(15%, #e98161), color-stop(15%, #f2b67a), color-stop(30%, #f2b67a), color-stop(30%, #f6df9d), color-stop(45%, #f6df9d), color-stop(45%, #ededc4), color-stop(60%, #ededc4), color-stop(60%, #d9ea9d), color-stop(75%, #d9ea9d), color-stop(75%, #aed580), color-stop(85%, #aed580), color-stop(85%, #7abd78), color-stop(95%, #7abd78), color-stop(95%, #1a9850), color-stop(100%, #1a9850));
@@ -1079,7 +1079,7 @@ img.user-avatar-big {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url("../img/FOND.png");
+  background: url("../images/FOND.png");
   background-size: 700px;
   background-position-y: 10px;
   background-repeat-y: no-repeat;
@@ -1315,7 +1315,7 @@ a.calendar-action:hover {
   text-shadow: 0px 0px 0 #c2defa,1px 1px 0 #c2defa,3px 3px 0 rgba(0, 0, 0, 0);
   color: #3a5f69;
   line-height: 130%;
-  background: #8eb5c0 url("../img/lines/Lines3.png");
+  background: #8eb5c0 url("../images/lines/Lines3.png");
   background-size: 60px;
   box-shadow: inset 3px 3px 10px 1px rgba(0, 0, 0, 0.1);
   border: 1px solid #c2defa;
@@ -1366,7 +1366,7 @@ a.calendar-action:hover {
   height: 45px;
   min-width: 300px;
   padding-left: 10px;
-  background: #8eb5c0 url("../img/lines/Lines3.png");
+  background: #8eb5c0 url("../images/lines/Lines3.png");
   background-size: 60px;
   border: 1px solid #c2defa;
   box-shadow: inset 3px 3px 10px 1px rgba(0, 0, 0, 0.1);
@@ -1378,7 +1378,7 @@ a.calendar-action:hover {
   background: transparent;
   overflow: visible;
   /*
-  background-image:url(../img/dotted.png);
+  background-image:url(../images/dotted.png);
   background-repeat: repeat-x;
   background-position-y: unquote($y +'px');
   background-size:6px 3px;
@@ -1430,7 +1430,7 @@ a.calendar-action:hover {
   visibility: hidden;
   opacity: 0.5;
   filter: alpha(opacity=50);
-  background: url("../img/select2.png") right top no-repeat;
+  background: url("../images/select2.png") right top no-repeat;
 }
 /* line 900, scss/style.scss */
 .calendar-form-row-main .calendar-form-cell-left .select2-container .select2-choices .select2-search-choice:hover .select2-search-choice-close {
@@ -1459,7 +1459,7 @@ a.calendar-action:hover {
 .calendar-form-row-main .calendar-form-cell-right .twitter-typeahead {
   margin-left: 10px;
   /*
-  background-image:url(../img/dotted.png);
+  background-image:url(../images/dotted.png);
   background-repeat: repeat-x;
   background-position-y: unquote($y +'px');
   background-size:6px 3px;
@@ -2759,7 +2759,7 @@ a.calendar-action:hover {
   position:absolute;
   bottom:-25px; right:0;	
   width:110px; height:55px;		
-  background-image: url('../img/calendar_event_virgule.gif');
+  background-image: url('../images/calendar_event_virgule.gif');
   background-repeat: no-repeat;	
   background-position:bottom right;
   */
@@ -2772,7 +2772,7 @@ a.calendar-action:hover {
   position:absolute;
   left:0px; top:-13px;	
   width:80px; height:80px;		
-  background-image:url('../img/calendar_event_sport_rounded.gif');
+  background-image:url('../images/calendar_event_sport_rounded.gif');
   background-repeat: no-repeat;
   background-size:50px;	
   */
@@ -2785,7 +2785,7 @@ a.calendar-action:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.6) url("../img/ajax-loader.gif") no-repeat;
+  background: rgba(255, 255, 255, 0.6) url("../images/ajax-loader.gif") no-repeat;
   background-position: 50%;
 }
 /* line 1840, scss/style.scss */
@@ -3026,7 +3026,7 @@ a.calendar-action:hover {
   left: -20px;
   width: 50px;
   height: 50px;
-  background-image: url(../img/fresque.jpg);
+  background-image: url(../images/fresque.jpg);
   background-repeat: repeat-y;
   background-size: 100% 1px;
   -moz-border-radius-topleft: 5px;
@@ -3365,7 +3365,7 @@ a.calendar-action:hover {
   height: 100%;
   top: 0;
   left: 0;
-  background: #296272 url("../img/ajax-loader-deepblue.gif") no-repeat;
+  background: #296272 url("../images/ajax-loader-deepblue.gif") no-repeat;
   background-position: 50%;
 }
 

@@ -40,7 +40,6 @@ class AppKernel extends Kernel
             //created
             new My\BlogBundle\MyBlogBundle(),
             new My\UserBundle\MyUserBundle(),
-            new Acme\TwigBundle\AcmeTwigBundle(),
             new My\PageBundle\MyPageBundle(),
             new My\CommentBundle\MyCommentBundle(),
             new Ws\SportsBundle\WsSportsBundle(),

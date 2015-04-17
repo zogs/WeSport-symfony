@@ -1,7 +1,5 @@
 <?php
 
-// src/Acme/UserBundle/Entity/User.php
-
 namespace My\UserBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;

@@ -82,8 +82,7 @@ class AlertController extends Controller
 		$user = $this->getUser();
 
 		$alerts = $this->getDoctrine()->getRepository('WsEventsBundle:Alert')->findByUser($user);
-		dump($_SERVER);
-		exit();
+
 		return $this->render('WsEventsBundle:Alert:index.html.twig',array(
 			'alerts'=>$alerts,
 			));
