@@ -19,11 +19,7 @@
         </ul>
 
         <ul class="nav pull-right">
-            {% if app.user is not null and is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
-                <li><a href="{{ path('fos_user_security_login') }}"><span class="ws-icon ws-icon-enter"></span> Connexion</a></li>
-                <li><a class="secondbutton" href="{{ path('fos_user_registration_register') }}"><span class="ws-icon ws-icon-user"></span> Inscription</a></li>
-            {% endif %}
-
+            
             {% if app.user is not null and is_granted('IS_AUTHENTICATED_REMEMBERED') == true %}
             <li class="dropdown accountbutton">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -45,7 +41,13 @@
                     {% endif %} 
                 </ul>
             </li>
+            {% else %}
+
+                <li><a href="{{ path('fos_user_security_login') }}"><span class="ws-icon ws-icon-enter"></span> Connexion</a></li>
+                <li><a class="secondbutton" href="{{ path('fos_user_registration_register') }}"><span class="ws-icon ws-icon-user"></span> Inscription</a></li>
+                
             {% endif %}
+
         </ul>
 
         <ul class="nav pull-right lang-menu">

@@ -2,12 +2,17 @@
 
 {% block page_content -%}
   
-	<div class="head-sheet">
-	<h1 class="title-sheet">Contactez nous</h1>
+  <div class="white-sheet page-contact page-generic">
+		<div class="head-sheet">
+			<h1 class="title-sheet">Contactez nous</h1>
+		</div>
 
-
-	{% include 'MyContactBundle:Form:form.html.twig' %}
-
-	</div>
+		<div class="content">
+		
+			{% include 'MyContactBundle:Form:form.html.twig' %}
+			
+		</div>		
+  	
+  </div>
 
 {% endblock %}
