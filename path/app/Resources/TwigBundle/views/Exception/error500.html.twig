@@ -2,15 +2,16 @@
 
 {% block page_content %}
 
-	<div class="ws-error-page">		
-				<div class="fresque"></div>
-				<div class="head-sheet"><h1>{{ status_text }} {{ status_code }}</h1></div>
+	<div class="white-sheet ws-error-page">						
+				<div class="head-sheet">
+					<h1>{{ status_text }} {{ status_code }}</h1>
+				</div>
 				<div class="col_large">	
 					<div class="title">
-						<h1>L'arbitre, les joueurs et le ballon sont tous morts dans un crash...</h1>
+						<h1>Une erreur est survenu...</h1>
 					</div>
 					<div class="message">
-						Bref, cette page n'existe pas...
+						Et c'est pas normal...
 					</div>
 					<div class="actions">
 						<a class="btn-ws" href="{{ path('ws_calendar') }}"><span class="ws-icon ws-icon-arrow-left"></span> Retour au calendrier</a>
