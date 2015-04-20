@@ -28,6 +28,7 @@ class CronTasksRunCommand extends ContainerAwareCommand
         $crontasks = $em->getRepository('MyCronBundle:CronTask')->findAll();
 
         foreach ($crontasks as $crontask) {
+
             // Get the last run time of this task, and calculate when it should run next
             $lastrun = $crontask->getLastRun() ? $crontask->getLastRun()->format('U') : 0;
             $nextrun = $lastrun + $crontask->getInterval();
@@ -56,15 +57,14 @@ class CronTasksRunCommand extends ContainerAwareCommand
                     $output->writeln('<error>ERROR</error>');
                 }
 
-                // Persist crontask
-                $em->persist($crontask);
+                // Flush database changes
+                $em->flush();
+                
             } else {
                 $output->writeln(sprintf('Skipping Cron Task <info>%s</info>', $crontask->getName()));
             }
         }
 
-        // Flush database changes
-        $em->flush();
 
         $output->writeln('<comment>Done!</comment>');
     }

@@ -771,14 +771,7 @@ a.calendar-action:hover {
 	z-index:1000;
 }
 
-@mixin calendar-form-bottom-dotted($y:42){
-	/*
-	background-image:url(../images/dotted.png);
-	background-repeat: repeat-x;
-	background-position-y: unquote($y +'px');
-	background-size:6px 3px;
-	*/
-}
+
 @mixin calendar-form-text-shadow(){
 	@include long-shadow(text,$brightblue,3,false,false,right); 
 }
@@ -863,7 +856,7 @@ a.calendar-action:hover {
 			border:0;
 			background:transparent;	
 			overflow: visible;
-			@include calendar-form-bottom-dotted(42);	
+
 			&:focus { outline: none;}
 
 			.select2-search-field{				
@@ -922,11 +915,12 @@ a.calendar-action:hover {
 	}
 	.twitter-typeahead {
 		
+		z-index: 10000;
 		margin-left: 10px;
 		input:focus {
 			outline: none;
 		}
-		@include calendar-form-bottom-dotted();
+
 	}
 
 	.city-autocomplete {
@@ -1023,7 +1017,7 @@ a.calendar-action:hover {
 }
 
 .autolocation-calendar {
-	top: -80px;
+	bottom: 80px;
 	color: $darkblue;
 	background: white;
 	padding: 10px 20px;
@@ -2606,9 +2600,9 @@ table.form-table {
 			.info-empty { padding:20px 10px; @include rem(14); font-family: inherit; font-weight:bold; background-color: #F0F0F0; @include diagonal-stripes(-45deg,rgba(0, 0, 0, 0.02), 100); }
 			.tt-suggestion { width:100%; padding:2px 3px 0px 30px; font-family: inherit; position:relative; &:before {content:''; position:absolute; left:10px; top:10px; border-top:5px solid transparent; border-bottom:5px solid transparent;  border-left:5px solid $deepgrey; }}
 			.tt-suggestion p { margin:5px 0 0 0;}
-			.tt-name {  @include rem(16);  color:inherit; font-family: inherit; font-weight:bold; padding-bottom:0; margin-bottom:0; }
+			.tt-name {  @include rem(16);  color:inherit; font-family: inherit; font-weight:bold; padding-bottom:0; margin-bottom:0; line-height:100%; }
 			.tt-icon { @include rem(30); color:inherit; font-family: inherit; background-color:#FFF; padding:3px; border-radius:100px; }
-			.tt-sub {  @include rem(12); color:inherit; font-family: inherit; font-style:italic; }
+			.tt-sub {  @include rem(12); color:inherit; font-family: inherit; font-style:italic; margin:0; padding:0; }
 			.tt-id { display: none;}
 			.tt-suggestion.tt-cursor{  background-color:#F0F0F0;}
 }
@@ -2850,13 +2844,15 @@ table.form-table {
 
 
 
-.viewevent{
+.view-event{
+
+	margin-top: 40px;
 
 	.header-logo {
 		position:absolute;
-		left:50%;			
+		left:49%;			
 		margin-left:-70px;
-		top:-50px;
+		top:-70px;
 		padding: 5px;
 		@include border-radius(200px);
 		background: -moz-linear-gradient(top, rgba(221,221,221,1) 0%, rgba(233,233,233,1) 35%, rgba(252,252,252,0) 90%, rgba(255,255,255,0) 100%); /* FF3.6+ */
@@ -2885,8 +2881,8 @@ table.form-table {
 			background: rgba(58, 95, 105, 1);
 		}
 		.ws-icon {
-			color:rgba(0,0,0,0.9);
-			@include rem(80);
+			color: darken($darkblue,5%);
+			@include rem(100);
 			@include long-shadow(text,rgb(226,226,226),3,false,false,right); 
 
 			
@@ -2920,13 +2916,16 @@ table.form-table {
 				h1.event-title.big { @include rem(50) }
 			}
 			td.cell-organizer {
-				width:180px;
-				padding-top:20px;
+				width:180px;				
 				img.event-organizer-avatar { width:80px; height:80px; border-radius:100px; }
 				a.username:link,a.username:visited,a.username:active { text-decoration:none; color:$lightblue; }
 				a.username:hover { text-decoration:underline; }
 				strong { font-weight: bold; @include rem(16); }
 				small { font-size: 80%; color: $deepgrey; }
+				a.btn-ws {
+					display:inline-block;
+					margin:5px;
+				}
 			}
 		}	
 	}
@@ -4479,7 +4478,7 @@ h1.title-sheet{
 
 }
 
-.viewevent{
+.view-event{
 	.container{
 		width:100%;
 		.content-header{

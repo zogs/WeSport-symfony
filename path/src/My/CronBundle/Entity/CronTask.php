@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @UniqueEntity("name")
+ * @ORM\Table(name="system_crontask")
+ * @ORM\Entity(repositoryClass="My\CronBundle\Repository\CronRepository")
  */
 class CronTask
 {
@@ -20,7 +22,7 @@ class CronTask
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     private $name;
 

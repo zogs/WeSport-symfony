@@ -17,7 +17,7 @@ class DailyStatisticCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('daily:stat')
+            ->setName('statistic:daily')
             ->setDescription('Send daily stat to admin')
             //->addArgument('param', InputArgument::REQUIRED, 'Periodicity or username/id')
             ->addOption('email', null, InputOption::VALUE_NONE, 'If defined, send email to admins')
@@ -33,7 +33,7 @@ class DailyStatisticCommand extends ContainerAwareCommand
         $container->set('request', new Request(), 'request');
                 
         //get statistic
-        $output->writeln('Getting statistic...');
+        $output->writeln('Getting daily statistic...');
         $res = $this->getContainer()->get('daily_statistic.manager')->getDailyStats();
         
         //write the output results
