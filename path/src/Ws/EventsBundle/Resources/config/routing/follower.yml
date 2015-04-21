@@ -1,0 +1,16 @@
+#FOLLOW
+ws_event_follow_create:
+    pattern: /{organizer}
+    defaults: { _controller: WsEventsBundle:Follow:create }
+    requirements:
+        organizer: \d+
+ws_event_follow_edit:
+    pattern: /edit/{follow}
+    defaults: { _controller: WsEventsBundle:Follow:edit }
+    requirements:
+        follow: \d+  
+ws_event_follow_delete:
+    pattern: /delete/{follow}
+    defaults: { _controller: WsEventsBundle:Follow:delete }
+    requirements:
+        follow: \d+ 

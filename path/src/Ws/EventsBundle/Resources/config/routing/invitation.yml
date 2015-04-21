@@ -1,0 +1,32 @@
+#prefix=/invitation
+ws_invit_create:
+    pattern: /invite/{event}
+    defaults: { _controller: WsEventsBundle:Invitation:create}
+    requirements:
+        event: \d+
+ws_invit_resend:
+    pattern: /invited/resent/{invited}
+    defaults: { _controller: WsEventsBundle:Invitation:resend}
+    requirements:
+        invited: \d+
+ws_invit_blacklist_add:
+    pattern: /addblacklist/{emails}
+    defaults: { _controller: WsEventsBundle:Invitation:addBlacklist, emails: null }
+ws_invit_blacklist_remove:
+    pattern: /removeblacklist/{emails}
+    defaults: { _controller: WsEventsBundle:Invitation:removeBlacklist, emails: null}
+ws_invited_confirm:
+    pattern: /confirm/{invited}
+    defaults: { _controller: WsEventsBundle:Invitation:confirmParticipation }
+    requirements:
+        invited: \d+
+ws_invited_deny:
+    pattern: /deny/{invited}
+    defaults: { _controller: WsEventsBundle:Invitation:denyParticipation }
+    requirements:
+        invited: \d+
+ws_inviter_emails_ajax:
+    pattern: /inviter/suggested_emails
+    defaults: { _controller: WsEventsBundle:Invitation:getInviterEmailsSuggestion }
+    requirements:
+        _method: GET

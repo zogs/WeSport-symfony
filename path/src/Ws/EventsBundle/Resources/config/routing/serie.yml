@@ -1,0 +1,4 @@
+#prefix=/serie
+ws_serie_delete:
+    pattern: /delete/{serie}/{token}
+    defaults: { _controller: WsEventsBundle:Event:deleteSerie }

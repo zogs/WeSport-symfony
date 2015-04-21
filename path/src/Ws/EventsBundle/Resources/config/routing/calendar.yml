@@ -1,0 +1,20 @@
+ws_calendar_ajax:
+    pattern: /ajax/{date}
+    defaults: { _controller: WsEventsBundle:Calendar:ajax, date:'now'}
+    requirements:         
+        _method: GET|POST
+ws_calendar_reset:
+    pattern: /reset
+    defaults: { _controller: WsEventsBundle:Calendar:reset}
+    requirements:         
+        _method: GET
+ws_calendar_update:
+    pattern: /update
+    defaults: { _controller:WsEventsBundle:Calendar:update }
+    requirements:
+        _method: POST
+ws_calendar:
+    pattern: /{date}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{level}/{organizer}
+    defaults: { _controller: WsEventsBundle:Calendar:load, date:null, city:null, sports:null, type:null, nbdays:null, time:null, price:null, level:null, organizer:null }
+    requirements:         
+        _method: GET

@@ -7,6 +7,42 @@ hwi_oauth_redirect:
 facebook_login:
     pattern: /login/check-facebook
 
+ws_events_calendar:
+    resource: "@WsEventsBundle/Resources/config/routing/calendar.yml"
+    prefix: /calendar
+
+ws_events_event:
+    resource: "@WsEventsBundle/Resources/config/routing/event.yml"
+    prefix: /event
+
+ws_events_follower:
+    resource: "@WsEventsBundle/Resources/config/routing/follower.yml"
+    prefix: /follower 
+
+ws_events_serie:
+    resource: "@WsEventsBundle/Resources/config/routing/serie.yml"
+    prefix: /serie  
+
+ws_events_spot:
+    resource: "@WsEventsBundle/Resources/config/routing/spot.yml"
+    prefix: /spot 
+
+ws_events_participant:
+    resource: "@WsEventsBundle/Resources/config/routing/participant.yml"
+    prefix: /participant 
+
+ws_events_invitation:
+    resource: "@WsEventsBundle/Resources/config/routing/invitation.yml"
+    prefix: /invitation   
+
+ws_events_alert:
+    resource: "@WsEventsBundle/Resources/config/routing/alert.yml"
+    prefix: /alert  
+
+ws_events_admin:
+    resource: "@WsEventsBundle/Resources/config/routing/admin.yml"
+    prefix: /events/admin  
+
 ws_convert_sql:
     resource: "@WsConvertSQLBundle/Resources/config/routing.yml"
     prefix:   /convert
@@ -43,10 +79,6 @@ my_world:
     resource: "@MyWorldBundle/Resources/config/routing.yml"
     prefix:   /world
 
-ws_events:
-    resource: "@WsEventsBundle/Resources/config/routing.yml"
-    prefix:   /event
-
 ws_sports:
     resource: "@WsSportsBundle/Resources/config/routing.yml"
     prefix:   /sports
@@ -81,14 +113,6 @@ fos_comment_api:
     resource: "@FOSCommentBundle/Resources/config/routing.yml"
     prefix: /api
     defaults: { _format: html }
-
-
-#calendar
-ws_calendar:
-    pattern: /calendar/{date}/{city}/{sports}/{type}/{nbdays}/{time}/{price}/{level}/{organizer}
-    defaults: { _controller: WsEventsBundle:Calendar:load, date:null, city:null, sports:null, type:null, nbdays:null, time:null, price:null, level:null, organizer:null }
-    requirements:         
-        _method: GET
 
 #root default page
 root:

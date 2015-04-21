@@ -1,0 +1,20 @@
+#prefix=/spot
+ws_spot_index:
+    pattern: /index
+    defaults: { _controller: WsEventsBundle:Spot:index }
+ws_spot_create:
+    pattern: /create
+    defaults: { _controller: WsEventsBundle:Spot:create }
+ws_spot_edit:
+    pattern: /edit/{spot}
+    defaults: { _controller: WsEventsBundle:Spot:edit }
+    requirements:
+        spot: \d+
+ws_spot_delete:
+    pattern: /delete
+    defaults: { _controller: WsEventsBundle:Spot:delete }
+ws_spot_autocomplete:
+    pattern: /ajax/{country}/{search}
+    defaults: { _controller: WsEventsBundle:Spot:autoComplete, country: 'FR', search:'' }
+    requirements:
+        _method: GET

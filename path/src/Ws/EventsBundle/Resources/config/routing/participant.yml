@@ -1,0 +1,11 @@
+#prefix=/participant
+ws_participation_add:
+    pattern: /add/me/{event}/{token}
+    defaults: { _controller: WsEventsBundle:Participation:add }
+    requirements:
+        _method: GET
+ws_participation_cancel:
+    pattern: /cancel/me/{event}/{token}
+    defaults: { _controller: WsEventsBundle:Participation:cancel }
+    requirements:
+        _method: GET

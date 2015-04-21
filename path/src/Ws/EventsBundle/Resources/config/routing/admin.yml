@@ -1,0 +1,16 @@
+#prefix=/events/admin
+admin_ws_events_index:
+    pattern: /index
+    defaults: { _controller: WsEventsBundle:Admin:index }
+
+admin_ws_events_unpublish:
+    pattern: /unpublish/{event}
+    defaults: { _controller: WsEventsBundle:Admin:desactivate }
+
+admin_ws_events_publish:
+    pattern: /publish/{event}
+    defaults: { _controller: WsEventsBundle:Admin:activate }
+
+admin_ws_events_delete:
+    pattern: /delete/{event}
+    defaults: { _controller: WsEventsBundle:Admin:delete }

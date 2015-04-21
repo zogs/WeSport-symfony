@@ -1,0 +1,20 @@
+#EVENTS
+ws_event_view:
+    pattern: /view/{event}/{slug}
+    defaults: { _controller: WsEventsBundle:Event:view }
+    requirements:
+        event: \d+
+ws_event_new:
+    pattern: /create
+    defaults: { _controller: WsEventsBundle:Event:create }
+ws_event_delete:
+    pattern: /delete/{event}/{token}
+    defaults: { _controller: WsEventsBundle:Event:delete }
+    requirements:
+        event: \d+
+ws_event_edit:
+    pattern: /edit/{event}
+    defaults: { _controller: WsEventsBundle:Event:edit }
+    requirements:
+        event: \d+
+        _method: GET|POST

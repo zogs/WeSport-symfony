@@ -1,0 +1,49 @@
+#prefix=/alert
+ws_alerts_create:
+    pattern: /create
+    defaults: { _controller: WsEventsBundle:Alert:create }
+    requirements:
+        _method: GET|POST
+ws_alerts_index:
+    pattern: /index
+    defaults: { _controller: WsEventsBundle:Alert:index }
+    requirements:
+        _method: GET
+ws_alerts_view:
+    pattern: /view/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:view }
+    requirements:
+        _method: GET
+ws_alerts_delete:
+    pattern: /delete/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:delete }
+    requirements:
+        _method: GET|DELETE
+ws_alerts_disable:
+    pattern: /disable/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:disable }
+    requirements:
+        _method: GET|POST
+ws_alerts_enable:
+    pattern: /enable/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:enable }
+    requirements:
+        _method: GET|POST
+ws_alerts_extend:
+    pattern: /extend/{nbmonth}/{alert}
+    defaults: { _controller: WsEventsBundle:Alert:extend }
+    requirements:
+        _method: GET
+        month: \d+
+        alert: \d+
+ws_alerts_send_alerts:
+    pattern: /send/{type}
+    defaults: { _controller: WsEventsBundle:Alert:sendAlerts, type: daily }
+    requirements:
+        type: daily|weekly
+ws_alerts_send_user_alerts:
+    pattern: /send/user/{username}
+    defaults: { _controller: WsEventsBundle:Alert:sendUserAlerts }
+ws_alerts_send_my_alerts:
+    pattern: /send/my/alerts
+    defaults: { _controller: WsEventsBundle:Alert:sendMyAlerts }
