@@ -543,6 +543,13 @@ $(document).ready(function(){
 			return _nbDays;
 		}
 
+		function isFullSizeCalendarPossible()
+		{
+			$days = findNumberDayPerWeek();
+			if($days == 7) return true;
+			return false;
+		}
+
 		function callNextWeek(){
 			var url = _cal.attr('data-url-calendar-next');
 			var direction = 'right';
@@ -591,7 +598,10 @@ $(document).ready(function(){
 		});
 
 		//Appel la semaine courante
-		callThisWeek();
+		//Pour afficher seulement quelques jours
+		if(isFullSizeCalendarPossible() == false) {
+			callThisWeek();	
+		}
 		//Init drag listeners
 		initDragListener();
 	}

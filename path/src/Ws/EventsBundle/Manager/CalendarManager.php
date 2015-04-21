@@ -48,7 +48,7 @@ class CalendarManager extends AbstractManager
 
 	private $flashbag;
 	private $urlGenerator;
-	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time');
+	private $params_cookie_ignored = array('PHPSESSID','hl','organizer','city_id','city_name','sport_name','sport_id','dayofweek','time','nbdays');
 
 
 	public function __construct(Container $container)
@@ -196,6 +196,13 @@ class CalendarManager extends AbstractManager
 	public function addParamsDate($date)
 	{
 		$this->addParameters(array('date'=>$date));
+
+		return $this;		
+	}
+
+	public function addParamsNbDays($nb)
+	{
+		$this->addParameters(array('nbdays'=>$nb));
 
 		return $this;		
 	}
@@ -352,10 +359,12 @@ class CalendarManager extends AbstractManager
 	{	
 		$city = null;
 		$findme = null;
+
 		if(!empty($this->params['location']) && is_array($this->params['location']) ){			
 			if(!empty($this->params['location']['city_id'])) $this->params['city_id'] = $this->params['location']['city_id'];
 			if(!empty($this->params['location']['city_name'])) $this->params['city_name'] = $this->params['location']['city_name'];
 		}
+	
 		if(!empty($this->params['city']) && $this->params['city'] != $this->urlGenerator->defaults['city']){			
 			if(strpos($this->params['city'],'+') > 0) {
 				$r = explode('+',$this->params['city'],2); 
@@ -373,7 +382,7 @@ class CalendarManager extends AbstractManager
 			if($this->search->getCountry()) $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($findme,$this->search->getCountry()->getCode());
 			else $city = $this->em->getRepository('MyWorldBundle:City')->findCityByName($findme);
 		}
-			
+
 		if(isset($city) && $city->exist()){
 			$location = $this->em->getRepository('MyWorldBundle:Location')->findLocationByCityId($city->getId());	
 			$this->search->setLocation($location);
@@ -381,7 +390,7 @@ class CalendarManager extends AbstractManager
 		}
 		elseif(isset($findme)){
 
-			if($this->isFlashbagActive()) $this->flashbag->add("Cette ville n'a pas été trouvé... Peut être une erreur d'orthographe ?",'warning');
+			if($this->isFlashbagActive()) $this->flashbag->add("La ville -".$city."- n'a pas été trouvé... Peut être une erreur d'orthographe ?",'warning');
 		}				
 		return;
 	}

@@ -79,26 +79,29 @@ class CalendarController extends Controller implements InitControllerInterface
 		//get manager
 		$manager = $this->get('calendar.manager');
 
+
 		//set parameters
 		$manager->addParamsFromCookies($this->getRequest()->cookies->all());
 		$manager->addParamsURI($params);
+
 		//$manager->addParams($this->getRequest()->query->all());
 
 		//find searched week
-		//$week = $manager->findCalendar();	
+		$week = $manager->findCalendar();	
 
 		//find an empty empty week
 		//(existing events will be load be ajax)
-		$manager->prepareParams();
-		$week = $manager->getEmptyWeek();	
+		//$manager->prepareParams();
+		//$week = $manager->getEmptyWeek();	
 		//get search
 		$search = $manager->getSearch();	
+		
 		//create form		
 		$form = $this->createForm('calendar_search',$search);
 		//throw event
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_VIEW, new ViewCalendar($search,$this->getUser())); 
 		
-
+		
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
 			'weeks' => array($week),
 			'is_ajax' => false,
@@ -148,13 +151,14 @@ class CalendarController extends Controller implements InitControllerInterface
 		$manager->addParamsFromCookies($request->cookies->all());
 		$manager->addParameters($request->request->get($form->getName()));		
 		$manager->addParameters($request->query->get($form->getName()));
+		$manager->addParamsNbDays($request->query->get('nbdays'));
 		$manager->addParamsDate($date);
 
-		
 		//find searched week
 		$week = $manager->findCalendar();
 		//get search params
 		$search = $manager->getSearch();
+
 		//throw event
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_AJAX, new AjaxCalendar($search,$this->getUser())); 
 
@@ -171,7 +175,6 @@ class CalendarController extends Controller implements InitControllerInterface
 		
 		$manager->resetParams()->resetCookie()->resetSearch();
 		$search = $manager->getSearch();
-
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_RESET, new ResetCalendar($search,$this->getUser())); 
 
 		return $this->redirect($this->generateUrl('ws_calendar'));
