@@ -100,9 +100,9 @@ doctrine:
                 profiling: false
             oldwesport:
                 dbname: "%old_database_name%"
-                user: "%old_database_name%"
-                password: "%old_database_name%"
-                host: "%old_database_name%"
+                user: "%old_database_user%"
+                password: "%old_database_password%"
+                host: "%old_database_host%"
                 charset: UTF8
                 logging: false
                 profiling: false
