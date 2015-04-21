@@ -99,10 +99,10 @@ doctrine:
                 logging: false
                 profiling: false
             oldwesport:
-                dbname: wesport
-                user: root
-                password: null
-                host: 127.0.0.1
+                dbname: "%old_database_name%"
+                user: "%old_database_name%"
+                password: "%old_database_name%"
+                host: "%old_database_name%"
                 charset: UTF8
                 logging: false
                 profiling: false
