@@ -6,8 +6,7 @@
 
 {% block page_content %}
 
-<div class="connexion">
-	<div class="white-sheet">
+	<div class="white-sheet connexion">
 		<div class="head-sheet">
 			<h1 class="title-sheet">CONNEXION</h1>
 			{% if error %}
@@ -26,7 +25,6 @@
 				<a rel="nofollow" href="{{ url('hwi_oauth_connect') }}" target="_self"><img src="{{ asset('bundles/wsstyle/img/register_with_facebook.png') }}" alt="S'incrire avec Facebook"/></a>										
 			</p>
 		</form>
-	</div>
-</div>	
+	</div>	
 
 {% endblock page_content %}
