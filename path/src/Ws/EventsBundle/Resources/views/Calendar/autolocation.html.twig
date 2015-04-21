@@ -1,4 +1,4 @@
-{% if search.autoLocation is defined and search.autoLocation is not null %}
+{% if search.autoLocation is defined and search.autoLocation is not null and search.location.city is defined and search.location.city is not null %}
 	<div class="autolocation-calendar">
 		<span class="ws-icon-info"></span> 		
 		Nous avons détecté votre ville  <strong>{{ search.location.city.name }}</strong> et affiché les activités à {{ search.area }}km à la ronde !  
