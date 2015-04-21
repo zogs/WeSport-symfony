@@ -18,14 +18,14 @@ monolog:
         main:
             type: rotating_file
             max_files: 3
-            path: %kernel.logs_dir%/%kernel.environment.all.log
+            path: %kernel.logs_dir%/%kernel.environment%.all.log
             level: info
 
         #log toutes les connexions pendant 15 jours
         login:
             type: rotating_file
             max_files: 15
-            path : %kernel.logs_dir%/%kernel.environment.authentification.log
+            path : %kernel.logs_dir%/%kernel.environment%.authentification.log
             level: info
             channels: security
 
@@ -37,7 +37,7 @@ monolog:
         streamed_error:
             type: rotating_file
             max_files: 7
-            path: %kernel.logs_dir%/%kernel.environment.errors.log
+            path: %kernel.logs_dir%/%kernel.environment%.errors.log
             level: info
 
         #log toutes les erreurs critiques pednant 7 jours et envoi un email aux responsables
@@ -51,7 +51,7 @@ monolog:
         streamed_critical:
             type: rotating_file
             max_files: 7
-            path: %kernel.logs_dir%/%kernel.environment.criticals.log
+            path: %kernel.logs_dir%/%kernel.environment%%.criticals.log
             level: info
         buffered_critical:
             type: buffer
