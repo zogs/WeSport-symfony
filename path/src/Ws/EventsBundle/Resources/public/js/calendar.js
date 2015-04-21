@@ -63,8 +63,7 @@ $(document).ready(function(){
 		var _lock;
 
 
-		//Appel la semaine courante
-		//callThisWeek();
+		
 
 		window.cancelRequestAnimFrame = ( function() {
 		    return window.cancelAnimationFrame          ||
@@ -86,10 +85,8 @@ $(document).ready(function(){
 		        };
 		})();
 
-
-		//set drag listeners
-		setInitialListener();
-		function setInitialListener(){
+		
+		function initDragListener(){
 			_zone.on('mousedown touchstart',startDrag);
 			$(window).on('mouseup touchend',stopDrag);
 			setCalendarOrigin();
@@ -494,47 +491,40 @@ $(document).ready(function(){
 
 
 		//infiniteEvents();
-	    function infiniteEvents() {
+		function infiniteEvents() {
 
-	        $(window).scroll(function(){
-	            
-	            //position du scrolling
-	            var scrollPos = parseInt($(window).scrollTop()+$(window).height());
+			$(window).scroll(function(){
 
+				//position du scrolling
+				var scrollPos = parseInt($(window).scrollTop()+$(window).height());
 
-	            //vérifie si chaque evenement caché est revélé par le scroll
-	            for(var id in _hidden){
-	            	var y = _hidden[id];            	
-	            	if( y <= scrollPos){
+				//vérifie si chaque evenement caché est revélé par le scroll
+				for(var id in _hidden){
+					var y = _hidden[id];            	
+						if( y <= scrollPos){
 						//si oui afficher l'evenement avec un petit delai            		          		            		
-	            		$('#'+id).css('visibility','visible').hide().delay(300).fadeIn(200);
-	            		//enlever l'evenement concerné du tableau
-	            		delete _hidden[id];
-	            		  
-	            	}
-	            }
+						$('#'+id).css('visibility','visible').hide().delay(300).fadeIn(200);
+						//enlever l'evenement concerné du tableau
+						delete _hidden[id];
+					}
+				}
 
+				//
+				if($(_newWeekFirst).length!=0){
+					//position du bas de la premiere ligne
+					var y = parseInt($(_newWeekFirst).offset().top+$(_newWeekFirst).height()); 
 
-
-	            //
-	            if($(_newWeekFirst).length!=0){
-	            	//position du bas de la premiere ligne
-	            	var y = parseInt($(_newWeekFirst).offset().top+$(_newWeekFirst).height()); 
-	            
-		            //si le bas est atteint && calendar is not dragged && no events is loading && more events are possibbly to call
-		            //console.log(y+' <= '+scrollPos+' && '+_drag+' && '+_loadingEvents+' && '+_moreEvents);
-		            if( (y <= scrollPos ) && _drag===false && _loadingEvents === false && _moreEvents === true ) 
-		            {               		            	
-		                _loadingEvents = true;
-		                _newPage        = _newPage+1;                                
-		                loadBottomEvents();		                                   
-		            }
-	            }
-	            
-
-	            
-	        });
-	    };
+					//si le bas est atteint && calendar is not dragged && no events is loading && more events are possibbly to call
+					//console.log(y+' <= '+scrollPos+' && '+_drag+' && '+_loadingEvents+' && '+_moreEvents);
+					if( (y <= scrollPos ) && _drag===false && _loadingEvents === false && _moreEvents === true ) 
+					{               		            	
+						_loadingEvents = true;
+						_newPage        = _newPage+1;                                
+						loadBottomEvents();		                                   
+					}	
+				}
+			});
+		};
 
 
 
@@ -599,5 +589,10 @@ $(document).ready(function(){
 				callThisWeek('prev');
 				return false;
 		});
+
+		//Appel la semaine courante
+		callThisWeek();
+		//Init drag listeners
+		initDragListener();
 	}
 });

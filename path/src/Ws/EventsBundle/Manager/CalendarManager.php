@@ -97,6 +97,18 @@ class CalendarManager extends AbstractManager
 		return $events;
 	}
 
+	public function getEmptyWeek() {
+
+		$week = array();
+		$day = $this->search->getDate();
+		$nb = $this->search->getNbDays();
+		for( $i=1; $i<= $nb; $i++) {	
+			$week[$day] = array();
+			$day = date('Y-m-d',strtotime($day." +1 day"));
+		}
+		return $week;
+	}
+
 	public function disableFlashbag()
 	{
 		$this->flashbag = null;

@@ -85,7 +85,12 @@ class CalendarController extends Controller implements InitControllerInterface
 		//$manager->addParams($this->getRequest()->query->all());
 
 		//find searched week
-		$week = $manager->findCalendar();		
+		//$week = $manager->findCalendar();	
+
+		//find an empty empty week
+		//(existing events will be load be ajax)
+		$manager->prepareParams();
+		$week = $manager->getEmptyWeek();	
 		//get search
 		$search = $manager->getSearch();	
 		//create form		
@@ -93,6 +98,7 @@ class CalendarController extends Controller implements InitControllerInterface
 		//throw event
 		$this->get('event_dispatcher')->dispatch(WsEvents::CALENDAR_VIEW, new ViewCalendar($search,$this->getUser())); 
 		
+
 		return $this->render('WsEventsBundle:Calendar:weeks.html.twig', array(
 			'weeks' => array($week),
 			'is_ajax' => false,
