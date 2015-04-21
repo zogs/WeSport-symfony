@@ -82,15 +82,9 @@ $(document).ready(function() {
 	/*==================================
 	MOBILE MENU
 	===================================*/
-	if($("#mobileMenus").length!=0 && $("#mobileMenus").css('display')!='none'){
-		$("#mobMenuLeft").mmenu({
+	if($("#menu-mobile").length!=0 && $("#menu-mobile").css('display')!='none'){
 
-		});	
-		$("#mobMenuRight").mmenu({
-			position: "right",
-			zposition: "front",
-			slidingSubmenus: false
-		});
+		$("#mmenu").mmenu({});	
 	}
 
 });

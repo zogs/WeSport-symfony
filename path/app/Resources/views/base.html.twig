@@ -29,11 +29,11 @@
         {% block stylesheets %}
            {% stylesheets
                 '%kernel.root_dir%/../vendor/twitter/bootstrap/less/bootstrap.less'
-                '%kernel.root_dir%/../vendor/twitter/bootstrap/less/responsive.less'
                 'bundles/myutils/js/select2/select2.css'
                 'bundles/myutils/js/tagsinput/bootstrap-tagsinput.css'
                 'bundles/myutils/js/datetimepicker/jquery.datetimepicker.css'
                 'bundles/myutils/js/checkboxlist/ui.dropdownchecklist.standalone.css'
+                'bundles/myutils/js/mmenu/css/jquery.mmenu.css'
                 'bundles/myutils/templates/footer/css/footer-distributed-with-contact-form.css'   
                 'bundles/wsstyle/css/default/bootstrap.css'
                 'bundles/wsstyle/css/default/default.css'
@@ -55,27 +55,27 @@
 
     <body>
 
-        {# NAVBAR #}
+        <div> {# global container div for mmenu #}
+        
 
-        {% block navbar %}
-            
-            {% include '::menu.html.twig' %}
-
-        {% endblock %}
-
-
-        <div class="container-fluid mainContainer">
-            
-            {% block body %}
+            {% block navbar %}              
+                {% include '::menu.html.twig' %}
             {% endblock %}
 
-        </div>
 
-        {% block footer %}
+            <div class="container-fluid mainContainer">
+                {% block body %}
+                {% endblock %}
+            </div>
 
-            {% include '::footer.html.twig' %}
+            {% block footer %}
+                {% include '::footer.html.twig' %}
+            {% endblock %}
 
-        {% endblock %}
+
+        </div> {# end global container div #}
+
+
 
         {% block javascripts %}
             {% javascripts
@@ -93,6 +93,7 @@
                 '@MyUtilsBundle/Resources/public/js/tagsinput/bootstrap-tagsinput.js'
                 '@MyUtilsBundle/Resources/public/js/datetimepicker/jquery.datetimepicker.js'
                 '@MyUtilsBundle/Resources/public/js/timeago/jquery.timeago.js'
+                '@MyUtilsBundle/Resources/public/js/mmenu/js/jquery.mmenu.min.js'
                 '@MyUtilsBundle/Resources/public/js/utils.js'
                 '@MyUserBundle/Resources/public/js/*.js'
                 '@WsEventsBundle/Resources/public/js/*.js'

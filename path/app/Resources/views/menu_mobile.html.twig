@@ -1,24 +1,22 @@
-<div class="mobileMenus" id="mobileMenus">
-	<div class="mobileHead">
-		<a href="#mobMenuLeft"><span class="ws-icon-menu"></span></a>
-		<a class="weSport" href="">
-      			<img class="logo" src="{{ asset('bundles/wsstyle/images/LOGO.gif') }}" alt="">				      	  	
-		</a>					
-		<a href="#mobMenuRight"><span class="ws-icon-home"></span></a>
-									
+<div class="menu-mobile" id="menu-mobile">
+	<div class="mhead">
+		<a href="#mmenu"><span class="ws-icon-menu"></span></a>
+		
+      		<img class="logo" src="{{ asset('bundles/wsstyle/images/LOGO.gif') }}" alt="">				      	  	
+														
 	</div>
 				
-	<div id="mobMenuLeft">								
+	<div id="mmenu">								
 		<ul>
-			<li><a href="{{ path('ws_calendar') }}">Calendrier</a></li>
-			{{ render(controller('MyPageBundle:Menu:getMenu', {'menu':'bottom','template':'dotted','max': 3})) }}
-			<li><a href="{{ path('my_contact') }}">Contact</a></li>																
-		</ul>
-	</div>	
+			<li><a href="{{ path('ws_calendar') }}"><span class="ws-icon ws-icon-calendar2"></span> Calendrier</a></li>
+			<li><a href="{{ path('ws_event_new') }}"><span class="ws-icon ws-icon-stopwatch"></span> Créer</a></li>
+			
+			
 
-	<div id="mobMenuRight">								
-		<ul>											
-		{% if is_granted('IS_AUTHENTICATED_REMEMBERED') == true %}	
+
+			<li class="Divider Spacer"></li>
+
+			{% if is_granted('IS_AUTHENTICATED_REMEMBERED') == true %}	
 			<li><a href="{{ path('fos_user_profile_edit') }}"><span class="mm-icon ws-icon-cog"></span> Mon Compte</a>
 				<ul>
 					<li><a href="{{ path('fos_user_profile_edit') }}?action=account">Compte</a></li>
@@ -30,19 +28,28 @@
 			</li>
 			<li><a href="{{ path('ws_alerts_index') }}"><span class="ws-icon ws-icon-alarm"></span> Mes alertes</a></li>							
 			<li><a href="{{ path('fos_user_security_logout') }}"><span class="mm-icon ws-icon-exit"></span> Déconnexion</a></li>
-		{% else %}
+			{% else %}
 			<li><a href="{{ path('fos_user_security_login')}}"><span class="mm-icon ws-icon-enter"></span> Connexion</a></li>
 				
 			<li><a href="{{ path('fos_user_registration_register') }}"><span class="mm-icon ws-icon-quill"></span> Inscription</a></li>
-		{% endif %}					
+			{% endif %}					
 		
+
+			<li class="Divider Spacer"></li>
+
 			<li class="social-btn"><a target="_blank" rel="nofollow" title="Nous suivre sur Twitter" href="https://twitter.com/weSportfr"  >
 				<img src="{{ asset('bundles/myutils/img/socials/social_flatls_twitter.png') }}" alt=""/> Twitter
 			</a></li>
 			<li class="social-btn"><a target="_blank" rel="nofollow" title="Notre page facebook" href="https://www.facebook.com/pages/We-sport/642996032385245" >
 				<img src="{{ asset('bundles/myutils/img/socials/social_flatls_facebook.png') }}" alt=""/> Facebook
-			</a></li>	
-			
+			</a></li>
+
+			<li><a href="{{ path('my_contact') }}"><span class="ws-icon ws-icon-envelop"></span> Contactez nous</a></li>
+
+			{{ render(controller('MyPageBundle:Menu:getMenu', {'menu':'bottom','template':'dotted','max': 3})) }}		
+																		
 		</ul>
-	</div>					
+	</div>	
+
+					
 </div>

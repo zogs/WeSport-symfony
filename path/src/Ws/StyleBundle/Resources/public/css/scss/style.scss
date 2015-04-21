@@ -189,7 +189,6 @@ div.mm-is-menu * {
 .navbar-ws{
 	background-color:rgba(0,0,0,0.1);
 	padding:0;
-	//box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
 	
 	.nav{
 
@@ -331,8 +330,8 @@ div.mm-is-menu * {
 
 
 
-	.mobileMenus{display:none;}
-	.mobileHead{
+	.menu-mobile{display:none;}
+	.mhead{
 		height:70px;
 		padding:20px 0;
 		text-align:center;
@@ -348,6 +347,12 @@ div.mm-is-menu * {
 		a:last-child{
 			position:absolute;
 			right:10px;
+		}
+
+		.logo {
+			float:right;
+			height:35px;
+			margin-right:20px;
 		}
 
 	}	
@@ -1417,57 +1422,6 @@ a.calendar-action:hover {
 		}
 	}		
 }				
-
-
-
-
-//intro tourbus
-.tourbus-leg-inner{
-	padding:10px 40px;
-
-	h2{ 
-		margin:0; color:#CCC; @include rem(28); 
-		.stepNumber{
-			background-color:#E5E5E5;
-			@include border-radius(30px);
-			color:white;
-			@include rem(20);
-			padding:7px 13px;
-		}
-	}
-	p {
-		margin:0 0 5px 0; color:#848484;		
-	}
-	p.tabbed {
-		margin-left:45px;
-	}
-	small{
-		@include rem(12);
-	}
-	a.btn-link {color:$deepgrey;}
-	a.btn-link:hover { color:$darkgrey; text-decoration: none;}
-	
-	.ws-icon {color:white;}
-}
-.tour-overlay {
-  display: none;
-  background: #666;
-  opacity: 0.2;
-  z-index: 9997;
-  min-height: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0; right: 0; bottom: 0; left: 0;
-}
-.tour-highlight {
-/*
-  background: white;
-  position: relative;
-  border-radius: 4px;
-  box-shadow: inset 0 0 2px rgba( 0, 0, 0, 0.2 );
-  z-index: 9998;
- */
-}
 
 
 
@@ -3191,13 +3145,12 @@ table.form-table {
 	h3 { @include rem(14); color: $deepgrey; margin:0; }
 	div.section-content {
 		height:auto;
-		min-height:400px;
+		min-height:300px;
 		padding:20px 15px 20px 15px;			
-		min-height:700px;
 		background-color: #fff6df;
 
 		
-		textarea.fos_comment_main_textarea { margin-left:8px; width: 90%; padding-left:5px; @include rem(12); color:$deepgrey; border-radius: 10px;@include box-shadow(0 0 10px 0px rgba(0, 0, 0, 0.23));}
+		textarea.fos_comment_main_textarea { margin-left:8px; width: 90%; padding-left:5px; @include rem(12); color:$deepgrey; border-radius: 5px;@include box-shadow(0 0 10px 0px rgba(0, 0, 0, 0.23));}
 		div.fos_comment_main_textarea_avatar { width:45px; height:45px; display:inline-block; img { width:45px; height:45px; margin-top:-10px;}}
 		div.fos_comment_submit { display:block; padding-left:60px; input { @include rem(10);} }
 
@@ -4351,385 +4304,5 @@ div.col_large {
 
 
 
-
-
-/* reset chrome style for select inputs */
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  select {-webkit-appearance: none; appearance: none; }
-}
-
-/* Smartphones (portrait) ----------- */  
-@media only screen and (max-width : 768px) {  
-  
-	
-	.navbar .weSport { margin:5px 5px 0 5px; padding:0;}
-	.navbar {
-		position:absolute;
-		padding:0;
-		.desktop-menu {
-			ul.nav{
-				display:initial; float:none;
-				margin:0; padding:0;
-				li { display: none;}
-				li.searchbar {
-					display: block; 
-					width:100%;
-					margin:0; padding:0;
-					text-align: center;
-					form#formCity { padding:2%;}
-					input#cityName {width:60%; }
-					select#extend { width:15%;}
-					button.citySubmit{width:15%;}
-					.search-bar-icons {display: none;}
-
-					.tt-hint {}
-					.tt-dropdown-menu {
-						width:100%;
-						margin-left:0;
-					}
-				}
-			}
-			ul.menu-full,ul.menu-small {display:none;}
-		}		
-	}
-	.navbar .mobileMenus{ 
-		display:block;
-		li{
-			a{
-				padding:0;
-				margin-left:10px;
-			}
-		}
-		.mobileHead{
-			.weSport {
-				.wesport { display: none;}
-			}
-		}
-	}
-
-	.mainContainer {margin-top:140px;}
-	.container{ width:100%;}
-
-	#formSearch{
-		width:100%;
-		margin:10px 0 0 0;
-	}
-	.sportCheckboxs{ display:none;}
-
-	.sportSelect {
-		float:none;
-		display:block;  		
-		position:initial;
-		text-align: center;
-		opacity: 0.8;
-		width:100%;
-		padding:0 5%;
-		margin:10px 0 0 0;
-		
-		.select2-container { text-align:left; }
-
-
-		
-		select{ width:80%; margin:0 10%;}
-	}
-		
-	
-
-	.calendar{
-		.calendar-header{
-			height:auto;
-			margin-bottom:10px;
-			.calendar-period,.calendar-arianne {display:none;}
-			.week-nav{ 
-				a.calendar-nav-link { 
-					padding:5px 25px; 
-					&:after,&:before { display:none;}
-				}
-			}
-			
-		}	
-
-		.events-weeks table{
-			td.colomn-1 { box-shadow:none;	}
-			td.colomn-2 { box-shadow:none;}
-			td.colomn-3 { box-shadow:none;}
-			td.colomn-4 { box-shadow:none;}
-			td.colomn-5 { box-shadow:none;}
-			td.colomn-6 { box-shadow:none;}
-			td.colomn-7 { box-shadow:none;}
-		}
-	}
-
-h1.title-sheet{
-	@include rem(14);
-
-}
-
-
-.form-ws{
-	width:100%;
-	float:left;
-	.control-submit{
-		width: 100%;				
-	}
-}
-
-
-
-.createEvent{
-	.col_large{
-		width:100%;
-		padding:0;
-		.control-group{
-			.control-label{
-				width:25%;
-			}
-			.controls{						
-			}
-		}
-	}
-	.col_small{
-		width: 100%;
-		padding:0;
-	}	
-
-}
-
-.view-event{
-	.container{
-		width:100%;
-		.content-header{
-			.header-left{
-				width:100%;				
-			}
-			.event-sportLogo{
-				width:100%;
-				text-align: center;
-			}
-			h1.event-title{
-				width:100%;
-				text-align: center;
-				.fb-like{display:none;}
-			}
-
-			.header-right{ width:100%;}
-			.orga-avatar{ width:20%}
-			.orga-info { width:70%;}	
-			.orga-name { @include rem(18);}		
-		}
-
-		.event-action-bar{
-			.event-action{					
-				width: 100%;
-				margin:10px 0;
-				text-align: center;
-				.btn-ws{
-					padding:10px 20px;
-				}
-			}
-			.event-status{
-				width:100%;
-				margin:10px 0;
-				text-align: center;
-				margin-top:2px;
-			}
-		}
-
-		.col_large{
-			width:100%;
-			padding:10px 1%;
-			.event-info{
-				padding:5px 2px;
-				margin-bottom:0;
-				line-height:150%;
-				@include rem(20);
-			}
-		}
-
-	
-
-		.col_small{
-			width:100%;
-			padding:0;
-			margin-top:50px;
-			#eventmap{
-				width:100%;
-			}
-		}
-	}
-}
-	
-
-	.viewuser{
-		.container{
-			width:100%;
-			.content-header{
-				.header-left{
-					width:100%;
-				}
-
-				.header-right{
-					width:100%;
-				}
-				.user-login{
-					img{ width:60px; height:60px;}
-					h1 { display: inline-block; @include rem(25); white-space: nowrap;}	
-				} 
-				.user-descr{
-					display: block;
-				}
-				.user-info{
-					span { text-align: left;}
-				}
-			}
-			
-			.user-status{
-				.count_activity{
-					float:left;	
-					width:auto;	
-					margin-right:10px;			
-				}
-				.which_activity{
-					float:left;
-					width:auto;
-				}
-			}
-			.col_large{
-				width:100%;	
-				margin-top:20px;
-				padding:0 2%;		
-			}
-			.col_small{
-				width: 100%;
-				margin-top:20px;
-				padding:0 2%;
-			}
-		}
-	}
-
-	#account{
-		.container{
-			width:100%;
-			.col_small{
-				width:100%;
-				padding:10px 5px;
-			}
-			.col_large{
-				width: 100%;
-				padding:0 5px;
-				#account-form{
-					h2{
-						text-align: center;
-						@include rem(25);
-					}
-					padding:0 5px;
-					margin-top:0;
-				}
-			}
-		}
-
-	}
-
-	.contact{
-		.form-contact {
-			width:90%;
-			padding:10px 5%;
-		}
-	}
-	.footer {
-		display: none;
-	}
-} 
-/* very small smartphone */
-@media only screen and (max-width : 240px) { 
-
-	.form-register{
-	.control-radio{
-		display: block;
-		width:100%;
-	}
-}
-	
-}
-
-
-/* Tablets landscape and Small computer----------- */  
-@media only screen and (min-width : 770px) and (max-width : 1400px) {  
-   
-	.navbar-ws{
-		position:absolute;
-		padding:0;
-		.mobilesMenus {display:none;}
-		.desktop-menu {
-			ul.nav{
-				li{
-					a.weSport{
-						img.wesport {display:none;}
-					}
-					a {
-						@include rem(18);
-					}
-				}
-				li.searchbar{
-					width:320px;
-				}
-			}
-			ul.menu-small{
-				display:inline;
-				li a span.nav-login {display:none;}
-			}
-			ul.menu-full, ul.nav li.menu-full {
-				display:none;
-			}
-		}
-	}
-
-	.events-weeks table{
-			td.colomn-1 { box-shadow:none;}
-			td.colomn-2 { box-shadow:none;}
-			td.colomn-3 { box-shadow:none;}
-			td.colomn-4 { box-shadow:none;}
-			td.colomn-5 { box-shadow:none;}
-			td.colomn-6 { box-shadow:none;}
-			td.colomn-7 { box-shadow:none;}
-	}
-
-   #formSearch{
-   		width:100%;
-
-		.sportCheckboxs{
-			.sportChoice{
-				label span { @include rem(30);}
-			}
-		}
-		.calendar{
-			.calendar-header{
-				margin-bottom:10px;
-			}
-			.calendar-period{
-		  		visibility: hidden;
-		  	}
-		}
-		
-   }
-	
-	div.col_large{
-		width:60%
-	}
-	div.col_small{
-		width:40%;
-	}
-
-	.createEvent{
-		.container{
-			width:100%;
-		}
-	}
-	.connexion{
-		.container{
-			width:100%;
-			
-		}
-	}
-
-}  
+//Fields
+@import "includes/responsive";

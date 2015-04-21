@@ -1,0 +1,131 @@
+
+
+/* reset chrome style for select inputs */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  select {-webkit-appearance: none; appearance: none; }
+}
+
+/* Smartphones (portrait) ----------- */  
+@media only screen and (max-width : 768px) {  
+  
+	
+	
+	.navbar {
+		.menu-desktop {
+			display: none;
+		}		
+		.menu-mobile {
+			display:block;
+		}
+	}
+
+	.container{ width:100%; margin-top: 50px;}	
+	
+	.connexion {
+		.form-register {
+			padding:0;
+		}
+		.form-facebook {
+			width: 100%;
+		}
+	}
+
+	.page-account {
+		.col_large {
+			padding-left: 10px;
+		}
+	}
+
+	.create-event {
+		table.form-table tr.form-row td { padding: 20px 10px !important; }
+		table.form-table tr.form-row td.cell-optional { padding: 0 10px !important; }
+
+		.cell-submit { width: 50%; }
+	}
+
+	.page-contact {
+		button[type=submit] {
+			margin: 20px 25%;
+			width: 50%;
+			padding: 20px;
+		}
+	}
+
+	
+	.calendar-form-bar {
+		.calendar-form-row-main {
+			.calendar-form-cell-left {
+				label { display: none; }
+				.select2-container { width: 95%; }
+			}
+			.calendar-form-cell-right {
+				label { display: none; }
+
+			}	
+		}
+
+		.calendar-form-row-options {
+			label, input, select { @include rem(11); }
+			.option-field { display: block; }
+			.calendar-form-cell-left {
+				padding-right: 0;
+				text-align:left;
+			}
+			.calendar-form-cell-right {
+				padding-left: 0;
+				text-align:right;
+			}
+		}
+		
+		.calendar-form-row-options .select2-container .select2-choice .select2-search-field input[type=text], .calendar-form-row-options .select2-container .select2-choices .select2-search-field input[type=text], .calendar-form-row-options .select2-container-multi .select2-choice .select2-search-field input[type=text], .calendar-form-row-options .select2-container-multi .select2-choices .select2-search-field input[type=text] {
+			@include rem(11);
+		}
+	}	
+
+	.events-weeks table{
+		td.colomn-1 { box-shadow:none;}
+		td.colomn-2 { box-shadow:none;}
+		td.colomn-3 { box-shadow:none;}
+		td.colomn-4 { box-shadow:none;}
+		td.colomn-5 { box-shadow:none;}
+		td.colomn-6 { box-shadow:none;}
+		td.colomn-7 { box-shadow:none;}
+	}
+
+
+	h1.title-sheet{
+		@include rem(16);
+
+	}
+
+
+	.form-ws{
+		width:100%;
+		float:left;
+		.control-submit{
+			width: 100%;				
+		}
+	}
+
+
+	.main-footer {
+		.footer-left {
+			text-align: center;
+		}
+		.footer-right {
+			display: none;			
+		}
+	}
+} 
+/* very small smartphone */
+@media only screen and (max-width : 240px) { 
+
+	
+}
+
+
+/* Tablets landscape and Small computer----------- */  
+@media only screen and (min-width : 770px) and (max-width : 1400px) {  
+   
+
+}  
