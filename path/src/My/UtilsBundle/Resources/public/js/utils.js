@@ -24,28 +24,31 @@ $(document).ready(function() {
 	invit_emails.initialize();
 
 
-    $('.tagsinput')
-        .tagsinput({
-            tagClass: 'label label-info ws-tag',
-            confirmKeys: [13,44,32,16], //enter, virgule, espace, shift
-            trimValue:true,
-            typeaheadjs: {
-            	name:'invit_emails',
-            	displayKey: 'email',
-            	valueKey: 'email',
-            	source: invit_emails.ttAdapter()
-            }            
-        });
-        //on focus out, the text is converted in a tag
-        $('.bootstrap-tagsinput input').blur(function() {
-        	$('input.tagsinput').tagsinput('add', $(this).val());
-        	$(this).val('');
-        });
+	/*==================================
+		TagsInput
+	==================================*/
+	$('.tagsinput')
+		.tagsinput({
+			tagClass: 'label label-info ws-tag',
+			confirmKeys: [13,44,32,16], //enter, virgule, espace, shift
+			trimValue:true,
+			typeaheadjs: {
+			name:'invit_emails',
+			displayKey: 'email',
+			valueKey: 'email',
+			source: invit_emails.ttAdapter()
+		}            
+	});
+	//on focus out, the text is converted in a tag
+	$('.bootstrap-tagsinput input').blur(function() {
+		$('input.tagsinput').tagsinput('add', $(this).val());
+		$(this).val('');
+	});
        
 
-    /*
+    /*==================================
     	Datetime Picker
-    */
+    ==================================*/
     $('input.with_date_picker').datetimepicker({
     	lang:'fr',    	
 		 timepicker:false,
@@ -69,10 +72,25 @@ $(document).ready(function() {
 	});
 
 
-	/*
+	/*==================================
 		Tooltip bootstrap
-	*/	
+	==================================*/	
 	$('.tooltiptop').tooltip( { delay: { show: 200, hide: 100 }} );
 	$('.tooltipbottom').tooltip( { placement : 'bottom', delay: { show: 200, hide: 100 }} );
+
+
+	/*==================================
+	MOBILE MENU
+	===================================*/
+	if($("#mobileMenus").length!=0 && $("#mobileMenus").css('display')!='none'){
+		$("#mobMenuLeft").mmenu({
+
+		});	
+		$("#mobMenuRight").mmenu({
+			position: "right",
+			zposition: "front",
+			slidingSubmenus: false
+		});
+	}
 
 });
