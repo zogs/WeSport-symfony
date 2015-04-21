@@ -1,3 +1,5 @@
+@import "compass/css3";
+@import "includes/mixins";
 
 
 /* reset chrome style for select inputs */
@@ -21,7 +23,7 @@
 
 	.container{ width:100%; margin-top: 50px;}	
 	
-	.connexion {
+	.connexion,.register {
 		.form-register {
 			padding:0;
 		}
