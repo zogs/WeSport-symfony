@@ -28,6 +28,9 @@ framework:
 twig:
     debug:            1
     strict_variables: "%kernel.debug%"
+    globals:
+        app_version: "%app.version%"
+        app_facebook_id: "%oauth.facebook.id%"
     form:
         resources:
             - ':Form:field.html.twig'
