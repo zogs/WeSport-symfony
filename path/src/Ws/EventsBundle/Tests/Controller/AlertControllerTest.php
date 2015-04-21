@@ -153,6 +153,7 @@ class AlertControllerTest extends WebTestCase
 
 		$crawler = $this->client->request('DELETE',$this->router->generate('ws_alerts_delete',array('alert'=>$id)));
 
+		$this->client->followRedirect();
 		$this->assertEquals('Ws\EventsBundle\Controller\AlertController::indexAction',$this->client->getRequest()->attributes->get('_controller'));	
 
 	}
