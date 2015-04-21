@@ -13,5 +13,9 @@ parameters:
     mailer_encryption: tls
     locale: fr
     secret: WeSportIsTheEasierWayToDoSport
+    old_database_name: wesport
+    old_database_user: root
+    old_database_password: null
+    old_database_host: 127.0.0.1
     oauth.facebook.id: 153720748148187
     oauth.facebook.secret: 7a181d394b1f1dab0054176f9031a637
