@@ -14,7 +14,7 @@
 				{% set message = error.messageKey|trans(error.messageData, 'security') %}
 				{% include 'MyFlashBundle:Notifications:one.html.twig' with {'type':'error', 'message':message, 'animated':true} %}			    
 			{% elseif app.user %}
-				{% include 'MyFlashBundle:Notifications:one.html.twig' with {'type':'success', 'message': "Vous êtes déjà connecté !", 'animated':false } %}
+				{% include 'MyFlashBundle:Notifications:one.html.twig' with {'type':'success', 'message': "Vous êtes connecté !", 'animated':false } %}
 			{% endif  %}
 		</div>
 
