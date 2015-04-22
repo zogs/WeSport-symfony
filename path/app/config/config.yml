@@ -238,7 +238,7 @@ fos_comment:
 #Sonata admin-bundle
 sonata_admin:
     title: Jeveuxdusport.com
-    title_logo: /web/bundles/wsstyle/images/LOGOBRAND.png
+    title_logo: /bundles/wsstyle/images/LOGOBRAND.png
     templates:
         layout: MyUtilsBundle:Administration:standard_layout.html.twig
         search:              SonataAdminBundle:Core:search.html.twig
