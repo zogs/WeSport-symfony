@@ -135,6 +135,7 @@ doctrine:
                         DAY: My\UtilsBundle\DQL\Day
                         MONTH: My\UtilsBundle\DQL\Month
                         YEAR: My\UtilsBundle\DQL\Year
+                        DATE: My\UtilsBundle\DQL\Date
 
 
 # Doctrine Extension Bundle Configuration
@@ -236,8 +237,8 @@ fos_comment:
 
 #Sonata admin-bundle
 sonata_admin:
-    title: coSporturage
-    title_logo: /web/bundles/wsstyle/img/LOGO.gif
+    title: Jeveuxdusport.com
+    title_logo: /web/bundles/wsstyle/images/LOGOBRAND.png
     templates:
         layout: MyUtilsBundle:Administration:standard_layout.html.twig
         search:              SonataAdminBundle:Core:search.html.twig
