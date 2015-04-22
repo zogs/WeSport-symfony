@@ -328,8 +328,8 @@ class EventRepository extends EntityRepository
 		$qb = $this->createQueryBuilder('e');
 
 		$qb->select('e')
-		->andWhere('DAY(e.date_depot) = DAY(:day)')
-		->setParameter('day',$date)
+		->andWhere('DATE(e.date_depot) = DATE(:date)')
+		->setParameter('date',$date)
 		;
 		
 		return $qb->getQuery()->getResult();

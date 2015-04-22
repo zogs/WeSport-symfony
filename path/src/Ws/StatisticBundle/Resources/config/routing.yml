@@ -4,8 +4,12 @@ ws_statistic_homepage:
 
 ws_statistic_update:
     pattern: /update/{scope}
-    defaults: { _controller: WsStatisticBundle:Default:update , scope:general }
+    defaults: { _controller: WsStatisticBundle:Default:update , scope:global }
+
+ws_statistic_update_globals:
+    pattern: /update_globals/
+    defaults: { _controller: WsStatisticBundle:Default:updateGlobals }
 
 ws_statistic_show:
     pattern: /show/{scope}/{id}
-    defaults: { _controller: WsStatisticBundle:Default:show , scope:general }
+    defaults: { _controller: WsStatisticBundle:Default:show , scope:global }
