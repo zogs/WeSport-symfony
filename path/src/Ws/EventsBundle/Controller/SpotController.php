@@ -63,6 +63,7 @@ class SpotController extends Controller
 		            $spots[$k]['city'] = $spot->getLocation()->getCity()->getName();
 		            $spots[$k]['address'] = $spot->getAddress();
 		            $spots[$k]['country'] = $spot->getCountryCode();
+		            $spots[$k]['slug'] = $spot->getSlug();
 		            $spots[$k]['id'] = $spot->getId();
 		            $spots[$k]['token'] = $spot->getSlug();
 

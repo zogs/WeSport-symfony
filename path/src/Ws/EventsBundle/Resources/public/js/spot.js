@@ -34,7 +34,7 @@ $(document).ready(function() {
 			},
 			{
 			name: 'spot'+index,
-			displayKey: function(datum) { return datum.city+' '+datum.name },
+			displayKey: function(datum) { return datum.slug },
 			source: spots_loader.ttAdapter(),
 			templates: {
 				empty : template_empty,

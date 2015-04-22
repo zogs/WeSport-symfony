@@ -38,7 +38,7 @@ class Spot
     private $address = '';
 
     /**
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
      */
     private $slug = '';
 
@@ -59,7 +59,7 @@ class Spot
     public function createSlug()
     {        
         $this->slug = $this->getLocation()->getCity()->getName().' ';
-        $this->slug .= $this->getName().' ';
+        if($this->hasName()) $this->slug .= $this->getName().' ';
         $this->slug .= $this->getAddress();        
     }
 
@@ -130,6 +130,16 @@ class Spot
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Has name
+     *
+     * @return bool 
+     */
+    public function hasName()
+    {
+        return (empty($this->name))? true : false;
     }
 
     /**
