@@ -61,6 +61,8 @@ class Spot
         $this->slug = $this->getLocation()->getCity()->getName().' ';
         if($this->hasName()) $this->slug .= $this->getName().' ';
         $this->slug .= $this->getAddress();        
+
+        return $this->slug;
     }
 
     /**

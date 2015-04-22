@@ -47,6 +47,7 @@ class EventsCaller extends LocationCaller
 
 	public function setSpot($location_fields)
 	{		
+
 		$spot = new \Ws\EventsBundle\Entity\Spot();
 
 		$spot->setAddress($this->entry['address']);
@@ -56,6 +57,12 @@ class EventsCaller extends LocationCaller
 		if($location->hasCity() === false) return '_skip_';
 		
 		$spot->setLocation($location);
+
+		//check if the slug already exist in the database, and return the existing spot if true
+		$slug = $spot->createSlug();
+		if(null !== $existing_spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($slug)){
+			return $existing_spot;
+		}
 
 		return $spot;
 	}
