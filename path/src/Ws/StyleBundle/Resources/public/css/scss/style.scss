@@ -577,6 +577,8 @@ img.user-avatar-big {
 		background-position-y: 10px;
 		background-repeat-y: no-repeat;
 		@include opacity(0.5);
+		z-index:0;
+		pointer-events: none;
 	}
 }
 
@@ -672,8 +674,8 @@ img.user-avatar-big {
 .calendar-form-row-main { 
 	height:inherit;
 	vertical-align: middle;
-	height:62px;
 	line-height: 40px;
+	padding-bottom: 15px;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.30);
 	label {
 		position:relative;
@@ -682,19 +684,25 @@ img.user-avatar-big {
 }
 
 .calendar-form-cell-left {
-	float:left;
+	display:inline-block;
 	height:inherit;
-	width:50%; 
+	width:49%; 
 	padding-right:80px;	
+	vertical-align: top;
 	text-align:right; 
 }
 
 .calendar-form-cell-right {
-	float:right;
+	display:inline-block;
 	height:inherit;
 	width: 50%;
-	padding-left:80px;
+	padding-left:100px;
+	vertical-align: top;
 	text-align: left;
+
+	.actions {
+		display:inline-block;
+	}
 }
 
 a.calendar-action:link,a.calendar-action:active,a.calendar-action:visited {
@@ -721,9 +729,11 @@ a.calendar-action:hover {
 
 .calendar-form-row-options {
 	position:absolute;
+	top: -100px;
 	width:100%;
-	padding:0 10%;
+	padding:10px 0 0 0;
 	z-index:1000;
+
 }
 
 
@@ -870,12 +880,6 @@ a.calendar-action:hover {
 }
 
 .calendar-form-row-main .calendar-form-cell-right { 
-	width:50%; 
-	padding-left:80px;
-	height:inherit; 
-	text-align:left;
-	position: relative;
-
 
 	.tt-dropdown-menu {
 		width:300px;
@@ -911,10 +915,9 @@ a.calendar-action:hover {
 .calendar-form-row-options {
 
 	@include transition(all 0.5s ease-in-out);		
-	top:60px;
 	@include opacity(0);
 	&.open {
-		top:80px;
+		top:0px;
 		@include opacity(1);
 	}
 
@@ -1037,78 +1040,8 @@ a.calendar-action:hover {
 	vertical-align: top;
 }
 
-.calender-sports-choices {
-
-	display:none;
-
-
-	width:100%;
-	position: relative;	
-	top:-111px;	
-	height:0px;
-	text-align:center;
-
-	.sport-choice {
-		display:inline-block;
-		position:relative;
-
-		input[type=checkbox] {
-			position: absolute;
-			top:0;
-			left:0;
-			visibility: hidden;
-		}
-		input:checked ~ label.sport-label {
-				
-			@include opacity(0.5);
-
-		}
-		label.sport-label {
-			display:inline-block;
-			top:0;
-			left:0;
-			position: relative;
-			background-color: #FFF;
-			border:5px solid #FFF; 
-			@include rem(60);
-			@include opacity(0.1);
-			@include border-radius(100px);
-			@include transition(0.2s ease);				
-			@include rotate3d(0, 0, 0, 0deg); /* activation de l'AM */
-
-			
-		}
-		
-		span.icon-delete { 
-			display:none;
-			position:relative;
-			top:-60px;
-			left:-55px;
-			color:red;
-			width:0px;
-			@include opacity(0.7);
-			@include rem(30);
-			pointer-events:none;
-		}
-
-		&:hover {
-				
-			label.sport-label {
-				top:-20px;		
-				@include rotate(360deg);
-				@include opacity(1);		
-				
-			}	
-			span.icon-delete {
-				display:inline-block;
-			}			
-		}
-	}
-	
-}
-
 .previousWeek{
-	width: 10%;
+	width: 12%;
 	border-spacing:0px;
 	padding-top:15px;	
 	text-align: center;
@@ -1162,7 +1095,7 @@ a.calendar-action:hover {
 }
 
 .calendar-arianne{
-	width: 80%;
+	width: 75%;
 	padding:0 0 0 50px;
 	color:#FFF;
 	font-size:12px;
@@ -1176,13 +1109,13 @@ a.calendar-action:hover {
 
 	//blue left arrow
 	&:before{
-		content:''; display: block; position:absolute; top:0; left:-40px; z-index:1;
+		content:''; display: block; position:absolute; top:0; left:-43px; z-index:1;
 		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-right:40px solid $darkblue;		
 	}
 	
 	//blue right arrow
 	&:after{
-		content:''; display: block; position:absolute; top:0; right:-40px; z-index:1;
+		content:''; display: block; position:absolute; top:0; right:-52px; z-index:1;
 		border-top: 40px solid transparent; border-bottom: 40px solid transparent; border-left:40px solid $darkblue; 
 	}
 }
@@ -1233,52 +1166,9 @@ a.calendar-action:hover {
 	to { background-position: -100% 0; }
 }
 
-.calendar-event-type {
-	width: 25%;
-	margin-top:10px;
-
-	.typeChoice {
-		display:inline-block;
-		vertical-align: middle;
-		margin:6px 0 0 5px;
-		position:relative;
-
-		input[type=checkbox]{
-			position: absolute;
-			top:0;
-			left:0;
-			visibility: hidden;
-		}
-	}
-
-	label.typeLabel {
-		position: relative;
-		color:#5c7f92;
-		padding:10px 25px;
-		background-color:#2a4e59;
-		@include border-radius(4px);
-		@include rem(14);
-		@include long-shadow(box,#0f313b,6,false,false,right); 
-	}
-	label.typeLabel:hover{
-		color:$lightblue;
-	}
-	.typeChoice input:checked ~ label.typeLabel {
-		top:-2px;
-		background-color: #385f6b;
-		color:$lightblue;
-		@include long-shadow(box,$lightblue,6,false,false,right); 
-	}
-	.typeChoice input:active ~ label.typeLabel {
-		top:2px;
-		color:$lightblue;
-		@include long-shadow(box,$lightblue,3,false,false,right); 
-	}
-		
-}
 
 .nextWeek{
-	width: 10%;
+	width: 12%;
 	float:right;
 	border-spacing:0px;
 	text-align: center;
