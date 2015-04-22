@@ -10,11 +10,12 @@
 						<span class="alert-message">
 							<span class="alert-icon ws-icon-{{ icons[type] }} "></span>
 							{{ message|raw }}
-						</span>        							
+							<button class="close" onclick="javascript: $(this).parents('.alert-ws').fadeOut(500).addClass('alert-hide');"><span class="ws-icon-close"></span> Fermer</button>							
+						</span>    
 					</td>
 				</tr>
 			</table>	
-			<button class="close" onclick="javascript: $(this).parent().fadeOut(500);"><span class="ws-icon-close"></span></button>
+			<button class="close" onclick="javascript: $(this).parents('.alert-ws').fadeOut(500).addClass('alert-hide');"><span class="ws-icon-close"></span></button>
 			<div class="alert-progress"></div>					
 		</div>
 	</div>
