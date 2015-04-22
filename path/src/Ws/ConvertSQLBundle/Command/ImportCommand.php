@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConvertCommand extends ContainerAwareCommand
+class ImportCommand extends ContainerAwareCommand
 {
 
 	private $errors = array();
@@ -17,26 +17,33 @@ class ConvertCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('database:convert')
-            ->setDescription('Converti une table SQL en table Doctrine')
+            ->setName('database:import:mysql')
+            ->setDescription('Importe une table SQL')
+            ->addArgument('database', InputArgument::REQUIRED, 'Which table ?')
             ->addArgument('table', InputArgument::OPTIONAL, 'Which table ?')
-            ->addOption('all', null, InputOption::VALUE_NONE, 'Convert all tables')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'Import all tables')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $database = $input->getArgument('database');
         
         if(true == $input->getOption('all')){
 
-            $this->executeAllTables($output);
+            $this->executeAllTables($output,$database);
 
         }
         else {
             $table = $input->getArgument('table');
             if($table){
-            	$this->executeOneTable($output,$table);
-            }            
+            	$this->executeOneTable($output,$database,$table);
+            }   
+            else {
+                $dialog = $this->getHelperSet()->get('dialog');
+                $table = $dialog->ask($output, 'Enter the table name: ');
+                $this->executeOneTable($output,$database,$table);
+            }         
         }
 
         $this->displayErrors($output);
@@ -64,12 +71,12 @@ class ConvertCommand extends ContainerAwareCommand
 		}    	
     }
         
-    protected function executeOneTable(OutputInterface $output, $table)
+    protected function executeOneTable(OutputInterface $output, $database, $table)
     {
     	if($table){
 
 	        $converter = $this->getContainer()->get('ws_table_converter');
-			$converter->importConfig();   
+			$converter->importConfig($database);   
             $converter->setOutput($output);
 
 			$results = $converter->convertOne($table);  
@@ -80,10 +87,10 @@ class ConvertCommand extends ContainerAwareCommand
         
     }
 
-    protected function executeAllTables(OutputInterface $output)
+    protected function executeAllTables(OutputInterface $output, $database)
     {
         $converter = $this->getContainer()->get('ws_table_converter');
-        $converter->importConfig();   
+        $converter->importConfig($database);   
         $converter->setOutput($output);
 
         $results = $converter->convertAll();  

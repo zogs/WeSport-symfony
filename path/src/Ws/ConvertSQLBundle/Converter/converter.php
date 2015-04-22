@@ -20,13 +20,14 @@ class Converter
 	private $output;
 	private $callback = null;
 
-	public function __construct($db,EntityManager $em,Container $container)
+	public function __construct($db,EntityManager $em,Container $container, $configpath = null)
 	{
 		$this->db = $db;
 		$this->em = $em;
 		$this->container = $container;
 		$this->yaml = new Parser();
 		$this->output = new NullOutput();
+		$this->configpath = (isset($configpath))? $configpath : __DIR__.'/../Resources/config';
 	}
 
 	/**
@@ -45,11 +46,10 @@ class Converter
 	 * @param string $path the relative path to the yml conf file
 	 * @return class $this
 	 */
-	public function importConfig($path = null)
-	{		
-		$path = (isset($path))? $path : __DIR__.'/../Resources/config/tables.yml';
+	public function importConfig($base)
+	{				
 
-		$mainConfig = $this->yaml->parse(file_get_contents($path));
+		$mainConfig = $this->yaml->parse(file_get_contents($this->configpath.'/'.$base.'.yml'));
 
 		foreach ($mainConfig['tables'] as $entityName => $tableName) {
 			

@@ -171,7 +171,7 @@ class User extends BaseUser
      */
     public function setCreatedAtValue()
     {
-        $this->register_since = new \DateTime();
+        if(empty($this->register_since)) $this->register_since = new \DateTime();
     }
 
 
