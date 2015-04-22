@@ -27,6 +27,12 @@ class TruncateCommand extends ContainerAwareCommand
     {
         $database = 'default';        
 
+        //ask for confirmation
+        $dialog = $this->getHelperSet()->get('dialog');
+        if (!$dialog->askConfirmation($output, '<question>Do you really want to lost all these data ? (no)</question>', false)) {
+            return;
+        }
+
         if ($input->hasArgument('database')) {
             $database = $input->getArgument('database');            
         }
