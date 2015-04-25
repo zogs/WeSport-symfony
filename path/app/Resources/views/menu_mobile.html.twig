@@ -9,7 +9,7 @@
 	<div id="mmenu">								
 		<ul>
 			<li><a href="{{ path('ws_calendar') }}"><span class="ws-icon ws-icon-calendar2"></span> Calendrier</a></li>
-			<li><a href="{{ path('ws_event_new') }}"><span class="ws-icon ws-icon-stopwatch"></span> Créer</a></li>
+			<li><a href="{{ path('ws_event_create') }}"><span class="ws-icon ws-icon-stopwatch"></span> Créer</a></li>
 			
 			
 
@@ -26,6 +26,7 @@
 					<li><a href="{{ path('fos_user_profile_edit') }}?action=mailing">Mailing</a></li>
 				</ul>
 			</li>
+			<li><a href="{{ path('ws_event_index') }}"><span class="ws-icon ws-icon-volley"></span> Mes activités</a></li>
 			<li><a href="{{ path('ws_alerts_index') }}"><span class="ws-icon ws-icon-alarm"></span> Mes alertes</a></li>							
 			<li><a href="{{ path('fos_user_security_logout') }}"><span class="mm-icon ws-icon-exit"></span> Déconnexion</a></li>
 			{% else %}

@@ -26,9 +26,13 @@ use Ws\StatisticBundle\Entity\UserStat;
 
 class EventController extends Controller
 {
-	public function indexAction($name)
+	public function indexAction()
 	{
-		return $this->render('WsEventsBundle:Event:index.html.twig', array('name' => $name));
+		if(null == $this->getUser()) throw new AccessDeniedException();
+		
+		$series = $this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Serie')->findSeriesToComeByUser($this->getUser());
+		
+		return $this->render('WsEventsBundle:Event:index.html.twig', array('series' => $series));
 	}	
 	
 	/**
@@ -158,7 +162,7 @@ class EventController extends Controller
 
 		$this->get('flashbag')->add("L'activité a été supprimé !");
 
-		return $this->redirect($this->generateUrl("ws_event_new"));     
+		return $this->redirect($this->generateUrl("ws_event_create"));     
 	}
 
 
@@ -187,7 +191,7 @@ class EventController extends Controller
 		
 		$this->get('flashbag')->add("Tous les événements ont été supprimés !",'success');
 
-		return $this->redirect($this->generateUrl("ws_event_new")); 
+		return $this->redirect($this->generateUrl("ws_event_create")); 
 
 	}
 

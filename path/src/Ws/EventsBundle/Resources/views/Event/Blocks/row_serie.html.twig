@@ -1,0 +1,26 @@
+<tr class="row-event">
+	<td class="cell-status">
+		<span class="ws-icon ws-icon-{{ serie.events[0].sport.icon }}"></span>
+	</td>
+	<td>
+		{{ serie.events[0].title }}
+	</td>
+	<td>
+		{{ serie.events|length }} dates
+		<br>
+		<a href="">Ouvrir</a>
+	</td>
+
+	<td class='cell-action'>
+		<p>
+			<a class="btn btn-mini" href="{{ path('ws_event_view',{event:serie.events[0].id,slug:serie.events[0].slug}) }}">Voir</a>
+		</p>
+		<p>
+			<a class="btn btn-mini" href="{{ path('ws_event_edit',{event:serie.events[0].id}) }}" rel="nofollow">Modifier</a>
+		</p>
+		<p>
+			<a class="btn btn-mini" href="{{ path('ws_event_delete',{event:serie.events[0].id,token:csrf_token('event_delete')}) }}">Supprimer</a>
+		</p>	
+		
+	</td>
+</tr>

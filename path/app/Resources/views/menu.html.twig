@@ -9,7 +9,7 @@
 
             <li><a href="{{ path('ws_calendar') }}"><span class="ws-icon ws-icon-calendar2"></span> Calendrier</a></li>
 
-            <li class="createbutton"><a href="{{ path('ws_event_new') }}"><span class="ws-icon ws-icon-stopwatch"></span> Créer</a></li>
+            <li class="createbutton"><a href="{{ path('ws_event_create') }}"><span class="ws-icon ws-icon-stopwatch"></span> Créer</a></li>
 
              {{ render(controller('MyPageBundle:Menu:TopMenu', {
                 'max': 3
@@ -31,6 +31,7 @@
 
                 <ul class="dropdown-menu">
                     <li><a href="{{ path('fos_user_profile_edit', {action:'account' }) }}"><span class="ws-icon ws-icon-home"></span> Mon compte</a></li>
+                    <li><a href="{{ path('ws_event_index') }}"><span class="ws-icon ws-icon-volley"></span> Mes activités</a></li>
                     <li><a href="{{ path('ws_alerts_index') }}"><span class="ws-icon ws-icon-alarm"></span> Mes alertes</a></li>
                     {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ path('sonata_admin_dashboard') }}"><span class="ws-icon ws-icon-cog"></span> Administration</a></li>

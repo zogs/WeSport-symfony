@@ -1,10 +1,13 @@
 #EVENTS
+ws_event_index:
+    pattern: /all
+    defaults: { _controller: WsEventsBundle:Event:index }
 ws_event_view:
     pattern: /view/{event}/{slug}
     defaults: { _controller: WsEventsBundle:Event:view }
     requirements:
         event: \d+
-ws_event_new:
+ws_event_create:
     pattern: /create
     defaults: { _controller: WsEventsBundle:Event:create }
 ws_event_delete:

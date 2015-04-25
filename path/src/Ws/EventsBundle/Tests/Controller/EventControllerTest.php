@@ -41,7 +41,7 @@ class EventControllerTest extends WebTestCase
 	public function testCreate()
 	{
 		//crawl to formular
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_new'));
+		$crawler = $this->client->request('GET',$this->router->generate('ws_event_create'));
 		//get needed entities
 		$spots = $this->em->getRepository('WsEventsBundle:Spot')->findAll();
 		$sports = $this->em->getRepository('WsSportsBundle:Sport')->findAll();
@@ -78,7 +78,7 @@ class EventControllerTest extends WebTestCase
 	 */
 	public function testCreateErrors()
 	{
-		$crawler = $this->client->request('GET',$this->router->generate('ws_event_new'));
+		$crawler = $this->client->request('GET',$this->router->generate('ws_event_create'));
 
 		$now = new \Datetime('now');
 

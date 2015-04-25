@@ -16,6 +16,7 @@ use Ws\EventsBundle\Entity\Search;
 use My\WorldBundle\Entity\Country;
 use My\WorldBundle\Entity\City;
 use My\UserBundle\Entity\User;
+use Ws\SportsBundle\Entity\Sport;
 
 class CalendarManager extends AbstractManager
 {
@@ -457,9 +458,8 @@ class CalendarManager extends AbstractManager
 
     	//avoid doublon
     	$ids = array();
-
     	foreach ($sports as $k => $sport) {
-			if(in_array($sport->getId(), $ids)) unset($sports[$k]);
+			if($sport instanceof Sport && in_array($sport->getId(), $ids)) unset($sports[$k]);
 			$ids[] = $sport->getId();
     	}
 

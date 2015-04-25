@@ -2188,7 +2188,7 @@ table.list-table {
 	width:100%;
 	margin-bottom:100px;
 
-	tr.row-alert-active {
+	tr.row-active {
 		td{
 			background-color:#E8F4ED;
 		}	
@@ -2199,7 +2199,7 @@ table.list-table {
 			}
 		}	
 	}
-	tr.row-alert-pending {
+	tr.row-pending {
 		td{
 			background-color:#ECECEC;
 			@include opacity(0.8);
@@ -2211,7 +2211,7 @@ table.list-table {
 			}
 		}			
 	}
-	tr.row-alert-empty {
+	tr.row-empty {
 		td{
 			text-align:center;			
 			color:$lightblue;
@@ -2266,9 +2266,6 @@ table.list-table {
 		}
 	}
 
-	tr.row-alert-pendinf {
-
-	}
 }
 
 /*==== Alert Create======*/

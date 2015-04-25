@@ -1,1 +1,47 @@
-Hello {{ name }}!
+{% extends '::layout_centered.html.twig' %}
+
+{% block page_content %}
+
+    <div class="white-sheet index-event">         
+            <div class="head-sheet">        
+                <h1 class="title-sheet">
+                	<span class="ws-icon ws-icon-volley"></span>
+                   Mes activités
+                </h1>
+            </div>
+
+        <table class="list-table table-striped">
+
+		{% if series is not empty %}
+			{% for serie in series %}
+				{% if serie.events.count() == 1 %}
+					{% include 'WsEventsBundle:Event:Blocks/row_event.html.twig' with {'event':serie.events[0]} %}	
+				{% else %}
+					{% include 'WsEventsBundle:Event:Blocks/row_serie.html.twig' with {'serie':serie} %}	
+					{% for event in serie.events %}
+						{% include 'WsEventsBundle:Event:Blocks/row_event.html.twig' with {'event':event} %}	
+					{% endfor %}						
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			<tr class="row-empty row-pending">
+				<td colspan="4">
+					Pas encore d'activité...
+				</td>
+			</tr>
+		{% endif %}
+
+			<tr class="row-bottom">
+				<td colspan="4">
+					<a class="btn-ws btn-ws-big" href="{{ path('ws_event_create') }}">Créer une activité</a>						
+				</td>
+			</tr>
+
+         </table>
+
+        <div class="fresque"></div>
+    
+    </div>
+    
+{% endblock %}
+

@@ -1,0 +1,28 @@
+<tr class="row-event">
+	<td class="cell-status">
+		<span class="ws-icon ws-icon-{{ event.sport.icon }}"></span>
+	</td>
+	<td>
+		{{ event.title }}
+		<br>
+		<a class="btn btn-mini" href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}">Voir</a>
+		<a class="btn btn-mini" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier</a>
+		<a class="btn btn-mini" href="{{ path('ws_event_delete',{event:event.id,token:csrf_token('event_delete')}) }}">Supprimer</a>
+	</td>
+	<td>
+		{{ event.date|localizeddate('full','none',null,null,'eeee dd MMMM') }}
+	</td>
+
+	<td class='cell-action'>
+		<p>
+			<a class="btn btn-mini" href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}">Voir</a>
+		</p>
+		<p>
+			<a class="btn btn-mini" href="{{ path('ws_event_edit',{event:event.id}) }}" rel="nofollow">Modifier</a>
+		</p>
+		<p>
+			<a class="btn btn-mini" href="{{ path('ws_event_delete',{event:event.id,token:csrf_token('event_delete')}) }}">Supprimer</a>
+		</p>	
+		
+	</td>
+</tr>
