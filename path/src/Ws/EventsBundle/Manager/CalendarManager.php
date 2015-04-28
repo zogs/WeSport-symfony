@@ -628,7 +628,7 @@ class CalendarManager extends AbstractManager
     		if(preg_match('/^[0-9]{1}\:[0-9]{2}$/',$t)) return '0'.$t.':00';  
     		if(preg_match('/^[0-9]{1}\:[0-9]{1}$/',$t)) return '0'.$t.'0:00';
     		if(preg_match('/^[0-9]{2}\:[0-9]{1}$/',$t)) return $t.'0:00'; 
-    		throw new \Exception("Time is not in a proper format");  	    
+    		return null;    	
     	}
     	if(is_array($t)){
     		if(isset($t['hour']) && isset($t['minute'])) return $this->formatTime($t['hour'].':'.$t['minute']);
