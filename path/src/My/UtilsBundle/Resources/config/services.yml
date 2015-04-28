@@ -10,6 +10,12 @@ services:
         tags:
             - { name: form.type, alias: tags }
 
+#Profiler matcher
+    my_utils.profiler_matcher:
+        class: My\UtilsBundle\Profiler\Matcher
+        arguments: ["@security.context"]
+
+
 #Twig extension
     utils.twig.age_calculator:
         class: My\UtilsBundle\Twig\AgeCalculatorExtension

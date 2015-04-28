@@ -59,7 +59,7 @@ monolog:
             handler: swift_critical
         swift_critical:
             type: swift_mailer
-            from_email: ErrorLogger@cosporturage.fr
+            from_email: logger@jeveuxdusport.com
             to_email: %mailer.emails.debug%
             subject: Une erreur critique est survenue !
             level: info

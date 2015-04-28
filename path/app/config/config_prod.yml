@@ -4,6 +4,17 @@ imports:
 #framework:
 #    validation:
 #        cache: apc
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_prod.yml"
+        strict_requirements: true
+    profiler: 
+        only_exceptions: false
+        matcher: 
+            service: my_utils.profiler_matcher
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
 
 #doctrine:
 #    orm:
@@ -58,7 +69,7 @@ monolog:
             handler: swift_critical
         swift_critical:
             type: swift_mailer
-            from_email: logger@cosporturage.fr
+            from_email: logger@jeveuxdusport.com
             to_email: %mailer.emails.debug%
             subject: Une erreur critique est survenue !
             level: info
