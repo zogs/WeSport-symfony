@@ -2,7 +2,7 @@
 
 namespace My\UtilsBundle\Profiler;
 
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
@@ -10,18 +10,18 @@ use Symfony\Component\HttpFoundation\RequestMatcherInterface;
  * This class is used by Symfony configuration for displaying Profiler bar in production environnement
  * The matches method must return true for displaying the bar
  */
-class Matcher implements RequestMatcherInterface
+class AdminMatcher implements RequestMatcherInterface
 {
-	protected $securityContext;
+	protected $authorizationChecker;
 
 
-	public function __construct(SecurityContext $securityContext)
+	public function __construct(AuthorizationCheckerInterface $authorizationChecker)
 	{
-		$this->securityContext = $securityContext;
+		$this->authorizationChecker = $authorizationChecker;
 	}
 
 	public function matches(Request $request)
 	{				
-		return $this->securityContext->isGranted('ROLE_ADMIN');
+		return $this->authorizationChecker->isGranted('ROLE_ADMIN');
 	}
 }

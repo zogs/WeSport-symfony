@@ -12,8 +12,8 @@ services:
 
 #Profiler matcher
     my_utils.profiler_matcher:
-        class: My\UtilsBundle\Profiler\Matcher
-        arguments: ["@security.context"]
+        class: My\UtilsBundle\Profiler\AdminMatcher
+        arguments: ["@security.authorization_checker"]
 
 
 #Twig extension
