@@ -445,22 +445,19 @@ class CalendarManager extends AbstractManager
        	foreach ($sports as $i => $key) {
     		
     		if(is_numeric($key))
-    			$sport = $repo->findOneById($key);
+    			$sports[$i] = $repo->findOneById($key);
     		elseif(is_string($key))
-    			$sport = $repo->findOneBySlug($key);  
-    		elseif(is_array($key))
-    			$sport = $key;
-    		
-    		if(empty($sport) && $this->isFlashbagActive() ) $this->flashbag->add('Ce sport est inconnu au bataillon... '.$key.'??','error');
-
-    		$sports[$i] = $sport;  		      		
+    			$sports[$i] = $repo->findOneBySlug($key);  
+	      		
     	}        	
 
     	//avoid doublon
     	$ids = array();
     	foreach ($sports as $k => $sport) {
-			if($sport instanceof Sport && in_array($sport->getId(), $ids)) unset($sports[$k]);
-			$ids[] = $sport->getId();
+			if($sport instanceof Sport && $sport != null) {
+				if(in_array($sport->getId(),$ids)) unset($sports[$k]);
+				$ids[] = $sport->getId();
+			}			
     	}
 
     	$this->search->setSports($sports);
