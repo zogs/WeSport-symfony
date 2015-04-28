@@ -5,6 +5,7 @@ namespace Ws\EventsBundle\Manager;
 use Symfony\Component\Routing\RouterInterface;
 
 use Ws\EventsBundle\Entity\Event;
+use Ws\SportsBundle\Entity\Sport;
 
 class CalendarUrlGenerator {
 
@@ -163,7 +164,7 @@ class CalendarUrlGenerator {
 		if($this->search->hasSports()){			
 			$str = '';
 			foreach ($this->search->getSports() as $k => $sport) {
-				$str .= $sport->getSlug().'+';
+				if($sport instanceof Sport) $str .= $sport->getSlug().'+';
 			}	
 			$str = trim($str,'+');
 			return $str;				
