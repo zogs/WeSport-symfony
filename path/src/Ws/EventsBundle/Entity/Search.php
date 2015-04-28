@@ -296,7 +296,8 @@ class Search
     {
         $a = array();
         foreach ($this->sports as $k => $sport) {
-            $a[] = $sport->getId();
+            if($sport instanceof Sport) $a[] = $sport->getId();
+            else unset($this->sports[$k]);
         }
         return $a;
     }
