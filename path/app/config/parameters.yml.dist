@@ -2,20 +2,21 @@ parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
     database_port: null
-    database_name: cosporturage-sf
+    database_name: jeveuxdusport
     database_user: root
     database_password: null
     mailer_transport: smtp
-    mailer_host: smtp.we-sport.fr
-    mailer_user: contact@we-sport.fr
+    mailer_host: smtp.cosporturage.fr
+    mailer_user: contact@cosporturage.fr
     mailer_password: justdoit
     mailer_port: 587
     mailer_encryption: tls
     locale: fr
-    secret: WeSportIsTheEasierWayToDoSport
+    secret: vzjrevbnpzejcnzprjevbnzteb
     old_database_name: wesport
     old_database_user: root
     old_database_password: null
     old_database_host: 127.0.0.1
-    oauth.facebook.id: 153720748148187
+    oauth.facebook.id: '153720748148187'
     oauth.facebook.secret: 7a181d394b1f1dab0054176f9031a637
+    app.version: "2.0"
