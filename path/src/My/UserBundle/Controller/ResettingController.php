@@ -34,7 +34,7 @@ class ResettingController extends BaseController
         }
         */
        
-        if (null === $user->getConfirmationToken()) {
+        if (null === $user->getConfirmationToken() || $user->getConfirmationToken() === '') {
             /** @var $tokenGenerator \FOS\UserBundle\Util\TokenGeneratorInterface */
             $tokenGenerator = $this->container->get('fos_user.util.token_generator');
             $user->setConfirmationToken($tokenGenerator->generateToken());
