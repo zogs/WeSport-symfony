@@ -163,7 +163,7 @@ class InvitationController extends Controller
 		$this->getDoctrine()->getManager()->getRepository('WsEventsBundle:Invited')->denyParticipation($invited);
 
 		if($invited->isRegisteredUser())
-			$message = "Ok, merci d'avoir répondu. N'hésitez pas <a href=".$this->generateUrl('fos_user_registration_register').">à vous inscrire</a> il ya plein de sport sur coSporturage.fr";
+			$message = "Ok, merci d'avoir répondu. N'hésitez pas <a href=".$this->generateUrl('fos_user_registration_register').">à vous inscrire</a> il ya plein de sport sur Jeveuxdusport.com";
 		else 
 			$message = "Ok, merci d'avoir répondu. Vous voulez <a href=".$this->generateUrl('fos_user_security_login').">vous connecter ?</a>";
 		
@@ -203,7 +203,7 @@ class InvitationController extends Controller
 
 		$this->getDoctrine()->getManager()->getRepository('WsEventsBundle:InvitationBlacklist')->removeEmailsFromBlackList($emails);
 
-		$this->get('flashbag')->add('Bravo, vous pouvez maintenant recevoir des invitations de la part des membres de coSporturage.fr !');
+		$this->get('flashbag')->add('Bravo, vous pouvez maintenant recevoir des invitations de la part des membres de Jeveuxdusport.com !');
 
 		return $this->redirect($this->generateUrl('ws_calendar'));
 	}

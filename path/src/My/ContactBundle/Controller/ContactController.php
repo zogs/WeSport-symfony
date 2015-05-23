@@ -31,7 +31,7 @@ class ContactController extends Controller
                 $flashbag->add("Merci pour votre message, nous allons regarder ça avec attention !");                           
             }
             else {
-                $flashbag->add("Arf, on dirait que ça ne marche pas pour l'instant :/ ... Mais vous pouvez directement nous écrire contact@cosporturage.fr si vous voulez !",'error');
+                $flashbag->add("Arf, on dirait que ça ne marche pas pour l'instant :/ ... Mais vous pouvez directement nous écrire contact@jeveuxdusport.com si vous voulez !",'error');
             }            
         }
 

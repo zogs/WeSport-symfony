@@ -170,7 +170,7 @@ class Mailer
     public function sendAlertConfirmation(Alert $alert, User $user)
     {
         $email = $alert->getEmail();
-        $subject = "Vos alertes coSporturage sont prêtes !";
+        $subject = "Vos alertes sont prêtes !";
         $body = $this->templating->render('WsMailerBundle:Alerts:confirmation.html.twig',array(
             'alert'=>$alert,
             'user'=>$user,
@@ -186,7 +186,7 @@ class Mailer
     {
         $email = $alert->getEmail();
 
-        $subject = "Vos alertes coSporturage : ".count($events)." activités.";
+        $subject = "Vos alertes : ".count($events)." activités.";
 
         $body = $this->templating->render('WsMailerBundle:Alerts:alert.html.twig',array(
             'alert'=>$alert,

@@ -15,7 +15,7 @@ class Mailer implements MailerInterface
     protected $router;
     protected $templating;
 
-    public $expediteur = array('contact@cosporturage.fr' => 'coSporturage.fr');
+    public $expediteur = array('contact@jeveuxdusport.com' => 'Jeveuxdusport.com');
 
     public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, RouterInterface $router)
     {

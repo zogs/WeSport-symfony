@@ -1,5 +1,5 @@
 parameters:
-    mailer.emails.contact: ['guichardsim@gmail.com','contact@cosporturage.fr']
+    mailer.emails.contact: ['guichardsim@gmail.com','contact@jeveuxdusport.com']
     mailer.emails.debug: ['guichardsim@gmail.com']
     mailer.emails.statistic: ['guichardsim@gmail.com']
     mailer.sender.noreply: 'noreply@cosporturage.fr'
