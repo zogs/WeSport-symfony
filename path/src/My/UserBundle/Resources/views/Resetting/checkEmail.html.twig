@@ -2,21 +2,25 @@
 
 {% block page_content %}
 	
-	<div class="head-sheet">
-		<h1 class="title-sheet">
-			Réinitialiser mon mot de passe
-		</h1>
-	</div>
+	<div class="white-sheet">
+		
+		<div class="head-sheet">
+			<h1 class="title-sheet">
+				Réinitialiser mon mot de passe
+			</h1>
+		</div>
 
-	<div class="page-content">
-		<p>
-		{% trans_default_domain 'FOSUserBundle' %}
-		{{ 'resetting.check_email'|trans({'%email%': '<strong>'~email~'</strong>'}) }}
-		</p>	
-		<p>
-			<a href="{{ path('fos_user_resetting_request')}}">Je n'ai pas reçu d'email, je vais rentrer une nouvelle adresse.</a>
-		</p>
-	</div>	
+		<div class="page-content">
+			<p>
+			{% trans_default_domain 'FOSUserBundle' %}
+			{{ 'resetting.check_email'|trans({'%email%': '<strong>'~email~'</strong>'}) }}
+			</p>	
+			<p>
+				<a href="{{ path('fos_user_resetting_request')}}">Je n'ai pas reçu d'email, je vais rentrer une nouvelle adresse.</a>
+			</p>
+		</div>	
+		
+	</div>
 	
 
 {% endblock %}
