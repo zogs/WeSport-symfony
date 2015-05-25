@@ -1,7 +1,7 @@
 <div class="flash">
 {% for type,messages in notifications %}
 	{% for message in messages %}
-		{% include 'MyFlashBundle:Notifications:one.html.twig' with {'type':type, 'message':message, 'animated':false } %}
+		{% include 'MyFlashBundle:Notifications:one.html.twig' with {'type':type, 'message':message, 'animated':true } %}
 	{% endfor %}
 {% endfor %}	
 </div>
