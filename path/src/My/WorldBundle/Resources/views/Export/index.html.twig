@@ -1,0 +1,49 @@
+{% extends '::layout_centered.html.twig' %}
+
+
+{% block page_content %}
+
+<div class="white-sheet page-generic page-world-export">	
+
+	{{ form_start(form) }}
+	<table class="table">
+		
+		{% if file_url %}
+		<tr>
+			<td class="cell-info">
+				Le fichier SQL a été généré. <a href="{{ file_url }}">Cliquez ici pour le télécharger !</a>
+			</td>
+		</tr>
+		{% endif %}
+		
+		<tr>
+			<td colspan="4">Select countries you want to export:</td>
+		</tr>
+		<tr>
+			<td>
+				{% for country in form.countries.children %}
+			
+				<div style="display:inline-block;width:20%;height:20px;overflow:hidden;">{{ form_widget(country) }} {{ form_label(country,null,{'label_attr':{"style":"display:inline"}}) }}</div>
+
+				
+
+				{% endfor %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button type="submit" class="btn btn-primary">Export in SQL</button>
+			</td>
+		</tr>
+		
+	</table>
+
+	{{ form_end(form) }}
+</div>
+
+		
+
+
+{% endblock %}
+
+

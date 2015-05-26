@@ -33,3 +33,8 @@ services:
     world.locationip.service:
         class: My\WorldBundle\Controller\LocationFromIpController
         arguments: [@service_container]
+
+    world.exporter.sql:
+        class: My\WorldBundle\Export\SQLExporter
+        scope: request
+        arguments: [@request,%database_name%,%database_user%,%database_password%]

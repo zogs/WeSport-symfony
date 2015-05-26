@@ -23,6 +23,18 @@ class Configuration implements ConfigurationInterface
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('export')
+                    ->children()
+                        ->scalarNode('file_name')->end()
+                        ->scalarNode('file_path')->end()
+                        ->scalarNode('mysql_bin_path')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
 
         return $treeBuilder;
     }

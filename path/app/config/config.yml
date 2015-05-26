@@ -199,6 +199,13 @@ hwi_oauth:
             options:
                 display: popup
 
+#World Bundle
+my_world:
+    export:
+        file_name: world_dump_sql
+        file_path: D:\App\wamp\www\WeSport-symfony\path\web\
+        mysql_bin_path: D:/App/wamp/bin/mysql/mysql5.6.17/bin
+
 
 
 #Fos Comment bundle

@@ -32,6 +32,11 @@ my_world_location_nearest:
     requirements:
         _method: GET
 
+my_world_export:
+    pattern: /export
+    defaults: { _controller: MyWorldBundle:Export:index }
+    requirements:
+        _method: GET|POST
 
 my_world_autocompletecity:
     pattern: /city/autocomplete/{country}/{prefix}

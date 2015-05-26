@@ -27,5 +27,9 @@ class MyWorldExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('admin.yml');
+
+        // Once the services definition are read, get your service and add a method call to setConfig()
+        $ExporterServiceDefintion = $container->getDefinition( 'world.exporter.sql' );
+        $ExporterServiceDefintion->addMethodCall( 'setConfig', array( $config[ 'export' ] ) );
     }
 }
