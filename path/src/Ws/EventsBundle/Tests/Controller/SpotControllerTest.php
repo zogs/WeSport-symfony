@@ -67,7 +67,7 @@ class SpotControllerTest extends WebTestCase
 
 		$string = 'parc';
 		$suggestions = $this->em->getRepository('WsEventsBundle:Spot')->findSuggestions(20,$string,'FR');
-		$this->assertEquals(3,count($suggestions));
+		$this->assertEquals(2,count($suggestions));
 
 		$string = 'piscine';
 		$suggestions = $this->em->getRepository('WsEventsBundle:Spot')->findSuggestions(20,$string,'FR');

@@ -13,6 +13,7 @@ use My\WorldBundle\Entity\City;
 use My\UserBundle\Entity\User;
 use My\WorldBundle\Entity\Location;
 use Ws\EventsBundle\Entity\Event;
+use Ws\SportsBundle\Entity\Sport;
 
 /**
  * Search
