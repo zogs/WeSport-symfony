@@ -54,11 +54,14 @@ class EventController extends Controller
 		if($form->isValid()){
 
 			$event = $form->getData();	
-				
+			
 			if($event = $this->get('ws_events.manager')->saveAll($event)){
 
 				//set flash message
-				$this->get('flashbag')->add('Bravo, votre activité est en ligne !','success');
+				if($event->getSerie()->getOccurences()<=1)
+					$this->get('flashbag')->add('Bravo, votre activité est en ligne !','success');
+				else
+					$this->get('flashbag')->add('Bravo, vos activités sont en ligne ! Et voici la première... ','success');
 				
 				//throw event SERIE_CREATE
 				$this->get('event_dispatcher')->dispatch(WsEvents::SERIE_CREATE, new CreateEvents($event,$this->getUser())); 

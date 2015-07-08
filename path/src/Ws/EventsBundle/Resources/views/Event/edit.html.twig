@@ -1,22 +1,21 @@
 {% extends '::layout_centered.html.twig' %}
 
 {% block page_content %}
-
-    <div class="create-event">    
+    <div class="white-sheet create-event">    
         <div class="head-sheet">        
             <h1 class="title-sheet">
                 Modifier votre activité
             </h1>
             <a class="btn btn-mini" href="{{ path('ws_event_view',{event:event.id,slug:event.slug}) }}">Voir l'annonce</a>
              <a class="btn btn-mini" href="{{ path('ws_event_delete',{event:event.id,token:csrf_token('event_delete')}) }}">Supprimer l'annonce</a>
-             {% if event.serie.occurences > 1 %}<a class="btn btn-mini" href="{{ path('ws_serie_delete',{serie:event.serie.id,token:csrf_token('serie_delete')}) }}">Supprimer toute la série</a>{% endif %}
+             {% if event.serie.occurences > 1 %}<a class="btn btn-mini" href="{{ path('ws_serie_delete',{serie:event.serie.id,token:csrf_token('serie_delete')}) }}">Supprimer toute la série ({{ event.serie.occurences }} annonces)</a>{% endif %}
             <a class="btn btn-mini" href="{{ path('ws_event_create') }}">Créer une nouvelle activité</a>
         </div>
 
          {# include form block #}
         {% include 'WsEventsBundle:Event:form_template.html.twig' with {'form':form} %}
         {# /include #}
-    
+        <div class="fresque"></div>  
     </div>
     
 {% endblock %}

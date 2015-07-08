@@ -150,29 +150,6 @@ class Serie
     }
 
     /**
-     * Set nboccurence
-     *
-     * @param integer $nboccurence
-     * @return Serie
-     */
-    public function setNboccurence($nboccurence)
-    {
-        $this->nboccurence = $nboccurence;
-
-        return $this;
-    }
-
-    /**
-     * Get nboccurence
-     *
-     * @return integer 
-     */
-    public function getNboccurence()
-    {
-        return $this->nboccurence;
-    }
-
-    /**
      * Set occurences
      *
      * @param integer $occurences

@@ -141,7 +141,7 @@ class Spot
      */
     public function hasName()
     {
-        return (empty($this->name))? true : false;
+        return (empty($this->name))? false : true;
     }
 
     /**
@@ -208,8 +208,9 @@ class Spot
      * @return string 
      */
     public function getSlug()
-    {
-        return $this->slug;
+    {        
+        if(!empty($this->slug)) return $this->slug;
+        else return $this->createSlug();        
     }
 
     /**

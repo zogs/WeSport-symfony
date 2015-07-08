@@ -48,6 +48,10 @@ class EventManager extends AbstractManager
 		$event->setOrganizer($this->context->getToken()->getUser());
 		//set default title if empty
 		if($event->getTitle() == null) $event->setTitle($event->getSport()->getName());		
+		//get spot reference if spot already exist
+		if($spot = $this->em->getRepository('WsEventsBundle:Spot')->findOneBySlug($event->getSpot()->getSlug())) {
+			$event->setSpot($spot);			
+		}
 		//auto comfirm if nbmin <=1
 		if($event->getNbmin()<=1) $event->setConfirmed(true);
 
@@ -103,7 +107,7 @@ class EventManager extends AbstractManager
 			$this->saveEvent($occurence);
 		}
 		//save serie
-		$serie->setNboccurence(count($occurences));
+		$serie->setOccurences(count($occurences));
 		$serie->setOrganizer($this->context->getToken()->getUser());
 		$this->save($occurence,true);
 
