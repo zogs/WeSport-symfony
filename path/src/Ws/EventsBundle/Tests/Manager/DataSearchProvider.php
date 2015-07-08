@@ -21,7 +21,7 @@ class DataSearchProvider
 		$this->searchs['simple']->setType(array('asso','pro'));	
 		$this->searchs['simple']->setTimeStart($this->now);	
 		$this->searchs['simple']->setDayOfWeek(array('monday','wednesday'));
-		$this->searchs['simple']->setLevel(array('beginner','average'));
+		$this->searchs['simple']->setLevel(array('beginner'));
 
 		$this->searchs['complex'] = new Search();
 		$this->searchs['complex']->setCountry($this->em->getRepository('MyWorldBundle:Country')->findCountryByName('France'));
@@ -43,7 +43,7 @@ class DataSearchProvider
 		$this->searchs['full']->setPrice(50);
 		$this->searchs['full']->setTimeStart($this->now);	
 		$this->searchs['full']->setDayOfWeek(array('monday','wednesday','friday','sunday'));
-		$this->searchs['full']->setLevel(array('beginner','average','expert'));
+		$this->searchs['full']->setLevel(array('beginner','confirmed','expert'));
 
 		$this->searchs['organizer'] = new Search();
 		$this->searchs['organizer']->setOrganizer($this->em->getRepository('MyUserBundle:User')->findOneByUsername('admin'));

@@ -151,7 +151,6 @@ class Event
     static public $valuesAvailable = array(
         'level' => array(
             'beginner'=>'beginner',
-            'average'=>'average',
             'confirmed'=>'confirmed',
             'expert'=>'expert',
             ),

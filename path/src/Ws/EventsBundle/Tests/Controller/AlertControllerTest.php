@@ -65,7 +65,7 @@ class AlertControllerTest extends WebTestCase
 			'alert[duration]' => 6,
 			'alert[email]' => 'test@local.host',
 			'alert[search][sports]' => $sports,
-			'alert[search][level]' => array('beginner','average','confirmed','expert'), 
+			'alert[search][level]' => array('beginner','confirmed','expert'), 
 			'alert[search][type]' => array('person','pro','asso'),
 			'alert[search][price]' => 0, 
 			'alert[search][location][city_name]' => 'Dijon', 

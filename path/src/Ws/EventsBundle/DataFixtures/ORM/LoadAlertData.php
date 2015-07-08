@@ -22,7 +22,7 @@ class LoadAlertData extends AbstractFixture implements OrderedFixtureInterface
 		$search1->setPrice(5);
 		$search1->setType(array('person','asso','pro'));	
 		$search1->setDayOfWeek(array('monday','tuesday','wednesday','thursday','friday','saturday','sunday'));
-		$search1->setLevel(array('beginner','average','confirmed'));
+		$search1->setLevel(array('beginner','confirmed'));
 
 		$alert1 = new Alert();
 		$alert1->setUser($this->getReference('user1'));
@@ -48,7 +48,7 @@ class LoadAlertData extends AbstractFixture implements OrderedFixtureInterface
 		$search2->setNbDays(4);
 		$search2->setPrice(5);
 		$search2->setTimeEnd($today);
-		$search2->setLevel(array('beginner','average','expert'));
+		$search2->setLevel(array('beginner','expert'));
 
 
 		$alert2 = new Alert();
