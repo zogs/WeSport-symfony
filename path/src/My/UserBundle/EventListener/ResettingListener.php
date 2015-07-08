@@ -18,6 +18,7 @@ class ResettingListener implements EventSubscriberInterface
   private $em;
   private $router;
   private $flashbag;
+  private $user;
 
   public function __construct(EntityManager $em, UrlGeneratorInterface $router, $flashbag)
   {
@@ -35,23 +36,23 @@ class ResettingListener implements EventSubscriberInterface
       );
   }
 
-  public function onResettingInitialize( FormEvent $event )
+  public function onResettingInitialize( GetResponseUserEvent $event )
   {
-
+    $this->user = $event->getUser();
   }
 
-  public function onResettingSuccess( FilterUserResponseEvent $event )
+  public function onResettingSuccess( FormEvent $event )
   {
+    $this->flashbag->add("Votre mot de passe a bien été changé et vous êtes maintenant connecté ! ");
+
+    $url = $this->router->generate('fos_user_profile_edit');
+
+    $event->setResponse(new RedirectResponse($url));
     
   }
 
-  public function onResettingCompleted( GetResponseUserEvent  $event )
+  public function onResettingCompleted( FilterUserResponseEvent $event )
   {
-    $this->flashbag->add("Et hop, mot de passe changé! C'est reparti! ");
-
-    $url = $this->router->generate('user_profil_view');
-
-    $event->setResponse(new RedirectResponse($url));
   }
 
   public function onRegistrationConfirmed( FilterUserResponseEvent $event )

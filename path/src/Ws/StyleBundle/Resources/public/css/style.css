@@ -3257,7 +3257,7 @@ a.calendar-action:hover {
 
 /* line 2098, scss/style.scss */
 .register .form-register, .connexion .form-register {
-  margin: 0;
+  margin: 10px 0 0 0;
   padding: 0;
   padding-bottom: 100px;
   border-right: 1px solid #DDD;

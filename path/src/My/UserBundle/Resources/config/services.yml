@@ -74,6 +74,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    user_bundle.listener.resseting_password:
+        class: My\UserBundle\EventListener\ResettingListener
+        arguments: [@doctrine.orm.entity_manager,@router,@flashbag]
+        scope: container
+        tags:
+            - { name: kernel.event_subscriber }
+
     #Twig extension
     user.twig.link:
         class: My\UserBundle\Twig\UserProfilLinkExtension
