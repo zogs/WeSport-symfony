@@ -151,47 +151,10 @@ class AlertControllerTest extends WebTestCase
 		$alert = $this->em->getRepository('WsEventsBundle:Alert')->findOneByEmail('test@local.host');
 		$id = $alert->getId();
 
-		$crawler = $this->client->request('DELETE',$this->router->generate('ws_alerts_delete',array('alert'=>$id)));
+		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_delete',array('alert'=>$id)));
 
-		$this->client->followRedirect();
-		$this->assertEquals('Ws\EventsBundle\Controller\AlertController::indexAction',$this->client->getRequest()->attributes->get('_controller'));	
-
-	}
-
-	/**
-	 * Test if admin can send the alerts
-	 *
-	 
-	 public function testSendingDailyAlerts()
-	{
-		$client = static::createClient(array(),array(
-			'PHP_AUTH_USER' => 'admin',
-			'PHP_AUTH_PW' => 'pass',
-			));
-
-		//Try to send the daily alerts
-		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'daily')));
-		$this->assertTrue($crawler->filter('body:contains("daily alertes")')->count() >= 1);
-		
+		$this->assertEquals('Ws\EventsBundle\Controller\AlertController::deleteAction',$this->client->getRequest()->attributes->get('_controller'));	
 
 	}
-
-	/**
-	 * Test if admin can send the alerts
-	 *
-	
-	public function testSendingWeeklyAlerts()	
-	{
-		$client = static::createClient(array(),array(
-				'PHP_AUTH_USER' => 'admin',
-				'PHP_AUTH_PW' => 'pass',
-			));
-
-		//Try to send the weekly alerts
-		$crawler = $this->client->request('GET',$this->router->generate('ws_alerts_mailing',array('type'=>'weekly')));
-		$this->assertTrue($crawler->filter('body:contains("weekly alertes")')->count() >= 1);
-
-	}
-	*/
 	
 }

@@ -2188,7 +2188,7 @@ table.list-table {
 	width:100%;
 	margin-bottom:100px;
 
-	tr.row-active {
+	tr.row-alert-active {
 		td{
 			background-color:#E8F4ED;
 		}	
@@ -2199,7 +2199,7 @@ table.list-table {
 			}
 		}	
 	}
-	tr.row-pending {
+	tr.row-alert-pending {
 		td{
 			background-color:#ECECEC;
 			@include opacity(0.8);
@@ -2211,7 +2211,7 @@ table.list-table {
 			}
 		}			
 	}
-	tr.row-empty {
+	tr.row-alert-empty {
 		td{
 			text-align:center;			
 			color:$lightblue;
@@ -2326,7 +2326,11 @@ table.form-table {
 		}
 		&.field-sports {
 			.select2-container {
-				width: 300px;
+				.select2-choices {
+					.select2-search-field {
+						input[type=text] { min-width: 100px; }
+					}
+				}
 			}
 		}
 		&.field-city_name {

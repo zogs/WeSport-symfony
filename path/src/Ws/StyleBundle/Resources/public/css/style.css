@@ -3386,33 +3386,33 @@ table.list-table {
   margin-bottom: 100px;
 }
 /* line 2192, scss/style.scss */
-table.list-table tr.row-active td {
+table.list-table tr.row-alert-active td {
   background-color: #E8F4ED;
 }
 /* line 2195, scss/style.scss */
-table.list-table tr.row-active td.cell-status {
+table.list-table tr.row-alert-active td.cell-status {
   color: #006837;
 }
 /* line 2197, scss/style.scss */
-table.list-table tr.row-active td.cell-status span.ws-icon {
+table.list-table tr.row-alert-active td.cell-status span.ws-icon {
   color: #1a9850;
 }
 /* line 2203, scss/style.scss */
-table.list-table tr.row-pending td {
+table.list-table tr.row-alert-pending td {
   background-color: #ECECEC;
   opacity: 0.8;
   filter: alpha(opacity=80);
 }
 /* line 2207, scss/style.scss */
-table.list-table tr.row-pending td.cell-status {
+table.list-table tr.row-alert-pending td.cell-status {
   color: #888888;
 }
 /* line 2209, scss/style.scss */
-table.list-table tr.row-pending td.cell-status span.ws-icon {
+table.list-table tr.row-alert-pending td.cell-status span.ws-icon {
   color: #e3e2e2;
 }
 /* line 2215, scss/style.scss */
-table.list-table tr.row-empty td {
+table.list-table tr.row-alert-empty td {
   text-align: center;
   color: #95b9c4;
   font-size: 14px;
@@ -3420,13 +3420,13 @@ table.list-table tr.row-empty td {
   line-height: 50px;
 }
 /* line 2220, scss/style.scss */
-table.list-table tr.row-empty td span.ws-icon {
+table.list-table tr.row-alert-empty td span.ws-icon {
   color: #95b9c4;
   font-size: 40px;
   font-size: 4rem;
 }
 /* line 2222, scss/style.scss */
-table.list-table tr.row-empty td.cell-status {
+table.list-table tr.row-alert-empty td.cell-status {
   text-align: right;
 }
 /* line 2227, scss/style.scss */
@@ -3530,63 +3530,63 @@ table.form-table div.field-inline.field-price input {
 table.form-table div.field-inline.field-level select {
   width: 200px;
 }
-/* line 2328, scss/style.scss */
-table.form-table div.field-inline.field-sports .select2-container {
-  width: 300px;
+/* line 2331, scss/style.scss */
+table.form-table div.field-inline.field-sports .select2-container .select2-choices .select2-search-field input[type=text] {
+  min-width: 100px;
 }
-/* line 2333, scss/style.scss */
+/* line 2337, scss/style.scss */
 table.form-table div.field-inline.field-city_name .twitter-typeahead {
   top: -10px;
 }
-/* line 2335, scss/style.scss */
+/* line 2339, scss/style.scss */
 table.form-table div.field-inline.field-city_name .twitter-typeahead .tt-dropdown-menu {
   left: 3px;
   margin-top: 0;
 }
-/* line 2342, scss/style.scss */
+/* line 2346, scss/style.scss */
 table.form-table div.field-inline.field-timestart input, table.form-table div.field-inline.field-timeend input {
   width: 100px;
   position: relative;
 }
-/* line 2343, scss/style.scss */
+/* line 2347, scss/style.scss */
 table.form-table div.field-inline.field-timestart input:after, table.form-table div.field-inline.field-timeend input:after {
   content: 'h';
   position: absolute;
   right: -5px;
   top: 50%;
 }
-/* line 2353, scss/style.scss */
+/* line 2357, scss/style.scss */
 table.form-table div.field-inline .ui-dropdownchecklist {
   height: 40px;
 }
-/* line 2355, scss/style.scss */
+/* line 2359, scss/style.scss */
 table.form-table div.field-inline .ui-dropdownchecklist .ui-dropdownchecklist-selector {
   height: 40px;
   padding: 10px 10px 0 10px;
 }
-/* line 2362, scss/style.scss */
+/* line 2366, scss/style.scss */
 table.form-table div.field-inline .ui-dropdownchecklist .ui-state-hover {
   background-color: #3875D7;
 }
-/* line 2364, scss/style.scss */
+/* line 2368, scss/style.scss */
 table.form-table div.field-inline .ui-dropdownchecklist .ui-state-hover .ui-dropdownchecklist-text {
   color: #FFF;
 }
-/* line 2367, scss/style.scss */
+/* line 2371, scss/style.scss */
 table.form-table div.field-inline .twitter-typeahead {
   width: 300px;
 }
-/* line 2369, scss/style.scss */
+/* line 2373, scss/style.scss */
 table.form-table div.field-inline .twitter-typeahead input[type=text] {
   width: 100%;
 }
-/* line 2372, scss/style.scss */
+/* line 2376, scss/style.scss */
 table.form-table div.field-inline .select2-container .select2-choices {
   height: 40px !important;
   border: 1px solid #D8D7D7;
   background-image: none;
 }
-/* line 2376, scss/style.scss */
+/* line 2380, scss/style.scss */
 table.form-table div.field-inline .select2-container .select2-choices .select2-search-choice {
   background-color: #FFF;
   background-image: none;
@@ -3594,16 +3594,16 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   padding: 0 8px 0 12px;
   border: 1px dotted #D0D0D0;
 }
-/* line 2383, scss/style.scss */
+/* line 2387, scss/style.scss */
 table.form-table div.field-inline .select2-container .select2-choices .select2-search-choice div {
   margin: 2px 0;
 }
-/* line 2386, scss/style.scss */
+/* line 2390, scss/style.scss */
 table.form-table div.field-inline .select2-container .select2-choices .select2-search-choice .ws-icon-small {
   font-size: 25px;
   font-size: 2.5rem;
 }
-/* line 2391, scss/style.scss */
+/* line 2395, scss/style.scss */
 table.form-table div.field-inline .select2-container .select2-choices .select2-search-choice-close {
   top: 8px;
   opacity: 0.8;
@@ -3611,16 +3611,16 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
 }
 
 /*=== Twitter Typeahead ===*/
-/* line 2406, scss/style.scss */
+/* line 2410, scss/style.scss */
 .create-event .twitter-typeahead, .create-alert .twitter-typeahead {
   width: 100%;
 }
-/* line 2408, scss/style.scss */
+/* line 2412, scss/style.scss */
 .create-event .twitter-typeahead input[type=text], .create-alert .twitter-typeahead input[type=text] {
   width: 100%;
 }
 
-/* line 2412, scss/style.scss */
+/* line 2416, scss/style.scss */
 .tt-dropdown-menu {
   width: 100%;
   margin: 0;
@@ -3629,7 +3629,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   color: #888888;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-/* line 2420, scss/style.scss */
+/* line 2424, scss/style.scss */
 .tt-dropdown-menu .tt-info {
   padding: 3px 10px;
   font-family: inherit;
@@ -3639,12 +3639,12 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   font-size: 1rem;
   background-color: #FEFEFE;
 }
-/* line 2421, scss/style.scss */
+/* line 2425, scss/style.scss */
 .tt-dropdown-menu .tt-info-footer {
   text-align: right;
   font-family: inherit;
 }
-/* line 2422, scss/style.scss */
+/* line 2426, scss/style.scss */
 .tt-dropdown-menu .info-empty {
   padding: 20px 10px;
   font-size: 14px;
@@ -3659,14 +3659,14 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   background-image: repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.02) 50%);
   background-size: 100px 100px;
 }
-/* line 2423, scss/style.scss */
+/* line 2427, scss/style.scss */
 .tt-dropdown-menu .tt-suggestion {
   width: 100%;
   padding: 2px 3px 0px 30px;
   font-family: inherit;
   position: relative;
 }
-/* line 2423, scss/style.scss */
+/* line 2427, scss/style.scss */
 .tt-dropdown-menu .tt-suggestion:before {
   content: '';
   position: absolute;
@@ -3676,11 +3676,11 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-bottom: 5px solid transparent;
   border-left: 5px solid #888888;
 }
-/* line 2424, scss/style.scss */
+/* line 2428, scss/style.scss */
 .tt-dropdown-menu .tt-suggestion p {
   margin: 5px 0 0 0;
 }
-/* line 2425, scss/style.scss */
+/* line 2429, scss/style.scss */
 .tt-dropdown-menu .tt-name {
   font-size: 16px;
   font-size: 1.6rem;
@@ -3691,7 +3691,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   margin-bottom: 0;
   line-height: 100%;
 }
-/* line 2426, scss/style.scss */
+/* line 2430, scss/style.scss */
 .tt-dropdown-menu .tt-icon {
   font-size: 30px;
   font-size: 3rem;
@@ -3701,7 +3701,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   padding: 3px;
   border-radius: 100px;
 }
-/* line 2427, scss/style.scss */
+/* line 2431, scss/style.scss */
 .tt-dropdown-menu .tt-sub {
   font-size: 12px;
   font-size: 1.2rem;
@@ -3711,121 +3711,121 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   margin: 0;
   padding: 0;
 }
-/* line 2428, scss/style.scss */
+/* line 2432, scss/style.scss */
 .tt-dropdown-menu .tt-id {
   display: none;
 }
-/* line 2429, scss/style.scss */
+/* line 2433, scss/style.scss */
 .tt-dropdown-menu .tt-suggestion.tt-cursor {
   background-color: #F0F0F0;
 }
 
 /*==== Event Create======*/
-/* line 2442, scss/style.scss */
+/* line 2446, scss/style.scss */
 .create-event form {
   margin: 0;
 }
-/* line 2448, scss/style.scss */
+/* line 2452, scss/style.scss */
 .create-event table.form-table tr.form-row td:nth-child(1) {
   width: 50%;
   padding: 10px 0 2px 10%;
   vertical-align: top;
 }
-/* line 2449, scss/style.scss */
+/* line 2453, scss/style.scss */
 .create-event table.form-table tr.form-row td:nth-child(2) {
   width: 50%;
   padding: 10px 10% 2px 10px;
   vertical-align: middle;
 }
-/* line 2452, scss/style.scss */
+/* line 2456, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-error a.open-field, .create-event table.form-table tr.form-row td.cell-filled a.open-field {
   display: none;
 }
-/* line 2453, scss/style.scss */
+/* line 2457, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-error div.hidden, .create-event table.form-table tr.form-row td.cell-filled div.hidden {
   display: block;
 }
-/* line 2455, scss/style.scss */
+/* line 2459, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-optional {
   text-align: right;
   padding-top: 5px;
 }
-/* line 2461, scss/style.scss */
+/* line 2465, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-submit {
   text-align: center;
   padding: 30px 0 100px 0;
 }
-/* line 2463, scss/style.scss */
+/* line 2467, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public {
   padding-left: 0;
 }
-/* line 2465, scss/style.scss */
+/* line 2469, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public table {
   width: 100%;
 }
-/* line 2468, scss/style.scss */
+/* line 2472, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public table td {
   padding: 0;
   vertical-align: middle;
 }
-/* line 2469, scss/style.scss */
+/* line 2473, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public table td:nth-child(1) {
   width: 40%;
   text-align: right;
   padding-right: 5px;
 }
-/* line 2470, scss/style.scss */
+/* line 2474, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public table td:nth-child(2) {
   width: 20%;
   text-align: center;
 }
-/* line 2471, scss/style.scss */
+/* line 2475, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public table td:nth-child(3) {
   width: 40%;
   text-align: left;
   padding-left: 5px;
 }
-/* line 2474, scss/style.scss */
+/* line 2478, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public .switchButton {
   width: 200px;
 }
-/* line 2477, scss/style.scss */
+/* line 2481, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public .switchButton label {
   background: #95b9c4;
 }
-/* line 2478, scss/style.scss */
+/* line 2482, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public .switchButton label i {
   background: #ECECEC;
   border: 1px solid #D0D0D0;
 }
-/* line 2479, scss/style.scss */
+/* line 2483, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public .switchButton label i:before {
   content: 'Privé';
   color: #FFF;
 }
-/* line 2480, scss/style.scss */
+/* line 2484, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public .switchButton label i:after {
   display: none;
 }
-/* line 2481, scss/style.scss */
+/* line 2485, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public .switchButton input:checked ~ label {
   background-color: #aed580;
 }
-/* line 2482, scss/style.scss */
+/* line 2486, scss/style.scss */
 .create-event table.form-table tr.form-row td.cell-public .switchButton input:checked ~ label i:before {
   content: 'Public';
   left: -80%;
   color: #FFF;
 }
-/* line 2488, scss/style.scss */
+/* line 2492, scss/style.scss */
 .create-event table.form-table .field_row {
   position: relative;
 }
-/* line 2491, scss/style.scss */
+/* line 2495, scss/style.scss */
 .create-event table.form-table .field_row label {
   display: none;
 }
-/* line 2495, scss/style.scss */
+/* line 2499, scss/style.scss */
 .create-event table.form-table .field_row input, .create-event table.form-table .field_row select, .create-event table.form-table .field_row textarea {
   width: 100%;
   height: 50px;
@@ -3833,11 +3833,11 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-radius: 0px;
   border: 1px solid #D8D7D7;
 }
-/* line 2504, scss/style.scss */
+/* line 2508, scss/style.scss */
 .create-event table.form-table .field_row input:focus ~ label, .create-event table.form-table .field_row select:focus ~ label, .create-event table.form-table .field_row textarea:focus ~ label {
   display: none;
 }
-/* line 2508, scss/style.scss */
+/* line 2512, scss/style.scss */
 .create-event table.form-table .field_row input::-webkit-input-placeholder, .create-event table.form-table .field_row select::-webkit-input-placeholder, .create-event table.form-table .field_row textarea::-webkit-input-placeholder {
   font-weight: bold;
   font-style: italic;
@@ -3845,17 +3845,17 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   font-size: 16px;
   font-size: 1.6rem;
 }
-/* line 2515, scss/style.scss */
+/* line 2519, scss/style.scss */
 .create-event table.form-table .field_row textarea {
   padding-top: 12px;
   height: 70px;
 }
-/* line 2521, scss/style.scss */
+/* line 2525, scss/style.scss */
 .create-event table.form-table .field_row.field_sport .select2-container {
   width: 100%;
   margin-bottom: 10px;
 }
-/* line 2525, scss/style.scss */
+/* line 2529, scss/style.scss */
 .create-event table.form-table .field_row.field_sport .select2-container .select2-choice {
   height: 50px;
   padding: 3px 3px 2px 10px;
@@ -3865,68 +3865,68 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-radius: 0px;
   line-height: 40px;
 }
-/* line 2535, scss/style.scss */
+/* line 2539, scss/style.scss */
 .create-event table.form-table .field_row.field_sport .select2-container .select2-choice .select2-arrow {
   display: none;
 }
-/* line 2537, scss/style.scss */
+/* line 2541, scss/style.scss */
 .create-event table.form-table .field_row.field_sport .select2-container .select2-choice .select2-chosen .ws-icon {
   color: #296272;
 }
-/* line 2542, scss/style.scss */
+/* line 2546, scss/style.scss */
 .create-event table.form-table .field_row.field_sport .select2-results {
   background-color: red;
 }
-/* line 2547, scss/style.scss */
+/* line 2551, scss/style.scss */
 .create-event table.form-table .field_row.field_time select {
   width: 33%;
 }
-/* line 2550, scss/style.scss */
+/* line 2554, scss/style.scss */
 .create-event table.form-table .field_row.field_serie label {
   display: inline;
   font-size: 14px;
   font-size: 1.4rem;
 }
-/* line 2551, scss/style.scss */
+/* line 2555, scss/style.scss */
 .create-event table.form-table .field_row.field_serie input[type=checkbox] {
   width: auto;
   height: auto;
   margin: 0;
   margin-right: 10px;
 }
-/* line 2552, scss/style.scss */
+/* line 2556, scss/style.scss */
 .create-event table.form-table .field_row.field_serie .field_row {
   display: inline;
 }
-/* line 2553, scss/style.scss */
+/* line 2557, scss/style.scss */
 .create-event table.form-table .field_row.field_serie #event_serie {
   margin-top: 10px;
 }
-/* line 2556, scss/style.scss */
+/* line 2560, scss/style.scss */
 .create-event table.form-table .field_row.field_description textarea {
   height: 100px;
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 2563, scss/style.scss */
+/* line 2567, scss/style.scss */
 .create-event table.form-table .field_row.field_emails .bootstrap-tagsinput, .create-event table.form-table .field_row.field_content .bootstrap-tagsinput {
   display: block;
   width: 100% !important;
   border-radius: 0px;
   text-align: left;
 }
-/* line 2568, scss/style.scss */
+/* line 2572, scss/style.scss */
 .create-event table.form-table .field_row.field_emails .bootstrap-tagsinput .ws-tag, .create-event table.form-table .field_row.field_content .bootstrap-tagsinput .ws-tag {
   background-color: #EF9793;
   padding: 5px 10px;
   margin: 2px 0px;
 }
-/* line 2574, scss/style.scss */
+/* line 2578, scss/style.scss */
 .create-event table.form-table .field_row.field_emails .bootstrap-tagsinput input, .create-event table.form-table .field_row.field_content .bootstrap-tagsinput input {
   width: 100% !important;
   border: 0px solid #FFF;
 }
-/* line 2582, scss/style.scss */
+/* line 2586, scss/style.scss */
 .create-event table.form-table .field_row.field_error input, .create-event table.form-table .field_row.field_error select, .create-event table.form-table .field_row.field_error textarea {
   background-color: rgba(191, 78, 72, 0.21);
   background-image: -webkit-repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.02) 50%);
@@ -3936,17 +3936,17 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   background-image: repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.02) 50%);
   background-size: 100px 100px;
 }
-/* line 2586, scss/style.scss */
+/* line 2590, scss/style.scss */
 .create-event table.form-table .field_row.field_error input:focus, .create-event table.form-table .field_row.field_error select:focus, .create-event table.form-table .field_row.field_error textarea:focus {
   background-color: #FFF;
 }
-/* line 2590, scss/style.scss */
+/* line 2594, scss/style.scss */
 .create-event table.form-table .field_row.field_error ul {
   list-style: none;
   color: #ad251d;
   margin-left: 5px;
 }
-/* line 2597, scss/style.scss */
+/* line 2601, scss/style.scss */
 .create-event table.form-table .field_row .icon {
   position: absolute;
   left: -35px;
@@ -3957,19 +3957,19 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   opacity: 0.8;
   filter: alpha(opacity=80);
 }
-/* line 2607, scss/style.scss */
+/* line 2611, scss/style.scss */
 .create-event table.form-table div.form-info {
   color: #888888;
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 2611, scss/style.scss */
+/* line 2615, scss/style.scss */
 .create-event table.form-table div.hidden {
   display: none;
   visibility: visible;
   position: relative;
 }
-/* line 2612, scss/style.scss */
+/* line 2616, scss/style.scss */
 .create-event table.form-table a.open-field {
   font-weight: bold;
   font-style: italic;
@@ -3977,13 +3977,13 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 2618, scss/style.scss */
+/* line 2622, scss/style.scss */
 .create-event table.form-table a.close-field {
   position: absolute;
   top: 5px;
   right: -25px;
 }
-/* line 2622, scss/style.scss */
+/* line 2626, scss/style.scss */
 .create-event table.form-table a.close-field span {
   color: #888888;
   font-size: 18px;
@@ -3991,19 +3991,19 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   opacity: 0.3;
   filter: alpha(opacity=30);
 }
-/* line 2627, scss/style.scss */
+/* line 2631, scss/style.scss */
 .create-event table.form-table a.close-field:hover span {
   opacity: 0.9;
   filter: alpha(opacity=90);
 }
 
-/* line 2635, scss/style.scss */
+/* line 2639, scss/style.scss */
 .event-create-howto {
   padding: 15px 0 0 0;
   list-style: disc;
   counter-reset: li;
 }
-/* line 2639, scss/style.scss */
+/* line 2643, scss/style.scss */
 .event-create-howto li {
   margin-bottom: 15px;
   font-size: 13px;
@@ -4012,7 +4012,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   padding-left: 12px;
   color: #666;
 }
-/* line 2646, scss/style.scss */
+/* line 2650, scss/style.scss */
 .event-create-howto li:before {
   position: absolute;
   left: -20px;
@@ -4037,11 +4037,11 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
 /*======
 ==== Event View
 ======*/
-/* line 2669, scss/style.scss */
+/* line 2673, scss/style.scss */
 .view-event {
   margin-top: 40px;
 }
-/* line 2673, scss/style.scss */
+/* line 2677, scss/style.scss */
 .view-event .header-logo {
   position: absolute;
   left: 49%;
@@ -4068,7 +4068,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dddddd', endColorstr='#00ffffff',GradientType=0 );
   /* IE6-9 */
 }
-/* line 2688, scss/style.scss */
+/* line 2692, scss/style.scss */
 .view-event .header-logo div {
   background-color: white;
   padding: 25px;
@@ -4078,7 +4078,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   -o-border-radius: 200px;
   border-radius: 200px;
 }
-/* line 2694, scss/style.scss */
+/* line 2698, scss/style.scss */
 .view-event .header-logo:before {
   content: '';
   position: absolute;
@@ -4091,36 +4091,36 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   left: -5%;
   background: #3a5f69;
 }
-/* line 2705, scss/style.scss */
+/* line 2709, scss/style.scss */
 .view-event .header-logo .ws-icon {
   color: #315059;
   font-size: 100px;
   font-size: 10rem;
   text-shadow: 0px 0px 0 #e2e2e2,1px 1px 0 #e2e2e2,3px 3px 0 rgba(0, 0, 0, 0);
 }
-/* line 2714, scss/style.scss */
+/* line 2718, scss/style.scss */
 .view-event .content-header {
   position: relative;
   padding: 5px 0px 25px 10px;
 }
-/* line 2718, scss/style.scss */
+/* line 2722, scss/style.scss */
 .view-event .content-header table.event-header {
   width: 100%;
 }
-/* line 2721, scss/style.scss */
+/* line 2725, scss/style.scss */
 .view-event .content-header table.event-header td {
   text-align: center;
 }
-/* line 2722, scss/style.scss */
+/* line 2726, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta {
   text-align: left;
   width: 180px;
 }
-/* line 2725, scss/style.scss */
+/* line 2729, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta table {
   height: 100%;
 }
-/* line 2726, scss/style.scss */
+/* line 2730, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta td {
   text-align: left;
   font-family: Arial,sans-serif;
@@ -4128,19 +4128,19 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   padding-top: 6px;
   padding-bottom: 5px;
 }
-/* line 2727, scss/style.scss */
+/* line 2731, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta td.cell-day {
   font-size: 60px;
   font-size: 6rem;
   font-weight: bold;
 }
-/* line 2728, scss/style.scss */
+/* line 2732, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta td.cell-date {
   font-size: 18px;
   font-size: 1.8rem;
   font-transform: uppercase;
 }
-/* line 2729, scss/style.scss */
+/* line 2733, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta td.cell-time span.time {
   font-size: 22px;
   font-size: 2.2rem;
@@ -4149,34 +4149,34 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   font-weight: bold;
   padding: 4px 10px;
 }
-/* line 2730, scss/style.scss */
+/* line 2734, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta td.cell-time span.ws-icon {
   font-size: 25px;
   font-size: 2.5rem;
   color: #3a5f69;
   margin-left: 5px;
 }
-/* line 2731, scss/style.scss */
+/* line 2735, scss/style.scss */
 .view-event .content-header table.event-header td.cell-meta td.cell-city {
   font-size: 18px;
   font-size: 1.8rem;
   color: #888888;
   font-weight: bold;
 }
-/* line 2733, scss/style.scss */
+/* line 2737, scss/style.scss */
 .view-event .content-header table.event-header td.cell-title {
   padding-top: 22px;
 }
-/* line 2735, scss/style.scss */
+/* line 2739, scss/style.scss */
 .view-event .content-header table.event-header td.cell-title table {
   width: 100%;
 }
-/* line 2736, scss/style.scss */
+/* line 2740, scss/style.scss */
 .view-event .content-header table.event-header td.cell-title td.cell-title-name {
   text-align: left;
   padding-left: 10px;
 }
-/* line 2737, scss/style.scss */
+/* line 2741, scss/style.scss */
 .view-event .content-header table.event-header td.cell-title h1.event-title {
   display: inline;
   font-family: 'Boogaloo',Helvetica,Arial;
@@ -4185,52 +4185,52 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   font-size: 26px;
   font-size: 2.6rem;
 }
-/* line 2738, scss/style.scss */
+/* line 2742, scss/style.scss */
 .view-event .content-header table.event-header td.cell-title h1.event-title.big {
   font-size: 50px;
   font-size: 5rem;
 }
-/* line 2740, scss/style.scss */
+/* line 2744, scss/style.scss */
 .view-event .content-header table.event-header td.cell-organizer {
   width: 180px;
 }
-/* line 2742, scss/style.scss */
+/* line 2746, scss/style.scss */
 .view-event .content-header table.event-header td.cell-organizer img.event-organizer-avatar {
   width: 80px;
   height: 80px;
   border-radius: 100px;
 }
-/* line 2743, scss/style.scss */
+/* line 2747, scss/style.scss */
 .view-event .content-header table.event-header td.cell-organizer a.username:link, .view-event .content-header table.event-header td.cell-organizer a.username:visited, .view-event .content-header table.event-header td.cell-organizer a.username:active {
   text-decoration: none;
   color: #95b9c4;
 }
-/* line 2744, scss/style.scss */
+/* line 2748, scss/style.scss */
 .view-event .content-header table.event-header td.cell-organizer a.username:hover {
   text-decoration: underline;
 }
-/* line 2745, scss/style.scss */
+/* line 2749, scss/style.scss */
 .view-event .content-header table.event-header td.cell-organizer strong {
   font-weight: bold;
   font-size: 16px;
   font-size: 1.6rem;
 }
-/* line 2746, scss/style.scss */
+/* line 2750, scss/style.scss */
 .view-event .content-header table.event-header td.cell-organizer small {
   font-size: 80%;
   color: #888888;
 }
-/* line 2747, scss/style.scss */
+/* line 2751, scss/style.scss */
 .view-event .content-header table.event-header td.cell-organizer a.btn-ws {
   display: inline-block;
   margin: 5px;
 }
 
-/* line 2756, scss/style.scss */
+/* line 2760, scss/style.scss */
 .section {
   width: 100%;
 }
-/* line 2758, scss/style.scss */
+/* line 2762, scss/style.scss */
 .section h2 {
   margin: 0;
   padding: 6px 20px;
@@ -4245,12 +4245,12 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-top: 1px solid rgba(0, 0, 0, 0.15);
 }
-/* line 2771, scss/style.scss */
+/* line 2775, scss/style.scss */
 .section div.section-content.section-green {
   background-color: #b5deb5;
 }
 
-/* line 2776, scss/style.scss */
+/* line 2780, scss/style.scss */
 .section-participation h2 {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFDFA7A7', endColorstr='#FFDFA7A7');
@@ -4260,91 +4260,91 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   background-image: -o-linear-gradient(left, #dfa7a7 0%, rgba(223, 167, 167, 0.5) 50%, #dfa7a7 100%);
   background-image: linear-gradient(left, #dfa7a7 0%, rgba(223, 167, 167, 0.5) 50%, #dfa7a7 100%);
 }
-/* line 2781, scss/style.scss */
+/* line 2785, scss/style.scss */
 .section-participation div.section-content {
   padding: 10px 12px;
 }
-/* line 2784, scss/style.scss */
+/* line 2788, scss/style.scss */
 .section-participation div.section-content table:first-child {
   width: 100%;
 }
-/* line 2787, scss/style.scss */
+/* line 2791, scss/style.scss */
 .section-participation div.section-content table:first-child tr td:first-child {
   vertical-align: top;
   text-align: left;
 }
-/* line 2788, scss/style.scss */
+/* line 2792, scss/style.scss */
 .section-participation div.section-content table:first-child tr td:nth-child(2) {
   vertical-align: top;
   text-align: right;
   width: 200px;
 }
-/* line 2792, scss/style.scss */
+/* line 2796, scss/style.scss */
 .section-participation div.section-content ul.participants {
   margin: 0;
 }
-/* line 2795, scss/style.scss */
+/* line 2799, scss/style.scss */
 .section-participation div.section-content ul.participants li {
   display: inline-block;
   margin: 0 1px;
 }
-/* line 2797, scss/style.scss */
+/* line 2801, scss/style.scss */
 .section-participation div.section-content ul.participants li.event-participant img {
   width: 40px;
   height: 40px;
   background-color: #FFF;
 }
-/* line 2799, scss/style.scss */
+/* line 2803, scss/style.scss */
 .section-participation div.section-content ul.participants li.event-confirmed {
   background-color: #538942;
   color: white;
   font-weight: bold;
   padding: 10px 12px;
 }
-/* line 2804, scss/style.scss */
+/* line 2808, scss/style.scss */
 .section-participation div.section-content ul.participants li.event-confirmed span.ws-icon {
   color: #a3d179;
 }
-/* line 2806, scss/style.scss */
+/* line 2810, scss/style.scss */
 .section-participation div.section-content ul.participants li.event-pending {
   background-color: #DDD9D9;
   color: white;
   font-weight: bold;
   padding: 10px 12px;
 }
-/* line 2811, scss/style.scss */
+/* line 2815, scss/style.scss */
 .section-participation div.section-content ul.participants li.event-pending span.ws-icon {
   color: white;
   font-size: 20px;
   font-size: 2rem;
 }
-/* line 2813, scss/style.scss */
+/* line 2817, scss/style.scss */
 .section-participation div.section-content ul.participants li.event-finished {
   background-color: #f2b67a;
   color: white;
   font-weight: bold;
   padding: 10px 12px;
 }
-/* line 2818, scss/style.scss */
+/* line 2822, scss/style.scss */
 .section-participation div.section-content ul.participants li.event-finished span.ws-icon {
   color: #bf4e48;
 }
-/* line 2822, scss/style.scss */
+/* line 2826, scss/style.scss */
 .section-participation div.section-content p.actions {
   margin: 10px 0;
   color: #888888;
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 2826, scss/style.scss */
+/* line 2830, scss/style.scss */
 .section-participation div.section-content p.actions a:link, .section-participation div.section-content p.actions a:active, .section-participation div.section-content p.actions a:visited {
   color: #888888;
 }
-/* line 2827, scss/style.scss */
+/* line 2831, scss/style.scss */
 .section-participation div.section-content p.actions a:hover {
   text-decoration: underline;
 }
-/* line 2832, scss/style.scss */
+/* line 2836, scss/style.scss */
 .section-participation div.section-content td.join-event a.participation {
   display: block;
   float: right;
@@ -4355,32 +4355,32 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-radius: 4px;
   box-shadow: 0 2px 0px 2px #cfdfe4;
 }
-/* line 2841, scss/style.scss */
+/* line 2845, scss/style.scss */
 .section-participation div.section-content td.join-event a.participation small {
   font-weight: normal;
   font-size: 11px;
   font-size: 1.1rem;
 }
-/* line 2844, scss/style.scss */
+/* line 2848, scss/style.scss */
 .section-participation div.section-content td.join-event a.participation.participating {
   background-color: #538942;
   box-shadow: 0 0 0 0 white;
 }
-/* line 2847, scss/style.scss */
+/* line 2851, scss/style.scss */
 .section-participation div.section-content td.join-event a.participation.participating span:after {
   background: #C7F0B8;
 }
-/* line 2853, scss/style.scss */
+/* line 2857, scss/style.scss */
 .section-participation div.section-content td.join-event input[type="checkbox"] {
   display: none;
 }
-/* line 2857, scss/style.scss */
+/* line 2861, scss/style.scss */
 .section-participation div.section-content td.join-event input[type="checkbox"] + span {
   cursor: default;
   pointer-events: none;
   font-size: 1em;
 }
-/* line 2862, scss/style.scss */
+/* line 2866, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined + span {
   background-color: #FFF;
   padding: 9px;
@@ -4390,7 +4390,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   width: 30px;
   height: 10px;
 }
-/* line 2872, scss/style.scss */
+/* line 2876, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined + span:after {
   content: ' ';
   position: absolute;
@@ -4402,7 +4402,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-radius: 100px;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
 }
-/* line 2884, scss/style.scss */
+/* line 2888, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined + span:before {
   content: ' ';
   position: absolute;
@@ -4415,18 +4415,18 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-radius: 100px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5), inset 0 -18px 15px -10px rgba(0, 0, 0, 0.05);
 }
-/* line 2898, scss/style.scss */
+/* line 2902, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined + span:active {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
-/* line 2902, scss/style.scss */
+/* line 2906, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined:checked + span:before {
   content: ' ';
   position: absolute;
   left: 22px;
   border-radius: 100px;
 }
-/* line 2909, scss/style.scss */
+/* line 2913, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined + span {
   overflow: hidden;
   -webkit-box-sizing: content-box;
@@ -4435,20 +4435,20 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   margin-bottom: -10px;
   margin-left: 5px;
 }
-/* line 2916, scss/style.scss */
+/* line 2920, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined:checked + span:after {
   content: ' ';
   font-size: 1.5em;
   position: absolute;
   background: #63C99C;
 }
-/* line 2923, scss/style.scss */
+/* line 2927, scss/style.scss */
 .section-participation div.section-content td.join-event input#checkbox-joined:checked + span:after, .section-participation div.section-content td.join-event input#checkbox-joined:checked + span:before, .section-participation div.section-content td.join-event #checkbox span {
   -webkit-transition: all 0.1s ease-in;
   transition: all 0.1s ease-in;
 }
 
-/* line 2931, scss/style.scss */
+/* line 2935, scss/style.scss */
 .section-info h2 {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFBAD1D8', endColorstr='#FFBAD1D8');
@@ -4458,37 +4458,37 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   background-image: -o-linear-gradient(left, #bad1d8 0%, rgba(186, 209, 216, 0.5) 50%, #bad1d8 100%);
   background-image: linear-gradient(left, #bad1d8 0%, rgba(186, 209, 216, 0.5) 50%, #bad1d8 100%);
 }
-/* line 2936, scss/style.scss */
+/* line 2940, scss/style.scss */
 .section-info div.section-content {
   padding: 5px 20px 0px 20px;
   font-size: 12px;
   font-size: 1.2rem;
   color: grey;
 }
-/* line 2939, scss/style.scss */
+/* line 2943, scss/style.scss */
 .section-info div.section-content table {
   width: 100%;
   height: 100%;
 }
-/* line 2942, scss/style.scss */
+/* line 2946, scss/style.scss */
 .section-info div.section-content table td.cell-description {
   font-size: 14px;
   font-size: 1.4rem;
   font-style: italic;
 }
-/* line 2946, scss/style.scss */
+/* line 2950, scss/style.scss */
 .section-info div.section-content table td {
   vertical-align: top;
 }
-/* line 2948, scss/style.scss */
+/* line 2952, scss/style.scss */
 .section-info div.section-content table td ul {
   list-style: none;
 }
-/* line 2950, scss/style.scss */
+/* line 2954, scss/style.scss */
 .section-info div.section-content table td ul li {
   position: relative;
 }
-/* line 2952, scss/style.scss */
+/* line 2956, scss/style.scss */
 .section-info div.section-content table td ul li span.ws-icon {
   position: absolute;
   left: -20px;
@@ -4497,7 +4497,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   font-size: 1.4rem;
 }
 
-/* line 2960, scss/style.scss */
+/* line 2964, scss/style.scss */
 .section-map h2 {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFA1D5B7', endColorstr='#FFA1D5B7');
@@ -4507,12 +4507,12 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   background-image: -o-linear-gradient(left, #a1d5b7 0%, rgba(161, 213, 183, 0.5) 50%, #a1d5b7 100%);
   background-image: linear-gradient(left, #a1d5b7 0%, rgba(161, 213, 183, 0.5) 50%, #a1d5b7 100%);
 }
-/* line 2965, scss/style.scss */
+/* line 2969, scss/style.scss */
 .section-map div.section-content {
   height: 170px;
 }
 
-/* line 2971, scss/style.scss */
+/* line 2975, scss/style.scss */
 .section-invitations h2 {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFFEDBBA', endColorstr='#FFFEDBBA');
@@ -4522,18 +4522,18 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   background-image: -o-linear-gradient(left, #fedbba 0%, rgba(254, 219, 186, 0.5) 50%, #fedbba 100%);
   background-image: linear-gradient(left, #fedbba 0%, rgba(254, 219, 186, 0.5) 50%, #fedbba 100%);
 }
-/* line 2979, scss/style.scss */
+/* line 2983, scss/style.scss */
 .section-invitations div.section-content table thead td, .section-invitations div.section-content table tbody tr td {
   color: #888888;
 }
-/* line 2984, scss/style.scss */
+/* line 2988, scss/style.scss */
 .section-invitations div.section-content img.user-avatar {
   width: 30px;
   height: 30px;
   border-radius: 50px;
 }
 
-/* line 2991, scss/style.scss */
+/* line 2995, scss/style.scss */
 .section-comment h2 {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr='#FFFEDBBA', endColorstr='#FFFEDBBA');
@@ -4543,21 +4543,21 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   background-image: -o-linear-gradient(left, #fedbba 0%, rgba(254, 219, 186, 0.5) 50%, #fedbba 100%);
   background-image: linear-gradient(left, #fedbba 0%, rgba(254, 219, 186, 0.5) 50%, #fedbba 100%);
 }
-/* line 2996, scss/style.scss */
+/* line 3000, scss/style.scss */
 .section-comment h3 {
   font-size: 14px;
   font-size: 1.4rem;
   color: #888888;
   margin: 0;
 }
-/* line 2997, scss/style.scss */
+/* line 3001, scss/style.scss */
 .section-comment div.section-content {
   height: auto;
   min-height: 300px;
   padding: 20px 15px 20px 15px;
   background-color: #fff6df;
 }
-/* line 3004, scss/style.scss */
+/* line 3008, scss/style.scss */
 .section-comment div.section-content textarea.fos_comment_main_textarea {
   margin-left: 8px;
   width: 90%;
@@ -4570,29 +4570,29 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   -moz-box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.23);
   box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.23);
 }
-/* line 3005, scss/style.scss */
+/* line 3009, scss/style.scss */
 .section-comment div.section-content div.fos_comment_main_textarea_avatar {
   width: 45px;
   height: 45px;
   display: inline-block;
 }
-/* line 3005, scss/style.scss */
+/* line 3009, scss/style.scss */
 .section-comment div.section-content div.fos_comment_main_textarea_avatar img {
   width: 45px;
   height: 45px;
   margin-top: -10px;
 }
-/* line 3006, scss/style.scss */
+/* line 3010, scss/style.scss */
 .section-comment div.section-content div.fos_comment_submit {
   display: block;
   padding-left: 60px;
 }
-/* line 3006, scss/style.scss */
+/* line 3010, scss/style.scss */
 .section-comment div.section-content div.fos_comment_submit input {
   font-size: 10px;
   font-size: 1rem;
 }
-/* line 3008, scss/style.scss */
+/* line 3012, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_show {
   overflow: hidden;
   /* float fix */
@@ -4600,60 +4600,60 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   padding-bottom: 10px;
   border-bottom: 4px solid #f0e8d2;
 }
-/* line 3015, scss/style.scss */
+/* line 3019, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_content {
   position: relative;
   float: left;
   width: 90%;
   padding-left: 55px;
 }
-/* line 3023, scss/style.scss */
+/* line 3027, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_authoravatar {
   position: absolute;
   left: 0px;
   width: 50px;
 }
-/* line 3027, scss/style.scss */
+/* line 3031, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_authoravatar img {
   width: 45px;
   height: 45px;
 }
-/* line 3036, scss/style.scss */
+/* line 3040, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_metas .fos_comment_comment_authorname {
   font-weight: bold;
   color: #296272;
   font-size: 14px;
   font-size: 1.4rem;
 }
-/* line 3041, scss/style.scss */
+/* line 3045, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_metas .fos_comment_comment_date {
   color: #fedbba;
   font-size: 10px;
   font-size: 1rem;
 }
-/* line 3047, scss/style.scss */
+/* line 3051, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_body {
   color: #888888;
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 3053, scss/style.scss */
+/* line 3057, scss/style.scss */
 .section-comment div.section-content div.fos_comment_comment_reply {
   display: inline;
 }
 
-/* line 3063, scss/style.scss */
+/* line 3067, scss/style.scss */
 .event-action-bar {
   width: 100%;
   padding: 7px 5% 10px 5%;
   text-align: right;
   border-top: 4px solid #D0D0D0;
 }
-/* line 3070, scss/style.scss */
+/* line 3074, scss/style.scss */
 .event-action-bar .event-status {
   float: left;
 }
-/* line 3072, scss/style.scss */
+/* line 3076, scss/style.scss */
 .event-action-bar .event-status .label {
   padding: 5px 10px;
   -webkit-border-radius: 10px;
@@ -4662,19 +4662,19 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   -o-border-radius: 10px;
   border-radius: 10px;
 }
-/* line 3073, scss/style.scss */
+/* line 3077, scss/style.scss */
 .event-action-bar .event-status span.nb-participant {
   font-size: 12px;
   font-size: 1.2rem;
   margin-left: 5px;
 }
-/* line 3078, scss/style.scss */
+/* line 3082, scss/style.scss */
 .event-action-bar .event-action {
   float: left;
   margin: 0 0 0 30px;
 }
 
-/* line 3084, scss/style.scss */
+/* line 3088, scss/style.scss */
 .event-pending {
   background-color: #e3e2e2;
   color: #888888;
@@ -4682,40 +4682,40 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   font-size: 1.4rem;
 }
 
-/* line 3089, scss/style.scss */
+/* line 3093, scss/style.scss */
 .event-confirmed {
   background-color: #a3d2a3;
   color: #5b894a;
 }
 
-/* line 3093, scss/style.scss */
+/* line 3097, scss/style.scss */
 .event-finished {
   background-color: #BBB;
   color: #FFF;
 }
-/* line 3096, scss/style.scss */
+/* line 3100, scss/style.scss */
 .event-finished .event-action {
   display: none;
 }
-/* line 3099, scss/style.scss */
+/* line 3103, scss/style.scss */
 .event-finished .event-status {
   float: left;
 }
-/* line 3102, scss/style.scss */
+/* line 3106, scss/style.scss */
 .event-finished span.label {
   background-color: #666;
 }
 
-/* line 3108, scss/style.scss */
+/* line 3112, scss/style.scss */
 .event-status input[type="checkbox"] {
   display: none;
 }
-/* line 3112, scss/style.scss */
+/* line 3116, scss/style.scss */
 .event-status input[type="checkbox"] + label {
   cursor: default;
   font-size: 1em;
 }
-/* line 3116, scss/style.scss */
+/* line 3120, scss/style.scss */
 .event-status input#checkbox-joined + label {
   background-color: #FFF;
   padding: 9px;
@@ -4725,7 +4725,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   width: 30px;
   height: 10px;
 }
-/* line 3126, scss/style.scss */
+/* line 3130, scss/style.scss */
 .event-status input#checkbox-joined + label:after {
   content: ' ';
   position: absolute;
@@ -4737,7 +4737,7 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-radius: 100px;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
 }
-/* line 3138, scss/style.scss */
+/* line 3142, scss/style.scss */
 .event-status input#checkbox-joined + label:before {
   content: ' ';
   position: absolute;
@@ -4750,18 +4750,18 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   border-radius: 100px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5), inset 0 -18px 15px -10px rgba(0, 0, 0, 0.05);
 }
-/* line 3152, scss/style.scss */
+/* line 3156, scss/style.scss */
 .event-status input#checkbox-joined + label:active {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
-/* line 3156, scss/style.scss */
+/* line 3160, scss/style.scss */
 .event-status input#checkbox-joined:checked + label:before {
   content: ' ';
   position: absolute;
   left: 22px;
   border-radius: 100px;
 }
-/* line 3163, scss/style.scss */
+/* line 3167, scss/style.scss */
 .event-status input#checkbox-joined + label {
   overflow: hidden;
   -webkit-box-sizing: content-box;
@@ -4770,36 +4770,36 @@ table.form-table div.field-inline .select2-container .select2-choices .select2-s
   margin-bottom: -10px;
   margin-left: 5px;
 }
-/* line 3170, scss/style.scss */
+/* line 3174, scss/style.scss */
 .event-status input#checkbox-joined:checked + label:after {
   content: ' ';
   font-size: 1.5em;
   position: absolute;
   background: #63C99C;
 }
-/* line 3177, scss/style.scss */
+/* line 3181, scss/style.scss */
 .event-status input#checkbox-joined:checked + label:after, .event-status input#checkbox-joined:checked + label:before, .event-status #checkbox label {
   -webkit-transition: all 0.1s ease-in;
   transition: all 0.1s ease-in;
 }
 
-/* line 3183, scss/style.scss */
+/* line 3187, scss/style.scss */
 div.col_large {
   float: left;
   width: 60%;
   min-height: 300px;
   padding: 10px 5px 0 50px;
 }
-/* line 3191, scss/style.scss */
+/* line 3195, scss/style.scss */
 div.col_large .event-description.block {
   margin-top: 10px;
 }
-/* line 3193, scss/style.scss */
+/* line 3197, scss/style.scss */
 div.col_large .event-description.block .block-content {
   padding: 20px 5%;
 }
 
-/* line 3198, scss/style.scss */
+/* line 3202, scss/style.scss */
 h2.event-info {
   font-size: 22px;
   font-size: 2.2rem;
@@ -4808,13 +4808,13 @@ h2.event-info {
   margin-bottom: 0;
   margin-top: 0;
 }
-/* line 3203, scss/style.scss */
+/* line 3207, scss/style.scss */
 h2.event-info small {
   font-size: 16px;
   font-size: 1.6rem;
 }
 
-/* line 3209, scss/style.scss */
+/* line 3213, scss/style.scss */
 span.metadata-icon {
   padding: 5px;
   border: 7px solid white;
@@ -4828,22 +4828,22 @@ span.metadata-icon {
   border-radius: 100px;
 }
 
-/* line 3216, scss/style.scss */
+/* line 3220, scss/style.scss */
 span.metadata-icon.date-icon {
   border-color: rgba(242, 182, 122, 0.7);
 }
 
-/* line 3217, scss/style.scss */
+/* line 3221, scss/style.scss */
 span.metadata-icon.hour-icon {
   border-color: rgba(217, 234, 157, 0.7);
 }
 
-/* line 3218, scss/style.scss */
+/* line 3222, scss/style.scss */
 span.metadata-icon.city-icon {
   border-color: rgba(191, 78, 72, 0.7);
 }
 
-/* line 3221, scss/style.scss */
+/* line 3225, scss/style.scss */
 div.col_small {
   float: left;
   width: 30%;
@@ -4851,22 +4851,22 @@ div.col_small {
   padding: 10px 10px 0 5px;
 }
 
-/* line 3227, scss/style.scss */
+/* line 3231, scss/style.scss */
 div.col_large {
   float: right;
   width: 70%;
   min-height: 300px;
 }
 
-/* line 3233, scss/style.scss */
+/* line 3237, scss/style.scss */
 .block {
   margin-bottom: 20px;
 }
-/* line 3235, scss/style.scss */
+/* line 3239, scss/style.scss */
 .block ul {
   list-style: none;
 }
-/* line 3238, scss/style.scss */
+/* line 3242, scss/style.scss */
 .block h3 {
   padding: 8px 0 8px 30px;
   font-size: 14px;
@@ -4879,7 +4879,7 @@ div.col_large {
   -moz-box-shadow: inset 10px 0 0 0px rgba(0, 0, 0, 0.05);
   box-shadow: inset 10px 0 0 0px rgba(0, 0, 0, 0.05);
 }
-/* line 3247, scss/style.scss */
+/* line 3251, scss/style.scss */
 .block .block-content {
   padding: 5px 5px 10px 10px;
   background-color: #CCC;
@@ -4890,98 +4890,98 @@ div.col_large {
   -moz-box-shadow: inset 10px 0 0 0 rgba(0, 0, 0, 0.02);
   box-shadow: inset 10px 0 0 0 rgba(0, 0, 0, 0.02);
 }
-/* line 3255, scss/style.scss */
+/* line 3259, scss/style.scss */
 .block .block-content a {
   padding: 5px;
   line-height: 14px;
 }
-/* line 3259, scss/style.scss */
+/* line 3263, scss/style.scss */
 .block .block-content a strong {
   float: left;
   font-size: 11px;
   font-size: 1.1rem;
   text-transform: capitalize;
 }
-/* line 3264, scss/style.scss */
+/* line 3268, scss/style.scss */
 .block .block-content a small {
   float: left;
   font-size: 9px;
   font-size: 0.9rem;
   color: #AAA;
 }
-/* line 3271, scss/style.scss */
+/* line 3275, scss/style.scss */
 .block .block-content a {
   font-size: 10px;
   font-size: 1rem;
 }
-/* line 3274, scss/style.scss */
+/* line 3278, scss/style.scss */
 .block .block-content .bottom_link {
   font-size: 10px;
   font-size: 1rem;
 }
 
-/* line 3279, scss/style.scss */
+/* line 3283, scss/style.scss */
 .block-yellow h3 {
   background-color: #ededc4;
   color: #CCCC39;
 }
-/* line 3283, scss/style.scss */
+/* line 3287, scss/style.scss */
 .block-yellow .block-content {
   background-color: #ffffeb;
 }
-/* line 3285, scss/style.scss */
+/* line 3289, scss/style.scss */
 .block-yellow .block-content .bottom_link, .block-yellow .block-content .noevents {
   color: #9e9e34;
 }
 
-/* line 3289, scss/style.scss */
+/* line 3293, scss/style.scss */
 .block-red h3 {
   background-color: #f2b67a;
   color: #bf4e48;
 }
-/* line 3293, scss/style.scss */
+/* line 3297, scss/style.scss */
 .block-red .block-content {
   background-color: #ffe3c7;
 }
-/* line 3295, scss/style.scss */
+/* line 3299, scss/style.scss */
 .block-red .block-content .bottom_link, .block-red .block-content .noevents {
   color: #bf4e48;
 }
 
-/* line 3299, scss/style.scss */
+/* line 3303, scss/style.scss */
 .block-green h3 {
   background-color: #aed580;
   color: #1a9850;
 }
-/* line 3303, scss/style.scss */
+/* line 3307, scss/style.scss */
 .block-green .block-content {
   background-color: #d9ea9d;
 }
-/* line 3305, scss/style.scss */
+/* line 3309, scss/style.scss */
 .block-green .block-content .bottom_link, .block-green .block-content .noevents {
   color: #1a9850;
 }
 
-/* line 3309, scss/style.scss */
+/* line 3313, scss/style.scss */
 .block-orange h3, .event-userreview h3 {
   background-color: #f6df9d;
   color: #ed9d4c;
 }
-/* line 3313, scss/style.scss */
+/* line 3317, scss/style.scss */
 .block-orange .block-content, .event-userreview .block-content {
   background-color: #fff4d4;
 }
-/* line 3315, scss/style.scss */
+/* line 3319, scss/style.scss */
 .block-orange .block-content .bottom_link, .event-userreview .block-content .bottom_link, .block-orange .block-content .noevents, .event-userreview .block-content .noevents {
   color: #ed9d4c;
 }
 
-/* line 3318, scss/style.scss */
+/* line 3322, scss/style.scss */
 .event-discussion {
   margin-top: 30px;
   border-top: 2px solid #efefef;
 }
-/* line 3321, scss/style.scss */
+/* line 3325, scss/style.scss */
 .event-discussion h3 {
   padding-left: 20px;
   margin-bottom: 0;
@@ -4991,13 +4991,13 @@ div.col_large {
   text-transform: uppercase;
   color: #AAA;
 }
-/* line 3329, scss/style.scss */
+/* line 3333, scss/style.scss */
 .event-discussion .block-content {
   color: #888888;
   padding-left: 25px;
 }
 
-/* line 3335, scss/style.scss */
+/* line 3339, scss/style.scss */
 .event-avatar {
   float: left;
   width: 40px;
@@ -5008,28 +5008,28 @@ div.col_large {
   background-color: #FFF;
 }
 
-/* line 3346, scss/style.scss */
+/* line 3350, scss/style.scss */
 .event-participants .block-content, .event-invitations .block-content {
   padding: 0;
 }
-/* line 3349, scss/style.scss */
+/* line 3353, scss/style.scss */
 .event-participants .block-content ul, .event-invitations .block-content ul {
   margin: 0;
   padding: 0;
 }
-/* line 3352, scss/style.scss */
+/* line 3356, scss/style.scss */
 .event-participants .block-content li, .event-invitations .block-content li {
   float: left;
   display: block;
   width: 50%;
   margin-bottom: 4px;
 }
-/* line 3358, scss/style.scss */
+/* line 3362, scss/style.scss */
 .event-participants .block-content li a, .event-invitations .block-content li a {
   padding: 0;
   word-wrap: break-word;
 }
-/* line 3362, scss/style.scss */
+/* line 3366, scss/style.scss */
 .event-participants .block-content li p, .event-invitations .block-content li p {
   display: block;
   float: left;
@@ -5039,55 +5039,55 @@ div.col_large {
   text-overflow: ellipsis;
 }
 
-/* line 3375, scss/style.scss */
+/* line 3379, scss/style.scss */
 .event-map .block-content {
   padding: 0;
 }
-/* line 3378, scss/style.scss */
+/* line 3382, scss/style.scss */
 .event-map #eventmap {
   width: 300px;
 }
 
-/* line 3384, scss/style.scss */
+/* line 3388, scss/style.scss */
 .event-weather .block-content {
   padding: 10px;
   padding-bottom: 0;
 }
-/* line 3387, scss/style.scss */
+/* line 3391, scss/style.scss */
 .event-weather .block-content img {
   float: left;
   margin-right: 5px;
 }
-/* line 3391, scss/style.scss */
+/* line 3395, scss/style.scss */
 .event-weather .block-content span {
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 3394, scss/style.scss */
+/* line 3398, scss/style.scss */
 .event-weather .block-content .mention {
   text-align: right;
   font-size: 12px;
   font-size: 1.2rem;
   color: #888888;
 }
-/* line 3398, scss/style.scss */
+/* line 3402, scss/style.scss */
 .event-weather .block-content .mention a {
   text-decoration: none;
   color: #888888;
 }
 
-/* line 3408, scss/style.scss */
+/* line 3412, scss/style.scss */
 .events-list .block-content {
   padding: 0;
   max-height: 300px;
   overflow-y: scroll;
 }
-/* line 3412, scss/style.scss */
+/* line 3416, scss/style.scss */
 .events-list .block-content ul {
   margin: 0;
   list-style: none;
 }
-/* line 3415, scss/style.scss */
+/* line 3419, scss/style.scss */
 .events-list .block-content ul li {
   font-size: 14px;
   font-size: 1.4rem;
@@ -5096,17 +5096,17 @@ div.col_large {
   margin: 0 0 0px 0px;
   padding: 7px 0 7px 50px;
 }
-/* line 3423, scss/style.scss */
+/* line 3427, scss/style.scss */
 .events-list .block-content ul li:hover {
   background-color: rgba(0, 0, 0, 0.025);
 }
-/* line 3427, scss/style.scss */
+/* line 3431, scss/style.scss */
 .events-list .block-content ul li span {
   position: absolute;
   left: 15px;
   top: 10px;
 }
-/* line 3432, scss/style.scss */
+/* line 3436, scss/style.scss */
 .events-list .block-content ul li strong {
   display: block;
   width: 100%;
@@ -5115,13 +5115,13 @@ div.col_large {
   font-weight: bold;
   color: #296272;
 }
-/* line 3439, scss/style.scss */
+/* line 3443, scss/style.scss */
 .events-list .block-content ul li small {
   font-size: 10px;
   font-size: 1rem;
   color: #888888;
 }
-/* line 3443, scss/style.scss */
+/* line 3447, scss/style.scss */
 .events-list .block-content ul li a {
   margin: 0;
   padding-bottom: 0;
@@ -5129,16 +5129,16 @@ div.col_large {
   display: block;
   overflow: hidden;
 }
-/* line 3451, scss/style.scss */
+/* line 3455, scss/style.scss */
 .events-list .block-content ul li small.noevents {
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 3455, scss/style.scss */
+/* line 3459, scss/style.scss */
 .events-list .block-content ul li i {
   padding-left: 10px;
 }
-/* line 3459, scss/style.scss */
+/* line 3463, scss/style.scss */
 .events-list .block-content ul li .showListSerie {
   display: inline;
   margin-left: 10px;
@@ -5146,71 +5146,71 @@ div.col_large {
   color: #296272;
   border-bottom: 1px dotted #296272;
 }
-/* line 3465, scss/style.scss */
+/* line 3469, scss/style.scss */
 .events-list .block-content ul li .showListSerie:hover {
   border-bottom: 1px solid rgba(255, 255, 255, 0);
 }
-/* line 3469, scss/style.scss */
+/* line 3473, scss/style.scss */
 .events-list .block-content ul li .linkclose:before {
   content: ' + ';
 }
-/* line 3472, scss/style.scss */
+/* line 3476, scss/style.scss */
 .events-list .block-content ul li .linkopen:before {
   content: ' - ';
 }
-/* line 3476, scss/style.scss */
+/* line 3480, scss/style.scss */
 .events-list .block-content ul li ul.listserie {
   display: none;
   width: 100%;
   margin: 0;
 }
-/* line 3480, scss/style.scss */
+/* line 3484, scss/style.scss */
 .events-list .block-content ul li ul.listserie li {
   padding: 0;
   margin: 0;
 }
-/* line 3483, scss/style.scss */
+/* line 3487, scss/style.scss */
 .events-list .block-content ul li ul.listserie li a {
   padding: 0;
   padding-left: 5px;
   color: #296272;
 }
-/* line 3487, scss/style.scss */
+/* line 3491, scss/style.scss */
 .events-list .block-content ul li ul.listserie li a:hover {
   color: #3a5f69;
 }
-/* line 3491, scss/style.scss */
+/* line 3495, scss/style.scss */
 .events-list .block-content ul li ul.listserie li:hover {
   background-color: rgba(0, 0, 0, 0);
 }
 
-/* line 3503, scss/style.scss */
+/* line 3507, scss/style.scss */
 .block-action {
   text-align: center;
   padding: 50px;
 }
-/* line 3507, scss/style.scss */
+/* line 3511, scss/style.scss */
 .block-action a {
   background-color: #296272;
   padding: 15px 40px;
   font-size: 16px;
   font-size: 1.6rem;
 }
-/* line 3512, scss/style.scss */
+/* line 3516, scss/style.scss */
 .block-action a.btn-link {
   background-color: transparent;
 }
 
-/* line 3516, scss/style.scss */
+/* line 3520, scss/style.scss */
 .event-reviews .block-content {
   padding: 10px 20px;
 }
 
-/* line 3523, scss/style.scss */
+/* line 3527, scss/style.scss */
 .event-userreview label[for=review] {
   font-weight: bold;
 }
-/* line 3526, scss/style.scss */
+/* line 3530, scss/style.scss */
 .event-userreview input[name=review] {
   width: 400px;
   font-size: 14px;
@@ -5219,7 +5219,7 @@ div.col_large {
   padding: 5px 6px;
   margin: 0;
 }
-/* line 3533, scss/style.scss */
+/* line 3537, scss/style.scss */
 .event-userreview input[type=submit] {
   margin-top: -7px;
 }
@@ -5227,19 +5227,19 @@ div.col_large {
 /*======
 ==== User view
 ===*/
-/* line 3544, scss/style.scss */
+/* line 3548, scss/style.scss */
 .viewuser .content-header {
   overflow: hidden;
 }
-/* line 3546, scss/style.scss */
+/* line 3550, scss/style.scss */
 .viewuser .content-header .header-left {
   width: 50%;
 }
-/* line 3549, scss/style.scss */
+/* line 3553, scss/style.scss */
 .viewuser .content-header .header-right {
   width: 50%;
 }
-/* line 3555, scss/style.scss */
+/* line 3559, scss/style.scss */
 .viewuser .content-header .user-login img {
   float: left;
   margin-right: 10px;
@@ -5248,7 +5248,7 @@ div.col_large {
   padding: 2px;
   border: 6px solid rgba(0, 0, 0, 0.04);
 }
-/* line 3563, scss/style.scss */
+/* line 3567, scss/style.scss */
 .viewuser .content-header .user-login h1 {
   margin: 0;
   padding: 0;
@@ -5259,18 +5259,18 @@ div.col_large {
   font-family: 'Boogaloo';
   font-weight: normal;
 }
-/* line 3574, scss/style.scss */
+/* line 3578, scss/style.scss */
 .viewuser .content-header .user-login span.user-descr {
   font-size: 12px;
   font-size: 1.2rem;
   color: #888888;
   font-style: italic;
 }
-/* line 3581, scss/style.scss */
+/* line 3585, scss/style.scss */
 .viewuser .content-header .user-info {
   padding-top: 10px;
 }
-/* line 3583, scss/style.scss */
+/* line 3587, scss/style.scss */
 .viewuser .content-header .user-info span {
   text-align: right;
   display: block;
@@ -5279,20 +5279,20 @@ div.col_large {
   font-size: 1.2rem;
   color: #888888;
 }
-/* line 3593, scss/style.scss */
+/* line 3597, scss/style.scss */
 .viewuser .event-action-bar {
   width: 100%;
   padding: 5px 1% 5px 3%;
   overflow: hidden;
 }
-/* line 3598, scss/style.scss */
+/* line 3602, scss/style.scss */
 .viewuser .event-action-bar .count_activity {
   float: left;
   width: 50%;
   text-align: left;
   line-height: 200%;
 }
-/* line 3604, scss/style.scss */
+/* line 3608, scss/style.scss */
 .viewuser .event-action-bar .count_activity span.label {
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -5300,26 +5300,26 @@ div.col_large {
   -o-border-radius: 20px;
   border-radius: 20px;
 }
-/* line 3606, scss/style.scss */
+/* line 3610, scss/style.scss */
 .viewuser .event-action-bar .which_activity {
   float: right;
   width: 50%;
   text-align: right;
 }
-/* line 3613, scss/style.scss */
+/* line 3617, scss/style.scss */
 .viewuser .col_large {
   width: 530px;
 }
-/* line 3617, scss/style.scss */
+/* line 3621, scss/style.scss */
 .viewuser .col_small {
   width: 410px;
 }
-/* line 3623, scss/style.scss */
+/* line 3627, scss/style.scss */
 .viewuser .col_small .event-review ul li span {
   font-size: 16px;
   font-size: 1.6rem;
 }
-/* line 3625, scss/style.scss */
+/* line 3629, scss/style.scss */
 .viewuser .col_small .event-review ul li small a {
   font-weight: normal;
   font-style: italic;
@@ -5327,24 +5327,24 @@ div.col_large {
   font-size: 1.2rem;
   color: #888888;
 }
-/* line 3631, scss/style.scss */
+/* line 3635, scss/style.scss */
 .viewuser .col_small .event-review ul li small a:hover {
   text-decoration: underline;
 }
 
-/* line 3643, scss/style.scss */
+/* line 3647, scss/style.scss */
 .indexuser .form-locate #control-submit {
   display: inline;
 }
-/* line 3648, scss/style.scss */
+/* line 3652, scss/style.scss */
 .indexuser .col_large {
   padding-left: 1%;
 }
-/* line 3650, scss/style.scss */
+/* line 3654, scss/style.scss */
 .indexuser .col_large .userlist {
   width: 100%;
 }
-/* line 3653, scss/style.scss */
+/* line 3657, scss/style.scss */
 .indexuser .col_large .userlist .user {
   display: block;
   float: left;
@@ -5352,26 +5352,26 @@ div.col_large {
   margin: 5px 1%;
   background-color: rgba(0, 0, 0, 0.08);
 }
-/* line 3659, scss/style.scss */
+/* line 3663, scss/style.scss */
 .indexuser .col_large .userlist .user img {
   float: left;
   width: 40px;
   height: 40px;
   margin-right: 3px;
 }
-/* line 3665, scss/style.scss */
+/* line 3669, scss/style.scss */
 .indexuser .col_large .userlist .user span {
   display: block;
   float: left;
 }
-/* line 3669, scss/style.scss */
+/* line 3673, scss/style.scss */
 .indexuser .col_large .userlist .user strong {
   display: block;
   float: left;
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 3675, scss/style.scss */
+/* line 3679, scss/style.scss */
 .indexuser .col_large .userlist .user small {
   display: block;
   float: left;
@@ -5380,7 +5380,7 @@ div.col_large {
   font-size: 0.9rem;
   color: #888888;
 }
-/* line 3683, scss/style.scss */
+/* line 3687, scss/style.scss */
 .indexuser .col_large .userlist .user .pagination {
   display: block;
   float: left;
@@ -5390,11 +5390,11 @@ div.col_large {
 /*=======
 == PAGE
 =======*/
-/* line 3697, scss/style.scss */
+/* line 3701, scss/style.scss */
 .page-generic {
   position: relative;
 }
-/* line 3700, scss/style.scss */
+/* line 3704, scss/style.scss */
 .page-generic .admin {
   position: absolute;
   top: 0;
@@ -5404,36 +5404,36 @@ div.col_large {
   font-size: 12px;
   line-height: 20px;
 }
-/* line 3709, scss/style.scss */
+/* line 3713, scss/style.scss */
 .page-generic .admin p {
   margin: 0;
 }
-/* line 3711, scss/style.scss */
+/* line 3715, scss/style.scss */
 .page-generic .content {
   width: 100%;
   padding: 25px 15% 100px 15%;
 }
-/* line 3715, scss/style.scss */
+/* line 3719, scss/style.scss */
 .page-generic .content p {
   font-size: 13px;
   font-size: 1.3rem;
 }
-/* line 3718, scss/style.scss */
+/* line 3722, scss/style.scss */
 .page-generic .content strong, .page-generic .content b {
   color: #3a5f69;
 }
-/* line 3721, scss/style.scss */
+/* line 3725, scss/style.scss */
 .page-generic .content h1, .page-generic .content h2, .page-generic .content h3, .page-generic .content h4, .page-generic .content h5 {
   color: #3a5f69;
   font-family: 'Boogaloo';
 }
-/* line 3724, scss/style.scss */
+/* line 3728, scss/style.scss */
 .page-generic .content h1 em, .page-generic .content h2 em, .page-generic .content h3 em, .page-generic .content h4 em, .page-generic .content h5 em {
   font-size: 60%;
   font-family: 'Arial',sans-serif;
   margin: 0 5px;
 }
-/* line 3730, scss/style.scss */
+/* line 3734, scss/style.scss */
 .page-generic .content h1 {
   font-size: 42px;
   font-size: 4.2rem;
@@ -5441,7 +5441,7 @@ div.col_large {
   text-align: center;
   text-shadow: 1px 1px 0 #296272, 2px 2px 0 #296272, 3px 3px 0 #296272;
 }
-/* line 3731, scss/style.scss */
+/* line 3735, scss/style.scss */
 .page-generic .content h2 {
   text-align: center;
   margin-bottom: 40px;
@@ -5450,26 +5450,26 @@ div.col_large {
   font-size: 2.4rem;
   color: #296272;
 }
-/* line 3740, scss/style.scss */
+/* line 3744, scss/style.scss */
 .page-generic .content h6 {
   display: inline-block;
 }
-/* line 3742, scss/style.scss */
+/* line 3746, scss/style.scss */
 .page-generic .content h6 em {
   color: #296272;
   font-style: italic;
 }
-/* line 3750, scss/style.scss */
+/* line 3754, scss/style.scss */
 .page-generic.page-presse table {
   border: 0;
 }
-/* line 3752, scss/style.scss */
+/* line 3756, scss/style.scss */
 .page-generic.page-presse table img {
   width: 200px;
   max-width: 200px;
   margin-right: 20px;
 }
-/* line 3758, scss/style.scss */
+/* line 3762, scss/style.scss */
 .page-generic.page-presse strong {
   color: inherit;
 }
@@ -5477,31 +5477,31 @@ div.col_large {
 /*=======
 == BLOG
 =======*/
-/* line 3785, scss/style.scss */
+/* line 3789, scss/style.scss */
 .blog .col_large {
   padding: 0;
 }
-/* line 3790, scss/style.scss */
+/* line 3794, scss/style.scss */
 .blog #commentForm {
   padding: 20px;
 }
-/* line 3793, scss/style.scss */
+/* line 3797, scss/style.scss */
 .blog #commentForm .commentFormFields {
   overflow: visible;
 }
-/* line 3795, scss/style.scss */
+/* line 3799, scss/style.scss */
 .blog #commentForm .commentFormFields input[type=text] {
   height: 30px;
 }
-/* line 3796, scss/style.scss */
+/* line 3800, scss/style.scss */
 .blog #commentForm .commentFormFields input[type=text], .blog #commentForm .commentFormFields textarea {
   width: 100%;
 }
-/* line 3797, scss/style.scss */
+/* line 3801, scss/style.scss */
 .blog #commentForm .commentFormFields textarea {
   height: 500px;
 }
-/* line 3804, scss/style.scss */
+/* line 3808, scss/style.scss */
 .blog #comments .post {
   padding: 25px;
   color: rgba(0, 0, 0, 0.8);
@@ -5511,11 +5511,11 @@ div.col_large {
   -moz-box-shadow: 2px 3px 10px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 2px 3px 10px 0 rgba(0, 0, 0, 0.1);
 }
-/* line 3811, scss/style.scss */
+/* line 3815, scss/style.scss */
 .blog #comments .post:nth-child(1) {
   margin-top: 0;
 }
-/* line 3814, scss/style.scss */
+/* line 3818, scss/style.scss */
 .blog #comments .post.reply:nth-child(odd) {
   padding: 0px 10px;
   background-color: #ededc4;
@@ -5526,7 +5526,7 @@ div.col_large {
   -moz-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 }
-/* line 3822, scss/style.scss */
+/* line 3826, scss/style.scss */
 .blog #comments .replies {
   float: left;
   margin: 0;
@@ -5537,69 +5537,69 @@ div.col_large {
   -moz-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 }
-/* line 3830, scss/style.scss */
+/* line 3834, scss/style.scss */
 .blog #comments .replies .replies {
   -webkit-box-shadow: 0 0 0 0 black;
   -moz-box-shadow: 0 0 0 0 black;
   box-shadow: 0 0 0 0 black;
 }
-/* line 3834, scss/style.scss */
+/* line 3838, scss/style.scss */
 .blog #comments .post:nth-child(odd) {
   background-color: #fff4d4;
   border: 10px solid #f6df9d;
   border-bottom: 0;
 }
-/* line 3835, scss/style.scss */
+/* line 3839, scss/style.scss */
 .blog #comments .post:nth-child(even) {
   background-color: #d9ea9d;
   border: 10px solid #cfe584;
   border-bottom: 0;
 }
-/* line 3837, scss/style.scss */
+/* line 3841, scss/style.scss */
 .blog #comments .type-news .title a {
   color: #286f92;
 }
-/* line 3838, scss/style.scss */
+/* line 3842, scss/style.scss */
 .blog #comments .type-news .logo {
   width: 60px;
   height: 60px;
 }
-/* line 3840, scss/style.scss */
+/* line 3844, scss/style.scss */
 .blog #comments .type-news .content .content_txt {
   padding-top: 20px;
 }
-/* line 3845, scss/style.scss */
+/* line 3849, scss/style.scss */
 .blog #comments .formCommentReply {
   padding-bottom: 0px;
 }
-/* line 3848, scss/style.scss */
+/* line 3852, scss/style.scss */
 .blog #comments .formCommentReply:nth-child(even) {
   background: #f3d681;
 }
-/* line 3849, scss/style.scss */
+/* line 3853, scss/style.scss */
 .blog #comments .formCommentReply:nth-child(odd) {
   background: #cfe584;
 }
-/* line 3850, scss/style.scss */
+/* line 3854, scss/style.scss */
 .blog #comments .showHiddenReplies {
   padding: 10px 5%;
   background: #e7e7b0;
 }
-/* line 3853, scss/style.scss */
+/* line 3857, scss/style.scss */
 .blog #comments .showHiddenReplies a.showReplies {
   font-weight: bold;
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 3860, scss/style.scss */
+/* line 3864, scss/style.scss */
 .blog .col_small {
   padding: 0;
 }
-/* line 3863, scss/style.scss */
+/* line 3867, scss/style.scss */
 .blog .col_small .block .block-content {
   padding: 0;
 }
-/* line 3866, scss/style.scss */
+/* line 3870, scss/style.scss */
 .blog .col_small .events-to-come .block-content {
   padding: 5px 2%;
 }
@@ -5607,88 +5607,88 @@ div.col_large {
 /*=======
 == ACCOUNT
 =======*/
-/* line 3876, scss/style.scss */
+/* line 3880, scss/style.scss */
 .page-account .col_small ul.menu-action {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-/* line 3880, scss/style.scss */
+/* line 3884, scss/style.scss */
 .page-account .col_small ul.menu-action li {
   font-size: 16px;
   font-size: 1.6rem;
   padding: 10px 0 10px 5%;
   border-bottom: 1px solid #CCC;
 }
-/* line 3885, scss/style.scss */
+/* line 3889, scss/style.scss */
 .page-account .col_small ul.menu-action li a {
   display: inline-block;
   width: 90%;
   color: #296272;
 }
-/* line 3890, scss/style.scss */
+/* line 3894, scss/style.scss */
 .page-account .col_small ul.menu-action li i[class^="icon-"] {
   display: inline-block;
   width: 5%;
   margin-right: 2%;
   color: #296272;
 }
-/* line 3897, scss/style.scss */
+/* line 3901, scss/style.scss */
 .page-account .col_small ul.menu-action li:last-child {
   border-bottom: 0;
 }
-/* line 3898, scss/style.scss */
+/* line 3902, scss/style.scss */
 .page-account .col_small ul.menu-action li:hover {
   background-color: #EEE;
 }
-/* line 3900, scss/style.scss */
+/* line 3904, scss/style.scss */
 .page-account .col_small ul.menu-action li.selected {
   font-weight: bold;
   background-color: #EEE;
   border: 1px solid #DDD;
 }
-/* line 3911, scss/style.scss */
+/* line 3915, scss/style.scss */
 .page-account form.profile-edit {
   padding-top: 5px;
 }
-/* line 3915, scss/style.scss */
+/* line 3919, scss/style.scss */
 .page-account form.profile-edit #control-birthday .controls select {
   width: 30%;
   margin-right: 3%;
 }
-/* line 3919, scss/style.scss */
+/* line 3923, scss/style.scss */
 .page-account form.profile-edit #control-location > label {
   display: none;
 }
-/* line 3920, scss/style.scss */
+/* line 3924, scss/style.scss */
 .page-account form.profile-edit #control-location > .controls {
   width: 100%;
 }
-/* line 3927, scss/style.scss */
+/* line 3931, scss/style.scss */
 .page-account form.profile-edit #control-settings > label {
   display: none;
 }
-/* line 3928, scss/style.scss */
+/* line 3932, scss/style.scss */
 .page-account form.profile-edit #control-settings > .controls {
   width: 100%;
 }
-/* line 3930, scss/style.scss */
+/* line 3934, scss/style.scss */
 .page-account form.profile-edit #control-settings > .controls label {
   width: 100%;
   text-align: left;
   margin: 0;
 }
-/* line 3936, scss/style.scss */
+/* line 3940, scss/style.scss */
 .page-account form.profile-edit #control-settings > .controls .controls label {
   width: auto;
   display: inline;
   margin-right: 15px;
 }
-/* line 3946, scss/style.scss */
+/* line 3950, scss/style.scss */
 .page-account form.profile-edit #control-file .controls img {
   width: 60%;
 }
-/* line 3948, scss/style.scss */
+/* line 3952, scss/style.scss */
 .page-account form.profile-edit input[type=submit], .page-account form.profile-edit button[type=submit] {
   margin-left: 20%;
 }
@@ -5698,17 +5698,17 @@ div.col_large {
 ==== CONTACT
 ===========
 */
-/* line 3963, scss/style.scss */
+/* line 3967, scss/style.scss */
 .contact .form-contact {
   width: 80%;
   padding: 20px 10%;
 }
-/* line 3967, scss/style.scss */
+/* line 3971, scss/style.scss */
 .contact .form-contact h2 {
   font-size: 14px;
   font-size: 1.4rem;
 }
-/* line 3971, scss/style.scss */
+/* line 3975, scss/style.scss */
 .contact .form-contact #control-submit {
   width: 80%;
   margin: 0 10%;
@@ -5719,27 +5719,27 @@ div.col_large {
 ==== COMMENTAIRE
 ===========
 */
-/* line 3983, scss/style.scss */
+/* line 3987, scss/style.scss */
 #commentForm {
   margin: 0;
 }
-/* line 3987, scss/style.scss */
+/* line 3991, scss/style.scss */
 #commentForm textarea[disabled=disabled] {
   width: 80%;
 }
-/* line 3990, scss/style.scss */
+/* line 3994, scss/style.scss */
 #commentForm .userAvatarCommentForm {
   float: left;
   width: 40px;
   height: 40px;
   margin-right: 5px;
 }
-/* line 3996, scss/style.scss */
+/* line 4000, scss/style.scss */
 #commentForm .commentFormFields {
   float: left;
   width: 90%;
 }
-/* line 3999, scss/style.scss */
+/* line 4003, scss/style.scss */
 #commentForm .commentFormFields textarea {
   width: 70%;
   -webkit-box-shadow: 0 0 10px #cccccc;
@@ -5747,23 +5747,23 @@ div.col_large {
   box-shadow: 0 0 10px #cccccc;
 }
 
-/* line 4005, scss/style.scss */
+/* line 4009, scss/style.scss */
 #tri {
   margin-bottom: 0;
 }
 
-/* line 4008, scss/style.scss */
+/* line 4012, scss/style.scss */
 .commentFilter {
   float: left;
   width: 100%;
 }
 
-/* line 4013, scss/style.scss */
+/* line 4017, scss/style.scss */
 #comments {
   float: left;
   width: 100%;
 }
-/* line 4017, scss/style.scss */
+/* line 4021, scss/style.scss */
 #comments .post {
   margin-bottom: 0;
   border: 0;
@@ -5772,25 +5772,25 @@ div.col_large {
   box-shadow: 0 0 0 black;
   background-color: #F0F0F0;
 }
-/* line 4023, scss/style.scss */
+/* line 4027, scss/style.scss */
 #comments .post form.formCommentReply {
   display: none;
 }
-/* line 4024, scss/style.scss */
+/* line 4028, scss/style.scss */
 #comments .post form.formCommentReply:last-child {
   display: block;
 }
-/* line 4028, scss/style.scss */
+/* line 4032, scss/style.scss */
 #comments form.formCommentReply {
   background: transparent;
   border: 0;
 }
-/* line 4031, scss/style.scss */
+/* line 4035, scss/style.scss */
 #comments form.formCommentReply img.userAvatarCommentForm {
   height: 30px;
   width: 30px;
 }
-/* line 4035, scss/style.scss */
+/* line 4039, scss/style.scss */
 #comments form.formCommentReply textarea {
   font-size: 10px;
   font-size: 1rem;
@@ -5799,12 +5799,12 @@ div.col_large {
   height: 30px;
 }
 
-/* line 4045, scss/style.scss */
+/* line 4049, scss/style.scss */
 #bottomComments {
   float: left;
   width: 100%;
 }
-/* line 4049, scss/style.scss */
+/* line 4053, scss/style.scss */
 #bottomComments div, #bottomComments a {
   width: 100%;
   display: block;
@@ -5814,7 +5814,7 @@ div.col_large {
   color: #888888;
 }
 
-/* line 4058, scss/style.scss */
+/* line 4062, scss/style.scss */
 #hiddenFormReply {
   display: none;
 }
@@ -5824,29 +5824,29 @@ div.col_large {
 === ERROR ==
 ============
 */
-/* line 4070, scss/style.scss */
+/* line 4074, scss/style.scss */
 .ws-error-page .white-sheet {
   overflow: hidden;
 }
-/* line 4073, scss/style.scss */
+/* line 4077, scss/style.scss */
 .ws-error-page .col_large {
   padding-bottom: 100px;
 }
-/* line 4076, scss/style.scss */
+/* line 4080, scss/style.scss */
 .ws-error-page .title {
   margin-top: 20px;
   color: #3a5f69;
   font-family: 'Boogaloo';
   text-align: center;
 }
-/* line 4081, scss/style.scss */
+/* line 4085, scss/style.scss */
 .ws-error-page .title h1 {
   font-size: 50px;
   font-size: 5rem;
   color: #3a5f69;
   line-height: 65px;
 }
-/* line 4087, scss/style.scss */
+/* line 4091, scss/style.scss */
 .ws-error-page .message {
   margin-top: 30px;
   margin-bottom: 50px;
@@ -5857,26 +5857,26 @@ div.col_large {
   text-align: center;
   line-height: 100%;
 }
-/* line 4095, scss/style.scss */
+/* line 4099, scss/style.scss */
 .ws-error-page .message small {
   font-family: Arial,sans-serif;
   color: #888888;
   font-size: 12px;
   font-size: 1.2rem;
 }
-/* line 4102, scss/style.scss */
+/* line 4106, scss/style.scss */
 .ws-error-page .actions {
   text-align: center;
 }
-/* line 4104, scss/style.scss */
+/* line 4108, scss/style.scss */
 .ws-error-page .actions .ws-icon {
   color: white;
 }
-/* line 4108, scss/style.scss */
+/* line 4112, scss/style.scss */
 .ws-error-page .image {
   text-align: left;
 }
-/* line 4110, scss/style.scss */
+/* line 4114, scss/style.scss */
 .ws-error-page .image img {
   border: 15px solid #EFEFEF;
   box-shadow: 0 0 0 1px #DFDFDF;
@@ -5888,29 +5888,29 @@ div.col_large {
 === FOOTER ==
 ============
 */
-/* line 4125, scss/style.scss */
+/* line 4129, scss/style.scss */
 .main-footer {
   border-top: 5px solid #4c7d8a;
   margin-top: 0px;
 }
-/* line 4129, scss/style.scss */
+/* line 4133, scss/style.scss */
 .main-footer .footer-right {
   width: 60%;
   text-align: right;
 }
-/* line 4133, scss/style.scss */
+/* line 4137, scss/style.scss */
 .main-footer .footer-form {
   width: 52%;
 }
-/* line 4136, scss/style.scss */
+/* line 4140, scss/style.scss */
 .main-footer .footer-form label.control-label {
   margin-top: 15px;
 }
-/* line 4140, scss/style.scss */
+/* line 4144, scss/style.scss */
 .main-footer h4 {
   color: white;
 }
-/* line 4142, scss/style.scss */
+/* line 4146, scss/style.scss */
 .main-footer h4 .ws-icon {
   color: white;
 }

@@ -58,9 +58,9 @@ class Spot
      */
     public function createSlug()
     {        
-        $this->slug = $this->getLocation()->getCity()->getName().' ';
+        if($this->getLocation() != null) $this->slug = $this->getLocation()->getCity()->getName().' ';
         if($this->hasName()) $this->slug .= $this->getName().' ';
-        $this->slug .= $this->getAddress();        
+        if($this->getAddress() != '') $this->slug .= $this->getAddress();        
 
         return $this->slug;
     }
