@@ -40,7 +40,7 @@ class CalendarController extends Controller implements InitControllerInterface
 		$location = $this->get('world.locationip.service')->getLocationFromIp($client_ip);
 
 		//Return nothing if we can't find the city of the visitor
-		if(!isset($location) || $location->exist() == false) return; 
+		if(!isset($location) || $location == false || $location->exist() == false) return; 
 		//Call the calendar Manager and set the country and city parameters
 		$manager = $this->get('calendar.manager');		
 		$manager->addParameters(array(
