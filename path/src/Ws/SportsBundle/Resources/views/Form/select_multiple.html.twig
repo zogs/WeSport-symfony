@@ -6,13 +6,24 @@
 
     {% block sport_select_multiple_widget %}
 
+	{#
+	// sports list is displayed classed by category
 	<select name="{{form.vars.full_name }}" id="{{ form.vars.id }}" class="{{ form.vars.attr.class }}" multiple="{{ form.vars.multiple }}" placeholder="sports" tabindex="-1">
+
 		{% for category,choices in form.vars.choices %}
 			<optgroup label="{{ category }}">
 				{% for sport in choices %}					
 					<option value="{{ sport.data.id }}" data-icon="{{ sport.data.icon }}" {% if sport is selectedchoice(form.vars.value) %} selected="selected"{% endif %}>{{ sport.data.name }}</option>
 				{% endfor %}
 			</optgroup>
+		{% endfor %}
+	</select>
+	#}
+
+	<select name="{{form.vars.full_name }}" id="{{ form.vars.id }}" class="{{ form.vars.attr.class }}" multiple="{{ form.vars.multiple }}" placeholder="{{ form.vars.label }}" tabindex="-1">
+
+		{% for choice in form.vars.choices %}				
+					<option value="{{ choice.data.id }}" data-icon="{{ choice.data.icon }}" {% if choice is selectedchoice(form.vars.value) %} selected="selected"{% endif %}>{{ choice.data.name }}</option>
 		{% endfor %}
 	</select>
 	

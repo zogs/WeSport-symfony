@@ -229,7 +229,7 @@ class SpotType extends AbstractType
 	        'data_class' => 'Ws\EventsBundle\Entity\Spot',
             'cascade_validation' => false,
             'ajax_url' => $this->router->generate('ws_spot_autocomplete'),
-            'empty_html' => 'Pas de résultats',
+            'empty_html' => " Arf, aucun lieu ne correspond à cette recherche...",
             'footer_html' => '',
             'header_html' => '',
             'trigger-length' =>3

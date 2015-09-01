@@ -7,3 +7,6 @@ relations:
     keywords: name
     icon: slug
     action: action
+    lang: 
+        type: string
+        value: fr

@@ -2,7 +2,9 @@
 
 {% block page_content %}
 	
-	<div class="white-sheet">
+
+	<div class="page-content">
+		<div class="white-sheet connexion">
 		
 		<div class="head-sheet">
 			<h1 class="title-sheet">
@@ -10,14 +12,17 @@
 			</h1>
 		</div>
 
-		<div class="page-content">
 			<p>
 			{% trans_default_domain 'FOSUserBundle' %}
-			{{ 'resetting.check_email'|trans({'%email%': '<strong>'~email~'</strong>'}) }}
+			{{ 'resetting.check_email'|trans({'%email%': email}) }}
+			</p>
+			<p>
+				<i>Pensez à vérifier dans le dossier SPAM de votre boîte mail, il se peut que notre courrier y soit classé par erreur...</i>
 			</p>	
 			<p>
 				<a href="{{ path('fos_user_resetting_request')}}">Je n'ai pas reçu d'email, je vais rentrer une nouvelle adresse.</a>
-			</p>
+			</p>				
+			
 		</div>	
 		
 	</div>

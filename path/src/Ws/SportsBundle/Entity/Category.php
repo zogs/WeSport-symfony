@@ -45,6 +45,11 @@ class Category implements Translatable
     private $keywords;
 
     /**
+     * @ORM\Column(name="lang", type="string", length=3, nullable=true)
+     */
+    private $lang = 'fr';
+
+    /**
      * @ORM\OneToMany(targetEntity="Sport", mappedBy="category")
      */
     protected $sports;

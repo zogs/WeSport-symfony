@@ -44,6 +44,9 @@ class ResettingController extends BaseController
         $user->setPasswordRequestedAt(new \DateTime());
         $this->container->get('fos_user.user_manager')->updateUser($user);
 
+        $this->get('flashbag')->add("Un email a été envoyé à l'adresse ".$user->getEmail(),'success');
+        $this->get('flashbag')->add("Pensez à vérifier dans le dossier SPAM de votre boîte mail ! ",'warning');
+
         return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_check_email',
             array('email' => $user->getEmail())
         ));

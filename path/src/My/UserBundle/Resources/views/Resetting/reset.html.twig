@@ -1,13 +1,15 @@
 {% extends "::layout_centered.html.twig" %}
 
 {% block page_content %}
-	<div class="white-sheet">
-		<div class="head-sheet">
-			<h1 class="title-sheet">
-				Réinitialiser mon mot de passe
-			</h1>
-		</div>
-	{% include "FOSUserBundle:Resetting:reset_content.html.twig" %}
-	
+	<div class="page_content">
+		<div class="white-sheet">
+			<div class="head-sheet">
+				<h1 class="title-sheet">
+					Réinitialiser mon mot de passe
+				</h1>
+			</div>
+		{% include "FOSUserBundle:Resetting:reset_content.html.twig" %}
+		
+		</div>		
 	</div>
 {% endblock page_content %}

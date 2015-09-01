@@ -80,8 +80,12 @@ my_world:
     prefix:   /world
 
 ws_sports:
-    resource: "@WsSportsBundle/Resources/config/routing.yml"
+    resource: "@WsSportsBundle/Resources/config/routing/sport.yml"
     prefix:   /sports
+
+ws_sports_category:
+    resource: "@WsSportsBundle/Resources/config/routing/category.yml"
+    prefix:   /sports/category
 
 my_comment:
     resource: "@MyCommentBundle/Resources/config/routing.yml"

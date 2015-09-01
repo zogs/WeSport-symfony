@@ -163,7 +163,7 @@ class CityToLocationType extends AbstractType
             'invalid_message' => 'Form AutoCompleteCityType Error',
             'cascade_validation' => false,
             'ajax_url' => $this->router->generate('my_world_autocompletecity'),
-            'empty_html' => 'Pas de résultats',
+            'empty_html' => ' Oups, pas de ville avec ce nom...',
             'footer_html' => '',
             'header_html' => '',
             'trigger-length' =>3,

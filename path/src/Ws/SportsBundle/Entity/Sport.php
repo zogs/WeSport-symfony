@@ -44,6 +44,11 @@ class Sport implements Translatable
     private $icon;
 
     /**
+     * @ORM\Column(name="lang", type="string", length=3, nullable=true)
+     */
+    private $lang = 'fr';
+
+    /**
      * @ORM\Column(name="action", type="string", length=15, nullable=true)
      */
     private $action;

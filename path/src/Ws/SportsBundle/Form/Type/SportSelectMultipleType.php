@@ -37,13 +37,12 @@ class SportSelectMultipleType extends AbstractType
     {
     	$resolver->setDefaults(array(   
             'class' => 'WsSportsBundle:Sport',
+            'property'=>'name',
             'empty_value'=>"Sports",
             'label'=>'Sports',
-            'property'=>'name',
             'expanded'=>false,
             'multiple' => true,
             'mapped' => true,
-            'group_by' => 'category',
             'required' => false, 		
             'attr' => array(
                 'class'=>'sportSelection',
