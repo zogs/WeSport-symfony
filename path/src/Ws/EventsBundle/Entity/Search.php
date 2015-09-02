@@ -58,7 +58,7 @@ class Search
     private $area = null;
 
     /**
-    * @ORM\ManyToMany(targetEntity="Ws\SportsBundle\Entity\Sport", inversedBy="searchs", cascade={"persist"})
+    * @ORM\ManyToMany(targetEntity="Ws\SportsBundle\Entity\Sport", inversedBy="searchs", cascade={"persist","remove"})
     */
     private $sports = null;
 
