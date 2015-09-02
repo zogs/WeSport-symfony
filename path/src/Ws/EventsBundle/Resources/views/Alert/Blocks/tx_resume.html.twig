@@ -26,7 +26,7 @@
 		{% if alert.search.price %}<span> d'un prix inférieur à <strong>{{ alert.search.price }}€</strong></span>{% endif %}
 
 		{# les lundi mardi jeudi #}
-		{% if alert.search.hasDayOfWeek %}<span><strong>{% for day in alert.search.dayOfWeek %} {{ ('days.day.'~day|lower)|trans({},'MyUtilsBundle') }}, {% endfor %}</strong></span>{% endif %}
+		{% if alert.search.hasDayOfWeek %}<span> les <strong>{% for day in alert.search.dayOfWeek %} {{ ('days.day.'~day|lower)|trans({},'MyUtilsBundle') }}, {% endfor %}</strong></span>{% endif %}
 
 		{# entre 10h et 14h #}
 		{% if alert.search.hasTimeStart and alert.search.hasTimeEnd %}<span> entre {{ alert.search.timeStart|date('H\\hi') }} et {{ alert.search.timeEnd|date('H\\hi') }} 
