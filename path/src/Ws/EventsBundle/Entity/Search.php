@@ -451,7 +451,8 @@ class Search
     public function hasLevel()
     {
         if(isset($this->level['all'])) return false; //"all level"
-        if(!empty($this->level) && count($this->level) != count(Event::$valuesAvailable['level'])) return true;        
+        if(empty($this->level)) return false;
+        if(count($this->level) != count(Event::$valuesAvailable['level'])) return true;        
         return false;
     }
 
