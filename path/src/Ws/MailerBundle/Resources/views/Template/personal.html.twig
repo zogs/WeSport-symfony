@@ -1,7 +1,9 @@
 <html>
 <head>
 	<style type="text/css">
-		a{ text-decoration: none; color:#0070FF;}		
+		a{ text-decoration: none; color:#0070FF;}
+		div.content { padding-top:10px; }
+		div.footer { background:#f2f2f2;  position: relative; margin-top:30px; border-top:1px solid #CCC; font-size:10px; }		
 	</style>
 </head>
 
@@ -15,7 +17,7 @@
 				<tr>
 				<td>
 				<!-- HEADER -->
-					<table cellpadding="0" cellspacing="0" border="0" width="670" height="80" class="header" style="background-color: #f2f2f2; border-bottom:1px solid #CCC;" >
+					<table cellpadding="0" cellspacing="0" border="0" width="670" class="header" style="background-color:#f2f2f2;border-bottom:1px solid #CCC;padding:10px 0;" >
 					<tbody>
 					<tr>
 						<td class="logo_header" style="width:70px">
@@ -38,17 +40,22 @@
 				</tr>
 				<tr>
 				<td>
-				<!-- CONTENT -->
-					{% block content %}
-					{% endblock content %}
+					<img src="{{ asset('bundles/wsstyle/images/fresque.jpg', absolute=true) }}" alt="" style="width:100%;height:5px;">
+					<!-- CONTENT -->
+					<div class="content">
+						{% block content %}
+						{% endblock content %}						
+					</div>
 				</td>
 				</tr>
 				<tr>
 				<td>
-				<!-- FOOTER -->
-					{% block footer %}
-						{% include 'WsMailerBundle:Template:footer.html.twig'  %}
-					{% endblock footer %}
+					<!-- FOOTER -->
+					<div class="footer">
+						{% block footer %}
+							{% include 'WsMailerBundle:Template:footer.html.twig'  %}
+						{% endblock footer %}						
+					</div>
 				</td>
 				</tr>
 				</tbody>

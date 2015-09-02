@@ -1,7 +1,7 @@
 {% extends 'WsMailerBundle:Template:personal.html.twig' %}
 
 {% block title %}
-    <strong>{% if alert.user is not null %} {{ alert.user.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
+    <strong>{% if alert.user is not null %} Bonjour {{ alert.user.username|capitalize }}, {% else %} Bonjour,{% endif %}</strong><br />
     
     Vos alertes sont prêtes !
 
@@ -25,8 +25,8 @@
                                         {% include 'WsEventsBundle:Alert:Blocks/tx_resume.html.twig' with {'alert':alert} %}         
                                     </p>
                                     <p>
-                                        {% include 'WsEventsBundle:Alert:Blocks/tx_frequency.html.twig' with {'alert':alert} %}         
-                                    </p>
+                                        Vous recevrez ces alertes {% include 'WsEventsBundle:Alert:Blocks/tx_frequency.html.twig' with {'alert':alert} %}         
+                                    </p>                                    
                                 </td>
                             </tr>
                         </tbody>
