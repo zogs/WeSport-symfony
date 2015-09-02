@@ -29,7 +29,7 @@
 		{% if alert.search.hasDayOfWeek %}<span> les <strong>{% for day in alert.search.dayOfWeek %} {{ ('days.day.'~day|lower)|trans({},'MyUtilsBundle') }}, {% endfor %}</strong></span>{% endif %}
 
 		{# entre 10h et 14h #}
-		{% if alert.search.hasTimeStart and alert.search.hasTimeEnd %}<span> entre <strong>{{ alert.search.timeStart|date('H\\hi') }}</strong></span> et <<strong>{{ alert.search.timeEnd|date('H\\hi') }}</strong></span> 
+		{% if alert.search.hasTimeStart and alert.search.hasTimeEnd %}<span> entre <strong>{{ alert.search.timeStart|date('H\\hi') }}</strong></span> et <strong>{{ alert.search.timeEnd|date('H\\hi') }}</strong></span> 
 		{% else %}
 			{% if alert.search.hasTimeStart %}<span> aprés <strong>{{ alert.search.timeStart|date('H\\hi') }}</strong></span> {% endif %}
 			{% if alert.search.hasTimeEnd %}<span> aprés <strong>{{ alert.search.timeEnd|date('H\\hi') }}</strong></span> {% endif %}
