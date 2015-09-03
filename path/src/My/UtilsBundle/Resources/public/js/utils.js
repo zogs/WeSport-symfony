@@ -78,6 +78,13 @@ $(document).ready(function() {
 	$('.tooltiptop').tooltip( { delay: { show: 200, hide: 100 }} );
 	$('.tooltipbottom').tooltip( { placement : 'bottom', delay: { show: 200, hide: 100 }} );
 
+	/*==================================
+		Submit button
+	==================================*/	
+	$('.btn-ws-submit').on('click',function(){
+		$(this).addClass('btn-ws-submit-clicked');
+	});
+
 
 	/*==================================
 	MOBILE MENU
