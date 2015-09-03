@@ -6,6 +6,7 @@
 </head>
 
 <body style="font-family:'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;">
+	<img src="{{ asset('bundles/wsstyle/images/fresque.jpg', absolute=true) }}" alt="" style="width:100%;height:23px;">
 	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="background" style="background-color:#DDD; position:relative;">
 		<tbody>
 		<tr> 
@@ -37,7 +38,7 @@
 				</td>
 				</tr>
 				<tr>
-				<td style="background-image:url({{ asset('bundles/wsstyle/images/LOGO.gif', absolute=true) }}) no-repeat; background-size:10px 100%; background-position: 0 0;">					
+				<td style="background-image:url('{{ asset('bundles/wsstyle/images/LOGO.gif', absolute=true) }}') no-repeat; background-size:5px 100%; background-position: 0 0;">					
 					<!-- CONTENT -->
 					<div class="content" style="padding-top:10px;">
 						{% block content %}
@@ -47,7 +48,7 @@
 				</tr>
 				<tr>
 				<td>
-					<img src="{{ asset('bundles/wsstyle/images/fresque.jpg', absolute=true) }}" alt="" style="width:100%;height:5px;">
+					
 					<!-- FOOTER -->
 					<div class="footer" style="background:#f2f2f2;  position: relative; margin-top:30px; border-top:1px solid #CCC; font-size:10px; ">
 						{% block footer %}
