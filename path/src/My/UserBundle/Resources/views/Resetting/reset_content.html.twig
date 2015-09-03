@@ -3,6 +3,6 @@
 <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_request form form-ws w100 form-register" style="padding-left:15%;padding-right:15%;">
     {{ form_widget(form) }}
     <div style="text-align:center;">
-        <input type="submit" class="btn-ws" style="float:none" value="{{ 'resetting.reset.submit'|trans }}" />
+        <button type="submit" class="btn-ws btn-ws-submit" style="float:none">{{ 'resetting.reset.submit'|trans }}</button>
     </div>
 </form>

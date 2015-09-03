@@ -93,14 +93,7 @@ class RegistrationFormType extends BaseType
             ))
 
         ->add('location','location_selector',array( ))
-
-
-        ->add('submit','submit',array(
-            'label' => "S'inscrire",
-            'attr' => array(
-                'class'=>'btn btn-info'
-                )
-            ));
+        ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
