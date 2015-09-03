@@ -2023,6 +2023,9 @@ $bg-color-white-sheet:#fff;
 	color:#FFF;
 	@include box-shadow(0 1px 0 1px $brightblue, 0 2px 0 2px $brightblue);
 }
+.btn-ws:visited {
+	color: #FFF;
+}
 
 .btn-ws-big{
 	padding:20px 30px;
@@ -2049,6 +2052,8 @@ $bg-color-white-sheet:#fff;
 	background-color: #D3D3D3;
 	color:white;
 }	
+.btn-ws-submit {}
+
 .btn-ws-submit-clicked{
 	position:relative;
 	&:after{
@@ -2056,8 +2061,12 @@ $bg-color-white-sheet:#fff;
 		position:absolute;
 		width:100%; height:100%;
 		top:0; left:0;
-		background:$deepblue url('../images/ajax-loader-deepblue.gif') no-repeat;
+		background:$deepblue url('../images/ajax-loader-bar.gif') no-repeat;
 		background-position: 50%;
+		background-size: 200% 200%;
+		@include opacity(0.4);
+		border-radius: 5px;
+
 	}
 }
 
