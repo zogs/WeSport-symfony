@@ -53,7 +53,7 @@ class SpotController extends Controller
 		{
 			$em = $this->getDoctrine()->getManager();
 
-			$spots = $em->getRepository('WsEventsBundle:Spot')->findSuggestions(20,$search,$country);
+			$spots = $em->getRepository('WsEventsBundle:Spot')->findSuggestions(50,$search,$country);
 			
 			foreach($spots as $k => $spot){
 
