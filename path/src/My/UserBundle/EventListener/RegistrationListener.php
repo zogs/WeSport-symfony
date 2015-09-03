@@ -47,14 +47,13 @@ class RegistrationListener implements EventSubscriberInterface
   public function onRegistrationSuccess( FormEvent $event )
   {
 
-    $url = $this->router->generate('ws_calendar');
+    $url = $this->router->generate('fos_user_security_login');
 
     $event->setResponse(new RedirectResponse($url));
   }
 
   public function onRegistrationCompleted( FilterUserResponseEvent $event )
   {
-
     $this->flashbag->add('Pour terminer votre inscription, cliquez sur le lien dans le mail que nous vous avons envoyé !');
     $this->flashbag->add("Si vous ne le trouvez pas, pensez à vérifier le dossier \"Indésirables\" de votre boîte mail",'warning');
   }
