@@ -24,16 +24,16 @@
 				{% endif %}
 			{% endfor %}
 		{% else %}
-			<tr class="row-empty row-pending">
+			<tr class="row-alert-empty row-alert-pending">
 				<td colspan="4">
-					Pas encore d'activité...
+					<span class="ws-icon ws-icon-pacman"></span>.........Pas encore d'activités...............................
 				</td>
 			</tr>
 		{% endif %}
 
 			<tr class="row-bottom">
 				<td colspan="4">
-					<a class="btn-ws btn-ws-big" href="{{ path('ws_event_create') }}">Créer une activité</a>						
+					<a class="btn-ws btn-ws-big btn-ws-submit" href="{{ path('ws_event_create') }}">Créer une activité</a>						
 				</td>
 			</tr>
 

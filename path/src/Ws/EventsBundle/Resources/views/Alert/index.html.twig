@@ -21,14 +21,14 @@
 		{% else %}
 			<tr class="row-alert-empty row-alert-pending">
 				<td colspan="4">
-					<span class="ws-icon ws-icon-pacman"></span>........miam.........miam..........miam..........pas encore d'alertes...............................
+					<span class="ws-icon ws-icon-pacman"></span>.........Pas encore d'alertes...............................
 				</td>
 			</tr>
 		{% endif %}
 
 			<tr class="row-bottom">
 				<td colspan="4">
-					<a class="btn-ws btn-small" href="{{ path('ws_alerts_create') }}">Créer une alerte</a>						
+					<a class="btn-ws btn-small btn-ws-submit" href="{{ path('ws_alerts_create') }}">Créer une alerte</a>						
 				</td>
 			</tr>
 

@@ -52,7 +52,7 @@
 						<br><a class="label-ws label-ws-small label-ws-neutral" href="{{ path('ws_event_follow_edit',{follow:event.followed.id}) }}">
 							<span class="ws-icon ws-icon-checkmark ws-icon-white"></span> Suivre</a>
 						{% else %}
-						<br><a class="btn-ws btn-ws-small" href="{{ path('ws_event_follow_create',{organizer:event.organizer.id}) }}">Suivre</a>
+						<br><a class="btn-ws btn-ws-small btn-ws-submit" href="{{ path('ws_event_follow_create',{organizer:event.organizer.id}) }}">Suivre</a>
 						{% endif %}
 						
 					</td>

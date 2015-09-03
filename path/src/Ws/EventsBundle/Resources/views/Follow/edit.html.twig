@@ -15,7 +15,7 @@
             	<tr class="form-row">
             		<td>
             			<a class="btn-ws" href="{{ app.request.headers.get('referer') }}"><span class="ws-icon ws-icon-arrow-left ws-icon-white"></span> Retour</a>
-            			<a class="btn-ws" href="{{ path('ws_event_follow_delete',{follow:follow.id}) }}">Annuler</a>
+            			<a class="btn-ws btn-ws-submit" href="{{ path('ws_event_follow_delete',{follow:follow.id}) }}">Annuler</a>
             		</td>
             	</tr>
             </table>
