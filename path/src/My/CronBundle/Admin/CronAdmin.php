@@ -19,7 +19,8 @@ class CronAdmin extends Admin
             ->add($formMapper->create('commands', 'textarea')
                 ->addModelTransformer(new TextareaToArrayTransformer())
             )
-            ->add('interval','text',array('attr'=> array('placeholder'=> "Time in second")))         
+            ->add('interval','text',array('attr'=> array('placeholder'=> "Time in second"))) 
+            ->add('lastrun','datetime',array('attr'=> array('placeholder' => "Date du dernier run")))        
             ;
 
     }
@@ -42,8 +43,7 @@ class CronAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id')
-            ->add('name')
+            ->addIdentifier('name')
             ->add('interval')
             ->add('lastrun')
         ;
