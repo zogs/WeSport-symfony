@@ -2,19 +2,19 @@
 
 {% block field%}
 	{% if object.icon is defined %}
-		<span style="font-size:40px;display:inline:block;" class="ws-icon ws-icon-{{ object.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.name}}"></span><span style="display:inline-block"> {{ object.name }}</span>
+		<span style="font-size:40px;display:inline-block;" class="ws-icon ws-icon-{{ object.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.name}}"></span><span style="display:inline-block"> {{ object.name }}</span>
 	{% endif %}
 
 	{% if object.sport.icon is defined %}
-		<span style="font-size:40px;display:inline:block;" class="ws-icon ws-icon-{{ object.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.sport.name}}"></span><span style="display:inline-block"> {{ object.sport.name }}</span>
+		<span style="font-size:40px;display:inline-block;" class="ws-icon ws-icon-{{ object.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.sport.name}}"></span><span style="display:inline-block"> {{ object.sport.name }}</span>
 	{% endif %}
 
 	{% if object.event.sport.icon is defined %}
-		<span style="font-size:40px;display:inline:block;" class="ws-icon ws-icon-{{ object.event.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.event.sport.name}}"></span><span style="display:inline-block"> {{ object.event.sport.name }}</span>
+		<span style="font-size:40px;display:inline-block;" class="ws-icon ws-icon-{{ object.event.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.event.sport.name}}"></span><span style="display:inline-block"> {{ object.event.sport.name }}</span>
 	{% endif %}
 
 	{% if object.invitation.event.sport.icon is defined %}
-		<span style="font-size:40px;display:inline:block;" class="ws-icon ws-icon-{{ object.invitation.event.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.invitation.event.sport.name}}"></span><span style="display:inline-block"> {{ object.invitation.event.sport.name }}</span>
+		<span style="font-size:40px;display:inline-block;" class="ws-icon ws-icon-{{ object.invitation.event.sport.icon }} tooltipbottom" data-toggle="tooltip" title="{{ object.invitation.event.sport.name}}"></span><span style="display:inline-block"> {{ object.invitation.event.sport.name }}</span>
 	{% endif %}
 
 {% endblock %}

@@ -36,7 +36,7 @@ class PageAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('title')
+            ->addIdentifier('title')
             ->add('menu')
             ->add('isOnline')
         ;

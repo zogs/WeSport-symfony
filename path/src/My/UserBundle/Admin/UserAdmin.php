@@ -30,7 +30,7 @@ class UserAdmin extends Admin
             ->add('lastname')
             ->add('gender')
             ->add('birthday')
-            ->add('description')
+            ->add('description')            
             ->add('avatar',null,array('property'=>'id'))
             ->add('settings',null,array('property'=>'id'))
             ->add('statistic',null,array('property'=>'id'))
@@ -43,7 +43,10 @@ class UserAdmin extends Admin
     {
         $datagridMapper
             ->add('username')
-            ->add('email')     
+            ->add('email')
+            ->add('gender')
+            ->add('location.country.name',null,array('label'=>'Pays'))    
+            ->add('location.city.fullname',null,array('label'=>'Ville')) 
         ;
     }
 
@@ -58,7 +61,8 @@ class UserAdmin extends Admin
             ->add('age')
             ->add('birthday')
             ->add('gender')
-            ->add('location',null,array('associated_property'=>'city.name'))
+            ->add('location.country.name',null,array('label'=>'Pays'))
+            ->add('location.city.name',null,array('label'=>'Ville'))
             ->add('register_since')
             ->add('lastLogin')
             ->add('_action','actions',array(
