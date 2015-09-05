@@ -17,7 +17,7 @@ class AlertCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('send:alerts')
+            ->setName('alerts:send')
             ->setDescription('Send alerts')
             ->addArgument('param', InputArgument::REQUIRED, 'Periodicity or username/id')
             ->addOption('user', 'u', InputOption::VALUE_NONE, 'If defined, only the alerts of the param user will be sended')

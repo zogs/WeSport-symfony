@@ -36,7 +36,7 @@ class AlertAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id')
+            ->addIdentifier('user.username',null,array('label'=>'User'))
             ->addIdentifier('email')
             ->add('frequency')
             ->add('duration')     
