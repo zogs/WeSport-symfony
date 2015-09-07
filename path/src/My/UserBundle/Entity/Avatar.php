@@ -44,18 +44,39 @@ class Avatar
     public function __construct()
     {
         $this->updated = new \Datetime();
-        $this->path = $this->setDefaultAvatar();
+        $this->path = $this->getDefaultAvatar(rand(1,10));
 
     }    
 
-    public function setDefaultAvatar()
+    public function getDefaultAvatar($i = 1)
     {
-        return 'defaults/default_'.rand(1,10).'.gif';
+        return 'bundles/myuser/images/avatars/defaults/default_'.$i.'.gif';
     }
 
     public function isDefaultAvatar()
     {
-        return strpos($this->path,'defaults/') === 0 ? true : false;
+        return is_numeric($this->path) == true ? true : false;
+    }
+
+    public function getWebPath()
+    {        
+        if(null === $this->path) return $this->getDefaultAvatar();
+        if(is_readable($this->getUploadDir().'/'.$this->path)) return  $this->getUploadDir().'/'.$this->path;
+        if($this->isDefaultAvatar()) return $this->getDefaultAvatar($this->path);
+        return $this->getDefaultAvatar();
+    }
+
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path ? null : __DIR__.'/../../../../web/'.$this->getWebPath();
+    }
+
+    protected function getUploadDir()
+    {
+        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+        // le document/image dans la vue.
+        return 'media/users/avatar';
     }
 
     public function getSavingFilename()
@@ -65,23 +86,6 @@ class Avatar
         return $this->id;
     }
 
-    public function getWebPath()
-    {
-        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
-    }
-
-    protected function getUploadRootDir()
-    {
-        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
-    }
-
-    protected function getUploadDir()
-    {
-        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
-        // le document/image dans la vue.
-        return 'bundles/myuser/images/avatars';
-    }
 
     /**
      * @ORM\PrePersist()
@@ -99,6 +103,8 @@ class Avatar
         } 
 
     }
+
+
 
     /**
      * @ORM\PostPersist()
@@ -137,10 +143,6 @@ class Avatar
         }
     }
 
-    public function getAbsolutePath()
-    {
-        return null === $this->path ? null : $this->getUploadRootDir().'/'.$this->path;
-    }
 
     /**
      * Get id
