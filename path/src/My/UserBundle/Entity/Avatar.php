@@ -69,7 +69,7 @@ class Avatar
 
     public function getAbsolutePath()
     {
-        return null === $this->path ? null : __DIR__.'/../../../../web/'..$this->getWebPath();
+        return null === $this->path ? null : __DIR__.'/../../../../web/'.$this->getWebPath();
     }
 
     protected function getUploadDir()
