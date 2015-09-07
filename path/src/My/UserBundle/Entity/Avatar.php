@@ -69,7 +69,7 @@ class Avatar
 
     public function getAbsolutePath()
     {
-        return null === $this->path ? null : __DIR__.'/../../../../web/'.$this->getWebPath();
+        return null === $this->path ? null : __DIR__.'/../../../../web/'..$this->getWebPath();
     }
 
     protected function getUploadDir()
@@ -77,6 +77,12 @@ class Avatar
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
         return 'media/users/avatar';
+    }
+
+    protected function getAbsoluteUploadDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
     public function getSavingFilename()
@@ -119,7 +125,7 @@ class Avatar
         // vous devez lancer une exception ici si le fichier ne peut pas
         // être déplacé afin que l'entité ne soit pas persistée dans la
         // base de données comme le fait la méthode move() de UploadedFile
-        $this->file->move($this->getUploadRootDir(), $this->getSavingFilename().'.'.$this->file->guessExtension());
+        $this->file->move($this->getAbsoluteUploadDir(), $this->getSavingFilename().'.'.$this->file->guessExtension());
 
         unset($this->file);
     }
