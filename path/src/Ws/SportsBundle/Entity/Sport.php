@@ -230,4 +230,67 @@ class Sport implements Translatable
     {
         return $this->keywords;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->searchs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set lang
+     *
+     * @param string $lang
+     * @return Sport
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+
+        return $this;
+    }
+
+    /**
+     * Get lang
+     *
+     * @return string 
+     */
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * Add searchs
+     *
+     * @param \Ws\EventsBundle\Entity\Search $searchs
+     * @return Sport
+     */
+    public function addSearch(\Ws\EventsBundle\Entity\Search $searchs)
+    {
+        $this->searchs[] = $searchs;
+
+        return $this;
+    }
+
+    /**
+     * Remove searchs
+     *
+     * @param \Ws\EventsBundle\Entity\Search $searchs
+     */
+    public function removeSearch(\Ws\EventsBundle\Entity\Search $searchs)
+    {
+        $this->searchs->removeElement($searchs);
+    }
+
+    /**
+     * Get searchs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSearchs()
+    {
+        return $this->searchs;
+    }
 }
