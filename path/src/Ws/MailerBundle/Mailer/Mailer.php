@@ -74,7 +74,7 @@ class Mailer
 
         foreach($event->getParticipations(false) as $participant){
 
-            if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
+            if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CANCELED) === false ) continue;
 
             $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
         }
@@ -90,7 +90,7 @@ class Mailer
 
         foreach($event->getParticipations(false) as $participant){
 
-            if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_DELETE) === false ) continue;
+            if($participant->getUser() === null || $participant->getUser()->getSettings()->isAuthorizedEmail(Settings::EVENT_CANCELED) === false ) continue;
 
             $this->sendMessage($this->expediteur,$participant->getUser()->getEmail(),$subject,$body);
         }
