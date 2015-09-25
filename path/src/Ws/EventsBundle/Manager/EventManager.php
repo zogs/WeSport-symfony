@@ -12,7 +12,6 @@ class EventManager extends AbstractManager
 {
 	protected $em;
 
-	
 	/**
      * Save event or the serie of event
      *
@@ -214,6 +213,7 @@ class EventManager extends AbstractManager
 	{
 		$event->setConfirmed(true);
 		$this->save($event,true);
+		$this->container->get('dispatcher')->dispatch(WsEvents::EVENT_CONFIRM, new ConfirmEvent($event,$this->getUser())); 
 		return $event;
 	}
 

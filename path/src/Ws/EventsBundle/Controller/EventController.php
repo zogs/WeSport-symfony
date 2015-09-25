@@ -134,7 +134,6 @@ class EventController extends Controller
 			
 			$this->get('flashbag')->add("L'événement a été confirmé !");
 			
-			$this->get('event_dispatcher')->dispatch(WsEvents::EVENT_CONFIRM, new ConfirmEvent($event,$this->getUser())); 
 		}
 
 		$this->redirect($this->generateUrl("ws_event_view",array('event'=>$event->getId()))); 
