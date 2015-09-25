@@ -4,9 +4,9 @@
 
 {% if key=='spot' %}
 	le lieu a changé: <br>
-	<strong>Ville:</strong><br> {{ change.after.location.city.name }}
-	<strong>Lieu:</strong><br> {{ change.after.name }}
-	<strong>Adresse:</strong><br> {{ change.after.address }}
+	<strong>Ville:</strong> {{ change.after.location.city.name }}<br>
+	<strong>Lieu:</strong> {{ change.after.name }}<br>
+	<strong>Adresse:</strong> {{ change.after.address }}<br>
 {% endif  %}
 
 {% if key=='sport' %}
