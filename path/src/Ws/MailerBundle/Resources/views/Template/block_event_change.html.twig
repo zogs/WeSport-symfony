@@ -3,7 +3,10 @@
 {% endif  %}
 
 {% if key=='spot' %}
-	La ville a changé: <strong> {{ change.after.location.city.name }}</strong>
+	le lieu a changé: <br>
+	<strong>Ville:</strong> {{ change.after.location.city.name }}
+	<strong>Lieu:</strong> {{ change.after.spot.name }}
+	<strong>Adresse:</strong> {{ change.after.spot.address }}
 {% endif  %}
 
 {% if key=='sport' %}
