@@ -19,7 +19,7 @@ class ImportCommand extends ContainerAwareCommand
         $this
             ->setName('database:import:mysql')
             ->setDescription('Importe une table SQL')
-            ->addArgument('database', InputArgument::REQUIRED, 'Which table ?')
+            ->addArgument('database', InputArgument::REQUIRED, 'Which database ?')
             ->addArgument('table', InputArgument::OPTIONAL, 'Which table ?')
             ->addOption('all', null, InputOption::VALUE_NONE, 'Import all tables')
         ;
